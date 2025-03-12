@@ -1,0 +1,14 @@
+{
+	"Arquivo de Estilizacao": {
+		"scope": "javascript,typescript",
+		"prefix": "styleFile",
+		"body": [
+			"import { StyleSheet } from 'react-native';",
+			"",
+			"export default StyleSheet.create({",
+			"",
+			"});"
+		],
+		"description": "Log output to console"
+	}
+}
