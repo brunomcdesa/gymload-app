@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
-import * as Api from '../Api';
-import Exercicio from '../Exercicio';
+import * as Api from '../modules/exercicios/Api';
+import Exercicio from '../modules/exercicios/Exercicio';
 
 export default props => {
     const [exercicios, setExercicios] = useState([]);
@@ -10,10 +10,9 @@ export default props => {
         const fetchExercicios = async () => {
             try {
                 const { data } = await Api.fetchExercicios();
-                console.log("Dados recebidos:", data);
                 setExercicios(data);
             } catch (error) {
-                console.log("Erro ao buscar exercicios:", error);
+                console.error("Erro ao buscar exercicios:", error);
                 return [];
             }
         };

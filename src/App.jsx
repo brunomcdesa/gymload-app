@@ -1,19 +1,20 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
 import Header from './components/Header/Header';
-import Body from './components/Body/Body';
+import Navegacao from './routes';
 
 
 export default () => (
   <>
     <SafeAreaView style={style.App}>
         <Header />
-        <Body />
+        <Navegacao />
     </SafeAreaView>
   </>
 );
 
 const style = StyleSheet.create({
   App: {
+    flex: 1
   },
 });
