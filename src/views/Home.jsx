@@ -1,6 +1,11 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import style from './style/style';
+import ComumStyles from '../comum/ComumStyles';
+
 
 export default props => (
-    <Text>Seja Bem Vindo!</Text>
+    <View style={style.Container}>
+        <Text style={ComumStyles.Title}>Seja Bem Vindo!</Text>
+    </View>
 )

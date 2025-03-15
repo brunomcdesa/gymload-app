@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, Text, StyleSheet } from 'react-native';
-import style from './style';
+import style from './style/style';
 
 export default props => (
     <SafeAreaView style={style.Header}>

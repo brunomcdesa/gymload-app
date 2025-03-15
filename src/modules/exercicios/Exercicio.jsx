@@ -2,31 +2,36 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import style from './style';
+import style from './style/style';
 
 export default (props) => {
+  const { id, nome, descricao, grupoMuscular } = props;
   const navigation = useNavigation();
+  const {
+    Exercicio,
+    ExercicioContainer,
+    ExercicioText,
+    BotaoHistorico,
+    BotaoTexto,
+  } = style;
 
   const redirectToHistorico = () => {
-    navigation.push('HistoricoCargas', {
-      exercicioId: 3,
-      exercicioNome: props.nome,
+    navigation.navigate('HistoricoCargas', {
+      exercicioId: id,
+      exercicioNome: nome,
     });
   };
 
   return (
-    <View style={style.Exercicio}>
-      <View style={style.ExercicioContainer}>
-        <Text style={style.ExercicioText}>{props.nome}</Text>
-        <Text style={style.ExercicioText}>{props.descricao}</Text>
-        <Text style={style.ExercicioText}>{props.grupoMuscular}</Text>
+    <View style={Exercicio}>
+      <View style={ExercicioContainer}>
+        <Text style={ExercicioText}>{nome}</Text>
+        <Text style={ExercicioText}>{descricao}</Text>
+        <Text style={ExercicioText}>{grupoMuscular}</Text>
 
-        <TouchableOpacity
-          style={style.BotaoHistorico}
-          onPress={redirectToHistorico}
-        >
+        <TouchableOpacity style={BotaoHistorico} onPress={redirectToHistorico}>
           <MaterialIcons name="history" size={24} color="#fff" />
-          <Text style={style.BotaoTexto}>Ver Histórico</Text>
+          <Text style={BotaoTexto}>Ver Histórico</Text>
         </TouchableOpacity>
       </View>
     </View>

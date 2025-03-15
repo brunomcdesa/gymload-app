@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import * as Api from '../modules/exercicios/Api';
 import Exercicio from '../modules/exercicios/Exercicio';
+import style from './style/style';
+import ComumStyles from '../comum/ComumStyles';
 
 export default (props) => {
   const [exercicios, setExercicios] = useState([]);
@@ -21,27 +23,21 @@ export default (props) => {
   }, []);
 
   return (
-    <>
-      <Text>Lista de Exercicios</Text>
+    <View style={style.ListContainer} >
+      <Text style={ComumStyles.Title}>Lista de Exercicios</Text>
       <FlatList
         data={exercicios}
-        keyExtractor={(exercicio) => exercicio.nome}
+        keyExtractor={(exercicio) => exercicio.id}
         renderItem={({ item: exercicio }) => (
           <Exercicio
+            id={exercicio.id}
             nome={exercicio.nome}
             descricao={exercicio.descricao}
             grupoMuscular={exercicio.grupoMuscularNome}
           />
         )}
-        contentContainerStyle={style.ListContainer}
       />
-    </>
+    </View>
   );
 };
 
-const style = StyleSheet.create({
-  ListContainer: {
-    padding: 10,
-    backgroundColor: '#f9f9f9',
-  },
-});

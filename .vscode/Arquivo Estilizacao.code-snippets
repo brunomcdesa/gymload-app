@@ -1,6 +1,6 @@
 {
 	"Arquivo de Estilizacao": {
-		"scope": "javascript,typescript",
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
 		"prefix": "styleFile",
 		"body": [
 			"import { StyleSheet } from 'react-native';",

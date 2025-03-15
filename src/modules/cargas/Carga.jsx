@@ -1,13 +1,20 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import style from './style/style';
 
 export default (props) => {
+  const { carga, tipoExercicio, grupoMuscularNome, qtdRepeticoes } = props;
+  const { Container, CargaText } = style;
+
   return (
-    <View>
-      <Text> Carga: {props.carga} </Text>
-      <Text> TipoExercicio: {props.tipoExercicio} </Text>
-      <Text> Grupo Muscular: {props.grupoMuscular} </Text>
-      <Text> Quantidade de Repetições: {props.qtdRepeticoes} </Text>
+    <View style={Container}>
+      <Text style={CargaText}> Carga: {carga} </Text>
+      <Text style={CargaText}> TipoExercicio: {tipoExercicio} </Text>
+      <Text style={CargaText}> Grupo Muscular: {grupoMuscularNome} </Text>
+      <Text style={CargaText}>
+        {' '}
+        Quantidade de Repetições: {qtdRepeticoes ? qtdRepeticoes : 12}{' '}
+      </Text>
     </View>
   );
 };
