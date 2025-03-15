@@ -1,4 +1,29 @@
 {
   "name": "GymloadApp",
-  "displayName": "GymloadApp"
+  "displayName": "GymloadApp",
+  "expo": {
+    "name": "GymloadApp", 
+    "slug": "gymloadapp",
+    "platforms": ["ios", "android", "web"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.gymloadapp"
+    },
+    "android": {
+      "package": "com.gymloadapp"
+    }
+  }
 }

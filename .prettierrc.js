@@ -1,7 +1,6 @@
 module.exports = {
-  arrowParens: 'avoid',
-  bracketSameLine: true,
-  bracketSpacing: false,
   singleQuote: true,
-  trailingComma: 'all',
+  semi: true,
+  bracketSpacing: true,
+  plugins: ['prettier-plugin-organize-imports'],
 };

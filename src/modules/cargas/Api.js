@@ -1,9 +1,8 @@
-import { axiosPublic } from "../../config/axios"
-import { pMinDelay } from "../utils/promisse";
-
+import { axiosPublic } from '../../config/axios';
+import { pMinDelay } from '../utils/promisse';
 
 export const fetchHistoricoCargas = async ({ exercicioId, delay = 0 }) => {
-    const response = axiosPublic.get(`/api/historico-cargas/${exercicioId}`);
+  const response = axiosPublic.get(`/api/historico-cargas/${exercicioId}`);
 
-    return pMinDelay(response, delay);
-}
+  return pMinDelay(response, delay);
+};

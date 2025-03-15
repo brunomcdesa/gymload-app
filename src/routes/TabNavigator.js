@@ -7,44 +7,46 @@ import ExerciciosStack from './StackNavigator';
 
 const Tab = createBottomTabNavigator();
 
-export default props => {
+export default (props) => {
+  const rotasConfig = [
+    {
+      name: 'Home',
+      component: Home,
+      iconName: 'home',
+    },
+    {
+      name: 'Exercicios',
+      component: ExerciciosStack,
+      iconName: 'fitness-center',
+    },
+  ];
 
-    const rotasConfig = [
-        {
-          name: 'Home',
-          component: Home,
-          iconName: 'home'
-        },
-        {
-          name: 'Exercicios',
-          component: ExerciciosStack,
-          iconName: 'fitness-center'
-        }
-      ];
-
-    const renderTabIcon = (routeName, color, size) => {
-        const rotaAtual = rotasConfig.find(rota => rota.name === routeName);
-    
-        return <MaterialIcons name={rotaAtual.iconName} size={size} color={color} />;
-    }
+  const renderTabIcon = (routeName, color, size) => {
+    const rotaAtual = rotasConfig.find((rota) => rota.name === routeName);
 
     return (
-    <Tab.Navigator 
-        initialRouteName="Home"
-        screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => renderTabIcon(route.name, color, size),
-            tabBarActiveTintColor: 'blue',
-            tabBarInactiveTintColor: 'gray',
-            headerShown: false
-        })}
+      <MaterialIcons name={rotaAtual.iconName} size={size} color={color} />
+    );
+  };
+
+  return (
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) =>
+          renderTabIcon(route.name, color, size),
+        tabBarActiveTintColor: 'blue',
+        tabBarInactiveTintColor: 'gray',
+        headerShown: false,
+      })}
     >
-         {rotasConfig.map(rota => (
-            <Tab.Screen 
-                key={rota.name}
-                name={rota.name} 
-                component={rota.component}
-            />
-        ))}
+      {rotasConfig.map((rota) => (
+        <Tab.Screen
+          key={rota.name}
+          name={rota.name}
+          component={rota.component}
+        />
+      ))}
     </Tab.Navigator>
-    )
-}
+  );
+};
