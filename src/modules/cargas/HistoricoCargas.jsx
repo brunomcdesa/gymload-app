@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import ComumStyles from '../../comum/ComumStyles';
 import style from './style/style';
 
 import * as Api from './Api';
 import Carga from './Carga';
+import AddButton from '../../components/Button/AddButton';
+import BackButton from '../../components/Button/BackButton';
 
-export default ({ route, navigation }) => {
+const HistoricoCarga = ({ route, navigation }) => {
+  const { Title, Botoes} = ComumStyles;
   const { exercicioId, exercicioNome } = route.params;
   const [historicoCargas, setCargas] = useState([]);
 
@@ -26,9 +29,13 @@ export default ({ route, navigation }) => {
     fetchCargas();
   }, []);
 
+  const redirectToCargaForm = () => {
+    navigation.navigate('CargaForm', { exercicioId, exercicioNome });
+  };
+
   return (
     <View style={style.Container}>
-      <Text style={ComumStyles.Title}>
+      <Text style={Title}>
         Historico de Cargas - {exercicioNome}
       </Text>
       <FlatList
@@ -36,12 +43,13 @@ export default ({ route, navigation }) => {
         keyExtractor={(historico) => historico.id}
         renderItem={({ item: carga }) => <Carga {...carga} />}
       />
-      <Button
-        title="Voltar"
-        onPress={() => {
-          navigation.goBack();
-        }}
-      />
+
+      <View style={Botoes}>
+        <BackButton navigation={navigation} />
+        <AddButton onPress={redirectToCargaForm} />
+      </View>
     </View>
   );
 };
+
+export default HistoricoCarga;

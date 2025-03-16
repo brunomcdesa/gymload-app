@@ -8,4 +8,9 @@ export default StyleSheet.create({
         marginBottom: 15,
         textAlign: 'center',
     },
+    Botoes: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        padding: 10
+    }
 });
