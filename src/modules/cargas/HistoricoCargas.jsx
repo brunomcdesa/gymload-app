@@ -13,8 +13,7 @@ const HistoricoCarga = ({ route, navigation }) => {
   const { exercicioId, exercicioNome } = route.params;
   const [historicoCargas, setCargas] = useState([]);
 
-  useEffect(() => {
-    const fetchCargas = async () => {
+  const fetchCargas = async () => {
       try {
         const { data } = await Api.fetchHistoricoCargas({
           exercicioId: exercicioId,
@@ -26,6 +25,7 @@ const HistoricoCarga = ({ route, navigation }) => {
       }
     };
 
+  useEffect(() => {
     fetchCargas();
   }, []);
 

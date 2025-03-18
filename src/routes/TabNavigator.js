@@ -3,7 +3,8 @@ import Home from '../views/Home';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ExerciciosStack from './StackNavigator';
+import ExerciciosStack from './ExerciciosStackNavigator';
+import GruposMuscularesStack from './GruposMuscularesStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +20,11 @@ export default (props) => {
       component: ExerciciosStack,
       iconName: 'fitness-center',
     },
+    {
+      name: 'Grupos Musculares',
+      component: GruposMuscularesStack,
+      iconName: 'man'
+    }
   ];
 
   const renderTabIcon = (routeName, color, size) => {

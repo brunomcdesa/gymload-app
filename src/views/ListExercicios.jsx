@@ -5,11 +5,10 @@ import Exercicio from '../modules/exercicios/Exercicio';
 import style from './style/style';
 import ComumStyles from '../comum/ComumStyles';
 
-export default (props) => {
+const ListExercicios = () => {
   const [exercicios, setExercicios] = useState([]);
 
-  useEffect(() => {
-    const fetchExercicios = async () => {
+  const fetchExercicios = async () => {
       try {
         const { data } = await Api.fetchExercicios();
         setExercicios(data);
@@ -19,6 +18,7 @@ export default (props) => {
       }
     };
 
+  useEffect(() => { 
     fetchExercicios();
   }, []);
 
@@ -41,3 +41,4 @@ export default (props) => {
   );
 };
 
+export default ListExercicios;

@@ -8,6 +8,7 @@ export default StyleSheet.create({
         backgroundColor: '#f5f5f5',
     },
     ListContainer: {
+        flex: 1,
         padding: 20,
         backgroundColor: '#f5f5f5',
         borderRadius: 8,

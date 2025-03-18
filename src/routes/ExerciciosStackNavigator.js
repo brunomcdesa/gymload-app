@@ -6,7 +6,7 @@ import CargaForm from '../modules/cargas/CargaForm';
 
 const Stack = createNativeStackNavigator();
 
-export default props => {
+const ExerciciosStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Exercicios" component={ ListExercicios } />
@@ -15,3 +15,5 @@ export default props => {
     </Stack.Navigator>
   );
 };
+
+export default ExerciciosStackNavigator;
