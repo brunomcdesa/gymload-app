@@ -1,5 +1,7 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
+import AddButton from '../components/Button/AddButton';
 import ComumStyles from '../comum/ComumStyles';
 import * as Api from '../modules/exercicios/Api';
 import Exercicio from '../modules/exercicios/Exercicio';
@@ -7,6 +9,7 @@ import style from './style/style';
 
 const ListExercicios = () => {
   const [exercicios, setExercicios] = useState([]);
+  const navigation = useNavigation();
 
   const fetchExercicios = async () => {
     try {
@@ -21,6 +24,10 @@ const ListExercicios = () => {
   useEffect(() => {
     fetchExercicios();
   }, []);
+
+  const redirectGrupoMuscularForm = () => {
+    navigation.navigate('ExercicioForm');
+  };
 
   return (
     <View style={style.ListContainer}>
@@ -37,6 +44,10 @@ const ListExercicios = () => {
           />
         )}
       />
+
+      <View>
+        <AddButton onPress={redirectGrupoMuscularForm} />
+      </View>
     </View>
   );
 };

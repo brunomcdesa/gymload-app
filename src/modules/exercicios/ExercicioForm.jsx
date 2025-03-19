@@ -1,16 +1,39 @@
+import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, View } from 'react-native';
 import BackButton from '../../components/Button/BackButton';
 import SaveButton from '../../components/Button/SaveButton';
 import ComumStyles from '../../comum/ComumStyles';
-import * as Api from './Api';
 
-const GrupoMuscularForm = ({ navigation }) => {
-  const { Title, Botoes, FormContainer, FormLabel, FormTextInput } =
-    ComumStyles;
+const TIPO_EXERCICIO = [
+  'HALTER',
+  'BARRA',
+  'MAQUINA',
+  'POLIA',
+  'ANILHA',
+  'BOLA',
+  'KETTLEBEL',
+  'BAG',
+  'CORPORAL',
+];
+
+const TIPO_PEGADA = ['PRONADA', 'SUPINADA', 'NEUTRA', 'CORDA'];
+
+const ExercicioForm = ({ navigation }) => {
+  const {
+    Title,
+    Botoes,
+    FormContainer,
+    FormLabel,
+    FormTextInput,
+    FormSelectInput,
+  } = ComumStyles;
   const [formData, setFormData] = useState({
-    nome: null,
-    codigo: null,
+    nome: '',
+    descricao: '',
+    grupoMuscularId: null,
+    tipoExercicio: TIPO_EXERCICIO[0],
+    tipoPegada: TIPO_PEGADA[0],
   });
 
   const handleChange = (field, value) => {
@@ -48,13 +71,28 @@ const GrupoMuscularForm = ({ navigation }) => {
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
-      <Text style={FormLabel}>Codigo:</Text>
+      <Text style={FormLabel}>Descricao:</Text>
       <TextInput
         style={FormTextInput}
-        placeholder="Digite o codigo"
-        value={formData.codigo}
-        onChangeText={(codigoValue) => handleChange('codigo', codigoValue)}
+        placeholder="Digite a descricao"
+        value={formData.descricao}
+        onChangeText={(descricaoValue) =>
+          handleChange('descricao', descricaoValue)
+        }
       />
+
+      <Text style={FormLabel}>Tipo de Exercício:</Text>
+      <Picker
+        style={FormSelectInput}
+        selectedValue={TIPO_EXERCICIO}
+        onValueChange={(tipoExercicioValue) =>
+          handleChange('tipoExercicio', tipoExercicioValue)
+        }
+      >
+        {TIPO_EXERCICIO.map((item, index) => (
+          <Picker.Item key={index} label={item} value={item} />
+        ))}
+      </Picker>
 
       <View style={Botoes}>
         <BackButton navigation={navigation} />
@@ -64,4 +102,4 @@ const GrupoMuscularForm = ({ navigation }) => {
   );
 };
 
-export default GrupoMuscularForm;
+export default ExercicioForm;

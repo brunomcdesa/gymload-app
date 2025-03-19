@@ -9,7 +9,6 @@ module.exports = {
   plugins: ['import', 'react', 'prettier'],
   rules: {
     quotes: ['error', 'single'],
-    semi: ['error', 'always'],
     'object-curly-spacing': ['error', 'always'],
     'prettier/prettier': 'error',
   },

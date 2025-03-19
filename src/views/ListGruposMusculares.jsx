@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import AddButton from '../components/Button/AddButton';
 import ComumStyles from '../comum/ComumStyles';
@@ -21,9 +21,11 @@ const ListGruposMusculares = (props) => {
     }
   };
 
-  useEffect(() => {
-    fetchGruposMusculares();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchGruposMusculares();
+    }, []),
+  );
 
   const redirectGrupoMuscularForm = () => {
     navigation.navigate('GrupoMuscularForm');

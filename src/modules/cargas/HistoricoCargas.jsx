@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import ComumStyles from '../../comum/ComumStyles';
 import style from './style/style';
 
+import { useFocusEffect } from '@react-navigation/native';
 import AddButton from '../../components/Button/AddButton';
 import BackButton from '../../components/Button/BackButton';
 import * as Api from './Api';
@@ -25,9 +26,11 @@ const HistoricoCarga = ({ route, navigation }) => {
     }
   };
 
-  useEffect(() => {
-    fetchCargas();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchCargas();
+    }, []),
+  );
 
   const redirectToCargaForm = () => {
     navigation.navigate('CargaForm', { exercicioId, exercicioNome });

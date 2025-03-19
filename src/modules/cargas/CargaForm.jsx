@@ -5,13 +5,18 @@ import BackButton from '../../components/Button/BackButton';
 import SaveButton from '../../components/Button/SaveButton';
 import ComumStyles from '../../comum/ComumStyles';
 import * as Api from './Api';
-import style from './style/style';
 
 const UNIDADE_PESO = ['KG', 'LBS'];
 
 const CargaForm = ({ route, navigation }) => {
-  const { Title, Botoes } = ComumStyles;
-  const { FormContainer, FormLabel, FormTextInput, FormSelectInput } = style;
+  const {
+    Title,
+    Botoes,
+    FormContainer,
+    FormLabel,
+    FormTextInput,
+    FormSelectInput,
+  } = ComumStyles;
   const { exercicioId, exercicioNome } = route.params;
   const [formData, setFormData] = useState({
     exercicioId: exercicioId,
@@ -24,21 +29,23 @@ const CargaForm = ({ route, navigation }) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!formData.carga || !formData.unidadePeso || !formData.qtdRepeticoes) {
       Alert.alert('Erro', 'Todos os campos são obrigatórios!');
       return;
     }
 
     try {
-      Api.saveNewHistoricoCarga(formData);
+      await Api.saveNewHistoricoCarga(formData);
+      Alert.alert('Sucesso', 'Carga salva com sucesso!', [
+        {
+          text: 'OK',
+          onPress: () => navigation.goBack(),
+        },
+      ]);
     } catch (error) {
       console.log('Erro ao salvar novo histórico de carga', error);
     }
-    Alert.alert(
-      'Sucesso',
-      `Dados enviados:\nCarga: ${formData.carga}\nUnidade de Peso: ${formData.unidadePeso}\nQuantidade de Reoetições: ${formData.qtdRepeticoes}`,
-    );
   };
 
   return (
