@@ -3,29 +3,14 @@ module.exports = {
     'eslint:recommended',
     'plugin:import/recommended',
     'plugin:react/recommended',
+    'plugin:prettier/recommended',
+    'eslint-config-prettier',
   ],
-  plugins: ['import', 'react'],
+  plugins: ['import', 'react', 'prettier'],
   rules: {
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
     'object-curly-spacing': ['error', 'always'],
-    'import/order': [
-      'error',
-      {
-        groups: [
-          ['builtin', 'external'],
-          'internal',
-          ['parent', 'sibling', 'index'],
-        ],
-        'newlines-between': 'always',
-        pathGroups: [
-          {
-            pattern: 'react',
-            group: 'external',
-            position: 'before',
-          },
-        ],
-      },
-    ],
+    'prettier/prettier': 'error',
   },
 };

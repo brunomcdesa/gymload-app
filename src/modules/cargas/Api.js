@@ -10,7 +10,7 @@ export const fetchHistoricoCargas = ({ exercicioId, delay = 0 }) => {
 };
 
 export const saveNewHistoricoCarga = (request, delay = 0) => {
-  const response = axiosPublic.post(urlBase, {...request});
+  const response = axiosPublic.post(urlBase, { ...request });
 
-  return pMinDelay(response, delay)
-}
+  return pMinDelay(response, delay);
+};

@@ -23,8 +23,8 @@ export default (props) => {
     {
       name: 'Grupos Musculares',
       component: GruposMuscularesStack,
-      iconName: 'man'
-    }
+      iconName: 'man',
+    },
   ];
 
   const renderTabIcon = (routeName, color, size) => {

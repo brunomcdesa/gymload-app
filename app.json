@@ -2,9 +2,10 @@
   "name": "GymloadApp",
   "displayName": "GymloadApp",
   "expo": {
-    "name": "GymloadApp", 
+    "name": "GymloadApp",
     "slug": "gymloadapp",
     "platforms": ["ios", "android", "web"],
+    "newArchEnabled": true,
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,9 +17,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.gymloadapp"
     },

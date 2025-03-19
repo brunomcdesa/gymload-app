@@ -1,17 +1,17 @@
 {
-	"Componente Funcional": {
-		"scope": "javascript,typescript,javascriptreact,typescriptreact",
-		"prefix": "compfunc",
-		"body": [
-			"import React from 'react';",
-			"import { Text } from 'react-native';",
-			"",
-			"export default props => {",
-			"    return (",
-			"        <Text>$1</Text>",
-			"    )",
-			"}",
-		],
-		"description": "Criar componente funcional."
-	}
+  "Componente Funcional": {
+    "scope": "javascript,typescript,javascriptreact,typescriptreact",
+    "prefix": "compfunc",
+    "body": [
+      "import React from 'react';",
+      "import { Text } from 'react-native';",
+      "",
+      "export default props => {",
+      "    return (",
+      "        <Text>$1</Text>",
+      "    )",
+      "}",
+    ],
+    "description": "Criar componente funcional.",
+  },
 }
