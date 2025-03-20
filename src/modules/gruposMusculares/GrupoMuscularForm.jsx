@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Alert, Text, TextInput, View } from 'react-native';
 import BackButton from '../../components/Button/BackButton';
 import SaveButton from '../../components/Button/SaveButton';
-import ComumStyles from '../../comum/ComumStyles';
+import ComumStyles from '../../components/Styles/ComumStyles';
 import * as Api from './Api';
 
 const GrupoMuscularForm = ({ navigation }) => {

@@ -9,7 +9,13 @@ export const saveGrupoMuscular = (request, delay = 0) => {
   return pMinDelay(response, delay);
 };
 
-export const fetchGruposMusculares = async (delay = 0) => {
+export const fetchGruposMusculares = (delay = 0) => {
+  const response = axiosPublic.get(`${apiUrl}`);
+
+  return pMinDelay(response, delay);
+};
+
+export const fetchGruposMuscularesSelect = (delay = 0) => {
   const response = axiosPublic.get(`${apiUrl}/select`);
 
   return pMinDelay(response, delay);

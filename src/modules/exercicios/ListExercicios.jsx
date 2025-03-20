@@ -1,13 +1,14 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import AddButton from '../components/Button/AddButton';
-import ComumStyles from '../comum/ComumStyles';
-import * as Api from '../modules/exercicios/Api';
-import Exercicio from '../modules/exercicios/Exercicio';
-import style from './style/style';
+import AddButton from '../../components/Button/AddButton';
+import ComumStyles from '../../components/Styles/ComumStyles';
+import * as Api from './Api';
+import Exercicio from './Exercicio';
 
 const ListExercicios = () => {
+  const { Title, ListContainer } = ComumStyles;
+
   const [exercicios, setExercicios] = useState([]);
   const navigation = useNavigation();
 
@@ -21,17 +22,19 @@ const ListExercicios = () => {
     }
   };
 
-  useEffect(() => {
-    fetchExercicios();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchExercicios();
+    }, []),
+  );
 
   const redirectGrupoMuscularForm = () => {
     navigation.navigate('ExercicioForm');
   };
 
   return (
-    <View style={style.ListContainer}>
-      <Text style={ComumStyles.Title}>Lista de Exercicios</Text>
+    <View style={ListContainer}>
+      <Text style={Title}>Lista de Exercicios</Text>
       <FlatList
         data={exercicios}
         keyExtractor={(exercicio) => exercicio.id}

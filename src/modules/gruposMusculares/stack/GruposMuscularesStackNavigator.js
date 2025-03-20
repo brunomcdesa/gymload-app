@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import GrupoMuscularForm from '../modules/gruposMusculares/GrupoMuscularForm';
-import ListGruposMusculares from '../views/ListGruposMusculares';
+import GrupoMuscularForm from '../GrupoMuscularForm';
+import ListGruposMusculares from '../ListGruposMusculares';
 
 const Stack = createNativeStackNavigator();
 

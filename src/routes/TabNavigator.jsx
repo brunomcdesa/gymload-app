@@ -1,14 +1,14 @@
 import React from 'react';
-import Home from '../views/Home';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ExerciciosStack from './ExerciciosStackNavigator';
-import GruposMuscularesStack from './GruposMuscularesStackNavigator';
+import ExerciciosStack from '../modules/exercicios/stack/ExerciciosStackNavigator';
+import GruposMuscularesStack from '../modules/gruposMusculares/stack/GruposMuscularesStackNavigator';
+import Home from '../modules/home/Home';
 
 const Tab = createBottomTabNavigator();
 
-export default (props) => {
+const TabNavigator = () => {
   const rotasConfig = [
     {
       name: 'Home',
@@ -39,8 +39,7 @@ export default (props) => {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) =>
-          renderTabIcon(route.name, color, size),
+        tabBarIcon: ({ color, size }) => renderTabIcon(route.name, color, size),
         tabBarActiveTintColor: 'blue',
         tabBarInactiveTintColor: 'gray',
         headerShown: false,
@@ -56,3 +55,5 @@ export default (props) => {
     </Tab.Navigator>
   );
 };
+
+export default TabNavigator;

@@ -37,4 +37,16 @@ export default StyleSheet.create({
     backgroundColor: '#f2f2f2',
     marginBottom: 15,
   },
+  ListContainer: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+    margin: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
 });

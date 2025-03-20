@@ -1,15 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import ComumStyles from '../../comum/ComumStyles';
 import style from './style/style';
 
 import { useFocusEffect } from '@react-navigation/native';
-import AddButton from '../../components/Button/AddButton';
-import BackButton from '../../components/Button/BackButton';
+import AddButton from '../../../components/Button/AddButton';
+import BackButton from '../../../components/Button/BackButton';
+import ComumStyles from '../../../components/Styles/ComumStyles';
 import * as Api from './Api';
 import Carga from './Carga';
 
-const HistoricoCarga = ({ route, navigation }) => {
+const HistoricoCargas = ({ route, navigation }) => {
   const { Title, Botoes } = ComumStyles;
   const { exercicioId, exercicioNome } = route.params;
   const [historicoCargas, setCargas] = useState([]);
@@ -53,4 +53,4 @@ const HistoricoCarga = ({ route, navigation }) => {
   );
 };
 
-export default HistoricoCarga;
+export default HistoricoCargas;

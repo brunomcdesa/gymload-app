@@ -1,12 +1,14 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { View } from 'react-native';
-import Tab from './TabNavigator';
+import TabNavigator from './TabNavigator';
 
-export default (props) => (
+const Navegacao = () => (
   <View style={{ flex: 1 }}>
     <NavigationContainer>
-      <Tab />
+      <TabNavigator />
     </NavigationContainer>
   </View>
 );
+
+export default Navegacao;

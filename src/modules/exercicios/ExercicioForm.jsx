@@ -1,9 +1,12 @@
 import { Picker } from '@react-native-picker/picker';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Text, TextInput, View } from 'react-native';
 import BackButton from '../../components/Button/BackButton';
 import SaveButton from '../../components/Button/SaveButton';
-import ComumStyles from '../../comum/ComumStyles';
+import ComumStyles from '../../components/Styles/ComumStyles';
+
+import * as GrupoMuscularApi from '../gruposMusculares/Api';
+import * as Api from './Api';
 
 const TIPO_EXERCICIO = [
   'HALTER',
@@ -35,20 +38,27 @@ const ExercicioForm = ({ navigation }) => {
     tipoExercicio: TIPO_EXERCICIO[0],
     tipoPegada: TIPO_PEGADA[0],
   });
+  const [gruposMuscularesSelect, setGruposMuscularesSelect] = useState([]);
 
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
 
   const handleSubmit = async () => {
-    if (!formData.nome || !formData.codigo) {
+    if (
+      !formData.nome ||
+      !formData.descricao ||
+      !formData.grupoMuscularId ||
+      !formData.tipoExercicio ||
+      !formData.tipoPegada
+    ) {
       Alert.alert('Erro', 'Todos os campos são obrigatórios!');
       return;
     }
 
     try {
-      await Api.saveGrupoMuscular(formData);
-      Alert.alert('Sucesso', 'Grupo Muscular salvo com sucesso!', [
+      await Api.saveExercicio(formData);
+      Alert.alert('Sucesso', 'Exercicio salvo com sucesso!', [
         {
           text: 'OK',
           onPress: () => navigation.goBack(),
@@ -58,6 +68,19 @@ const ExercicioForm = ({ navigation }) => {
       console.log('Erro ao salvar novo histórico de carga', error);
     }
   };
+
+  const fetchGruposMuscularesSelect = async () => {
+    try {
+      const { data } = await GrupoMuscularApi.fetchGruposMuscularesSelect();
+      setGruposMuscularesSelect(data);
+    } catch (error) {
+      console.log('Erro ao buscar select de grupos musculares.', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGruposMuscularesSelect();
+  }, []);
 
   return (
     <View style={FormContainer}>
@@ -81,6 +104,23 @@ const ExercicioForm = ({ navigation }) => {
         }
       />
 
+      <Text style={FormLabel}>Grupo Muscular:</Text>
+      <Picker
+        style={FormSelectInput}
+        selectedValue={gruposMuscularesSelect}
+        onValueChange={(grupoMuscularValue) =>
+          handleChange('grupoMuscularId', grupoMuscularValue)
+        }
+      >
+        {gruposMuscularesSelect.map((grupoMuscular, index) => (
+          <Picker.Item
+            key={index}
+            label={grupoMuscular.value}
+            value={grupoMuscular.id}
+          />
+        ))}
+      </Picker>
+
       <Text style={FormLabel}>Tipo de Exercício:</Text>
       <Picker
         style={FormSelectInput}
@@ -90,6 +130,19 @@ const ExercicioForm = ({ navigation }) => {
         }
       >
         {TIPO_EXERCICIO.map((item, index) => (
+          <Picker.Item key={index} label={item} value={item} />
+        ))}
+      </Picker>
+
+      <Text style={FormLabel}>Tipo de Pegada:</Text>
+      <Picker
+        style={FormSelectInput}
+        selectedValue={TIPO_PEGADA}
+        onValueChange={(tipoPegadaValue) =>
+          handleChange('tipoPegada', tipoPegadaValue)
+        }
+      >
+        {TIPO_PEGADA.map((item, index) => (
           <Picker.Item key={index} label={item} value={item} />
         ))}
       </Picker>

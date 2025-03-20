@@ -1,13 +1,15 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import AddButton from '../components/Button/AddButton';
-import ComumStyles from '../comum/ComumStyles';
-import * as Api from '../modules/gruposMusculares/Api';
-import GrupoMuscular from '../modules/gruposMusculares/GrupoMuscular';
-import style from './style/style';
+
+import AddButton from '../../components/Button/AddButton';
+import ComumStyles from '../../components/Styles/ComumStyles';
+
+import * as Api from './Api';
+import GrupoMuscular from './GrupoMuscular';
 
 const ListGruposMusculares = (props) => {
+  const { Title, ListContainer } = ComumStyles;
   const [gruposMusculares, setGruposMusculares] = useState([]);
   const navigation = useNavigation();
 
@@ -32,14 +34,14 @@ const ListGruposMusculares = (props) => {
   };
 
   return (
-    <View style={style.ListContainer}>
-      <Text style={ComumStyles.Title}>Grupos Musculares</Text>
+    <View style={ListContainer}>
+      <Text style={Title}>Grupos Musculares</Text>
 
       <FlatList
         data={gruposMusculares}
         keyExtractor={(grupoMuscular) => grupoMuscular.id}
         renderItem={({ item: grupoMuscular }) => (
-          <GrupoMuscular id={grupoMuscular.id} nome={grupoMuscular.value} />
+          <GrupoMuscular nome={grupoMuscular.nome} />
         )}
       />
 
