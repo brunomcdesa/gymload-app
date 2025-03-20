@@ -1,19 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import ComumStyles from '../../components/Styles/ComumStyles';
 import style from './style/style';
 
-export default (props) => {
+const Exercicio = (props) => {
   const { id, nome, descricao, grupoMuscular } = props;
   const navigation = useNavigation();
   const {
-    Exercicio,
     ExercicioContainer,
-    ExercicioText,
+    ExercicioDescricaoText,
     BotaoHistorico,
     BotaoTexto,
   } = style;
+
+  const { ElementContainer, SubTitle, SubSubTitle } = ComumStyles;
 
   const redirectToHistorico = () => {
     navigation.navigate('HistoricoCargas', {
@@ -23,11 +26,11 @@ export default (props) => {
   };
 
   return (
-    <View style={Exercicio}>
+    <View style={ElementContainer}>
       <View style={ExercicioContainer}>
-        <Text style={ExercicioText}>{nome}</Text>
-        <Text style={ExercicioText}>{descricao}</Text>
-        <Text style={ExercicioText}>{grupoMuscular}</Text>
+        <Text style={SubTitle}>{nome}</Text>
+        <Text style={SubSubTitle}>{grupoMuscular}</Text>
+        <Text style={ExercicioDescricaoText}>{descricao}</Text>
 
         <TouchableOpacity style={BotaoHistorico} onPress={redirectToHistorico}>
           <MaterialIcons name="history" size={24} color="#fff" />
@@ -37,3 +40,12 @@ export default (props) => {
     </View>
   );
 };
+
+Exercicio.propTypes = {
+  id: PropTypes.number.isRequired,
+  nome: PropTypes.string.isRequired,
+  descricao: PropTypes.string.isRequired,
+  grupoMuscular: PropTypes.string.isRequired,
+};
+
+export default Exercicio;

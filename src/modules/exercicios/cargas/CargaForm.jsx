@@ -2,6 +2,7 @@ import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, View } from 'react-native';
 
+import PropTypes from 'prop-types';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import ComumStyles from '../../../components/Styles/ComumStyles';
@@ -9,7 +10,7 @@ import * as Api from './Api';
 
 const UNIDADE_PESO = ['KG', 'LBS'];
 
-const CargaForm = ({ route, navigation }) => {
+const CargaForm = (props) => {
   const {
     Title,
     Botoes,
@@ -18,6 +19,7 @@ const CargaForm = ({ route, navigation }) => {
     FormTextInput,
     FormSelectInput,
   } = ComumStyles;
+  const { route, navigation } = props;
   const { exercicioId, exercicioNome } = route.params;
   const [formData, setFormData] = useState({
     exercicioId: exercicioId,
@@ -92,6 +94,18 @@ const CargaForm = ({ route, navigation }) => {
       </View>
     </View>
   );
+};
+
+CargaForm.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      exercicioId: PropTypes.number.isRequired,
+      exercicioNome: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default CargaForm;

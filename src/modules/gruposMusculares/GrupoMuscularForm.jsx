@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, View } from 'react-native';
 import BackButton from '../../components/Button/BackButton';
@@ -5,9 +6,10 @@ import SaveButton from '../../components/Button/SaveButton';
 import ComumStyles from '../../components/Styles/ComumStyles';
 import * as Api from './Api';
 
-const GrupoMuscularForm = ({ navigation }) => {
+const GrupoMuscularForm = (props) => {
   const { Title, Botoes, FormContainer, FormLabel, FormTextInput } =
     ComumStyles;
+  const { navigation } = props;
   const [formData, setFormData] = useState({
     nome: null,
     codigo: null,
@@ -62,6 +64,12 @@ const GrupoMuscularForm = ({ navigation }) => {
       </View>
     </View>
   );
+};
+
+GrupoMuscularForm.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default GrupoMuscularForm;

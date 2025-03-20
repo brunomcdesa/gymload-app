@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   Container: {
+    flex: 1,
     padding: 20,
     backgroundColor: '#f5f5f5',
     borderRadius: 8,
@@ -11,7 +12,6 @@ export default StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 5,
-    flex: 1,
   },
   CargaText: {
     fontSize: 16,

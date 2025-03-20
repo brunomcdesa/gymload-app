@@ -10,9 +10,9 @@ import ComumStyles from '../../../components/Styles/ComumStyles';
 import * as Api from './Api';
 import Carga from './Carga';
 
-const HistoricoCargas = ({ route, navigation }) => {
+const HistoricoCargas = (props) => {
   const { Title, Botoes } = ComumStyles;
-  const { exercicioId, exercicioNome } = route.params;
+  const { exercicioId, exercicioNome } = props.route.params;
   const [historicoCargas, setCargas] = useState([]);
 
   const fetchCargas = useCallback(async () => {
@@ -34,7 +34,7 @@ const HistoricoCargas = ({ route, navigation }) => {
   );
 
   const redirectToCargaForm = () => {
-    navigation.navigate('CargaForm', { exercicioId, exercicioNome });
+    props.navigation.navigate('CargaForm', { exercicioId, exercicioNome });
   };
 
   return (
@@ -47,7 +47,7 @@ const HistoricoCargas = ({ route, navigation }) => {
       />
 
       <View style={Botoes}>
-        <BackButton navigation={navigation} />
+        <BackButton navigation={props.navigation} />
         <AddButton onPress={redirectToCargaForm} />
       </View>
     </View>

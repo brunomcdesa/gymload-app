@@ -8,7 +8,7 @@ import ComumStyles from '../../components/Styles/ComumStyles';
 import * as Api from './Api';
 import GrupoMuscular from './GrupoMuscular';
 
-const ListGruposMusculares = (props) => {
+const ListGruposMusculares = () => {
   const { Title, ListContainer } = ComumStyles;
   const [gruposMusculares, setGruposMusculares] = useState([]);
   const navigation = useNavigation();

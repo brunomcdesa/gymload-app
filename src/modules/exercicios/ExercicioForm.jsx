@@ -5,6 +5,7 @@ import BackButton from '../../components/Button/BackButton';
 import SaveButton from '../../components/Button/SaveButton';
 import ComumStyles from '../../components/Styles/ComumStyles';
 
+import PropTypes from 'prop-types';
 import * as GrupoMuscularApi from '../gruposMusculares/Api';
 import * as Api from './Api';
 
@@ -22,7 +23,7 @@ const TIPO_EXERCICIO = [
 
 const TIPO_PEGADA = ['PRONADA', 'SUPINADA', 'NEUTRA', 'CORDA'];
 
-const ExercicioForm = ({ navigation }) => {
+const ExercicioForm = (props) => {
   const {
     Title,
     Botoes,
@@ -31,6 +32,7 @@ const ExercicioForm = ({ navigation }) => {
     FormTextInput,
     FormSelectInput,
   } = ComumStyles;
+  const { navigation } = props;
   const [formData, setFormData] = useState({
     nome: '',
     descricao: '',
@@ -153,6 +155,12 @@ const ExercicioForm = ({ navigation }) => {
       </View>
     </View>
   );
+};
+
+ExercicioForm.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default ExercicioForm;

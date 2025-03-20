@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
 import style from './style/style';
 
-export default (props) => {
+const Carga = (props) => {
   const { carga, tipoExercicio, grupoMuscularNome, qtdRepeticoes } = props;
   const { Container, CargaText } = style;
 
@@ -18,3 +19,12 @@ export default (props) => {
     </View>
   );
 };
+
+Carga.propTypes = {
+  carga: PropTypes.string.isRequired,
+  tipoExercicio: PropTypes.string.isRequired,
+  grupoMuscularNome: PropTypes.string.isRequired,
+  qtdRepeticoes: PropTypes.number.isRequired,
+};
+
+export default Carga;
