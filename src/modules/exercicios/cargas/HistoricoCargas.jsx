@@ -3,6 +3,7 @@ import { FlatList, Text, View } from 'react-native';
 import style from './style/style';
 
 import { useFocusEffect } from '@react-navigation/native';
+import PropTypes from 'prop-types';
 import AddButton from '../../../components/Button/AddButton';
 import BackButton from '../../../components/Button/BackButton';
 import ComumStyles from '../../../components/Styles/ComumStyles';
@@ -14,7 +15,7 @@ const HistoricoCargas = ({ route, navigation }) => {
   const { exercicioId, exercicioNome } = route.params;
   const [historicoCargas, setCargas] = useState([]);
 
-  const fetchCargas = async () => {
+  const fetchCargas = useCallback(async () => {
     try {
       const { data } = await Api.fetchHistoricoCargas({
         exercicioId: exercicioId,
@@ -24,12 +25,12 @@ const HistoricoCargas = ({ route, navigation }) => {
       console.error('Erro ao buscar histórico de cargas:', error);
       return [];
     }
-  };
+  }, [exercicioId]);
 
   useFocusEffect(
     useCallback(() => {
       fetchCargas();
-    }, []),
+    }, [fetchCargas]),
   );
 
   const redirectToCargaForm = () => {
@@ -51,6 +52,18 @@ const HistoricoCargas = ({ route, navigation }) => {
       </View>
     </View>
   );
+};
+
+HistoricoCargas.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      exercicioId: PropTypes.number.isRequired,
+      exercicioNome: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default HistoricoCargas;

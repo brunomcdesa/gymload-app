@@ -1,5 +1,6 @@
 module.exports = {
   extends: [
+    '@react-native',
     'eslint:recommended',
     'plugin:import/recommended',
     'plugin:react/recommended',
@@ -11,5 +12,21 @@ module.exports = {
     quotes: ['error', 'single'],
     'object-curly-spacing': ['error', 'always'],
     'prettier/prettier': 'error',
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+      },
+    ],
+    'import/namespace': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
   },
 };
