@@ -1,19 +1,14 @@
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import Header from './components/Header/Header';
-import Navegacao from './routes/Navegacao';
+import { AuthProvider } from './context/AuthProvider';
+import MainNavigator from './routes/MainNavigator';
 
 const App = () => (
-  <SafeAreaView style={style.App}>
-    <Header />
-    <Navegacao />
-  </SafeAreaView>
+  <AuthProvider>
+    <NavigationContainer>
+      <MainNavigator />
+    </NavigationContainer>
+  </AuthProvider>
 );
-
-const style = StyleSheet.create({
-  App: {
-    flex: 1,
-  },
-});
 
 export default App;

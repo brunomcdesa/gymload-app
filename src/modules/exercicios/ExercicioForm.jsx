@@ -7,6 +7,7 @@ import ComumStyles from '../../components/Styles/ComumStyles';
 
 import PropTypes from 'prop-types';
 import * as GrupoMuscularApi from '../gruposMusculares/Api';
+import { handleChangeState } from '../utils/stateUtils';
 import * as Api from './Api';
 
 const TIPO_EXERCICIO = [
@@ -43,7 +44,7 @@ const ExercicioForm = (props) => {
   const [gruposMuscularesSelect, setGruposMuscularesSelect] = useState([]);
 
   const handleChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
+    handleChangeState(setFormData, formData, field, value);
   };
 
   const handleSubmit = async () => {
