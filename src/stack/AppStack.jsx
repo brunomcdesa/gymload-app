@@ -1,11 +1,9 @@
 import React from 'react';
-import Header from '../components/Header/Header';
-import Navegacao from '../routes/Navegacao';
+import DrawerNavigator from '../components/Header/drawer/DrawerNavigator';
 
 const AppStack = () => (
   <>
-    <Header />
-    <Navegacao />
+    <DrawerNavigator />
   </>
 );
 

@@ -1,5 +1,5 @@
-import { axiosPublic } from '../../config/axios';
-import { pMinDelay } from '../utils/promisse';
+import { axiosPublic } from '../../../config/axios';
+import { pMinDelay } from '../../utils/promisse';
 
 const authUrl = '/auth';
 

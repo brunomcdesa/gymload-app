@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Alert, Button, Text, TextInput, View } from 'react-native';
-import ComumStyles from '../../components/Styles/ComumStyles';
-import { AuthContext } from '../../context/AuthProvider';
-import { handleChangeState } from '../utils/stateUtils';
+import ComumStyles from '../../../components/Styles/ComumStyles';
+import { AuthContext } from '../../../context/AuthProvider';
+import { handleChangeState } from '../../utils/stateUtils';
 import * as Api from './Api';
 import style from './style/style';
 

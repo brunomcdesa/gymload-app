@@ -1,11 +1,23 @@
 import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
 import style from './style/style';
 
-const Header = () => (
-  <SafeAreaView style={style.Header}>
-    <Text style={style.HeaderText}>GymLoad</Text>
-  </SafeAreaView>
-);
+const Header = (props) => {
+  const { Header, HeaderContent, MenuButton, MenuIcon, HeaderText } = style;
+  const navigation = props.navigation;
+
+  return (
+    <SafeAreaView style={Header}>
+      <TouchableOpacity
+        onPress={() => navigation?.openDrawer()}
+        style={MenuButton}
+      >
+        <Text style={MenuIcon}>☰</Text>
+      </TouchableOpacity>
+
+      <Text style={HeaderText}>GymLoad</Text>
+    </SafeAreaView>
+  );
+};
 
 export default Header;
