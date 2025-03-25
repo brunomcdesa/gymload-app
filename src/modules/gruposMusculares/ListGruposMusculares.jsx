@@ -5,21 +5,26 @@ import { FlatList, Text, View } from 'react-native';
 import AddButton from '../../components/Button/AddButton';
 import ComumStyles from '../../components/Styles/ComumStyles';
 
+import LoadingIndicator from '../../components/Loading/LoadingIndicator';
 import * as Api from './Api';
 import GrupoMuscular from './GrupoMuscular';
 
 const ListGruposMusculares = () => {
   const { Title, ListContainer } = ComumStyles;
   const [gruposMusculares, setGruposMusculares] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   const fetchGruposMusculares = async () => {
     try {
+      setLoading(true);
       const { data } = await Api.fetchGruposMusculares();
       setGruposMusculares(data);
     } catch (error) {
       console.error('Erro ao buscar grupos musculares:', error);
       return [];
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,13 +42,17 @@ const ListGruposMusculares = () => {
     <View style={ListContainer}>
       <Text style={Title}>Grupos Musculares</Text>
 
-      <FlatList
-        data={gruposMusculares}
-        keyExtractor={(grupoMuscular) => grupoMuscular.id}
-        renderItem={({ item: grupoMuscular }) => (
-          <GrupoMuscular nome={grupoMuscular.nome} />
-        )}
-      />
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <FlatList
+          data={gruposMusculares}
+          keyExtractor={(grupoMuscular) => grupoMuscular.id}
+          renderItem={({ item: grupoMuscular }) => (
+            <GrupoMuscular nome={grupoMuscular.nome} />
+          )}
+        />
+      )}
 
       <View>
         <AddButton onPress={redirectGrupoMuscularForm} />

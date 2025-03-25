@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Alert, Button, Text, TextInput, View } from 'react-native';
+import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import ComumStyles from '../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../context/AuthProvider';
 import { handleChangeState } from '../../utils/stateUtils';
@@ -13,6 +14,7 @@ const Login = () => {
     username: '',
     password: '',
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (field, value) => {
     handleChangeState(setFormData, formData, field, value);
@@ -20,12 +22,15 @@ const Login = () => {
 
   const handleRealizarLogin = async () => {
     try {
+      setLoading(true);
       const { data } = await Api.realizarLogin(formData);
       login(data.token);
       Alert.alert('Sucesso!', 'Login realizado com sucesso!');
     } catch (error) {
       Alert.alert('Falha!', 'Username ou senha incorretos.');
       console.log('Erro ao realizar login.', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,7 +57,11 @@ const Login = () => {
         }}
       />
 
-      <Button title="Realizar Login" onPress={handleRealizarLogin} />
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <Button title="Realizar Login" onPress={handleRealizarLogin} />
+      )}
     </View>
   );
 };

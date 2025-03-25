@@ -6,6 +6,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import AddButton from '../../../components/Button/AddButton';
 import BackButton from '../../../components/Button/BackButton';
+import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import ComumStyles from '../../../components/Styles/ComumStyles';
 import * as Api from './Api';
 import Carga from './Carga';
@@ -14,9 +15,11 @@ const HistoricoCargas = (props) => {
   const { Title, Botoes } = ComumStyles;
   const { exercicioId, exercicioNome } = props.route.params;
   const [historicoCargas, setCargas] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchCargas = useCallback(async () => {
     try {
+      setLoading(true);
       const { data } = await Api.fetchHistoricoCargas({
         exercicioId: exercicioId,
       });
@@ -24,6 +27,8 @@ const HistoricoCargas = (props) => {
     } catch (error) {
       console.error('Erro ao buscar histórico de cargas:', error);
       return [];
+    } finally {
+      setLoading(false);
     }
   }, [exercicioId]);
 
@@ -40,11 +45,16 @@ const HistoricoCargas = (props) => {
   return (
     <View style={style.Container}>
       <Text style={Title}>Historico de Cargas - {exercicioNome}</Text>
-      <FlatList
-        data={historicoCargas}
-        keyExtractor={(historico) => historico.id}
-        renderItem={({ item: carga }) => <Carga {...carga} />}
-      />
+
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <FlatList
+          data={historicoCargas}
+          keyExtractor={(historico) => historico.id}
+          renderItem={({ item: carga }) => <Carga {...carga} />}
+        />
+      )}
 
       <View style={Botoes}>
         <BackButton navigation={props.navigation} />
