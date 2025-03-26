@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Alert, Text, TextInput, View } from 'react-native';
 import BackButton from '../../components/Button/BackButton';
 import SaveButton from '../../components/Button/SaveButton';
-import ComumStyles from '../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../components/Styles/ComumStyles';
 import * as Api from './Api';
 
 const GrupoMuscularForm = (props) => {
@@ -14,6 +14,7 @@ const GrupoMuscularForm = (props) => {
     nome: null,
     codigo: null,
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
@@ -26,6 +27,7 @@ const GrupoMuscularForm = (props) => {
     }
 
     try {
+      setLoading(true);
       await Api.saveGrupoMuscular(formData);
       Alert.alert('Sucesso', 'Grupo Muscular salvo com sucesso!', [
         {
@@ -35,6 +37,8 @@ const GrupoMuscularForm = (props) => {
       ]);
     } catch (error) {
       console.log('Erro ao salvar novo histórico de carga', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,7 +64,7 @@ const GrupoMuscularForm = (props) => {
 
       <View style={Botoes}>
         <BackButton navigation={navigation} />
-        <SaveButton onPress={handleSubmit} />
+        <SaveButton onPress={handleSubmit} loading={loading} />
       </View>
     </View>
   );

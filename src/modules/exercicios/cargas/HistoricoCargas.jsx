@@ -1,18 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import style from './style/style';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import AddButton from '../../../components/Button/AddButton';
 import BackButton from '../../../components/Button/BackButton';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import ComumStyles from '../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as Api from './Api';
 import Carga from './Carga';
 
 const HistoricoCargas = (props) => {
-  const { Title, Botoes } = ComumStyles;
+  const { Container, Title, Botoes } = ComumStyles;
   const { exercicioId, exercicioNome } = props.route.params;
   const [historicoCargas, setCargas] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -43,7 +42,7 @@ const HistoricoCargas = (props) => {
   };
 
   return (
-    <View style={style.Container}>
+    <View style={Container}>
       <Text style={Title}>Historico de Cargas - {exercicioNome}</Text>
 
       {loading ? (

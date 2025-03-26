@@ -5,7 +5,7 @@ import { Alert, Text, TextInput, View } from 'react-native';
 import PropTypes from 'prop-types';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
-import ComumStyles from '../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as Api from './Api';
 
 const UNIDADE_PESO = ['KG', 'LBS'];
@@ -27,6 +27,7 @@ const CargaForm = (props) => {
     unidadePeso: UNIDADE_PESO[0],
     qtdRepeticoes: null,
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
@@ -39,6 +40,7 @@ const CargaForm = (props) => {
     }
 
     try {
+      setLoading(true);
       await Api.saveNewHistoricoCarga(formData);
       Alert.alert('Sucesso', 'Carga salva com sucesso!', [
         {
@@ -48,6 +50,8 @@ const CargaForm = (props) => {
       ]);
     } catch (error) {
       console.log('Erro ao salvar novo histórico de carga', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,7 +94,7 @@ const CargaForm = (props) => {
 
       <View style={Botoes}>
         <BackButton navigation={navigation} />
-        <SaveButton onPress={handleSubmit} />
+        <SaveButton onPress={handleSubmit} loading={loading} />
       </View>
     </View>
   );

@@ -3,18 +3,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ComumStyles from '../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../components/Styles/ComumStyles';
 import style from './style/style';
 
 const Exercicio = (props) => {
   const { id, nome, descricao, grupoMuscular } = props;
   const navigation = useNavigation();
-  const {
-    ExercicioContainer,
-    ExercicioDescricaoText,
-    BotaoHistorico,
-    BotaoTexto,
-  } = style;
+  const { ExercicioDescricaoText, BotaoHistorico, BotaoTexto } = style;
 
   const { ElementContainer, SubTitle, SubSubTitle } = ComumStyles;
 
@@ -27,16 +22,14 @@ const Exercicio = (props) => {
 
   return (
     <View style={ElementContainer}>
-      <View style={ExercicioContainer}>
-        <Text style={SubTitle}>{nome}</Text>
-        <Text style={SubSubTitle}>{grupoMuscular}</Text>
-        <Text style={ExercicioDescricaoText}>{descricao}</Text>
+      <Text style={SubTitle}>{nome}</Text>
+      <Text style={SubSubTitle}>{grupoMuscular}</Text>
+      <Text style={ExercicioDescricaoText}>{descricao}</Text>
 
-        <TouchableOpacity style={BotaoHistorico} onPress={redirectToHistorico}>
-          <MaterialIcons name="history" size={24} color="#fff" />
-          <Text style={BotaoTexto}>Ver Histórico</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={BotaoHistorico} onPress={redirectToHistorico}>
+        <MaterialIcons name="history" size={24} color="#fff" />
+        <Text style={BotaoTexto}>Ver Histórico</Text>
+      </TouchableOpacity>
     </View>
   );
 };

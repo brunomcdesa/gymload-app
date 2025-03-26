@@ -1,13 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, View } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import style from './style/style';
 
 const AddButton = (props) => {
+  const { AddButtonStyle, TextStyle } = style;
   return (
-    <View style={style.AddButton}>
-      <Button title="Adicionar" onPress={props.onPress} />
-    </View>
+    <TouchableOpacity
+      style={AddButtonStyle}
+      onPress={props.onPress}
+      activeOpacity={0.7}
+    >
+      <Text style={TextStyle}>Adicionar</Text>
+    </TouchableOpacity>
   );
 };
 

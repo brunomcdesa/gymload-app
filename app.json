@@ -32,6 +32,12 @@
     },
     "plugins": [
       "expo-secure-store"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "4cc1a22d-3e62-4dc1-becb-c6a0cb559beb"
+      }
+    },
+    "owner": "brunomcdesa"
   }
 }

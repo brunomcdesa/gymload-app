@@ -2,6 +2,7 @@ import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { colors } from '../components/Styles/ComumStyles';
 import ExerciciosStack from '../modules/exercicios/stack/ExerciciosStackNavigator';
 import GruposMuscularesStack from '../modules/gruposMusculares/stack/GruposMuscularesStackNavigator';
 import Home from '../modules/home/Home';
@@ -39,9 +40,16 @@ const TabNavigator = () => {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => renderTabIcon(route.name, color, size),
-        tabBarActiveTintColor: 'blue',
-        tabBarInactiveTintColor: 'gray',
+        tabBarIcon: ({ color, size }) =>
+          renderTabIcon(route.name, color, size * 1.2),
+        tabBarActiveTintColor: colors.secondary,
+        tabBarInactiveTintColor: colors.primary,
+        tabBarStyle: {
+          backgroundColor: colors.background,
+          height: 60,
+          borderTopWidth: 0,
+          elevation: 10,
+        },
         headerShown: false,
       })}
     >

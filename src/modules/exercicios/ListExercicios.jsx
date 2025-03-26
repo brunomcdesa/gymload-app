@@ -3,12 +3,12 @@ import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import AddButton from '../../components/Button/AddButton';
 import LoadingIndicator from '../../components/Loading/LoadingIndicator';
-import ComumStyles from '../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../components/Styles/ComumStyles';
 import * as Api from './Api';
 import Exercicio from './Exercicio';
 
 const ListExercicios = () => {
-  const { Title, ListContainer } = ComumStyles;
+  const { Container, Title } = ComumStyles;
   const [exercicios, setExercicios] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -37,8 +37,9 @@ const ListExercicios = () => {
   };
 
   return (
-    <View style={ListContainer}>
+    <View style={Container}>
       <Text style={Title}>Lista de Exercicios</Text>
+
       {loading ? (
         <LoadingIndicator />
       ) : (

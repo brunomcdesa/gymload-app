@@ -2,10 +2,12 @@ import React, { useContext } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { AuthContext } from '../../../context/AuthProvider';
 import UsuarioInfo from '../../../modules/usuario/usuarioInfo/UsuarioInfo';
+import { ComumStyles } from '../../Styles/ComumStyles';
 import style from './styles/style';
 
 const SideBar = (props) => {
-  const { Container, Button, ButtonText, Content, Footer } = style;
+  const { Button, ButtonText, Content, Footer } = style;
+  const { Container } = ComumStyles;
   const { logout } = useContext(AuthContext);
   const userName = 'Usuário';
 

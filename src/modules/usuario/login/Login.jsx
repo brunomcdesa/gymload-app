@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { Alert, Button, Text, TextInput, View } from 'react-native';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import ComumStyles from '../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../context/AuthProvider';
 import { handleChangeState } from '../../utils/stateUtils';
 import * as Api from './Api';
 import style from './style/style';
 
 const Login = () => {
-  const { Title, FormTextInput } = ComumStyles;
+  const { Title, FormTextInput, FormLabel } = ComumStyles;
   const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     username: '',
@@ -37,7 +37,7 @@ const Login = () => {
   return (
     <View style={style.Container}>
       <Text style={Title}>Login:</Text>
-      <Text>Username:</Text>
+      <Text style={FormLabel}>Username:</Text>
       <TextInput
         style={FormTextInput}
         placeholder="Digite o username"
@@ -47,7 +47,7 @@ const Login = () => {
         }
       />
 
-      <Text>senha:</Text>
+      <Text style={FormLabel}>senha:</Text>
       <TextInput
         style={FormTextInput}
         placeholder="Digite sua senha"

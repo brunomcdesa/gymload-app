@@ -3,11 +3,11 @@ import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
 import style from './style/style';
 
 const Header = (props) => {
-  const { Header, HeaderContent, MenuButton, MenuIcon, HeaderText } = style;
+  const { HeaderStyle, MenuButton, MenuIcon, HeaderText } = style;
   const navigation = props.navigation;
 
   return (
-    <SafeAreaView style={Header}>
+    <SafeAreaView style={HeaderStyle}>
       <TouchableOpacity
         onPress={() => navigation?.openDrawer()}
         style={MenuButton}

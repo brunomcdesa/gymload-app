@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  ExercicioContainer: {
-    flexDirection: 'column',
-  },
   ExercicioDescricaoText: {
     fontSize: 15,
-    color: '#333',
+    color: '#444',
+    marginTop: 8,
+    textAlign: 'center',
   },
   BotaoHistorico: {
     flexDirection: 'row',
@@ -16,11 +15,12 @@ export default StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 5,
     marginTop: 10,
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
   },
   BotaoTexto: {
     color: '#fff',
     marginLeft: 8,
     fontWeight: '500',
+    fontSize: 14,
   },
 });

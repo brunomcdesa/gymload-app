@@ -1,25 +1,41 @@
 import { StyleSheet } from 'react-native';
 
-export default StyleSheet.create({
+const colors = {
+  primary: '#333',
+  secondary: '#ff5555',
+  background: '#222',
+  danger: '#dc3545',
+  success: '#28a745',
+  textLight: '#FFF',
+  textDark: '#333',
+  buttonText: '#fff',
+};
+
+const ComumStyles = StyleSheet.create({
+  Container: {
+    flex: 1,
+    backgroundColor: colors.background,
+    padding: 20,
+  },
   Title: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 15,
+    color: colors.textLight,
     textAlign: 'center',
+    marginBottom: 5,
   },
   SubTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#444',
-    marginBottom: 8,
+    color: colors.textDark,
+    marginBottom: 5,
     textAlign: 'center',
   },
   SubSubTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#666',
-    marginBottom: 10,
+    color: '#444',
+    marginBottom: 8,
     textAlign: 'center',
   },
   Botoes: {
@@ -30,11 +46,13 @@ export default StyleSheet.create({
   FormContainer: {
     padding: 20,
     flex: 1,
+    backgroundColor: colors.background,
   },
   FormLabel: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
+    color: '#fff',
   },
   FormTextInput: {
     height: 40,
@@ -43,6 +61,7 @@ export default StyleSheet.create({
     borderRadius: 5,
     marginBottom: 15,
     paddingHorizontal: 10,
+    backgroundColor: '#fff',
   },
   FormSelectInput: {
     height: 50,
@@ -51,7 +70,7 @@ export default StyleSheet.create({
     backgroundColor: '#f2f2f2',
     marginBottom: 15,
   },
-  ListContainer: {
+  ElementContainer: {
     flex: 1,
     padding: 20,
     backgroundColor: '#f5f5f5',
@@ -63,17 +82,6 @@ export default StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
   },
-  ElementContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin: 10,
-    padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-  },
 });
+
+export { colors, ComumStyles };

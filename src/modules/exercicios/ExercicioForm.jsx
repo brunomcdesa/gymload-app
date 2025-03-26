@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Text, TextInput, View } from 'react-native';
 import BackButton from '../../components/Button/BackButton';
 import SaveButton from '../../components/Button/SaveButton';
-import ComumStyles from '../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../components/Styles/ComumStyles';
 
 import PropTypes from 'prop-types';
 import * as GrupoMuscularApi from '../gruposMusculares/Api';
@@ -42,6 +42,7 @@ const ExercicioForm = (props) => {
     tipoPegada: TIPO_PEGADA[0],
   });
   const [gruposMuscularesSelect, setGruposMuscularesSelect] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (field, value) => {
     handleChangeState(setFormData, formData, field, value);
@@ -60,6 +61,7 @@ const ExercicioForm = (props) => {
     }
 
     try {
+      setLoading(true);
       await Api.saveExercicio(formData);
       Alert.alert('Sucesso', 'Exercicio salvo com sucesso!', [
         {
@@ -69,6 +71,8 @@ const ExercicioForm = (props) => {
       ]);
     } catch (error) {
       console.log('Erro ao salvar novo histórico de carga', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,7 +91,7 @@ const ExercicioForm = (props) => {
 
   return (
     <View style={FormContainer}>
-      <Text style={Title}>Adicionar Grupo Muscular</Text>
+      <Text style={Title}>Adicionar Exercício</Text>
 
       <Text style={FormLabel}>Nome:</Text>
       <TextInput
@@ -152,7 +156,7 @@ const ExercicioForm = (props) => {
 
       <View style={Botoes}>
         <BackButton navigation={navigation} />
-        <SaveButton onPress={handleSubmit} />
+        <SaveButton onPress={handleSubmit} loading={loading} />
       </View>
     </View>
   );

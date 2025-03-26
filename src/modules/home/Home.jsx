@@ -1,12 +1,15 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import ComumStyles from '../../components/Styles/ComumStyles';
-import style from './style/style';
+import { ComumStyles } from '../../components/Styles/ComumStyles';
 
-const Home = () => (
-  <View style={style.Container}>
-    <Text style={ComumStyles.Title}>Seja Bem Vindo!</Text>
-  </View>
-);
+const Home = () => {
+  const { Container, Title } = ComumStyles;
+
+  return (
+    <View style={Container}>
+      <Text style={Title}>Seja Bem Vindo!</Text>
+    </View>
+  );
+};
 
 export default Home;

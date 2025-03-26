@@ -1,17 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, View } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
+import style from './style/style';
 
 const BackButton = (props) => {
+  const { BackButtonStyle, TextStyle } = style;
   return (
-    <View>
-      <Button
-        title="Voltar"
-        onPress={() => {
-          props.navigation.goBack();
-        }}
-      />
-    </View>
+    <TouchableOpacity
+      style={BackButtonStyle}
+      onPress={props.navigation.goBack}
+      activeOpacity={0.7}
+    >
+      <Text style={TextStyle}>Voltar</Text>
+    </TouchableOpacity>
   );
 };
 

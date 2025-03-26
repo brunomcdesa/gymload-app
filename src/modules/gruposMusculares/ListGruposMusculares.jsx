@@ -3,14 +3,14 @@ import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 
 import AddButton from '../../components/Button/AddButton';
-import ComumStyles from '../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../components/Styles/ComumStyles';
 
 import LoadingIndicator from '../../components/Loading/LoadingIndicator';
 import * as Api from './Api';
 import GrupoMuscular from './GrupoMuscular';
 
 const ListGruposMusculares = () => {
-  const { Title, ListContainer } = ComumStyles;
+  const { Title, Container } = ComumStyles;
   const [gruposMusculares, setGruposMusculares] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -39,7 +39,7 @@ const ListGruposMusculares = () => {
   };
 
   return (
-    <View style={ListContainer}>
+    <View style={Container}>
       <Text style={Title}>Grupos Musculares</Text>
 
       {loading ? (
