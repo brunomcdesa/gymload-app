@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { Alert, Button, Text, TextInput, View } from 'react-native';
+import { Alert, Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../context/AuthProvider';
 import { handleChangeState } from '../../utils/stateUtils';
 import * as Api from './Api';
@@ -62,6 +62,27 @@ const Login = () => {
       ) : (
         <Button title="Realizar Login" onPress={handleRealizarLogin} />
       )}
+
+      <View style={style.separatorContainer}>
+        <View style={style.line} />
+        <Text style={style.separatorText}>OU</Text>
+        <View style={style.line} />
+      </View>
+
+      <TouchableOpacity
+        style={{
+          backgroundColor: colors.secondary,
+          padding: 10,
+          borderRadius: 5,
+          alignItems: 'center',
+          marginBottom: 20,
+        }}
+        onPress={() => navigation.navigate('Cadastro')}
+      >
+        <Text style={{ color: colors.buttonText, fontWeight: 'bold' }}>Realizar Cadastro</Text>
+      </TouchableOpacity>
+
+     
     </View>
   );
 };

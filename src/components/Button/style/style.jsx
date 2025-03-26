@@ -25,6 +25,14 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  CadastroButtonStyle: {
+    backgroundColor: '#ff5555',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 5,
+    alignSelf: 'center',
+    width: '80%',
+  },
   Disabled: {
     backgroundColor: '#a0a0a0',
   },
