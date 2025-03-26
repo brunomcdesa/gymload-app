@@ -15,6 +15,14 @@ export default StyleSheet.create({
     alignSelf: 'center',
     width: '80%',
   },
+  ButtonCadastroAdmin: {
+    backgroundColor: '#A1F6',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 5,
+    alignSelf: 'center',
+    width: '80%',
+  },
   ButtonText: {
     color: '#fff',
     textAlign: 'center',

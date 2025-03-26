@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
 import style from './style/style';
@@ -18,6 +19,12 @@ const Header = (props) => {
       <Text style={HeaderText}>GymLoad</Text>
     </SafeAreaView>
   );
+};
+
+Header.propTypes = {
+  navigation: PropTypes.shape({
+    openDrawer: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default Header;

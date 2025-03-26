@@ -1,5 +1,6 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
+import UsuarioCadastroForm from '../../../modules/usuario/cadastro/UsuarioCadastroForm';
 import Navegacao from '../../../routes/Navegacao';
 import Header from '../Header';
 import SideBar from '../sidebar/SideBar';
@@ -16,6 +17,13 @@ const DrawerNavigator = () => {
       }}
     >
       <Drawer.Screen name="App" component={Navegacao} />
+      <Drawer.Screen
+        name="UsuarioCadastroForm"
+        component={UsuarioCadastroForm}
+        options={{
+          headerTitle: 'Cadastro de Usuário Admin',
+        }}
+      />
     </Drawer.Navigator>
   );
 };
