@@ -10,11 +10,12 @@ const UsuarioCadastroForm = (props) => {
   const { Title, Botoes, FormContainer, FormLabel, FormTextInput } =
     ComumStyles;
   const { navigation, route } = props;
+  const { isCadastroAdmin } = route.params;
   const [formData, setFormData] = useState({
     nome: null,
     username: null,
     password: null,
-    cadastroAdmin: route.params.isCadastroAdmin,
+    cadastroAdmin: isCadastroAdmin,
   });
   const [loading, setLoading] = useState(false);
 
@@ -30,15 +31,20 @@ const UsuarioCadastroForm = (props) => {
 
     try {
       setLoading(true);
-      await Api.cadastrarUsuarioAdmin(formData);
-      Alert.alert('Sucesso', 'Grupo Muscular salvo com sucesso!', [
+      if (isCadastroAdmin) {
+        await Api.cadastrarUsuarioAdmin(formData);
+      } else {
+        await Api.cadastrarUsuario(formData);
+      }
+
+      Alert.alert('Sucesso', 'Usuário salvo com sucesso!', [
         {
           text: 'OK',
           onPress: () => navigation.goBack(),
         },
       ]);
     } catch (error) {
-      console.log('Erro ao salvar novo histórico de carga', error);
+      console.log('Erro ao cadastrar usuário', error);
     } finally {
       setLoading(false);
     }
@@ -46,7 +52,9 @@ const UsuarioCadastroForm = (props) => {
 
   return (
     <View style={FormContainer}>
-      <Text style={Title}>Cadastrar Usuário Admin</Text>
+      <Text style={Title}>
+        Cadastrar Usuário {isCadastroAdmin ? 'Admin' : ''}
+      </Text>
 
       <Text style={FormLabel}>Nome:</Text>
       <TextInput

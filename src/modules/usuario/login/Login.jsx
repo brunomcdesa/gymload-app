@@ -1,13 +1,15 @@
+import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
-import { Alert, Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, Text, TextInput, View } from 'react-native';
+import CadastroButton from '../../../components/Button/CadastroButton';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../context/AuthProvider';
 import { handleChangeState } from '../../utils/stateUtils';
 import * as Api from './Api';
 import style from './style/style';
 
-const Login = () => {
+const Login = (props) => {
   const { Title, FormTextInput, FormLabel } = ComumStyles;
   const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
@@ -32,6 +34,10 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRedirectCadastroUser = () => {
+    props.navigation.navigate('CadastroUsuario', { isCadastroAdmin: false });
   };
 
   return (
@@ -69,22 +75,18 @@ const Login = () => {
         <View style={style.line} />
       </View>
 
-      <TouchableOpacity
-        style={{
-          backgroundColor: colors.secondary,
-          padding: 10,
-          borderRadius: 5,
-          alignItems: 'center',
-          marginBottom: 20,
-        }}
-        onPress={() => navigation.navigate('Cadastro')}
-      >
-        <Text style={{ color: colors.buttonText, fontWeight: 'bold' }}>Realizar Cadastro</Text>
-      </TouchableOpacity>
-
-     
+      <CadastroButton
+        text={'Cadastrar-se'}
+        onPress={handleRedirectCadastroUser}
+      />
     </View>
   );
+};
+
+Login.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default Login;
