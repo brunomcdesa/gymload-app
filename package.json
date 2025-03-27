@@ -1,6 +1,6 @@
 {
   "name": "GymloadApp",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "android": "(adb devices | grep 'device$' || emulator -avd Pixel_3_API_35 &) && npx react-native run-android",
