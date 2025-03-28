@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
-import { Alert, Button, Text, TextInput, View } from 'react-native';
+import { Button, Text, TextInput, View } from 'react-native';
 import CadastroButton from '../../../components/Button/CadastroButton';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../context/AuthProvider';
 import { handleChangeState } from '../../utils/stateUtils';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from './Api';
 import style from './style/style';
 
@@ -27,9 +28,9 @@ const Login = (props) => {
       setLoading(true);
       const { data } = await Api.realizarLogin(formData);
       login(data.token);
-      Alert.alert('Sucesso!', 'Login realizado com sucesso!');
+      throwToastSuccess('Login realizado com sucesso!');
     } catch (error) {
-      Alert.alert('Falha!', 'Username ou senha incorretos.');
+      throwToastError('Erro ao realizar login');
       console.log('Erro ao realizar login.', error);
     } finally {
       setLoading(false);

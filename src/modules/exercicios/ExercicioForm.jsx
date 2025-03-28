@@ -1,6 +1,6 @@
 import { Picker } from '@react-native-picker/picker';
 import React, { useEffect, useState } from 'react';
-import { Alert, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import BackButton from '../../components/Button/BackButton';
 import SaveButton from '../../components/Button/SaveButton';
 import { ComumStyles } from '../../components/Styles/ComumStyles';
@@ -8,6 +8,7 @@ import { ComumStyles } from '../../components/Styles/ComumStyles';
 import PropTypes from 'prop-types';
 import * as GrupoMuscularApi from '../gruposMusculares/Api';
 import { handleChangeState } from '../utils/stateUtils';
+import { throwToastError, throwToastSuccess } from '../utils/toastUtils';
 import * as Api from './Api';
 
 const TIPO_EXERCICIO = [
@@ -56,21 +57,19 @@ const ExercicioForm = (props) => {
       !formData.tipoExercicio ||
       !formData.tipoPegada
     ) {
-      Alert.alert('Erro', 'Todos os campos são obrigatórios!');
+      throwToastError('Todos os campos são obrigatórios!');
       return;
     }
 
     try {
       setLoading(true);
       await Api.saveExercicio(formData);
-      Alert.alert('Sucesso', 'Exercicio salvo com sucesso!', [
-        {
-          text: 'OK',
-          onPress: () => navigation.goBack(),
-        },
-      ]);
+
+      throwToastSuccess('Exercicio salvo com sucesso!');
+      navigation.goBack();
     } catch (error) {
-      console.log('Erro ao salvar novo histórico de carga', error);
+      throwToastError('Erro ao salvar novo Exercício.');
+      console.log('Erro ao salvar novo Exercício.', error);
     } finally {
       setLoading(false);
     }

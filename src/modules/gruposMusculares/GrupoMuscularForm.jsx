@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Alert, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import BackButton from '../../components/Button/BackButton';
 import SaveButton from '../../components/Button/SaveButton';
 import { ComumStyles } from '../../components/Styles/ComumStyles';
+import { throwToastError, throwToastSuccess } from '../utils/toastUtils';
 import * as Api from './Api';
 
 const GrupoMuscularForm = (props) => {
@@ -22,21 +23,19 @@ const GrupoMuscularForm = (props) => {
 
   const handleSubmit = async () => {
     if (!formData.nome || !formData.codigo) {
-      Alert.alert('Erro', 'Todos os campos são obrigatórios!');
+      throwToastError('Todos os campos são obrigatórios!');
       return;
     }
 
     try {
       setLoading(true);
       await Api.saveGrupoMuscular(formData);
-      Alert.alert('Sucesso', 'Grupo Muscular salvo com sucesso!', [
-        {
-          text: 'OK',
-          onPress: () => navigation.goBack(),
-        },
-      ]);
+
+      throwToastSuccess('Grupo Muscular salvo com sucesso!');
+      navigation.goBack();
     } catch (error) {
-      console.log('Erro ao salvar novo histórico de carga', error);
+      throwToastError('Erro ao salvar grupo muscular.');
+      console.log('Erro ao salvar grupo muscular.', error);
     } finally {
       setLoading(false);
     }

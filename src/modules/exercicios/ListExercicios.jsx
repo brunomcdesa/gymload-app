@@ -4,6 +4,7 @@ import { FlatList, Text, View } from 'react-native';
 import AddButton from '../../components/Button/AddButton';
 import LoadingIndicator from '../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../components/Styles/ComumStyles';
+import { useIsAdmin } from '../utils/userUtils';
 import * as Api from './Api';
 import Exercicio from './Exercicio';
 
@@ -12,6 +13,7 @@ const ListExercicios = () => {
   const [exercicios, setExercicios] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+  const isAdmin = useIsAdmin();
 
   const fetchExercicios = async () => {
     try {
@@ -39,7 +41,6 @@ const ListExercicios = () => {
   return (
     <View style={Container}>
       <Text style={Title}>Lista de Exercicios</Text>
-
       {loading ? (
         <LoadingIndicator />
       ) : (
@@ -56,9 +57,11 @@ const ListExercicios = () => {
           )}
         />
       )}
-      <View>
-        <AddButton onPress={redirectGrupoMuscularForm} />
-      </View>
+      {isAdmin && (
+        <View>
+          <AddButton onPress={redirectGrupoMuscularForm} />
+        </View>
+      )}
     </View>
   );
 };

@@ -6,10 +6,13 @@ import { colors } from '../components/Styles/ComumStyles';
 import ExerciciosStack from '../modules/exercicios/stack/ExerciciosStackNavigator';
 import GruposMuscularesStack from '../modules/gruposMusculares/stack/GruposMuscularesStackNavigator';
 import Home from '../modules/home/Home';
+import { useIsAdmin } from '../modules/utils/userUtils';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+  const isAdmin = useIsAdmin();
+
   const rotasConfig = [
     {
       name: 'Home',
@@ -21,11 +24,15 @@ const TabNavigator = () => {
       component: ExerciciosStack,
       iconName: 'fitness-center',
     },
-    {
-      name: 'Grupos Musculares',
-      component: GruposMuscularesStack,
-      iconName: 'man',
-    },
+    ...(isAdmin
+      ? [
+          {
+            name: 'Grupos Musculares',
+            component: GruposMuscularesStack,
+            iconName: 'man',
+          },
+        ]
+      : []),
   ];
 
   const renderTabIcon = (routeName, color, size) => {

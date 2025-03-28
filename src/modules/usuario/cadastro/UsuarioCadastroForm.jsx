@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Alert, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 
 const UsuarioCadastroForm = (props) => {
@@ -25,7 +26,7 @@ const UsuarioCadastroForm = (props) => {
 
   const handleSubmit = async () => {
     if (!formData.nome || !formData.username || !formData.password) {
-      Alert.alert('Erro', 'Todos os campos são obrigatórios!');
+      throwToastError('Todos os campos são obrigatórios');
       return;
     }
 
@@ -37,13 +38,10 @@ const UsuarioCadastroForm = (props) => {
         await Api.cadastrarUsuario(formData);
       }
 
-      Alert.alert('Sucesso', 'Usuário salvo com sucesso!', [
-        {
-          text: 'OK',
-          onPress: () => navigation.goBack(),
-        },
-      ]);
+      throwToastSuccess('Usuário cadastrado com sucesso!');
+      navigation.goBack();
     } catch (error) {
+      throwToastError('Erro ao cadastrar usuário.');
       console.log('Erro ao cadastrar usuário', error);
     } finally {
       setLoading(false);

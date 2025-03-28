@@ -3,15 +3,16 @@ import React, { useContext } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { AuthContext } from '../../../context/AuthProvider';
 import UsuarioInfo from '../../../modules/usuario/usuarioInfo/UsuarioInfo';
+import { useIsAdmin } from '../../../modules/utils/userUtils';
 import { ComumStyles } from '../../Styles/ComumStyles';
 import style from './styles/style';
 
 const SideBar = (props) => {
   const { Button, ButtonCadastroAdmin, ButtonText, Content, Footer } = style;
   const { Container } = ComumStyles;
-  const { logout } = useContext(AuthContext);
+  const { logout, user } = useContext(AuthContext);
   const { navigation } = props;
-  const userName = 'Usuário';
+  const isAdmin = useIsAdmin();
 
   const handleLogout = async () => {
     await logout();
@@ -29,17 +30,19 @@ const SideBar = (props) => {
   return (
     <View style={Container}>
       <View style={Content}>
-        <UsuarioInfo userName={userName} />
+        <UsuarioInfo usuarioNome={user.nome} />
       </View>
 
-      <View style={Footer}>
-        <TouchableOpacity
-          style={ButtonCadastroAdmin}
-          onPress={redirectCadastrarUsuarioAdmin}
-        >
-          <Text style={ButtonText}>Cadastrar Usuario Admin</Text>
-        </TouchableOpacity>
-      </View>
+      {isAdmin && (
+        <View style={Footer}>
+          <TouchableOpacity
+            style={ButtonCadastroAdmin}
+            onPress={redirectCadastrarUsuarioAdmin}
+          >
+            <Text style={ButtonText}>Cadastrar Usuario Admin</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       <View style={Footer}>
         <TouchableOpacity style={Button} onPress={handleLogout}>

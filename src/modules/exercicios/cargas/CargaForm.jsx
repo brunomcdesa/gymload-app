@@ -1,11 +1,12 @@
 import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
-import { Alert, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 
 import PropTypes from 'prop-types';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from './Api';
 
 const UNIDADE_PESO = ['KG', 'LBS'];
@@ -35,21 +36,19 @@ const CargaForm = (props) => {
 
   const handleSubmit = async () => {
     if (!formData.carga || !formData.unidadePeso || !formData.qtdRepeticoes) {
-      Alert.alert('Erro', 'Todos os campos são obrigatórios!');
+      throwToastError('Todos os campos são obrigatórios!');
       return;
     }
 
     try {
       setLoading(true);
       await Api.saveNewHistoricoCarga(formData);
-      Alert.alert('Sucesso', 'Carga salva com sucesso!', [
-        {
-          text: 'OK',
-          onPress: () => navigation.goBack(),
-        },
-      ]);
+
+      throwToastSuccess('Carga salva com sucesso!');
+      navigation.goBack();
     } catch (error) {
-      console.log('Erro ao salvar novo histórico de carga', error);
+      throwToastError('Erro ao salvar nova carga');
+      console.log('Erro ao salvar nova carga', error);
     } finally {
       setLoading(false);
     }
