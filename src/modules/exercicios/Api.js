@@ -20,3 +20,9 @@ export const fetchExerciciosSelect = (delay = 0) => {
 
   return pMinDelay(response, delay);
 };
+
+export const fetchExerciciosDoTreino = (treinoId, delay = 0) => {
+  const response = axiosPrivate.get(`${exerciciosUrl}/treino/${treinoId}`);
+
+  return pMinDelay(response, delay);
+};

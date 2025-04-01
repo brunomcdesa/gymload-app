@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import style from './style/style';
 
 const Header = (props) => {
@@ -13,7 +14,7 @@ const Header = (props) => {
         onPress={() => navigation?.openDrawer()}
         style={MenuButton}
       >
-        <Text style={MenuIcon}>☰</Text>
+        <MaterialIcons name="menu" style={MenuIcon} />
       </TouchableOpacity>
 
       <Text style={HeaderText}>GymLoad</Text>

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-import BackButton from '../../components/Button/BackButton';
-import SaveButton from '../../components/Button/SaveButton';
-import { ComumStyles } from '../../components/Styles/ComumStyles';
+import BackButton from '../../../components/Button/BackButton';
+import SaveButton from '../../../components/Button/SaveButton';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 
 import PropTypes from 'prop-types';
-import SelectInput from '../../components/Inputs/SelectInput';
-import * as EnumApi from '../../comum/EnumApi';
-import * as GrupoMuscularApi from '../gruposMusculares/Api';
-import { throwToastError, throwToastSuccess } from '../utils/toastUtils';
-import * as Api from './Api';
+import SelectInput from '../../../components/Inputs/SelectInput';
+import * as EnumApi from '../../../comum/EnumApi';
+import * as GrupoMuscularApi from '../../gruposMusculares/Api';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
+import * as Api from '../Api';
 
 const ExercicioForm = (props) => {
   const { Title, Botoes, FormContainer, FormLabel, FormTextInput } =

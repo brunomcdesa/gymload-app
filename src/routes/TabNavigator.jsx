@@ -28,7 +28,7 @@ const TabNavigator = () => {
     {
       name: 'Treinos',
       component: TreinosStack,
-      iconName: 'fitness-center',
+      iconName: 'playlist-add-check',
     },
     ...(isAdmin
       ? [

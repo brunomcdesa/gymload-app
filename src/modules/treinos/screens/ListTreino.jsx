@@ -1,11 +1,11 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
-import AddButton from '../../components/Button/AddButton';
-import LoadingIndicator from '../../components/Loading/LoadingIndicator';
-import { ComumStyles } from '../../components/Styles/ComumStyles';
-import * as Api from './Api';
-import Treino from './Treino';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import AddButton from '../../../components/Button/AddButton';
+import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import * as Api from '../Api';
+import Treino from '../Treino';
 
 const ListTreino = (props) => {
   const { Container, Title } = ComumStyles;
@@ -19,7 +19,7 @@ const ListTreino = (props) => {
       const { data } = await Api.fetchTreinos();
       setTreinos(data);
     } catch (error) {
-      console.error('Erro ao buscar Treinos do Uusário.');
+      console.error('Erro ao buscar Treinos do Usuário.');
       return [];
     } finally {
       setLoading(false);
@@ -36,6 +36,13 @@ const ListTreino = (props) => {
     navigation.navigate('TreinoForm');
   };
 
+  const redirectToListExerciciosTreino = (treino) => {
+    navigation.navigate('ListExerciciosTreino', {
+      treinoId: treino.id,
+      treinoNome: treino.nome,
+    });
+  };
+
   return (
     <View style={Container}>
       <Text style={Title}>Lista de Treinos</Text>
@@ -46,11 +53,15 @@ const ListTreino = (props) => {
           data={treinos}
           keyExtractor={(treino) => treino.id}
           renderItem={({ item: treino }) => (
-            <Treino
-              id={treino.id}
-              nome={treino.nome}
-              dataCadastro={treino.dataCadastro}
-            />
+            <TouchableOpacity
+              onPress={() => redirectToListExerciciosTreino(treino)}
+            >
+              <Treino
+                id={treino.id}
+                nome={treino.nome}
+                dataCadastro={treino.dataCadastro}
+              />
+            </TouchableOpacity>
           )}
         />
       )}

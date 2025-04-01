@@ -1,14 +1,14 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-import BackButton from '../../components/Button/BackButton';
-import SaveButton from '../../components/Button/SaveButton';
-import { ComumStyles } from '../../components/Styles/ComumStyles';
-import * as ExercicioApi from '../exercicios/Api';
-import * as Api from './Api';
+import BackButton from '../../../components/Button/BackButton';
+import SaveButton from '../../../components/Button/SaveButton';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import * as ExercicioApi from '../../exercicios/Api';
+import * as Api from '../Api';
 
-import SelectInput from '../../components/Inputs/SelectInput';
-import { throwToastError, throwToastSuccess } from '../utils/toastUtils';
+import SelectInput from '../../../components/Inputs/SelectInput';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 
 const TreinoForm = (props) => {
   const { FormContainer, Title, FormLabel, FormTextInput, Botoes } =

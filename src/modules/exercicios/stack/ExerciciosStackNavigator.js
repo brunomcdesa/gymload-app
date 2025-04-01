@@ -1,9 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import ExercicioForm from '../ExercicioForm';
-import ListExercicios from '../ListExercicios';
 import CargaForm from '../cargas/CargaForm';
 import HistoricoCargas from '../cargas/HistoricoCargas';
+import ExercicioForm from '../screens/ExercicioForm';
+import ListExercicios from '../screens/ListExercicios';
 
 const Stack = createNativeStackNavigator();
 

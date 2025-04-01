@@ -1,12 +1,12 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import AddButton from '../../components/Button/AddButton';
-import LoadingIndicator from '../../components/Loading/LoadingIndicator';
-import { ComumStyles } from '../../components/Styles/ComumStyles';
-import { useIsAdmin } from '../utils/userUtils';
-import * as Api from './Api';
-import Exercicio from './Exercicio';
+import AddButton from '../../../components/Button/AddButton';
+import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { useIsAdmin } from '../../utils/userUtils';
+import * as Api from '../Api';
+import Exercicio from '../Exercicio';
 
 const ListExercicios = () => {
   const { Container, Title } = ComumStyles;
@@ -34,7 +34,7 @@ const ListExercicios = () => {
     }, []),
   );
 
-  const redirectGrupoMuscularForm = () => {
+  const redirectExercicioForm = () => {
     navigation.navigate('ExercicioForm');
   };
 
@@ -59,7 +59,7 @@ const ListExercicios = () => {
       )}
       {isAdmin && (
         <View>
-          <AddButton onPress={redirectGrupoMuscularForm} />
+          <AddButton onPress={redirectExercicioForm} />
         </View>
       )}
     </View>
