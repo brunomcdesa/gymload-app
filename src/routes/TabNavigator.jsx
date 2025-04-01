@@ -6,6 +6,7 @@ import { colors } from '../components/Styles/ComumStyles';
 import ExerciciosStack from '../modules/exercicios/stack/ExerciciosStackNavigator';
 import GruposMuscularesStack from '../modules/gruposMusculares/stack/GruposMuscularesStackNavigator';
 import Home from '../modules/home/Home';
+import TreinosStack from '../modules/treinos/stack/TreinosStackNavigator';
 import { useIsAdmin } from '../modules/utils/userUtils';
 
 const Tab = createBottomTabNavigator();
@@ -22,6 +23,11 @@ const TabNavigator = () => {
     {
       name: 'Exercicios',
       component: ExerciciosStack,
+      iconName: 'fitness-center',
+    },
+    {
+      name: 'Treinos',
+      component: TreinosStack,
       iconName: 'fitness-center',
     },
     ...(isAdmin

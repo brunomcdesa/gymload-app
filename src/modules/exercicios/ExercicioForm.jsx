@@ -1,4 +1,3 @@
-import { Picker } from '@react-native-picker/picker';
 import React, { useEffect, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import BackButton from '../../components/Button/BackButton';
@@ -6,47 +5,42 @@ import SaveButton from '../../components/Button/SaveButton';
 import { ComumStyles } from '../../components/Styles/ComumStyles';
 
 import PropTypes from 'prop-types';
+import SelectInput from '../../components/Inputs/SelectInput';
+import * as EnumApi from '../../comum/EnumApi';
 import * as GrupoMuscularApi from '../gruposMusculares/Api';
-import { handleChangeState } from '../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../utils/toastUtils';
 import * as Api from './Api';
 
-const TIPO_EXERCICIO = [
-  'HALTER',
-  'BARRA',
-  'MAQUINA',
-  'POLIA',
-  'ANILHA',
-  'BOLA',
-  'KETTLEBEL',
-  'BAG',
-  'CORPORAL',
-];
-
-const TIPO_PEGADA = ['PRONADA', 'SUPINADA', 'NEUTRA', 'CORDA'];
-
 const ExercicioForm = (props) => {
-  const {
-    Title,
-    Botoes,
-    FormContainer,
-    FormLabel,
-    FormTextInput,
-    FormSelectInput,
-  } = ComumStyles;
+  const { Title, Botoes, FormContainer, FormLabel, FormTextInput } =
+    ComumStyles;
   const { navigation } = props;
   const [formData, setFormData] = useState({
     nome: '',
     descricao: '',
     grupoMuscularId: null,
-    tipoExercicio: TIPO_EXERCICIO[0],
-    tipoPegada: TIPO_PEGADA[0],
+    tipoExercicio: '',
+    tipoPegada: '',
   });
-  const [gruposMuscularesSelect, setGruposMuscularesSelect] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [gruposMuscularesItems, setGruposMuscularesItems] = useState([]);
+  const [openGrupoMuscularSelect, setOpenGrupoMuscularSelect] = useState(false);
+  const [gruposMuscularesLoading, setGruposMuscularesLoading] = useState(false);
+  const [grupoMuscularIdSelected, setGrupoMuscularIdSelected] = useState(null);
+  const [tiposExercicioItems, setTiposExercicioItems] = useState([]);
+  const [openTipoExercicioSelect, setOpenTipoExercicioSelect] = useState(false);
+  const [tipoExercicioLoading, setTipoExercicioLoading] = useState(false);
+  const [tipoExercicioSelected, setTipoExercicioSelected] = useState(null);
+  const [tiposPegadaItems, setTiposPegadaItems] = useState([]);
+  const [openTipoPegadaSelect, setOpenTipoPegadaSelect] = useState(false);
+  const [tipoPegadaLoading, setTipoPegadaLoading] = useState(false);
+  const [tipoPegadaSelected, setTipoPegadaSelected] = useState(null);
 
   const handleChange = (field, value) => {
-    handleChangeState(setFormData, formData, field, value);
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   const handleSubmit = async () => {
@@ -77,15 +71,44 @@ const ExercicioForm = (props) => {
 
   const fetchGruposMuscularesSelect = async () => {
     try {
+      setGruposMuscularesLoading(true);
       const { data } = await GrupoMuscularApi.fetchGruposMuscularesSelect();
-      setGruposMuscularesSelect(data);
+      setGruposMuscularesItems(data);
     } catch (error) {
       console.log('Erro ao buscar select de grupos musculares.', error);
+    } finally {
+      setGruposMuscularesLoading(false);
+    }
+  };
+
+  const fetchTiposExerciciosSelect = async () => {
+    try {
+      setTipoExercicioLoading(true);
+      const { data } = await EnumApi.fetchTiposExerciciosSelect();
+      setTiposExercicioItems(data);
+    } catch (error) {
+      console.log('Erro ao buscar select de tipos de exercícios.', error);
+    } finally {
+      setTipoExercicioLoading(false);
+    }
+  };
+
+  const fetchTiposPegadasSelect = async () => {
+    try {
+      setTipoPegadaLoading(true);
+      const { data } = await EnumApi.fetchTiposPegadasSelect();
+      setTiposPegadaItems(data);
+    } catch (error) {
+      console.log('Erro ao buscar select de tipos pegadas.', error);
+    } finally {
+      setTipoPegadaLoading(false);
     }
   };
 
   useEffect(() => {
     fetchGruposMuscularesSelect();
+    fetchTiposExerciciosSelect();
+    fetchTiposPegadasSelect();
   }, []);
 
   return (
@@ -111,47 +134,53 @@ const ExercicioForm = (props) => {
       />
 
       <Text style={FormLabel}>Grupo Muscular:</Text>
-      <Picker
-        style={FormSelectInput}
-        selectedValue={gruposMuscularesSelect}
-        onValueChange={(grupoMuscularValue) =>
-          handleChange('grupoMuscularId', grupoMuscularValue)
-        }
-      >
-        {gruposMuscularesSelect.map((grupoMuscular, index) => (
-          <Picker.Item
-            key={index}
-            label={grupoMuscular.value}
-            value={grupoMuscular.id}
-          />
-        ))}
-      </Picker>
+      <SelectInput
+        open={openGrupoMuscularSelect}
+        setOpen={setOpenGrupoMuscularSelect}
+        items={gruposMuscularesItems}
+        setItems={setGruposMuscularesItems}
+        value={grupoMuscularIdSelected}
+        setValue={setGrupoMuscularIdSelected}
+        loading={gruposMuscularesLoading}
+        multiple={false}
+        placeholder="Selecione o grupo muscular"
+        handleChange={handleChange}
+        field="grupoMuscularId"
+        zIndex={3000}
+        zIndexInverse={1000}
+      />
 
       <Text style={FormLabel}>Tipo de Exercício:</Text>
-      <Picker
-        style={FormSelectInput}
-        selectedValue={TIPO_EXERCICIO}
-        onValueChange={(tipoExercicioValue) =>
-          handleChange('tipoExercicio', tipoExercicioValue)
-        }
-      >
-        {TIPO_EXERCICIO.map((item, index) => (
-          <Picker.Item key={index} label={item} value={item} />
-        ))}
-      </Picker>
+      <SelectInput
+        open={openTipoExercicioSelect}
+        setOpen={setOpenTipoExercicioSelect}
+        items={tiposExercicioItems}
+        setItems={setTiposExercicioItems}
+        value={tipoExercicioSelected}
+        setValue={setTipoExercicioSelected}
+        loading={tipoExercicioLoading}
+        placeholder="Selecione o tipo de exercício"
+        handleChange={handleChange}
+        field="tipoExercicio"
+        zIndex={2000}
+        zIndexInverse={200}
+      />
 
       <Text style={FormLabel}>Tipo de Pegada:</Text>
-      <Picker
-        style={FormSelectInput}
-        selectedValue={TIPO_PEGADA}
-        onValueChange={(tipoPegadaValue) =>
-          handleChange('tipoPegada', tipoPegadaValue)
-        }
-      >
-        {TIPO_PEGADA.map((item, index) => (
-          <Picker.Item key={index} label={item} value={item} />
-        ))}
-      </Picker>
+      <SelectInput
+        open={openTipoPegadaSelect}
+        setOpen={setOpenTipoPegadaSelect}
+        items={tiposPegadaItems}
+        setItems={setTiposPegadaItems}
+        value={tipoPegadaSelected}
+        setValue={setTipoPegadaSelected}
+        loading={tipoPegadaLoading}
+        placeholder="Selecione o tipo de pegada"
+        handleChange={handleChange}
+        field="tipoPegada"
+        zIndex={1000}
+        zIndexInverse={100}
+      />
 
       <View style={Botoes}>
         <BackButton navigation={navigation} />

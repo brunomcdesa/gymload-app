@@ -16,7 +16,6 @@ const UsuarioCadastroForm = (props) => {
     nome: null,
     username: null,
     password: null,
-    cadastroAdmin: isCadastroAdmin,
   });
   const [loading, setLoading] = useState(false);
 

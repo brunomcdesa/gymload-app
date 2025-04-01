@@ -4,6 +4,7 @@ import { Text, TextInput, View } from 'react-native';
 import BackButton from '../../components/Button/BackButton';
 import SaveButton from '../../components/Button/SaveButton';
 import { ComumStyles } from '../../components/Styles/ComumStyles';
+import { handleChangeState } from '../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../utils/toastUtils';
 import * as Api from './Api';
 
@@ -18,7 +19,7 @@ const GrupoMuscularForm = (props) => {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
+    handleChangeState(setFormData, formData, field, value);
   };
 
   const handleSubmit = async () => {

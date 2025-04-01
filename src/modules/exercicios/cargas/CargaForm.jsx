@@ -1,34 +1,31 @@
-import { Picker } from '@react-native-picker/picker';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 
 import PropTypes from 'prop-types';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
+import SelectInput from '../../../components/Inputs/SelectInput';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import * as EnumApi from '../../../comum/EnumApi';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from './Api';
 
-const UNIDADE_PESO = ['KG', 'LBS'];
-
 const CargaForm = (props) => {
-  const {
-    Title,
-    Botoes,
-    FormContainer,
-    FormLabel,
-    FormTextInput,
-    FormSelectInput,
-  } = ComumStyles;
+  const { Title, Botoes, FormContainer, FormLabel, FormTextInput } =
+    ComumStyles;
   const { route, navigation } = props;
   const { exercicioId, exercicioNome } = route.params;
   const [formData, setFormData] = useState({
     exercicioId: exercicioId,
     carga: null,
-    unidadePeso: UNIDADE_PESO[0],
+    unidadePeso: '',
     qtdRepeticoes: null,
   });
   const [loading, setLoading] = useState(false);
+  const [unidadesPesosItems, setUnidadesPesosItems] = useState([]);
+  const [openUnidadesPesosSelect, setOpenUnidadesPesosSelect] = useState(false);
+  const [unidadesPesosLoading, setUnidadesPesosLoading] = useState(false);
+  const [unidadePesoSelected, setUnidadePesoSelected] = useState(null);
 
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
@@ -54,6 +51,22 @@ const CargaForm = (props) => {
     }
   };
 
+  const fetchUnidadesPesos = async () => {
+    try {
+      setUnidadesPesosLoading(true);
+      const { data } = await EnumApi.fetchUnidadesPesosSelect();
+      setUnidadesPesosItems(data);
+    } catch (error) {
+      console.error('Erro ao carregar select de unidades de pesos.', error);
+    } finally {
+      setUnidadesPesosLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUnidadesPesos();
+  }, []);
+
   return (
     <View style={FormContainer}>
       <Text style={Title}>Adicionar carga para: {exercicioNome}</Text>
@@ -68,17 +81,21 @@ const CargaForm = (props) => {
       />
 
       <Text style={FormLabel}>Unidade de Peso:</Text>
-      <Picker
-        style={FormSelectInput}
-        selectedValue={UNIDADE_PESO}
-        onValueChange={(unidadePesoValue) =>
-          handleChange('unidadePeso', unidadePesoValue)
-        }
-      >
-        {UNIDADE_PESO.map((item, index) => (
-          <Picker.Item key={index} label={item} value={item} />
-        ))}
-      </Picker>
+      <SelectInput
+        open={openUnidadesPesosSelect}
+        setOpen={setOpenUnidadesPesosSelect}
+        items={unidadesPesosItems}
+        setItems={setUnidadesPesosItems}
+        value={unidadePesoSelected}
+        setValue={setUnidadePesoSelected}
+        loading={unidadesPesosLoading}
+        multiple={false}
+        placeholder="Selecione a unidade de peso"
+        handleChange={handleChange}
+        field="unidadePeso"
+        zIndex={3000}
+        zIndexInverse={1000}
+      />
 
       <Text style={FormLabel}>Quantidade de Repetições:</Text>
       <TextInput
