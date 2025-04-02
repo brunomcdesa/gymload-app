@@ -1,4 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
+import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import AddButton from '../../../components/Button/AddButton';
@@ -61,6 +62,16 @@ const ListExerciciosTreino = (props) => {
       </View>
     </View>
   );
+};
+
+ListExerciciosTreino.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      treinoId: PropTypes.number.isRequired,
+      treinoNome: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  navigation: PropTypes.object.isRequired,
 };
 
 export default ListExerciciosTreino;

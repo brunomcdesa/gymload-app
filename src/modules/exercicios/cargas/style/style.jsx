@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../../../components/Styles/ComumStyles';
 
 export default StyleSheet.create({
   Container: {
@@ -12,10 +13,69 @@ export default StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 5,
+    alignItems: 'center',
   },
   CargaText: {
     fontSize: 16,
     color: '#333',
     marginBottom: 8,
+  },
+  maiorCarga: {
+    borderWidth: 2,
+    borderColor: 'gold',
+    backgroundColor: '#fff8e1',
+  },
+  maiorCargaContainer: {
+    backgroundColor: '#fff8e1',
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  maiorCargaTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  maiorCargaValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'gold',
+    marginTop: 10,
+  },
+  qtdSeriesText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: colors.textLight,
+    backgroundColor: colors.primary,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    marginRight: 15,
+  },
+  cargaInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dataUltimoHistoricoStyle: {
+    alignSelf: 'center',
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: colors.textLight,
+    backgroundColor: colors.primary,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    marginRight: 15,
+  },
+  HistoricoCompletoButtonStyle: {
+    backgroundColor: 'yellow',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

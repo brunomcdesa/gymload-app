@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 
 import PropTypes from 'prop-types';
-import BackButton from '../../../components/Button/BackButton';
-import SaveButton from '../../../components/Button/SaveButton';
-import SelectInput from '../../../components/Inputs/SelectInput';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
-import * as EnumApi from '../../../comum/EnumApi';
-import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
-import * as Api from './Api';
+import BackButton from '../../../../components/Button/BackButton';
+import SaveButton from '../../../../components/Button/SaveButton';
+import SelectInput from '../../../../components/Inputs/SelectInput';
+import { ComumStyles } from '../../../../components/Styles/ComumStyles';
+import * as EnumApi from '../../../../comum/EnumApi';
+import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
+import * as Api from '../Api';
 
 const CargaForm = (props) => {
   const { Title, Botoes, FormContainer, FormLabel, FormTextInput } =
@@ -20,6 +20,7 @@ const CargaForm = (props) => {
     carga: null,
     unidadePeso: '',
     qtdRepeticoes: null,
+    qtdSeries: null,
   });
   const [loading, setLoading] = useState(false);
   const [unidadesPesosItems, setUnidadesPesosItems] = useState([]);
@@ -86,7 +87,7 @@ const CargaForm = (props) => {
         setOpen={setOpenUnidadesPesosSelect}
         items={unidadesPesosItems}
         setItems={setUnidadesPesosItems}
-        value={unidadePesoSelected}
+        value={unidadePesoSelected || ''}
         setValue={setUnidadePesoSelected}
         loading={unidadesPesosLoading}
         multiple={false}
@@ -105,6 +106,17 @@ const CargaForm = (props) => {
         value={formData.qtdRepeticoes}
         onChangeText={(qtdRepeticoesValue) =>
           handleChange('qtdRepeticoes', qtdRepeticoesValue)
+        }
+      />
+
+      <Text style={FormLabel}>Quantidade de Séries:</Text>
+      <TextInput
+        style={FormTextInput}
+        placeholder="Digite Quantidade de Séries"
+        keyboardType="numeric"
+        value={formData.qtdSeries}
+        onChangeText={(qtdSeriesValue) =>
+          handleChange('qtdSeries', qtdSeriesValue)
         }
       />
 

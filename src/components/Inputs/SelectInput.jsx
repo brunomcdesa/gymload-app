@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { ComumStyles } from '../Styles/ComumStyles';
+import style from './styles/style';
 
 const SelectInput = (props) => {
   const {
@@ -51,15 +53,33 @@ const SelectInput = (props) => {
             }
           : null
       }
-      dropDownContainerStyle={{
-        borderWidth: 1,
-        borderColor: '#ccc',
-        backgroundColor: '#f2f2f2',
-      }}
+      dropDownContainerStyle={style.dropDownContainerStyle}
       zIndex={zIndex}
       zIndexInverse={zIndexInverse}
     />
   );
+};
+
+SelectInput.propTypes = {
+  open: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
+  items: PropTypes.array.isRequired,
+  setItems: PropTypes.func.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+  setValue: PropTypes.func.isRequired,
+  multiple: PropTypes.bool,
+  loading: PropTypes.bool.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  searchable: PropTypes.bool,
+  searchPlaceholder: PropTypes.string,
+  handleChange: PropTypes.func.isRequired,
+  field: PropTypes.string.isRequired,
+  zIndex: PropTypes.number,
+  zIndexInverse: PropTypes.number,
 };
 
 export default SelectInput;

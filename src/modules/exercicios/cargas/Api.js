@@ -3,8 +3,14 @@ import { pMinDelay } from '../../utils/promisse';
 
 const urlBase = '/api/historico-cargas';
 
-export const fetchHistoricoCargas = ({ exercicioId, delay = 0 }) => {
+export const fetchUltimoHistoricoCargas = ({ exercicioId, delay = 0 }) => {
   const response = axiosPrivate.get(`${urlBase}/${exercicioId}`);
+
+  return pMinDelay(response, delay);
+};
+
+export const fetchHistoricoCargasCompleto = ({ exercicioId, delay = 0 }) => {
+  const response = axiosPrivate.get(`${urlBase}/${exercicioId}/completo`);
 
   return pMinDelay(response, delay);
 };

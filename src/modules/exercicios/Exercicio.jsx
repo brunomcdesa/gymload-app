@@ -28,7 +28,7 @@ const Exercicio = (props) => {
 
       <TouchableOpacity style={BotaoHistorico} onPress={redirectToHistorico}>
         <MaterialIcons name="history" size={24} color="#fff" />
-        <Text style={BotaoTexto}>Ver Histórico</Text>
+        <Text style={BotaoTexto}>Ver Cargas</Text>
       </TouchableOpacity>
     </View>
   );

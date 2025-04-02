@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
 import { ComumStyles } from '../../components/Styles/ComumStyles';
@@ -13,4 +14,8 @@ const Treino = (props) => {
   );
 };
 
+Treino.propTypes = {
+  nome: PropTypes.string.isRequired,
+  dataCadastro: PropTypes.string.isRequired,
+};
 export default Treino;

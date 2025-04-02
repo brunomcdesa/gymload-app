@@ -2,6 +2,8 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import AddButton from '../../../components/Button/AddButton';
+import SearchInput from '../../../components/Inputs/SearchInput';
+import EmptyList from '../../../components/List/EmptyList';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { useIsAdmin } from '../../utils/userUtils';
@@ -11,15 +13,19 @@ import Exercicio from '../Exercicio';
 const ListExercicios = () => {
   const { Container, Title } = ComumStyles;
   const [exercicios, setExercicios] = useState([]);
+  const [filteredExercicios, setFilteredExercicios] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const isAdmin = useIsAdmin();
+
+  const renderEmptyList = () => <EmptyList value="exercício" />;
 
   const fetchExercicios = async () => {
     try {
       setLoading(true);
       const { data } = await Api.fetchExercicios();
       setExercicios(data);
+      setFilteredExercicios(data);
     } catch (error) {
       console.error('Erro ao buscar exercicios:', error);
       return [];
@@ -38,14 +44,26 @@ const ListExercicios = () => {
     navigation.navigate('ExercicioForm');
   };
 
+  const handleSearchResults = (filteredData) => {
+    setFilteredExercicios(filteredData);
+  };
+
   return (
     <View style={Container}>
-      <Text style={Title}>Lista de Exercicios</Text>
+      <Text style={Title}>Exercicios</Text>
+
+      <SearchInput
+        placeholder="Pesquisar exercícios..."
+        onSearch={handleSearchResults}
+        initialData={exercicios}
+        searchKeys={['nome']}
+      />
+
       {loading ? (
         <LoadingIndicator />
       ) : (
         <FlatList
-          data={exercicios}
+          data={filteredExercicios}
           keyExtractor={(exercicio) => exercicio.id}
           renderItem={({ item: exercicio }) => (
             <Exercicio
@@ -55,6 +73,7 @@ const ListExercicios = () => {
               grupoMuscular={exercicio.grupoMuscularNome}
             />
           )}
+          ListEmptyComponent={renderEmptyList}
         />
       )}
       {isAdmin && (

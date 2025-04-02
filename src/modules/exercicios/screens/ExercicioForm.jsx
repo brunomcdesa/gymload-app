@@ -139,7 +139,7 @@ const ExercicioForm = (props) => {
         setOpen={setOpenGrupoMuscularSelect}
         items={gruposMuscularesItems}
         setItems={setGruposMuscularesItems}
-        value={grupoMuscularIdSelected}
+        value={grupoMuscularIdSelected || ''}
         setValue={setGrupoMuscularIdSelected}
         loading={gruposMuscularesLoading}
         multiple={false}
@@ -156,7 +156,7 @@ const ExercicioForm = (props) => {
         setOpen={setOpenTipoExercicioSelect}
         items={tiposExercicioItems}
         setItems={setTiposExercicioItems}
-        value={tipoExercicioSelected}
+        value={tipoExercicioSelected || ''}
         setValue={setTipoExercicioSelected}
         loading={tipoExercicioLoading}
         placeholder="Selecione o tipo de exercício"
@@ -172,7 +172,7 @@ const ExercicioForm = (props) => {
         setOpen={setOpenTipoPegadaSelect}
         items={tiposPegadaItems}
         setItems={setTiposPegadaItems}
-        value={tipoPegadaSelected}
+        value={tipoPegadaSelected || ''}
         setValue={setTipoPegadaSelected}
         loading={tipoPegadaLoading}
         placeholder="Selecione o tipo de pegada"

@@ -7,6 +7,7 @@ import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as ExercicioApi from '../../exercicios/Api';
 import * as Api from '../Api';
 
+import PropTypes from 'prop-types';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 
@@ -86,7 +87,7 @@ const TreinoForm = (props) => {
         setOpen={setOpen}
         items={exerciciosSelect}
         setItems={setExerciciosSelect}
-        value={selectedExercicios}
+        value={selectedExercicios || []}
         setValue={setSelectedExercicios}
         multiple={true}
         loading={exerciciosSelectLoading}
@@ -105,6 +106,12 @@ const TreinoForm = (props) => {
       </View>
     </View>
   );
+};
+
+TreinoForm.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default TreinoForm;
