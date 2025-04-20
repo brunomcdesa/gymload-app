@@ -3,13 +3,21 @@ import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
+import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
+import style from './style/style';
 
 const UsuarioCadastroForm = (props) => {
-  const { Title, Botoes, FormContainer, FormLabel, FormTextInput } =
-    ComumStyles;
+  const {
+    Title,
+    Botoes,
+    FormContainer,
+    FormLabel,
+    FormTextInput,
+    passwordContainer,
+  } = ComumStyles;
   const { navigation, route } = props;
   const { isCadastroAdmin } = route.params;
   const [formData, setFormData] = useState({
@@ -18,6 +26,7 @@ const UsuarioCadastroForm = (props) => {
     password: null,
   });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
@@ -61,25 +70,37 @@ const UsuarioCadastroForm = (props) => {
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
-      <Text style={FormLabel}>username:</Text>
-      <TextInput
-        style={FormTextInput}
-        placeholder="Digite o username"
-        value={formData.username}
-        onChangeText={(usernameValue) =>
-          handleChange('username', usernameValue)
-        }
-      />
+      <View>
+        <Text style={FormLabel}>username:</Text>
+        <TextInput
+          style={FormTextInput}
+          placeholder="Digite o username"
+          value={formData.username}
+          onChangeText={(usernameValue) =>
+            handleChange('username', usernameValue)
+          }
+        />
+        <Text style={style.infoText}>
+          Será utilizado para realizar o login.
+        </Text>
+      </View>
 
       <Text style={FormLabel}>senha:</Text>
-      <TextInput
-        style={FormTextInput}
-        placeholder="Digite a senha"
-        value={formData.password}
-        onChangeText={(passwordValue) =>
-          handleChange('password', passwordValue)
-        }
-      />
+      <View style={passwordContainer}>
+        <TextInput
+          style={FormTextInput}
+          placeholder="Digite a senha"
+          value={formData.password}
+          onChangeText={(passwordValue) =>
+            handleChange('password', passwordValue)
+          }
+          secureTextEntry={!showPassword}
+        />
+        <ShowPasswordButton
+          showPassword={showPassword}
+          setShowPassword={setShowPassword}
+        />
+      </View>
 
       <View style={Botoes}>
         <BackButton navigation={navigation} />

@@ -52,6 +52,7 @@ const ComumStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
+    marginTop: '3%',
     color: '#fff',
   },
   FormTextInput: {
@@ -59,7 +60,7 @@ const ComumStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
-    marginBottom: 15,
+    marginBottom: '2%',
     paddingHorizontal: 10,
     backgroundColor: '#fff',
   },
@@ -81,6 +82,10 @@ const ComumStyles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 5,
+  },
+  passwordContainer: {
+    position: 'relative',
+    justifyContent: 'center',
   },
 });
 

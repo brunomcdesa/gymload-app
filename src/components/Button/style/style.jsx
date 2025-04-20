@@ -42,4 +42,10 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  passwordShow: {
+    position: 'absolute',
+    right: '2%',
+    top: '38%',
+    transform: [{ translateY: -12 }],
+  },
 });
