@@ -10,7 +10,7 @@ import * as Api from '../Api';
 import GrupoMuscular from '../GrupoMuscular';
 
 const ListGruposMusculares = () => {
-  const { Title, Container } = ComumStyles;
+  const { title, container } = ComumStyles;
   const [gruposMusculares, setGruposMusculares] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -39,8 +39,8 @@ const ListGruposMusculares = () => {
   };
 
   return (
-    <View style={Container}>
-      <Text style={Title}>Grupos Musculares</Text>
+    <View style={container}>
+      <Text style={title}>Grupos Musculares</Text>
 
       {loading ? (
         <LoadingIndicator />

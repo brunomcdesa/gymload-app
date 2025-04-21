@@ -11,7 +11,7 @@ import style from './style/style';
 
 const UsuarioCadastroForm = (props) => {
   const {
-    Title,
+    title,
     Botoes,
     FormContainer,
     FormLabel,
@@ -58,7 +58,7 @@ const UsuarioCadastroForm = (props) => {
 
   return (
     <View style={FormContainer}>
-      <Text style={Title}>
+      <Text style={title}>
         Cadastrar Usuário {isCadastroAdmin ? 'Admin' : ''}
       </Text>
 

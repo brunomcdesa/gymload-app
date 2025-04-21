@@ -12,12 +12,12 @@ const colors = {
 };
 
 const ComumStyles = StyleSheet.create({
-  Container: {
+  container: {
     flex: 1,
     backgroundColor: colors.background,
-    padding: 20,
+    padding: 16,
   },
-  Title: {
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: colors.textLight,
@@ -74,14 +74,16 @@ const ComumStyles = StyleSheet.create({
   ElementContainer: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
+    backgroundColor: '#2a2a2a',
+    borderRadius: 16,
     margin: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
+    shadowColor: '#ff5555',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 3,
+    borderWidth: 1,
+    borderColor: '#383838',
   },
   passwordContainer: {
     position: 'relative',

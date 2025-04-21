@@ -12,7 +12,7 @@ import SelectInput from '../../../components/Inputs/SelectInput';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 
 const TreinoForm = (props) => {
-  const { FormContainer, Title, FormLabel, FormTextInput, Botoes } =
+  const { FormContainer, title, FormLabel, FormTextInput, Botoes } =
     ComumStyles;
   const { navigation } = props;
 
@@ -71,7 +71,7 @@ const TreinoForm = (props) => {
 
   return (
     <View style={FormContainer}>
-      <Text style={Title}>Adicionar Treino</Text>
+      <Text style={title}>Adicionar Treino</Text>
 
       <Text style={FormLabel}>Nome:</Text>
       <TextInput

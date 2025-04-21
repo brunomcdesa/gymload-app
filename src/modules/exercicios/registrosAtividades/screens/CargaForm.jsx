@@ -11,7 +11,7 @@ import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
 import * as Api from '../Api';
 
 const CargaForm = (props) => {
-  const { Title, Botoes, FormContainer, FormLabel, FormTextInput } =
+  const { title, Botoes, FormContainer, FormLabel, FormTextInput } =
     ComumStyles;
   const { route, navigation } = props;
   const { exercicioId, exercicioNome } = route.params;
@@ -40,7 +40,7 @@ const CargaForm = (props) => {
 
     try {
       setLoading(true);
-      await Api.saveNewHistoricoCarga(formData);
+      await Api.saveRegistroAtividade(formData);
 
       throwToastSuccess('Carga salva com sucesso!');
       navigation.goBack();
@@ -70,7 +70,7 @@ const CargaForm = (props) => {
 
   return (
     <View style={FormContainer}>
-      <Text style={Title}>Adicionar carga para: {exercicioNome}</Text>
+      <Text style={title}>Adicionar carga para: {exercicioNome}</Text>
 
       <Text style={FormLabel}>Carga:</Text>
       <TextInput

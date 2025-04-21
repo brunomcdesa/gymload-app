@@ -9,12 +9,14 @@ import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import Exercicio from '../Exercicio';
+import * as RegistroAtividadeApi from '../registrosAtividades/Api';
 
 const ListExerciciosTreino = (props) => {
   const { route, navigation } = props;
   const { treinoId, treinoNome } = route.params;
-  const { Container, Title, Botoes } = ComumStyles;
+  const { container, title, Botoes } = ComumStyles;
   const [exercicios, setExercicios] = useState([]);
+  const [dadosRegistrosAtividades, setDadosRegistrosAtividades] = useState({});
   const [loading, setLoading] = useState(false);
 
   const fetchExerciciosDoTreino = useCallback(async () => {
@@ -22,6 +24,11 @@ const ListExerciciosTreino = (props) => {
       setLoading(true);
       const { data } = await Api.fetchExerciciosDoTreino(treinoId);
       setExercicios(data);
+
+      if (data && data.length > 0) {
+        const exerciciosIds = data.map((exercicio) => exercicio.id);
+        await fetchDestaquesDosExercicios(exerciciosIds);
+      }
     } catch (error) {
       throwToastError('Erro ao buscar exercícios deste treino.');
       console.error(`Erro ao buscar exercícios do treino ${treinoId}`, error);
@@ -30,6 +37,27 @@ const ListExerciciosTreino = (props) => {
     }
   }, [treinoId]);
 
+  const fetchDestaquesDosExercicios = async (exerciciosIds) => {
+    try {
+      if (!exerciciosIds || exerciciosIds.length === 0) return;
+      const { data } =
+        await RegistroAtividadeApi.fetchDestaquesDeExercicios(exerciciosIds);
+
+      const dadosMap = {};
+      data.forEach((destaque) => {
+        dadosMap[destaque.exercicioId] = destaque;
+      });
+
+      setDadosRegistrosAtividades(dadosMap);
+    } catch (error) {
+      if (error.response && error.response.data) {
+        console.error('Erro ao buscar destaques:', error.response.data);
+      } else {
+        console.error('Erro ao buscar destaques:', error);
+      }
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetchExerciciosDoTreino();
@@ -37,8 +65,8 @@ const ListExerciciosTreino = (props) => {
   );
 
   return (
-    <View style={Container}>
-      <Text style={Title}>{treinoNome}</Text>
+    <View style={container}>
+      <Text style={title}>{treinoNome}</Text>
       {loading ? (
         <LoadingIndicator />
       ) : (
@@ -49,8 +77,10 @@ const ListExerciciosTreino = (props) => {
             <Exercicio
               id={exercicio.id}
               nome={exercicio.nome}
-              descricao={exercicio.descricao}
               grupoMuscular={exercicio.grupoMuscularNome}
+              dadosRegistrosAtividades={
+                dadosRegistrosAtividades[exercicio.id] || null
+              }
             />
           )}
         />

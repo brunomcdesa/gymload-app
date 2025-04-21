@@ -12,7 +12,7 @@ import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 
 const ExercicioForm = (props) => {
-  const { Title, Botoes, FormContainer, FormLabel, FormTextInput } =
+  const { title, Botoes, FormContainer, FormLabel, FormTextInput } =
     ComumStyles;
   const { navigation } = props;
   const [formData, setFormData] = useState({
@@ -113,7 +113,7 @@ const ExercicioForm = (props) => {
 
   return (
     <View style={FormContainer}>
-      <Text style={Title}>Adicionar Exercício</Text>
+      <Text style={title}>Adicionar Exercício</Text>
 
       <Text style={FormLabel}>Nome:</Text>
       <TextInput

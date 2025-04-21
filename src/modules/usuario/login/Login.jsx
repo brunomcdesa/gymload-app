@@ -14,7 +14,7 @@ import * as Api from './Api';
 import style from './style/style';
 
 const Login = (props) => {
-  const { Title, FormTextInput, FormLabel, passwordContainer } = ComumStyles;
+  const { title, FormTextInput, FormLabel, passwordContainer } = ComumStyles;
   const {
     container,
     separatorContainer,
@@ -59,7 +59,7 @@ const Login = (props) => {
 
   return (
     <View style={container}>
-      <Text style={Title}>Login:</Text>
+      <Text style={title}>Login:</Text>
       <Text style={FormLabel}>Username:</Text>
       <TextInput
         style={FormTextInput}

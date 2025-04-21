@@ -7,28 +7,80 @@ import { ComumStyles } from '../../components/Styles/ComumStyles';
 import style from './style/style';
 
 const Exercicio = (props) => {
-  const { id, nome, descricao, grupoMuscular } = props;
+  const { id, nome, grupoMuscular, dadosRegistrosAtividades } = props;
+  const { destaque, ultimaCarga, ultimaDistancia } = dadosRegistrosAtividades;
   const navigation = useNavigation();
-  const { ExercicioDescricaoText, BotaoHistorico, BotaoTexto } = style;
+  const {
+    exercicioHeader,
+    exercicioNome,
+    grupoMuscularText,
+    historicoSection,
+    historicoTitulo,
+    recordeValue,
+    ultimoDadoValue,
+    botaoHistorico,
+    botaoTexto,
+    divider,
+    destaquesRow,
+    destaqueBox,
+    destaqueLabel,
+  } = style;
 
-  const { ElementContainer, SubTitle, SubSubTitle } = ComumStyles;
+  const { ElementContainer } = ComumStyles;
 
   const redirectToHistorico = () => {
-    navigation.navigate('HistoricoCargas', {
+    navigation.navigate('RegistroAtividadesCompleto', {
       exercicioId: id,
       exercicioNome: nome,
     });
   };
 
+  const hasDestaque =
+    dadosRegistrosAtividades !== null && dadosRegistrosAtividades !== undefined;
+  const showDistancia = ultimaDistancia && !ultimaCarga;
+
   return (
     <View style={ElementContainer}>
-      <Text style={SubTitle}>{nome}</Text>
-      <Text style={SubSubTitle}>{grupoMuscular}</Text>
-      <Text style={ExercicioDescricaoText}>{descricao}</Text>
+      <View style={exercicioHeader}>
+        <Text style={exercicioNome}>{nome}</Text>
+        {grupoMuscular && (
+          <Text style={grupoMuscularText}>{grupoMuscular}</Text>
+        )}
+      </View>
 
-      <TouchableOpacity style={BotaoHistorico} onPress={redirectToHistorico}>
-        <MaterialIcons name="history" size={24} color="#fff" />
-        <Text style={BotaoTexto}>Ver Cargas</Text>
+      {hasDestaque && (
+        <View style={historicoSection}>
+          <Text style={historicoTitulo}>SEU PROGRESSO</Text>
+
+          <View style={divider} />
+
+          <View style={destaquesRow}>
+            <View style={destaqueBox}>
+              <Text style={destaqueLabel}>RECORDE</Text>
+              <Text style={recordeValue}>{destaque || '-'}</Text>
+            </View>
+
+            <View style={destaqueBox}>
+              <Text style={destaqueLabel}>
+                {showDistancia ? 'ÚLTIMA DISTÂNCIA' : 'ÚLTIMA CARGA'}
+              </Text>
+              <Text style={ultimoDadoValue}>
+                {showDistancia ? ultimaDistancia : ultimaCarga || '-'}
+              </Text>
+            </View>
+          </View>
+
+          <View style={divider} />
+        </View>
+      )}
+
+      <TouchableOpacity
+        style={botaoHistorico}
+        onPress={redirectToHistorico}
+        activeOpacity={0.7}
+      >
+        <MaterialIcons name="history" size={18} color="#fff" />
+        <Text style={botaoTexto}>VER HISTÓRICO</Text>
       </TouchableOpacity>
     </View>
   );
@@ -37,8 +89,8 @@ const Exercicio = (props) => {
 Exercicio.propTypes = {
   id: PropTypes.number.isRequired,
   nome: PropTypes.string.isRequired,
-  descricao: PropTypes.string.isRequired,
   grupoMuscular: PropTypes.string.isRequired,
+  dadosRegistrosAtividades: PropTypes.object.isRequired,
 };
 
 export default Exercicio;

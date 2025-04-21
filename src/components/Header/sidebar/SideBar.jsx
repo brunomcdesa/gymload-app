@@ -9,7 +9,7 @@ import style from './styles/style';
 
 const SideBar = (props) => {
   const { Button, ButtonCadastroAdmin, ButtonText, Content, Footer } = style;
-  const { Container } = ComumStyles;
+  const { container } = ComumStyles;
   const { logout, user } = useContext(AuthContext);
   const { navigation } = props;
   const isAdmin = useIsAdmin();
@@ -28,7 +28,7 @@ const SideBar = (props) => {
   };
 
   return (
-    <View style={Container}>
+    <View style={container}>
       <View style={Content}>
         <UsuarioInfo usuarioNome={user.nome} />
       </View>

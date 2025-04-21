@@ -3,16 +3,30 @@ import { SectionList, Text, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import BackButton from '../../../../components/Button/BackButton';
 import LoadingIndicator from '../../../../components/Loading/LoadingIndicator';
-import { ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
 import * as Api from '../Api';
-import Carga from '../Carga';
 import style from '../style/style';
+import RegistroCarga from './RegistroCarga';
 
-const HistoricoCompletoCargas = (props) => {
-  const { qtdSeriesText, cargaInfoContainer, dataUltimoHistoricoStyle } = style;
-  const { Container, Title, Botoes } = ComumStyles;
+const RegistroAtividadesCompleto = (props) => {
+  const {
+    header,
+    title,
+    subtitle,
+    listContent,
+    cargaContainer,
+    cargaItem,
+    seriesContainer,
+    cargaValue,
+    seriesText,
+    sectionHeader,
+    sectionHeaderText,
+    footer,
+  } = style;
+  const { container } = ComumStyles;
   const { exercicioId, exercicioNome } = props.route.params;
   const [historicoCargasCompleto, setHistoricoCargasCompleto] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -20,7 +34,7 @@ const HistoricoCompletoCargas = (props) => {
   const fetchCargas = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await Api.fetchHistoricoCargasCompleto({
+      const { data } = await Api.fetchRegistroAtividadeCompleto({
         exercicioId: exercicioId,
       });
       setHistoricoCargasCompleto(data);
@@ -60,35 +74,55 @@ const HistoricoCompletoCargas = (props) => {
   const groupedCargas = groupCargasByDate(historicoCargasCompleto);
 
   return (
-    <View style={Container}>
-      <Text style={Title}>{exercicioNome}</Text>
+    <View style={container}>
+      <View style={header}>
+        <Text style={title}>{exercicioNome}</Text>
+        <Text style={subtitle}>Registro Completo</Text>
+      </View>
+
       {loading ? (
         <LoadingIndicator />
       ) : (
-        <>
-          <SectionList
-            sections={groupedCargas}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item: carga }) => (
-              <View style={cargaInfoContainer}>
-                <Text style={qtdSeriesText}>{carga.qtdSeries}x</Text>
-                <Carga carga={carga.carga} qtdRepeticoes={carga.dataCadastro} />
+        <SectionList
+          sections={groupedCargas}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={listContent}
+          renderItem={({ item: carga }) => (
+            <View style={cargaItem}>
+              <View style={seriesContainer}>
+                <MaterialIcons
+                  name="repeat"
+                  size={18}
+                  color={colors.secondary}
+                />
+                <Text style={seriesText}>{carga.qtdSeries}x</Text>
               </View>
-            )}
-            renderSectionHeader={({ section: { title } }) => (
-              <Text style={dataUltimoHistoricoStyle}>{title}</Text>
-            )}
-          />
-        </>
+
+              <View style={cargaContainer}>
+                <RegistroCarga
+                  carga={carga.carga}
+                  qtdRepeticoes={carga.qtdRepeticoes}
+                  style={cargaValue}
+                />
+              </View>
+            </View>
+          )}
+          renderSectionHeader={({ section: { title } }) => (
+            <View style={sectionHeader}>
+              <Text style={sectionHeaderText}>{title}</Text>
+            </View>
+          )}
+        />
       )}
-      <View style={Botoes}>
+
+      <View style={footer}>
         <BackButton navigation={props.navigation} />
       </View>
     </View>
   );
 };
 
-HistoricoCompletoCargas.propTypes = {
+RegistroAtividadesCompleto.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       exercicioId: PropTypes.number.isRequired,
@@ -100,4 +134,4 @@ HistoricoCompletoCargas.propTypes = {
   }).isRequired,
 };
 
-export default HistoricoCompletoCargas;
+export default RegistroAtividadesCompleto;

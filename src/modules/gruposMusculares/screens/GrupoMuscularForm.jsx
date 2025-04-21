@@ -9,7 +9,7 @@ import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 
 const GrupoMuscularForm = (props) => {
-  const { Title, Botoes, FormContainer, FormLabel, FormTextInput } =
+  const { title, Botoes, FormContainer, FormLabel, FormTextInput } =
     ComumStyles;
   const { navigation } = props;
   const [formData, setFormData] = useState({
@@ -44,7 +44,7 @@ const GrupoMuscularForm = (props) => {
 
   return (
     <View style={FormContainer}>
-      <Text style={Title}>Adicionar Grupo Muscular</Text>
+      <Text style={title}>Adicionar Grupo Muscular</Text>
 
       <Text style={FormLabel}>Nome:</Text>
       <TextInput

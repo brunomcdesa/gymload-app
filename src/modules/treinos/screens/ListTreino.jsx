@@ -1,18 +1,31 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AddButton from '../../../components/Button/AddButton';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as Api from '../Api';
-import Treino from '../Treino';
+import style from '../style/style';
 
-const renderEmptyList = () => <EmptyList value="treino" />;
-
-const ListTreino = (props) => {
-  const { Container, Title } = ComumStyles;
+const ListTreino = () => {
+  const {
+    header,
+    title,
+    subtitle,
+    treinoItem,
+    treinoInfo,
+    treinoData,
+    treinoNome,
+    emptyList,
+    searchInput,
+    separator,
+    addButton,
+    listContent,
+  } = style;
+  const { container } = ComumStyles;
   const [treinos, setTreinos] = useState([]);
   const [filteredTreinos, setFilteredTreinos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -53,15 +66,38 @@ const ListTreino = (props) => {
     setFilteredTreinos(filteredData);
   };
 
+  const renderTreinoItem = ({ item: treino }) => (
+    <TouchableOpacity
+      onPress={() => redirectToListExerciciosTreino(treino)}
+      activeOpacity={0.7}
+    >
+      <View style={treinoItem}>
+        <View style={treinoInfo}>
+          <Text style={treinoNome}>{treino.nome}</Text>
+          <Text style={treinoData}>
+            Criado em: {treino.dataCadastro.split(' ')[0]}
+          </Text>
+        </View>
+        <MaterialIcons name="chevron-right" size={24} color="#aaa" />
+      </View>
+    </TouchableOpacity>
+  );
+
+  const renderEmptyList = () => <EmptyList value="treino" style={emptyList} />;
+
   return (
-    <View style={Container}>
-      <Text style={Title}>Treinos</Text>
+    <View style={container}>
+      <View style={header}>
+        <Text style={title}>Meus Treinos</Text>
+        <Text style={subtitle}>Gerencie seus treinos cadastrados</Text>
+      </View>
 
       <SearchInput
         placeholder="Pesquisar treinos..."
         onSearch={handleSearchResults}
         initialData={treinos}
         searchKeys={['nome']}
+        style={searchInput}
       />
 
       {loading ? (
@@ -69,24 +105,15 @@ const ListTreino = (props) => {
       ) : (
         <FlatList
           data={filteredTreinos}
-          keyExtractor={(treino) => treino.id}
-          renderItem={({ item: treino }) => (
-            <TouchableOpacity
-              onPress={() => redirectToListExerciciosTreino(treino)}
-            >
-              <Treino
-                id={treino.id}
-                nome={treino.nome}
-                dataCadastro={treino.dataCadastro}
-              />
-            </TouchableOpacity>
-          )}
+          keyExtractor={(treino) => treino.id.toString()}
+          renderItem={renderTreinoItem}
           ListEmptyComponent={renderEmptyList}
+          contentContainerStyle={listContent}
+          ItemSeparatorComponent={() => <View style={separator} />}
         />
       )}
-      <View>
-        <AddButton onPress={redirectToTreinoForm} />
-      </View>
+
+      <AddButton onPress={redirectToTreinoForm} style={addButton} />
     </View>
   );
 };

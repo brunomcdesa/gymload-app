@@ -11,7 +11,7 @@ import * as Api from './Api';
 
 const EsqueciMinhaSenhaForm = (props) => {
   const {
-    Title,
+    title,
     Botoes,
     FormContainer,
     FormLabel,
@@ -53,7 +53,7 @@ const EsqueciMinhaSenhaForm = (props) => {
 
   return (
     <View style={FormContainer}>
-      <Text style={Title}>Alterar Senha</Text>
+      <Text style={title}>Alterar Senha</Text>
 
       <Text style={FormLabel}>Username:</Text>
       <TextInput
