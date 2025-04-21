@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  AddButtonStyle: {
+  addButtonStyle: {
     backgroundColor: '#007AFF',
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  BackButtonStyle: {
+  backButtonStyle: {
     backgroundColor: '#dc3545',
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -17,7 +17,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  SaveButtonStyle: {
+  saveButtonStyle: {
     backgroundColor: '#28a745',
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -25,7 +25,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  CadastroButtonStyle: {
+  cadastroButtonStyle: {
     backgroundColor: '#A1F6',
     paddingVertical: 12,
     paddingHorizontal: 16,
@@ -33,10 +33,10 @@ export default StyleSheet.create({
     alignSelf: 'center',
     width: '80%',
   },
-  Disabled: {
+  disabled: {
     backgroundColor: '#a0a0a0',
   },
-  TextStyle: {
+  textStyle: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
@@ -47,5 +47,34 @@ export default StyleSheet.create({
     right: '2%',
     top: '38%',
     transform: [{ translateY: -12 }],
+  },
+  loginButton: {
+    backgroundColor: '#4F46E5',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  botaoEsqueciSenha: {
+    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  textoEsqueciSenha: {
+    color: '#2563EB',
+    fontSize: 14,
   },
 });

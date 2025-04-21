@@ -35,4 +35,8 @@ export default StyleSheet.create({
     color: colors.buttonText,
     fontWeight: 'bold',
   },
+  containerEsqueciSenha: {
+    alignItems: 'center',
+    marginTop: 8,
+  },
 });

@@ -4,10 +4,10 @@ import { Text, TouchableOpacity } from 'react-native';
 import style from './style/style';
 
 const CadastroButton = (props) => {
-  const { CadastroButtonStyle, TextStyle } = style;
+  const { cadastroButtonStyle, textStyle } = style;
   return (
-    <TouchableOpacity style={CadastroButtonStyle} onPress={props.onPress}>
-      <Text style={TextStyle}>{props.text}</Text>
+    <TouchableOpacity style={cadastroButtonStyle} onPress={props.onPress}>
+      <Text style={textStyle}>{props.text}</Text>
     </TouchableOpacity>
   );
 };

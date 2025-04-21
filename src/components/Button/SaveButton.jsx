@@ -5,17 +5,17 @@ import LoadingIndicator from '../Loading/LoadingIndicator';
 import style from './style/style';
 
 const SaveButton = (props) => {
-  const { SaveButtonStyle, Disabled, TextStyle } = style;
+  const { saveButtonStyle, disabled, textStyle } = style;
   const { onPress, loading } = props;
 
   return (
     <TouchableOpacity
-      style={[SaveButtonStyle, loading && Disabled]}
+      style={[saveButtonStyle, loading && disabled]}
       onPress={!loading ? onPress : null}
       disabled={loading}
       activeOpacity={0.7}
     >
-      {loading ? <LoadingIndicator /> : <Text style={TextStyle}>Salvar</Text>}
+      {loading ? <LoadingIndicator /> : <Text style={textStyle}>Salvar</Text>}
     </TouchableOpacity>
   );
 };

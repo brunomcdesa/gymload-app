@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import CadastroButton from '../../../components/Button/CadastroButton';
+import EsqueciMinhaSenhaButton from '../../../components/Button/EsqueciMinhaSenhaButton';
+import LoginButton from '../../../components/Button/LoginButton';
 import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
@@ -13,7 +15,14 @@ import style from './style/style';
 
 const Login = (props) => {
   const { Title, FormTextInput, FormLabel, passwordContainer } = ComumStyles;
-  const { container, separatorContainer, line, separatorText } = style;
+  const {
+    container,
+    separatorContainer,
+    line,
+    separatorText,
+    containerEsqueciSenha,
+  } = style;
+  const { navigation } = props;
   const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     username: '',
@@ -41,7 +50,11 @@ const Login = (props) => {
   };
 
   const handleRedirectCadastroUser = () => {
-    props.navigation.navigate('CadastroUsuario', { isCadastroAdmin: false });
+    navigation.navigate('CadastroUsuario', { isCadastroAdmin: false });
+  };
+
+  const handleRedirectResetPasswordForm = () => {
+    navigation.navigate('EsqueciMinhaSenha');
   };
 
   return (
@@ -77,8 +90,12 @@ const Login = (props) => {
       {loading ? (
         <LoadingIndicator />
       ) : (
-        <Button title="Realizar Login" onPress={handleRealizarLogin} />
+        <LoginButton onPress={handleRealizarLogin} />
       )}
+
+      <View style={containerEsqueciSenha}>
+        <EsqueciMinhaSenhaButton onPress={handleRedirectResetPasswordForm} />
+      </View>
 
       <View style={separatorContainer}>
         <View style={line} />

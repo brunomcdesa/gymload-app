@@ -1,15 +1,15 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  ToastSuccesStyle: {
+  toastSuccesStyle: {
     borderLeftColor: 'green',
     backgroundColor: '#333',
   },
-  ToastErrorStyle: {
+  toastErrorStyle: {
     backgroundColor: '#333',
     borderLeftColor: 'red',
   },
-  ToastTextStyle: {
+  toastTextStyle: {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',

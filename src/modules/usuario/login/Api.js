@@ -8,3 +8,9 @@ export const realizarLogin = (request, delay = 0) => {
 
   return pMinDelay(response, delay);
 };
+
+export const alterarSenha = (request, delay = 0) => {
+  const response = axiosPublic.put(`${authUrl}/alterar-senha`, { ...request });
+
+  return pMinDelay(response, delay);
+};

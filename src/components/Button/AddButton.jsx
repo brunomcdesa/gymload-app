@@ -4,14 +4,14 @@ import { Text, TouchableOpacity } from 'react-native';
 import style from './style/style';
 
 const AddButton = (props) => {
-  const { AddButtonStyle, TextStyle } = style;
+  const { addButtonStyle, textStyle } = style;
   return (
     <TouchableOpacity
-      style={AddButtonStyle}
+      style={addButtonStyle}
       onPress={props.onPress}
       activeOpacity={0.7}
     >
-      <Text style={TextStyle}>Adicionar</Text>
+      <Text style={textStyle}>Adicionar</Text>
     </TouchableOpacity>
   );
 };

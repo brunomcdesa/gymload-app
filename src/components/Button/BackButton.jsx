@@ -4,14 +4,14 @@ import { Text, TouchableOpacity } from 'react-native';
 import style from './style/style';
 
 const BackButton = (props) => {
-  const { BackButtonStyle, TextStyle } = style;
+  const { backButtonStyle, textStyle } = style;
   return (
     <TouchableOpacity
-      style={BackButtonStyle}
+      style={backButtonStyle}
       onPress={props.navigation.goBack}
       activeOpacity={0.7}
     >
-      <Text style={TextStyle}>Voltar</Text>
+      <Text style={textStyle}>Voltar</Text>
     </TouchableOpacity>
   );
 };
