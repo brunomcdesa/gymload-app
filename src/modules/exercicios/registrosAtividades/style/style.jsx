@@ -37,10 +37,7 @@ export default StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
   },
-  sectionSeparator: {
-    height: 15,
-  },
-  cargaItem: {
+  registroContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#2a2a2a',
@@ -50,48 +47,31 @@ export default StyleSheet.create({
     marginBottom: 8,
     borderWidth: 1,
     borderColor: '#383838',
+    shadowColor: '#ff5555',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
     justifyContent: 'space-between',
   },
-  seriesContainer: {
+  dataContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: 60,
+    paddingHorizontal: 8,
   },
-  seriesText: {
-    color: colors.textLight,
-    fontWeight: '600',
-    fontSize: 16,
+  dataText: {
     marginLeft: 8,
-  },
-  cargaInfo: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  timeText: {
-    color: '#aaa',
-    fontSize: 13,
-    width: 60,
-    textAlign: 'right',
+    fontSize: 14,
+    color: colors.textLight,
+    fontWeight: '500',
   },
   footer: {
     padding: 15,
     alignItems: 'center',
   },
-  registroCargaContainer: {
-    alignItems: 'center',
-  },
-  cargaText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: colors.textLight,
-    marginBottom: 2,
-  },
-  repeticoesText: {
-    fontSize: 14,
-    color: '#aaa',
-  },
-  unitText: {
-    fontSize: 12,
-    color: '#aaa',
+  divider: {
+    width: 1,
+    height: 30,
+    backgroundColor: '#383838',
   },
 });

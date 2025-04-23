@@ -7,7 +7,8 @@ import { ComumStyles } from '../../components/Styles/ComumStyles';
 import style from './style/style';
 
 const Exercicio = (props) => {
-  const { id, nome, grupoMuscular, dadosRegistrosAtividades } = props;
+  const { exercicioData, dadosRegistrosAtividades } = props;
+  const { nome, grupoMuscular } = exercicioData;
   const { destaque, ultimaCarga, ultimaDistancia } = dadosRegistrosAtividades;
   const navigation = useNavigation();
   const {
@@ -15,7 +16,6 @@ const Exercicio = (props) => {
     exercicioNome,
     grupoMuscularText,
     historicoSection,
-    historicoTitulo,
     recordeValue,
     ultimoDadoValue,
     botaoHistorico,
@@ -28,10 +28,9 @@ const Exercicio = (props) => {
 
   const { ElementContainer } = ComumStyles;
 
-  const redirectToHistorico = () => {
+  const redirectRegistroAtividadesCompleto = () => {
     navigation.navigate('RegistroAtividadesCompleto', {
-      exercicioId: id,
-      exercicioNome: nome,
+      exercicio: exercicioData,
     });
   };
 
@@ -50,8 +49,6 @@ const Exercicio = (props) => {
 
       {hasDestaque && (
         <View style={historicoSection}>
-          <Text style={historicoTitulo}>SEU PROGRESSO</Text>
-
           <View style={divider} />
 
           <View style={destaquesRow}>
@@ -76,7 +73,7 @@ const Exercicio = (props) => {
 
       <TouchableOpacity
         style={botaoHistorico}
-        onPress={redirectToHistorico}
+        onPress={redirectRegistroAtividadesCompleto}
         activeOpacity={0.7}
       >
         <MaterialIcons name="history" size={18} color="#fff" />
@@ -87,9 +84,7 @@ const Exercicio = (props) => {
 };
 
 Exercicio.propTypes = {
-  id: PropTypes.number.isRequired,
-  nome: PropTypes.string.isRequired,
-  grupoMuscular: PropTypes.string.isRequired,
+  exercicioData: PropTypes.object.isRequired,
   dadosRegistrosAtividades: PropTypes.object.isRequired,
 };
 

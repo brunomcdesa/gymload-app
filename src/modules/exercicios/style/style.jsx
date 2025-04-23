@@ -31,14 +31,6 @@ export default StyleSheet.create({
   historicoSection: {
     marginBottom: 16,
   },
-  historicoTitulo: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: colors.secondary,
-    textAlign: 'center',
-    marginBottom: 12,
-    letterSpacing: 1,
-  },
   destaquesRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',

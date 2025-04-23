@@ -3,13 +3,13 @@ import { SectionList, Text, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import BackButton from '../../../../components/Button/BackButton';
 import LoadingIndicator from '../../../../components/Loading/LoadingIndicator';
-import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../../components/Styles/ComumStyles';
 import * as Api from '../Api';
+import RegistroCardio from '../RegistroCardio';
+import RegistroCarga from '../RegistroCarga';
 import style from '../style/style';
-import RegistroCarga from './RegistroCarga';
 
 const RegistroAtividadesCompleto = (props) => {
   const {
@@ -17,34 +17,33 @@ const RegistroAtividadesCompleto = (props) => {
     title,
     subtitle,
     listContent,
-    cargaContainer,
-    cargaItem,
-    seriesContainer,
-    cargaValue,
-    seriesText,
     sectionHeader,
     sectionHeaderText,
     footer,
   } = style;
   const { container } = ComumStyles;
-  const { exercicioId, exercicioNome } = props.route.params;
-  const [historicoCargasCompleto, setHistoricoCargasCompleto] = useState([]);
+  const { exercicio } = props.route.params;
+  const { id, nome, tipoExercicioo } = exercicio;
+  const renderRegistroCarga = tipoExercicioo === 'MUSCULACAO';
+  const [registroAtividadeCompleto, setRegistroAtividadeCompleto] = useState(
+    [],
+  );
   const [loading, setLoading] = useState(false);
 
   const fetchCargas = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await Api.fetchRegistroAtividadeCompleto({
-        exercicioId: exercicioId,
+        exercicioId: id,
       });
-      setHistoricoCargasCompleto(data);
+      setRegistroAtividadeCompleto(data);
     } catch (error) {
       console.error('Erro ao buscar histórico de cargas:', error);
       return [];
     } finally {
       setLoading(false);
     }
-  }, [exercicioId]);
+  }, [id]);
 
   useFocusEffect(
     useCallback(() => {
@@ -52,17 +51,17 @@ const RegistroAtividadesCompleto = (props) => {
     }, [fetchCargas]),
   );
 
-  const groupCargasByDate = (cargas) => {
+  const groupRegistrosByDate = (registros) => {
     const grouped = {};
 
-    cargas.forEach((carga) => {
-      const date = carga.dataCadastro.split(' ')[0];
+    registros.forEach((registro) => {
+      const date = registro.dataCadastro.split(' ')[0];
 
       if (!grouped[date]) {
         grouped[date] = [];
       }
 
-      grouped[date].push(carga);
+      grouped[date].push(registro);
     });
 
     return Object.keys(grouped).map((date) => ({
@@ -71,12 +70,12 @@ const RegistroAtividadesCompleto = (props) => {
     }));
   };
 
-  const groupedCargas = groupCargasByDate(historicoCargasCompleto);
+  const groupedRegistros = groupRegistrosByDate(registroAtividadeCompleto);
 
   return (
     <View style={container}>
       <View style={header}>
-        <Text style={title}>{exercicioNome}</Text>
+        <Text style={title}>{nome}</Text>
         <Text style={subtitle}>Registro Completo</Text>
       </View>
 
@@ -84,27 +83,16 @@ const RegistroAtividadesCompleto = (props) => {
         <LoadingIndicator />
       ) : (
         <SectionList
-          sections={groupedCargas}
+          sections={groupedRegistros}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={listContent}
-          renderItem={({ item: carga }) => (
-            <View style={cargaItem}>
-              <View style={seriesContainer}>
-                <MaterialIcons
-                  name="repeat"
-                  size={18}
-                  color={colors.secondary}
-                />
-                <Text style={seriesText}>{carga.qtdSeries}x</Text>
-              </View>
-
-              <View style={cargaContainer}>
-                <RegistroCarga
-                  carga={carga.carga}
-                  qtdRepeticoes={carga.qtdRepeticoes}
-                  style={cargaValue}
-                />
-              </View>
+          renderItem={({ item: registro }) => (
+            <View>
+              {renderRegistroCarga ? (
+                <RegistroCarga registroData={registro} />
+              ) : (
+                <RegistroCardio registroData={registro} />
+              )}
             </View>
           )}
           renderSectionHeader={({ section: { title } }) => (
@@ -125,8 +113,7 @@ const RegistroAtividadesCompleto = (props) => {
 RegistroAtividadesCompleto.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
-      exercicioId: PropTypes.number.isRequired,
-      exercicioNome: PropTypes.string.isRequired,
+      exercicio: PropTypes.object.isRequired,
     }).isRequired,
   }).isRequired,
   navigation: PropTypes.shape({

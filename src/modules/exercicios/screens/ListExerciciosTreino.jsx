@@ -75,9 +75,7 @@ const ListExerciciosTreino = (props) => {
           keyExtractor={(exercicio) => exercicio.id}
           renderItem={({ item: exercicio }) => (
             <Exercicio
-              id={exercicio.id}
-              nome={exercicio.nome}
-              grupoMuscular={exercicio.grupoMuscularNome}
+              exercicioData={exercicio}
               dadosRegistrosAtividades={
                 dadosRegistrosAtividades[exercicio.id] || null
               }
