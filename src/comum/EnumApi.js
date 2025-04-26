@@ -20,3 +20,9 @@ export const fetchUnidadesPesosSelect = (delay = 0) => {
 
   return pMinDelay(response, delay);
 };
+
+export const fetchTiposEquipamentosSelect = (delay = 0) => {
+  const response = axiosPrivate.get(`${enumUrl}/tipos-equipamentos/select`);
+
+  return pMinDelay(response, delay);
+};

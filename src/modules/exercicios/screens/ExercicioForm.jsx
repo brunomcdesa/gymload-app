@@ -12,29 +12,48 @@ import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 
 const ExercicioForm = (props) => {
-  const { title, botoesContainer, formContainer, formLabel, formTextInput } =
-    ComumStyles;
+  const {
+    title,
+    botoesContainer,
+    formContainer,
+    formLabel,
+    formTextInput,
+    formLabelObrigatorio,
+    asteriscoObrigatorio,
+  } = ComumStyles;
   const { navigation } = props;
   const [formData, setFormData] = useState({
     nome: '',
+    tipoExercicio: null,
     descricao: '',
     grupoMuscularId: null,
-    tipoExercicio: '',
-    tipoPegada: '',
+    tipoEquipamento: null,
+    tipoPegada: null,
   });
   const [loading, setLoading] = useState(false);
+
   const [gruposMuscularesItems, setGruposMuscularesItems] = useState([]);
   const [openGrupoMuscularSelect, setOpenGrupoMuscularSelect] = useState(false);
   const [gruposMuscularesLoading, setGruposMuscularesLoading] = useState(false);
   const [grupoMuscularIdSelected, setGrupoMuscularIdSelected] = useState(null);
+
   const [tiposExercicioItems, setTiposExercicioItems] = useState([]);
   const [openTipoExercicioSelect, setOpenTipoExercicioSelect] = useState(false);
   const [tipoExercicioLoading, setTipoExercicioLoading] = useState(false);
   const [tipoExercicioSelected, setTipoExercicioSelected] = useState(null);
+
   const [tiposPegadaItems, setTiposPegadaItems] = useState([]);
   const [openTipoPegadaSelect, setOpenTipoPegadaSelect] = useState(false);
   const [tipoPegadaLoading, setTipoPegadaLoading] = useState(false);
   const [tipoPegadaSelected, setTipoPegadaSelected] = useState(null);
+
+  const [tipoEquipamentoItems, setTipoEquipamentoItems] = useState([]);
+  const [openTipoEquipamentoSelect, setOpenTipoEquipamentoSelect] =
+    useState(false);
+  const [tipoEquipamentoLoading, setTipoEquipamentoLoading] = useState(false);
+  const [tipoEquipamentoSelected, setTipoEquipamentoSelected] = useState(null);
+
+  const isExercicioMusculacao = tipoExercicioSelected === 'MUSCULACAO';
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({
@@ -46,10 +65,10 @@ const ExercicioForm = (props) => {
   const handleSubmit = async () => {
     if (
       !formData.nome ||
-      !formData.descricao ||
-      !formData.grupoMuscularId ||
       !formData.tipoExercicio ||
-      !formData.tipoPegada
+      (isExercicioMusculacao && !formData.grupoMuscularId) ||
+      (isExercicioMusculacao && !formData.tipoPegada) ||
+      (isExercicioMusculacao && !formData.tipoEquipamento)
     ) {
       throwToastError('Todos os campos são obrigatórios!');
       return;
@@ -105,17 +124,97 @@ const ExercicioForm = (props) => {
     }
   };
 
+  const fetchTiposEquipamentosSelect = async () => {
+    try {
+      setTipoEquipamentoLoading(true);
+      const { data } = await EnumApi.fetchTiposEquipamentosSelect();
+      setTipoEquipamentoItems(data);
+    } catch (error) {
+      console.log('Erro ao buscar select de tipos de exercícios.', error);
+    } finally {
+      setTipoEquipamentoLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchGruposMuscularesSelect();
     fetchTiposExerciciosSelect();
     fetchTiposPegadasSelect();
+    fetchTiposEquipamentosSelect();
   }, []);
+
+  const renderExerciciosMusculacaoFields = () => {
+    return (
+      <View>
+        <View style={formLabelObrigatorio}>
+          <Text style={formLabel}>Grupo Muscular:</Text>
+          <Text style={asteriscoObrigatorio}>*</Text>
+        </View>
+        <SelectInput
+          open={openGrupoMuscularSelect}
+          setOpen={setOpenGrupoMuscularSelect}
+          items={gruposMuscularesItems}
+          setItems={setGruposMuscularesItems}
+          value={grupoMuscularIdSelected || ''}
+          setValue={setGrupoMuscularIdSelected}
+          loading={gruposMuscularesLoading}
+          multiple={false}
+          placeholder="Selecione o grupo muscular"
+          handleChange={handleChange}
+          field="grupoMuscularId"
+          zIndex={3000}
+          zIndexInverse={1000}
+        />
+
+        <View style={formLabelObrigatorio}>
+          <Text style={formLabel}>Tipo de Equipamento:</Text>
+          <Text style={asteriscoObrigatorio}>*</Text>
+        </View>
+        <SelectInput
+          open={openTipoEquipamentoSelect}
+          setOpen={setOpenTipoEquipamentoSelect}
+          items={tipoEquipamentoItems}
+          setItems={setTipoEquipamentoItems}
+          value={tipoEquipamentoSelected || ''}
+          setValue={setTipoEquipamentoSelected}
+          loading={tipoEquipamentoLoading}
+          placeholder="Selecione o tipo de equipamento"
+          handleChange={handleChange}
+          field="tipoEquipamento"
+          zIndex={2000}
+          zIndexInverse={200}
+        />
+
+        <View style={formLabelObrigatorio}>
+          <Text style={formLabel}>Tipo de Pegada:</Text>
+          <Text style={asteriscoObrigatorio}>*</Text>
+        </View>
+        <SelectInput
+          open={openTipoPegadaSelect}
+          setOpen={setOpenTipoPegadaSelect}
+          items={tiposPegadaItems}
+          setItems={setTiposPegadaItems}
+          value={tipoPegadaSelected || ''}
+          setValue={setTipoPegadaSelected}
+          loading={tipoPegadaLoading}
+          placeholder="Selecione o tipo de pegada"
+          handleChange={handleChange}
+          field="tipoPegada"
+          zIndex={1000}
+          zIndexInverse={100}
+        />
+      </View>
+    );
+  };
 
   return (
     <View style={formContainer}>
       <Text style={title}>Adicionar Exercício</Text>
 
-      <Text style={formLabel}>Nome:</Text>
+      <View style={formLabelObrigatorio}>
+        <Text style={formLabel}>Nome:</Text>
+        <Text style={asteriscoObrigatorio}>*</Text>
+      </View>
       <TextInput
         style={formTextInput}
         placeholder="Digite o nome"
@@ -123,34 +222,10 @@ const ExercicioForm = (props) => {
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
-      <Text style={formLabel}>Descricao:</Text>
-      <TextInput
-        style={formTextInput}
-        placeholder="Digite a descricao"
-        value={formData.descricao}
-        onChangeText={(descricaoValue) =>
-          handleChange('descricao', descricaoValue)
-        }
-      />
-
-      <Text style={formLabel}>Grupo Muscular:</Text>
-      <SelectInput
-        open={openGrupoMuscularSelect}
-        setOpen={setOpenGrupoMuscularSelect}
-        items={gruposMuscularesItems}
-        setItems={setGruposMuscularesItems}
-        value={grupoMuscularIdSelected || ''}
-        setValue={setGrupoMuscularIdSelected}
-        loading={gruposMuscularesLoading}
-        multiple={false}
-        placeholder="Selecione o grupo muscular"
-        handleChange={handleChange}
-        field="grupoMuscularId"
-        zIndex={3000}
-        zIndexInverse={1000}
-      />
-
-      <Text style={formLabel}>Tipo de Exercício:</Text>
+      <View style={formLabelObrigatorio}>
+        <Text style={formLabel}>Tipo de Exercício:</Text>
+        <Text style={asteriscoObrigatorio}>*</Text>
+      </View>
       <SelectInput
         open={openTipoExercicioSelect}
         setOpen={setOpenTipoExercicioSelect}
@@ -166,21 +241,17 @@ const ExercicioForm = (props) => {
         zIndexInverse={200}
       />
 
-      <Text style={formLabel}>Tipo de Pegada:</Text>
-      <SelectInput
-        open={openTipoPegadaSelect}
-        setOpen={setOpenTipoPegadaSelect}
-        items={tiposPegadaItems}
-        setItems={setTiposPegadaItems}
-        value={tipoPegadaSelected || ''}
-        setValue={setTipoPegadaSelected}
-        loading={tipoPegadaLoading}
-        placeholder="Selecione o tipo de pegada"
-        handleChange={handleChange}
-        field="tipoPegada"
-        zIndex={1000}
-        zIndexInverse={100}
+      <Text style={formLabel}>Descricao:</Text>
+      <TextInput
+        style={formTextInput}
+        placeholder="Digite a descricao"
+        value={formData.descricao}
+        onChangeText={(descricaoValue) =>
+          handleChange('descricao', descricaoValue)
+        }
       />
+
+      {isExercicioMusculacao && renderExerciciosMusculacaoFields()}
 
       <View style={botoesContainer}>
         <BackButton navigation={navigation} />
