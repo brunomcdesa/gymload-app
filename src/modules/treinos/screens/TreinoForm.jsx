@@ -12,7 +12,7 @@ import SelectInput from '../../../components/Inputs/SelectInput';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 
 const TreinoForm = (props) => {
-  const { FormContainer, title, FormLabel, FormTextInput, Botoes } =
+  const { formContainer, title, formLabel, formTextInput, botoesContainer } =
     ComumStyles;
   const { navigation } = props;
 
@@ -70,18 +70,18 @@ const TreinoForm = (props) => {
   }, [formData.exerciciosIds]);
 
   return (
-    <View style={FormContainer}>
+    <View style={formContainer}>
       <Text style={title}>Adicionar Treino</Text>
 
-      <Text style={FormLabel}>Nome:</Text>
+      <Text style={formLabel}>Nome:</Text>
       <TextInput
-        style={FormTextInput}
+        style={formTextInput}
         placeholder="Digite o nome"
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
-      <Text style={FormLabel}>Exercicios:</Text>
+      <Text style={formLabel}>Exercicios:</Text>
       <SelectInput
         open={open}
         setOpen={setOpen}
@@ -100,7 +100,7 @@ const TreinoForm = (props) => {
         zIndexInverse={100}
       />
 
-      <View style={Botoes}>
+      <View style={botoesContainer}>
         <BackButton navigation={navigation} />
         <SaveButton onPress={handleSave} loading={loading} />
       </View>

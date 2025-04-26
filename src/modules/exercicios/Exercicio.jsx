@@ -26,8 +26,6 @@ const Exercicio = (props) => {
     destaqueLabel,
   } = style;
 
-  const { ElementContainer } = ComumStyles;
-
   const redirectRegistroAtividadesCompleto = () => {
     navigation.navigate('RegistroAtividadesCompleto', {
       exercicio: exercicioData,
@@ -39,7 +37,7 @@ const Exercicio = (props) => {
   const showDistancia = ultimaDistancia && !ultimaCarga;
 
   return (
-    <View style={ElementContainer}>
+    <View style={ComumStyles.elementContainer}>
       <View style={exercicioHeader}>
         <Text style={exercicioNome}>{nome}</Text>
         {grupoMuscular && (

@@ -7,12 +7,12 @@ import style from './style/style';
 const GrupoMuscular = (props) => {
   const { nome } = props;
   const { GrupoMuscularContainer } = style;
-  const { ElementContainer, SubTitle } = ComumStyles;
+  const { elementContainer, subTitle } = ComumStyles;
 
   return (
-    <View style={ElementContainer}>
+    <View style={elementContainer}>
       <View style={GrupoMuscularContainer}>
-        <Text style={SubTitle}>{nome}</Text>
+        <Text style={subTitle}>{nome}</Text>
       </View>
     </View>
   );

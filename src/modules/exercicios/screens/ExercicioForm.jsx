@@ -12,7 +12,7 @@ import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 
 const ExercicioForm = (props) => {
-  const { title, Botoes, FormContainer, FormLabel, FormTextInput } =
+  const { title, botoesContainer, formContainer, formLabel, formTextInput } =
     ComumStyles;
   const { navigation } = props;
   const [formData, setFormData] = useState({
@@ -112,20 +112,20 @@ const ExercicioForm = (props) => {
   }, []);
 
   return (
-    <View style={FormContainer}>
+    <View style={formContainer}>
       <Text style={title}>Adicionar Exercício</Text>
 
-      <Text style={FormLabel}>Nome:</Text>
+      <Text style={formLabel}>Nome:</Text>
       <TextInput
-        style={FormTextInput}
+        style={formTextInput}
         placeholder="Digite o nome"
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
-      <Text style={FormLabel}>Descricao:</Text>
+      <Text style={formLabel}>Descricao:</Text>
       <TextInput
-        style={FormTextInput}
+        style={formTextInput}
         placeholder="Digite a descricao"
         value={formData.descricao}
         onChangeText={(descricaoValue) =>
@@ -133,7 +133,7 @@ const ExercicioForm = (props) => {
         }
       />
 
-      <Text style={FormLabel}>Grupo Muscular:</Text>
+      <Text style={formLabel}>Grupo Muscular:</Text>
       <SelectInput
         open={openGrupoMuscularSelect}
         setOpen={setOpenGrupoMuscularSelect}
@@ -150,7 +150,7 @@ const ExercicioForm = (props) => {
         zIndexInverse={1000}
       />
 
-      <Text style={FormLabel}>Tipo de Exercício:</Text>
+      <Text style={formLabel}>Tipo de Exercício:</Text>
       <SelectInput
         open={openTipoExercicioSelect}
         setOpen={setOpenTipoExercicioSelect}
@@ -166,7 +166,7 @@ const ExercicioForm = (props) => {
         zIndexInverse={200}
       />
 
-      <Text style={FormLabel}>Tipo de Pegada:</Text>
+      <Text style={formLabel}>Tipo de Pegada:</Text>
       <SelectInput
         open={openTipoPegadaSelect}
         setOpen={setOpenTipoPegadaSelect}
@@ -182,7 +182,7 @@ const ExercicioForm = (props) => {
         zIndexInverse={100}
       />
 
-      <View style={Botoes}>
+      <View style={botoesContainer}>
         <BackButton navigation={navigation} />
         <SaveButton onPress={handleSubmit} loading={loading} />
       </View>

@@ -24,38 +24,38 @@ const ComumStyles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 5,
   },
-  SubTitle: {
+  subTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: colors.textDark,
     marginBottom: 5,
     textAlign: 'center',
   },
-  SubSubTitle: {
+  subSubTitle: {
     fontSize: 16,
     fontWeight: '600',
     color: '#444',
     marginBottom: 8,
     textAlign: 'center',
   },
-  Botoes: {
+  botoesContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
   },
-  FormContainer: {
+  formContainer: {
     padding: 20,
     flex: 1,
     backgroundColor: colors.background,
   },
-  FormLabel: {
+  formLabel: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
     marginTop: '3%',
     color: '#fff',
   },
-  FormTextInput: {
+  formTextInput: {
     height: 40,
     borderWidth: 1,
     borderColor: '#ccc',
@@ -64,14 +64,14 @@ const ComumStyles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#fff',
   },
-  FormSelectInput: {
+  formSelectInput: {
     height: 50,
     borderWidth: 1,
     borderColor: '#ccc',
     backgroundColor: '#f2f2f2',
     marginBottom: 15,
   },
-  ElementContainer: {
+  elementContainer: {
     flex: 1,
     padding: 20,
     backgroundColor: '#2a2a2a',
@@ -88,6 +88,15 @@ const ComumStyles = StyleSheet.create({
   passwordContainer: {
     position: 'relative',
     justifyContent: 'center',
+  },
+  formLabelObrigatorio: {
+    flexDirection: 'row',
+  },
+  asteriscoObrigatorio: {
+    color: '#ff5555',
+    marginLeft: 2,
+    marginTop: '3%',
+
   },
 });
 

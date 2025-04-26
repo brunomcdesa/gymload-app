@@ -4,12 +4,12 @@ import { Text, View } from 'react-native';
 import { ComumStyles } from '../../components/Styles/ComumStyles';
 
 const Treino = (props) => {
-  const { ElementContainer, SubTitle, SubSubTitle } = ComumStyles;
+  const { elementContainer, subTitle, subSubTitle } = ComumStyles;
 
   return (
-    <View style={ElementContainer}>
-      <Text style={SubTitle}>{props.nome}</Text>
-      <Text style={SubSubTitle}>{props.dataCadastro}</Text>
+    <View style={elementContainer}>
+      <Text style={subTitle}>{props.nome}</Text>
+      <Text style={subSubTitle}>{props.dataCadastro}</Text>
     </View>
   );
 };

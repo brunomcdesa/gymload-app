@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import CargaForm from '../registrosAtividades/screens/CargaForm';
+import RegistroAtividadeForm from '../registrosAtividades/screens/RegistroAtividadeForm';
 import RegistroAtividadesCompleto from '../registrosAtividades/screens/RegistroAtividadesCompleto';
 import ExercicioForm from '../screens/ExercicioForm';
 import ListExercicios from '../screens/ListExercicios';
@@ -16,7 +16,10 @@ const ExerciciosStackNavigator = () => {
         name="RegistroAtividadesCompleto"
         component={RegistroAtividadesCompleto}
       />
-      <Stack.Screen name="CargaForm" component={CargaForm} />
+      <Stack.Screen
+        name="RegistroAtividadeForm"
+        component={RegistroAtividadeForm}
+      />
     </Stack.Navigator>
   );
 };

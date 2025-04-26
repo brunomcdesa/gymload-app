@@ -14,7 +14,7 @@ import * as RegistroAtividadeApi from '../registrosAtividades/Api';
 const ListExerciciosTreino = (props) => {
   const { route, navigation } = props;
   const { treinoId, treinoNome } = route.params;
-  const { container, title, Botoes } = ComumStyles;
+  const { container, title, botoesContainer } = ComumStyles;
   const [exercicios, setExercicios] = useState([]);
   const [dadosRegistrosAtividades, setDadosRegistrosAtividades] = useState({});
   const [loading, setLoading] = useState(false);
@@ -84,7 +84,7 @@ const ListExerciciosTreino = (props) => {
         />
       )}
 
-      <View style={Botoes}>
+      <View style={botoesContainer}>
         <BackButton navigation={navigation} />
         <AddButton onPress={() => {}} />
       </View>

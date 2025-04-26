@@ -3,6 +3,7 @@ import { SectionList, Text, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
+import AddButton from '../../../../components/Button/AddButton';
 import BackButton from '../../../../components/Button/BackButton';
 import LoadingIndicator from '../../../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../../../components/Styles/ComumStyles';
@@ -19,12 +20,12 @@ const RegistroAtividadesCompleto = (props) => {
     listContent,
     sectionHeader,
     sectionHeaderText,
-    footer,
   } = style;
-  const { container } = ComumStyles;
-  const { exercicio } = props.route.params;
-  const { id, nome, tipoExercicioo } = exercicio;
-  const renderRegistroCarga = tipoExercicioo === 'MUSCULACAO';
+  const { container, botoesContainer } = ComumStyles;
+  const {
+    exercicio: { id, nome, tipoExercicioo },
+  } = props.route.params;
+  const isExercicioMusculacao = tipoExercicioo === 'MUSCULACAO';
   const [registroAtividadeCompleto, setRegistroAtividadeCompleto] = useState(
     [],
   );
@@ -72,6 +73,14 @@ const RegistroAtividadesCompleto = (props) => {
 
   const groupedRegistros = groupRegistrosByDate(registroAtividadeCompleto);
 
+  const redirectToRegistroAtividadeForm = () => {
+    props.navigation.navigate('RegistroAtividadeForm', {
+      exercicioId: id,
+      exercicioNome: nome,
+      isExercicioMusculacao,
+    });
+  };
+
   return (
     <View style={container}>
       <View style={header}>
@@ -88,7 +97,7 @@ const RegistroAtividadesCompleto = (props) => {
           contentContainerStyle={listContent}
           renderItem={({ item: registro }) => (
             <View>
-              {renderRegistroCarga ? (
+              {isExercicioMusculacao ? (
                 <RegistroCarga registroData={registro} />
               ) : (
                 <RegistroCardio registroData={registro} />
@@ -103,8 +112,9 @@ const RegistroAtividadesCompleto = (props) => {
         />
       )}
 
-      <View style={footer}>
+      <View style={botoesContainer}>
         <BackButton navigation={props.navigation} />
+        <AddButton onPress={redirectToRegistroAtividadeForm} />
       </View>
     </View>
   );

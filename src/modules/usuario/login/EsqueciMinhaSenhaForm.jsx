@@ -12,10 +12,10 @@ import * as Api from './Api';
 const EsqueciMinhaSenhaForm = (props) => {
   const {
     title,
-    Botoes,
-    FormContainer,
-    FormLabel,
-    FormTextInput,
+    botoesContainer,
+    formContainer,
+    formLabel,
+    formTextInput,
     passwordContainer,
   } = ComumStyles;
   const [formData, setFormData] = useState({
@@ -52,12 +52,12 @@ const EsqueciMinhaSenhaForm = (props) => {
   };
 
   return (
-    <View style={FormContainer}>
+    <View style={formContainer}>
       <Text style={title}>Alterar Senha</Text>
 
-      <Text style={FormLabel}>Username:</Text>
+      <Text style={formLabel}>Username:</Text>
       <TextInput
-        style={FormTextInput}
+        style={formTextInput}
         placeholder="Digite seu username"
         value={formData.username}
         onChangeText={(usernameValue) =>
@@ -65,10 +65,10 @@ const EsqueciMinhaSenhaForm = (props) => {
         }
       />
 
-      <Text style={FormLabel}>Nova senha:</Text>
+      <Text style={formLabel}>Nova senha:</Text>
       <View style={passwordContainer}>
         <TextInput
-          style={FormTextInput}
+          style={formTextInput}
           placeholder="Digite a senha"
           value={formData.password}
           onChangeText={(passwordValue) =>
@@ -82,7 +82,7 @@ const EsqueciMinhaSenhaForm = (props) => {
         />
       </View>
 
-      <View style={Botoes}>
+      <View style={botoesContainer}>
         <BackButton navigation={navigation} />
         <SaveButton onPress={handleSubmit} loading={loading} />
       </View>

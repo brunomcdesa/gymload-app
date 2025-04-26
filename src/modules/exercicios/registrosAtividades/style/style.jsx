@@ -65,10 +65,6 @@ export default StyleSheet.create({
     color: colors.textLight,
     fontWeight: '500',
   },
-  footer: {
-    padding: 15,
-    alignItems: 'center',
-  },
   divider: {
     width: 1,
     height: 30,

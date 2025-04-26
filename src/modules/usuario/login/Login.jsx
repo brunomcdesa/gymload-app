@@ -14,7 +14,7 @@ import * as Api from './Api';
 import style from './style/style';
 
 const Login = (props) => {
-  const { title, FormTextInput, FormLabel, passwordContainer } = ComumStyles;
+  const { title, formTextInput, formLabel, passwordContainer } = ComumStyles;
   const {
     container,
     separatorContainer,
@@ -60,9 +60,9 @@ const Login = (props) => {
   return (
     <View style={container}>
       <Text style={title}>Login:</Text>
-      <Text style={FormLabel}>Username:</Text>
+      <Text style={formLabel}>Username:</Text>
       <TextInput
-        style={FormTextInput}
+        style={formTextInput}
         placeholder="Digite o username"
         value={formData.username}
         onChangeText={(usernameValue) =>
@@ -70,10 +70,10 @@ const Login = (props) => {
         }
       />
 
-      <Text style={FormLabel}>senha:</Text>
+      <Text style={formLabel}>senha:</Text>
       <View style={passwordContainer}>
         <TextInput
-          style={FormTextInput}
+          style={formTextInput}
           placeholder="Digite sua senha"
           value={formData.password}
           onChangeText={(passwordValue) => {

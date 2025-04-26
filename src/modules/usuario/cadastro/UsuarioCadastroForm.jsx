@@ -12,10 +12,10 @@ import style from './style/style';
 const UsuarioCadastroForm = (props) => {
   const {
     title,
-    Botoes,
-    FormContainer,
-    FormLabel,
-    FormTextInput,
+    botoesContainer,
+    formContainer,
+    formLabel,
+    formTextInput,
     passwordContainer,
   } = ComumStyles;
   const { navigation, route } = props;
@@ -57,23 +57,23 @@ const UsuarioCadastroForm = (props) => {
   };
 
   return (
-    <View style={FormContainer}>
+    <View style={formContainer}>
       <Text style={title}>
         Cadastrar Usuário {isCadastroAdmin ? 'Admin' : ''}
       </Text>
 
-      <Text style={FormLabel}>Nome:</Text>
+      <Text style={formLabel}>Nome:</Text>
       <TextInput
-        style={FormTextInput}
+        style={formTextInput}
         placeholder="Digite o nome"
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
       <View>
-        <Text style={FormLabel}>username:</Text>
+        <Text style={formLabel}>username:</Text>
         <TextInput
-          style={FormTextInput}
+          style={formTextInput}
           placeholder="Digite o username"
           value={formData.username}
           onChangeText={(usernameValue) =>
@@ -85,10 +85,10 @@ const UsuarioCadastroForm = (props) => {
         </Text>
       </View>
 
-      <Text style={FormLabel}>senha:</Text>
+      <Text style={formLabel}>senha:</Text>
       <View style={passwordContainer}>
         <TextInput
-          style={FormTextInput}
+          style={formTextInput}
           placeholder="Digite a senha"
           value={formData.password}
           onChangeText={(passwordValue) =>
@@ -102,7 +102,7 @@ const UsuarioCadastroForm = (props) => {
         />
       </View>
 
-      <View style={Botoes}>
+      <View style={botoesContainer}>
         <BackButton navigation={navigation} />
         <SaveButton onPress={handleSubmit} loading={loading} />
       </View>

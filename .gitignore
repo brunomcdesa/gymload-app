@@ -1,6 +1,7 @@
 # OSX
 #
 .DS_Store
+*.pem
 
 # Xcode
 #
@@ -24,7 +25,6 @@ DerivedData
 
 # Android/IntelliJ
 #
-build/
 .idea
 .gradle
 local.properties
@@ -71,6 +71,9 @@ yarn-error.log
 
 # Expo
 .expo/
+dist/
+web-build/
+expo-env.d.ts
 
 # iOS/Android folders (React Native specific)
 ios/
@@ -81,3 +84,22 @@ package-lock.json*
 
 # Bundle
 .bundle/
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo

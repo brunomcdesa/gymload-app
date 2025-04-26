@@ -35,7 +35,7 @@ const SelectInput = (props) => {
       items={items}
       setItems={setItems}
       value={value}
-      style={ComumStyles.FormSelectInput}
+      style={ComumStyles.formSelectInput}
       setValue={setValue}
       multiple={multiple}
       onChangeValue={handleSelect}
