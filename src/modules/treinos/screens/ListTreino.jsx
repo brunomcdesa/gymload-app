@@ -1,3 +1,4 @@
+import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
@@ -6,7 +7,8 @@ import AddButton from '../../../components/Button/AddButton';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from '../style/style';
 
@@ -28,30 +30,38 @@ const ListTreino = () => {
     situacaoAtiva,
     situacaoInativa,
   } = style;
-  const { container } = ComumStyles;
+  const {
+    container,
+    actionSheetContainer,
+    actionSheetButtonText,
+    actionSheetTitle,
+    actionSheetMessage,
+  } = ComumStyles;
   const [treinos, setTreinos] = useState([]);
   const [filteredTreinos, setFilteredTreinos] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+  const { showActionSheetWithOptions } = useActionSheet();
 
-  const fetchTreinos = async () => {
+  const fetchTreinos = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await Api.fetchTreinos();
       setTreinos(data);
       setFilteredTreinos(data);
     } catch (error) {
-      console.error('Erro ao buscar Treinos do Usuário.');
+      throwToastError('Erro ao buscar Treinos do Usuário.');
+      console.error('Erro ao buscar Treinos do Usuário.', error);
       return [];
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
       fetchTreinos();
-    }, []),
+    }, [fetchTreinos]),
   );
 
   const redirectToTreinoForm = () => {
@@ -61,7 +71,6 @@ const ListTreino = () => {
   const redirectToListExerciciosTreino = (treino) => {
     navigation.navigate('ListExerciciosTreino', {
       treino: { id: treino.id, nome: treino.nome },
-      onTreinoAtualizado: fetchTreinos,
     });
   };
 
@@ -69,15 +78,74 @@ const ListTreino = () => {
     setFilteredTreinos(filteredData);
   };
 
+  const toggleTreinoSituacao = async (treino) => {
+    try {
+      setLoading(true);
+      if (treino.situacao === 'ATIVO') {
+        await Api.inativarTreino(treino.id);
+      }
+      if (treino.situacao === 'INATIVO') {
+        await Api.ativarTreino(treino.id);
+      }
+      throwToastSuccess(
+        `Situação do treino ${treino.nome} alterada com sucesso`,
+      );
+      fetchTreinos();
+    } catch (error) {
+      throwToastError('Não foi possível alterar a situação do treino.');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleTreinoPress = (treino) => {
+    const options = [
+      'Ver Exercícios',
+      treino.situacao === 'ATIVO' ? 'Inativar Treino' : 'Ativar Treino',
+      'Cancelar',
+    ];
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex: 2,
+        destructiveButtonIndex: 2,
+        title: `Opções para ${treino.nome}`,
+        message: 'Escolha uma ação para este treino',
+        tintColor: colors.textLight,
+        containerStyle: actionSheetContainer,
+        textStyle: actionSheetButtonText,
+        titleTextStyle: actionSheetTitle,
+        messageTextStyle: actionSheetMessage,
+        separatorStyle: {
+          backgroundColor: '#383838',
+        },
+      },
+      (selectedIndex) => {
+        switch (selectedIndex) {
+          case 0:
+            redirectToListExerciciosTreino(treino);
+            break;
+          case 1:
+            toggleTreinoSituacao(treino);
+            break;
+          case 2:
+            break;
+        }
+      },
+    );
+  };
+
   const renderTreinoItem = ({ item: treino }) => (
     <TouchableOpacity
-      onPress={() => redirectToListExerciciosTreino(treino)}
+      onPress={() => handleTreinoPress(treino)}
       activeOpacity={0.7}
+      onLongPress={() => redirectToListExerciciosTreino(treino)}
     >
       <View style={treinoItem}>
         <View style={treinoInfo}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            {/* Indicador de status */}
             <View
               style={[
                 situacaoIndicator,

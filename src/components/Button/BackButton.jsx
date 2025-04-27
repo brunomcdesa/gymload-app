@@ -8,7 +8,7 @@ const BackButton = (props) => {
   return (
     <TouchableOpacity
       style={backButtonStyle}
-      onPress={props.navigation.goBack}
+      onPress={props.onPress}
       activeOpacity={0.7}
     >
       <Text style={textStyle}>Voltar</Text>
@@ -17,9 +17,7 @@ const BackButton = (props) => {
 };
 
 BackButton.propTypes = {
-  navigation: PropTypes.shape({
-    goBack: PropTypes.func.isRequired,
-  }).isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
 export default BackButton;

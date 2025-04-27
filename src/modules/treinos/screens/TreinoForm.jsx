@@ -15,7 +15,7 @@ const TreinoForm = (props) => {
   const { formContainer, title, formLabel, formTextInput, botoesContainer } =
     ComumStyles;
   const { navigation, route } = props;
-  const { treinoData, isEdicao, onSave } = route.params;
+  const { treinoData, isEdicao } = route.params;
 
   const [formData, setFormData] = useState({
     nome: treinoData.nome || null,
@@ -54,7 +54,7 @@ const TreinoForm = (props) => {
       setLoading(true);
       await Api.saveTreinos(formData);
       throwToastSuccess('Treino salvo com sucesso!');
-      navigation.goBack();
+      handleGoBack();
     } catch (error) {
       throwToastError('Erro ao salvar treino.');
       console.log('Erro ao salvar treino.', error);
@@ -67,9 +67,8 @@ const TreinoForm = (props) => {
     try {
       setLoading(true);
       await Api.editarTreinos({ id: treinoData.id, request: formData });
-      onSave(formData.nome, formData.exerciciosIds);
       throwToastSuccess('Treino salvo com sucesso!');
-      navigation.goBack();
+      handleGoBack();
     } catch (error) {
       throwToastError('Erro ao salvar treino.');
       console.log('Erro ao salvar treino.', error);
@@ -84,6 +83,11 @@ const TreinoForm = (props) => {
     }, []),
   );
 
+  const handleGoBack = () => {
+    navigation.navigate('ListExerciciosTreino', {
+      treino: { id: treinoData.id, nome: formData.nome },
+    });
+  };
   return (
     <View style={formContainer}>
       <Text style={title}>Adicionar Treino</Text>
@@ -116,7 +120,7 @@ const TreinoForm = (props) => {
       />
 
       <View style={botoesContainer}>
-        <BackButton navigation={navigation} />
+        <BackButton onPress={() => navigation.goBack()} />
         <SaveButton
           onPress={isEdicao ? handleEditar : handleSave}
           loading={loading}
@@ -134,7 +138,6 @@ TreinoForm.propTypes = {
     params: PropTypes.shape({
       treinoData: PropTypes.object,
       isEdicao: PropTypes.bool,
-      onSave: PropTypes.func,
     }),
   }),
 };

@@ -22,3 +22,15 @@ export const editarTreinos = ({ id, request }, delay = 0) => {
 
   return pMinDelay(response, delay);
 };
+
+export const inativarTreino = (id, delay = 0) => {
+  const response = axiosPrivate.put(`${treinosUrl}/${id}/inativar`);
+
+  return pMinDelay(response, delay);
+};
+
+export const ativarTreino = (id, delay = 0) => {
+  const response = axiosPrivate.put(`${treinosUrl}/${id}/ativar`);
+
+  return pMinDelay(response, delay);
+};

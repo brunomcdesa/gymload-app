@@ -4,7 +4,11 @@
   "expo": {
     "name": "Gymload",
     "slug": "gymloadapp",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "newArchEnabled": true,
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,14 +21,18 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "com.gymloadapp"
     },
     "android": {
       "package": "com.gymloadapp"
     },
-    "plugins": ["expo-secure-store", "@react-native-community/datetimepicker"],
+    "plugins": [
+      "expo-secure-store"
+    ],
     "extra": {
       "eas": {
         "projectId": "4cc1a22d-3e62-4dc1-becb-c6a0cb559beb"

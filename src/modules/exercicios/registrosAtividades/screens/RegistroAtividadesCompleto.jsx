@@ -113,7 +113,7 @@ const RegistroAtividadesCompleto = (props) => {
       )}
 
       <View style={botoesContainer}>
-        <BackButton navigation={props.navigation} />
+        <BackButton onPress={props.navigation.goBack} />
         <AddButton onPress={redirectToRegistroAtividadeForm} />
       </View>
     </View>

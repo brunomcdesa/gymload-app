@@ -13,7 +13,7 @@ import * as RegistroAtividadeApi from '../registrosAtividades/Api';
 
 const ListExerciciosTreino = (props) => {
   const { route, navigation } = props;
-  const { treino, onTreinoAtualizado } = route.params;
+  const { treino } = route.params;
   const { container, title, botoesContainer } = ComumStyles;
   const [exercicios, setExercicios] = useState([]);
   const [dadosRegistrosAtividades, setDadosRegistrosAtividades] = useState({});
@@ -68,23 +68,6 @@ const ListExerciciosTreino = (props) => {
     return exercicios.map((exercicio) => exercicio.id);
   };
 
-  const handleAtualizarTreino = useCallback(
-    (novoNome, novosExerciciosIds) => {
-      setExercicios((prev) => {
-        if (novosExerciciosIds) {
-          fetchExerciciosDoTreino();
-        }
-        return prev;
-      });
-
-      if (novoNome) {
-        navigation.setParams({ treino: { id: treino.id, nome: novoNome } });
-        onTreinoAtualizado();
-      }
-    },
-    [navigation],
-  );
-
   const redirectToTreinoForm = () => {
     navigation.navigate('TreinoForm', {
       treinoData: {
@@ -93,8 +76,11 @@ const ListExerciciosTreino = (props) => {
         exerciciosIds: getExerciciosIds(exercicios),
       },
       isEdicao: true,
-      onSave: handleAtualizarTreino,
     });
+  };
+
+  const handleGoBack = () => {
+    navigation.navigate('ListTreino');
   };
 
   return (
@@ -118,7 +104,7 @@ const ListExerciciosTreino = (props) => {
       )}
 
       <View style={botoesContainer}>
-        <BackButton navigation={navigation} />
+        <BackButton onPress={handleGoBack} />
         <AddButton onPress={redirectToTreinoForm} text={'Editar'} />
       </View>
     </View>

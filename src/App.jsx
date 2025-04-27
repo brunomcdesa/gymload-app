@@ -1,3 +1,4 @@
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import 'expo-dev-client';
 import React from 'react';
@@ -9,10 +10,12 @@ import MainNavigator from './routes/MainNavigator';
 
 const App = () => (
   <AuthProvider>
-    <NavigationContainer>
-      <MainNavigator />
-      <Toast config={toastConfig} />
-    </NavigationContainer>
+    <ActionSheetProvider>
+      <NavigationContainer>
+        <MainNavigator />
+        <Toast config={toastConfig} />
+      </NavigationContainer>
+    </ActionSheetProvider>
   </AuthProvider>
 );
 

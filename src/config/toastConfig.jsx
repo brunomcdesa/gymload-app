@@ -10,6 +10,7 @@ export const toastConfig = {
       {...props}
       style={toastSuccesStyle}
       text1Style={toastTextStyle}
+      text1NumberOfLines={2}
       onPress={() => Toast.hide()}
     />
   ),
