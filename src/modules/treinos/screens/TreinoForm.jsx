@@ -120,7 +120,7 @@ const TreinoForm = (props) => {
       />
 
       <View style={botoesContainer}>
-        <BackButton onPress={() => navigation.goBack()} />
+        <BackButton onPress={navigation.goBack} />
         <SaveButton
           onPress={isEdicao ? handleEditar : handleSave}
           loading={loading}

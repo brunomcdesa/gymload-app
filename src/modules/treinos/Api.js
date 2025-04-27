@@ -3,8 +3,8 @@ import { pMinDelay } from '../utils/promisse';
 
 const treinosUrl = '/api/treinos';
 
-export const fetchTreinos = (delay = 0) => {
-  const response = axiosPrivate.get(treinosUrl);
+export const fetchTreinos = (buscarInativos, delay = 0) => {
+  const response = axiosPrivate.get(treinosUrl, { params: { buscarInativos } });
 
   return pMinDelay(response, delay);
 };

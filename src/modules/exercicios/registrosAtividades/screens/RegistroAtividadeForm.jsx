@@ -225,7 +225,7 @@ const RegistroAtividadeForm = (props) => {
       />
 
       <View style={botoesContainer}>
-        <BackButton navigation={navigation} />
+        <BackButton onPress={navigation.goBack} />
         <SaveButton onPress={handleSubmit} loading={loading} />
       </View>
     </View>

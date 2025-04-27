@@ -2,6 +2,7 @@ import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { Checkbox } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AddButton from '../../../components/Button/AddButton';
 import SearchInput from '../../../components/Inputs/SearchInput';
@@ -29,6 +30,8 @@ const ListTreino = () => {
     situacaoIndicator,
     situacaoAtiva,
     situacaoInativa,
+    checkboxContainer,
+    checkboxLabel,
   } = style;
   const {
     container,
@@ -42,11 +45,12 @@ const ListTreino = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const { showActionSheetWithOptions } = useActionSheet();
+  const [buscarInativos, setBuscarInativos] = useState(false);
 
   const fetchTreinos = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await Api.fetchTreinos();
+      const { data } = await Api.fetchTreinos(buscarInativos);
       setTreinos(data);
       setFilteredTreinos(data);
     } catch (error) {
@@ -56,7 +60,7 @@ const ListTreino = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [buscarInativos]);
 
   useFocusEffect(
     useCallback(() => {
@@ -165,13 +169,16 @@ const ListTreino = () => {
 
   const renderEmptyList = () => <EmptyList value="treino" style={emptyList} />;
 
+  const handleToggleInativos = async () => {
+    setBuscarInativos((prev) => !prev);
+  };
+
   return (
     <View style={container}>
       <View style={header}>
         <Text style={title}>Meus Treinos</Text>
         <Text style={subtitle}>Gerencie seus treinos cadastrados</Text>
       </View>
-
       <SearchInput
         placeholder="Pesquisar treinos..."
         onSearch={handleSearchResults}
@@ -179,6 +186,15 @@ const ListTreino = () => {
         searchKeys={['nome']}
         style={searchInput}
       />
+
+      <View style={checkboxContainer}>
+        <Checkbox
+          status={buscarInativos ? 'checked' : 'unchecked'}
+          onPress={handleToggleInativos}
+          color={colors.secondary}
+        />
+        <Text style={checkboxLabel}>Mostrar treinos inativos</Text>
+      </View>
 
       {loading ? (
         <LoadingIndicator />

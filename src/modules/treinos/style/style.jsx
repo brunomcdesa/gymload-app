@@ -19,7 +19,7 @@ export default StyleSheet.create({
     letterSpacing: 0.5,
   },
   searchInput: {
-    marginBottom: 16,
+    marginBottom: 12,
   },
   listContent: {
     paddingBottom: 20,
@@ -69,5 +69,21 @@ export default StyleSheet.create({
   },
   situacaoInativa: {
     backgroundColor: '#F44336',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#2a2a2a',
+    borderRadius: 8,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#383838',
+    marginBottom: 16,
+  },
+  checkboxLabel: {
+    marginLeft: 12,
+    color: colors.textLight,
+    fontSize: 14,
+    fontWeight: '500',
   },
 });
