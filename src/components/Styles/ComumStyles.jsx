@@ -96,7 +96,6 @@ const ComumStyles = StyleSheet.create({
     color: '#ff5555',
     marginLeft: 2,
     marginTop: '3%',
-
   },
 });
 

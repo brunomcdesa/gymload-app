@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import {
   Keyboard,
@@ -141,6 +142,11 @@ const TimePickerInput = (props) => {
       {renderChangeableTimeUnit('seconds')}
     </View>
   );
+};
+
+TimePickerInput.propTypes = {
+  time: PropTypes.object.isRequired,
+  setTime: PropTypes.func.isRequired,
 };
 
 export default TimePickerInput;

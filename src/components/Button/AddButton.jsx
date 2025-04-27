@@ -5,19 +5,21 @@ import style from './style/style';
 
 const AddButton = (props) => {
   const { addButtonStyle, textStyle } = style;
+  const { onPress, text } = props;
   return (
     <TouchableOpacity
       style={addButtonStyle}
-      onPress={props.onPress}
+      onPress={onPress}
       activeOpacity={0.7}
     >
-      <Text style={textStyle}>Adicionar</Text>
+      <Text style={textStyle}>{text || 'Adicionar'}</Text>
     </TouchableOpacity>
   );
 };
 
 AddButton.propTypes = {
   onPress: PropTypes.func.isRequired,
+  text: PropTypes.string,
 };
 
 export default AddButton;

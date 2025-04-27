@@ -24,6 +24,9 @@ const ListTreino = () => {
     separator,
     addButton,
     listContent,
+    situacaoIndicator,
+    situacaoAtiva,
+    situacaoInativa,
   } = style;
   const { container } = ComumStyles;
   const [treinos, setTreinos] = useState([]);
@@ -52,13 +55,13 @@ const ListTreino = () => {
   );
 
   const redirectToTreinoForm = () => {
-    navigation.navigate('TreinoForm');
+    navigation.navigate('TreinoForm', { treinoData: {}, isEdicao: false });
   };
 
   const redirectToListExerciciosTreino = (treino) => {
     navigation.navigate('ListExerciciosTreino', {
-      treinoId: treino.id,
-      treinoNome: treino.nome,
+      treino: { id: treino.id, nome: treino.nome },
+      onTreinoAtualizado: fetchTreinos,
     });
   };
 
@@ -73,7 +76,16 @@ const ListTreino = () => {
     >
       <View style={treinoItem}>
         <View style={treinoInfo}>
-          <Text style={treinoNome}>{treino.nome}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {/* Indicador de status */}
+            <View
+              style={[
+                situacaoIndicator,
+                treino.situacao === 'ATIVO' ? situacaoAtiva : situacaoInativa,
+              ]}
+            />
+            <Text style={treinoNome}>{treino.nome}</Text>
+          </View>
           <Text style={treinoData}>
             Criado em: {treino.dataCadastro.split(' ')[0]}
           </Text>

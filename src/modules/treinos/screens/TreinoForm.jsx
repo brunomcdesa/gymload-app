@@ -1,5 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
@@ -14,15 +14,18 @@ import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 const TreinoForm = (props) => {
   const { formContainer, title, formLabel, formTextInput, botoesContainer } =
     ComumStyles;
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { treinoData, isEdicao, onSave } = route.params;
 
   const [formData, setFormData] = useState({
-    nome: null,
-    exerciciosIds: [],
+    nome: treinoData.nome || null,
+    exerciciosIds: treinoData.exerciciosIds || [],
   });
   const [exerciciosSelect, setExerciciosSelect] = useState([]);
   const [exerciciosSelectLoading, setExerciciosSelectLodding] = useState(false);
-  const [selectedExercicios, setSelectedExercicios] = useState([]);
+  const [selectedExercicios, setSelectedExercicios] = useState(
+    treinoData.exerciciosIds || [],
+  );
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -47,8 +50,24 @@ const TreinoForm = (props) => {
 
   const handleSave = async () => {
     try {
+      console.log('Salvando novo');
       setLoading(true);
       await Api.saveTreinos(formData);
+      throwToastSuccess('Treino salvo com sucesso!');
+      navigation.goBack();
+    } catch (error) {
+      throwToastError('Erro ao salvar treino.');
+      console.log('Erro ao salvar treino.', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEditar = async () => {
+    try {
+      setLoading(true);
+      await Api.editarTreinos({ id: treinoData.id, request: formData });
+      onSave(formData.nome, formData.exerciciosIds);
       throwToastSuccess('Treino salvo com sucesso!');
       navigation.goBack();
     } catch (error) {
@@ -64,10 +83,6 @@ const TreinoForm = (props) => {
       fetchExerciciosSelect();
     }, []),
   );
-
-  useEffect(() => {
-    setSelectedExercicios(formData.exerciciosIds);
-  }, [formData.exerciciosIds]);
 
   return (
     <View style={formContainer}>
@@ -102,7 +117,10 @@ const TreinoForm = (props) => {
 
       <View style={botoesContainer}>
         <BackButton navigation={navigation} />
-        <SaveButton onPress={handleSave} loading={loading} />
+        <SaveButton
+          onPress={isEdicao ? handleEditar : handleSave}
+          loading={loading}
+        />
       </View>
     </View>
   );
@@ -112,6 +130,13 @@ TreinoForm.propTypes = {
   navigation: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
   }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      treinoData: PropTypes.object,
+      isEdicao: PropTypes.bool,
+      onSave: PropTypes.func,
+    }),
+  }),
 };
 
 export default TreinoForm;

@@ -58,4 +58,16 @@ export default StyleSheet.create({
     right: 20,
     bottom: 20,
   },
+  situacaoIndicator: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 8,
+  },
+  situacaoAtiva: {
+    backgroundColor: '#4CAF50',
+  },
+  situacaoInativa: {
+    backgroundColor: '#F44336',
+  },
 });

@@ -13,7 +13,7 @@ import * as RegistroAtividadeApi from '../registrosAtividades/Api';
 
 const ListExerciciosTreino = (props) => {
   const { route, navigation } = props;
-  const { treinoId, treinoNome } = route.params;
+  const { treino, onTreinoAtualizado } = route.params;
   const { container, title, botoesContainer } = ComumStyles;
   const [exercicios, setExercicios] = useState([]);
   const [dadosRegistrosAtividades, setDadosRegistrosAtividades] = useState({});
@@ -22,20 +22,20 @@ const ListExerciciosTreino = (props) => {
   const fetchExerciciosDoTreino = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await Api.fetchExerciciosDoTreino(treinoId);
+      const { data } = await Api.fetchExerciciosDoTreino(treino.id);
       setExercicios(data);
 
       if (data && data.length > 0) {
-        const exerciciosIds = data.map((exercicio) => exercicio.id);
+        const exerciciosIds = getExerciciosIds(data);
         await fetchDestaquesDosExercicios(exerciciosIds);
       }
     } catch (error) {
       throwToastError('Erro ao buscar exercícios deste treino.');
-      console.error(`Erro ao buscar exercícios do treino ${treinoId}`, error);
+      console.error(`Erro ao buscar exercícios do treino ${treino.id}`, error);
     } finally {
       setLoading(false);
     }
-  }, [treinoId]);
+  }, [treino.id]);
 
   const fetchDestaquesDosExercicios = async (exerciciosIds) => {
     try {
@@ -64,9 +64,42 @@ const ListExerciciosTreino = (props) => {
     }, [fetchExerciciosDoTreino]),
   );
 
+  const getExerciciosIds = (exercicios) => {
+    return exercicios.map((exercicio) => exercicio.id);
+  };
+
+  const handleAtualizarTreino = useCallback(
+    (novoNome, novosExerciciosIds) => {
+      setExercicios((prev) => {
+        if (novosExerciciosIds) {
+          fetchExerciciosDoTreino();
+        }
+        return prev;
+      });
+
+      if (novoNome) {
+        navigation.setParams({ treino: { id: treino.id, nome: novoNome } });
+        onTreinoAtualizado();
+      }
+    },
+    [navigation],
+  );
+
+  const redirectToTreinoForm = () => {
+    navigation.navigate('TreinoForm', {
+      treinoData: {
+        id: treino.id,
+        nome: treino.nome,
+        exerciciosIds: getExerciciosIds(exercicios),
+      },
+      isEdicao: true,
+      onSave: handleAtualizarTreino,
+    });
+  };
+
   return (
     <View style={container}>
-      <Text style={title}>{treinoNome}</Text>
+      <Text style={title}>{treino.nome}</Text>
       {loading ? (
         <LoadingIndicator />
       ) : (
@@ -86,7 +119,7 @@ const ListExerciciosTreino = (props) => {
 
       <View style={botoesContainer}>
         <BackButton navigation={navigation} />
-        <AddButton onPress={() => {}} />
+        <AddButton onPress={redirectToTreinoForm} text={'Editar'} />
       </View>
     </View>
   );
@@ -95,8 +128,7 @@ const ListExerciciosTreino = (props) => {
 ListExerciciosTreino.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
-      treinoId: PropTypes.number.isRequired,
-      treinoNome: PropTypes.string.isRequired,
+      treino: PropTypes.object.isRequired,
     }).isRequired,
   }).isRequired,
   navigation: PropTypes.object.isRequired,

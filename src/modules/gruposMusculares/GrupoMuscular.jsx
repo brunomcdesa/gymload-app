@@ -6,14 +6,12 @@ import style from './style/style';
 
 const GrupoMuscular = (props) => {
   const { nome } = props;
-  const { GrupoMuscularContainer } = style;
-  const { elementContainer, subTitle } = ComumStyles;
+  const { grupoMuscularNome } = style;
+  const { elementContainer } = ComumStyles;
 
   return (
     <View style={elementContainer}>
-      <View style={GrupoMuscularContainer}>
-        <Text style={subTitle}>{nome}</Text>
-      </View>
+      <Text style={grupoMuscularNome}>{nome}</Text>
     </View>
   );
 };

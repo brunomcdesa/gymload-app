@@ -14,3 +14,11 @@ export const saveTreinos = (request, delay = 0) => {
 
   return pMinDelay(response, delay);
 };
+
+export const editarTreinos = ({ id, request }, delay = 0) => {
+  const response = axiosPrivate.put(`${treinosUrl}/${id}/editar`, {
+    ...request,
+  });
+
+  return pMinDelay(response, delay);
+};
