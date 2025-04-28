@@ -50,7 +50,6 @@ const TreinoForm = (props) => {
 
   const handleSave = async () => {
     try {
-      console.log('Salvando novo');
       setLoading(true);
       await Api.saveTreinos(formData);
       throwToastSuccess('Treino salvo com sucesso!');

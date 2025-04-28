@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-import BackButton from '../../../components/Button/BackButton';
-import SaveButton from '../../../components/Button/SaveButton';
-import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
-import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
-import * as Api from '../Api';
-import style from './style/style';
+import BackButton from '../../../../components/Button/BackButton';
+import SaveButton from '../../../../components/Button/SaveButton';
+import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
+import { ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
+import * as Api from '../../Api';
+import style from '../style/style';
 
 const UsuarioCadastroForm = (props) => {
   const {
@@ -58,9 +58,7 @@ const UsuarioCadastroForm = (props) => {
 
   return (
     <View style={formContainer}>
-      <Text style={title}>
-        Cadastrar Usuário {isCadastroAdmin ? 'Admin' : ''}
-      </Text>
+      {!isCadastroAdmin && <Text style={title}>Cadastrar-se</Text>}
 
       <Text style={formLabel}>Nome:</Text>
       <TextInput

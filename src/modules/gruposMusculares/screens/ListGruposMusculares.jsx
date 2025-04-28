@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import AddButton from '../../../components/Button/AddButton';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
@@ -10,7 +10,7 @@ import * as Api from '../Api';
 import GrupoMuscular from '../GrupoMuscular';
 
 const ListGruposMusculares = () => {
-  const { title, container } = ComumStyles;
+  const { container } = ComumStyles;
   const [gruposMusculares, setGruposMusculares] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -40,8 +40,6 @@ const ListGruposMusculares = () => {
 
   return (
     <View style={container}>
-      <Text style={title}>Grupos Musculares</Text>
-
       {loading ? (
         <LoadingIndicator />
       ) : (

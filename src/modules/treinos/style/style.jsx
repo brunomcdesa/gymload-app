@@ -2,22 +2,6 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../../components/Styles/ComumStyles';
 
 export default StyleSheet.create({
-  header: {
-    marginBottom: 20,
-    paddingTop: 10,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: colors.textLight,
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#aaa',
-    letterSpacing: 0.5,
-  },
   searchInput: {
     marginBottom: 12,
   },

@@ -1,5 +1,5 @@
 import React from 'react';
-import DrawerNavigator from '../components/Header/drawer/DrawerNavigator';
+import DrawerNavigator from '../drawer/DrawerNavigator';
 
 const AppStack = () => (
   <>

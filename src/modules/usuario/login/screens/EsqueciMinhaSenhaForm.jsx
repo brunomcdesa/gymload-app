@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-import BackButton from '../../../components/Button/BackButton';
-import SaveButton from '../../../components/Button/SaveButton';
-import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
-import { handleChangeState } from '../../utils/stateUtils';
-import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
-import * as Api from './Api';
+import BackButton from '../../../../components/Button/BackButton';
+import SaveButton from '../../../../components/Button/SaveButton';
+import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
+import { ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { handleChangeState } from '../../../utils/stateUtils';
+import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
+import * as Api from '../Api';
 
 const EsqueciMinhaSenhaForm = (props) => {
   const {

@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import AddButton from '../../../components/Button/AddButton';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
@@ -78,8 +78,6 @@ const ListExercicios = () => {
 
   return (
     <View style={container}>
-      <Text style={title}>Exercicios</Text>
-
       <SearchInput
         placeholder="Pesquisar exercícios..."
         onSearch={handleSearchResults}

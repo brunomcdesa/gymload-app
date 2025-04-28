@@ -15,9 +15,6 @@ import style from '../style/style';
 
 const ListTreino = () => {
   const {
-    header,
-    title,
-    subtitle,
     treinoItem,
     treinoInfo,
     treinoData,
@@ -175,10 +172,6 @@ const ListTreino = () => {
 
   return (
     <View style={container}>
-      <View style={header}>
-        <Text style={title}>Meus Treinos</Text>
-        <Text style={subtitle}>Gerencie seus treinos cadastrados</Text>
-      </View>
       <SearchInput
         placeholder="Pesquisar treinos..."
         onSearch={handleSearchResults}

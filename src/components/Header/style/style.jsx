@@ -1,21 +1,18 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../Styles/ComumStyles';
 
 export default StyleSheet.create({
-  HeaderStyle: {
+  headerStyle: {
     backgroundColor: '#696969',
-    paddingTop: 35,
-    paddingHorizontal: 20,
+    paddingTop: '2%',
+    paddingHorizontal: '3%',
     paddingBottom: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  MenuButton: {
-    padding: 10,
-    paddingRight: 0,
-  },
-  MenuIcon: {
-    color: 'white',
+  menuIcon: {
+    color: colors.secondary,
     fontSize: 24,
   },
   HeaderText: {

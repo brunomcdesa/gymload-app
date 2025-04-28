@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-import CadastroButton from '../../../components/Button/CadastroButton';
-import EsqueciMinhaSenhaButton from '../../../components/Button/EsqueciMinhaSenhaButton';
-import LoginButton from '../../../components/Button/LoginButton';
-import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
-import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
-import { AuthContext } from '../../../context/AuthProvider';
-import { handleChangeState } from '../../utils/stateUtils';
-import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
-import * as Api from './Api';
-import style from './style/style';
+import CadastroButton from '../../../../components/Button/CadastroButton';
+import EsqueciMinhaSenhaButton from '../../../../components/Button/EsqueciMinhaSenhaButton';
+import LoginButton from '../../../../components/Button/LoginButton';
+import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
+import LoadingIndicator from '../../../../components/Loading/LoadingIndicator';
+import { ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { AuthContext } from '../../../../context/AuthProvider';
+import { handleChangeState } from '../../../utils/stateUtils';
+import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
+import * as Api from '../Api';
+import style from '../style/style';
 
 const Login = (props) => {
   const { title, formTextInput, formLabel, passwordContainer } = ComumStyles;

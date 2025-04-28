@@ -2,14 +2,14 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { ComumStyles } from '../../components/Styles/ComumStyles';
 
-const Home = () => {
-  const { container, title } = ComumStyles;
+const Dashboard = () => {
+  const { container, subSubTitle } = ComumStyles;
 
   return (
     <View style={container}>
-      <Text style={title}>Seja Bem Vindo!</Text>
+      <Text style={subSubTitle}>Dashboard em desenvolvimento...</Text>
     </View>
   );
 };
 
-export default Home;
+export default Dashboard;
