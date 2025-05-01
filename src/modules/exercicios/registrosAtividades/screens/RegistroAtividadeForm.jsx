@@ -175,7 +175,7 @@ const RegistroAtividadeForm = (props) => {
     return (
       <View>
         <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Carga:</Text>
+          <Text style={formLabel}>Distância:</Text>
           <Text style={asteriscoObrigatorio}>*</Text>
         </View>
         <TextInput
