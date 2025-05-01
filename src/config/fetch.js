@@ -15,4 +15,18 @@ const fetchMakeRequestWithFile = async (formData, endpoint, method, delay) => {
   return pMinDelay(response, delay);
 };
 
-export { fetchMakeRequestWithFile };
+const fetchMakeRequestWithFilePublic = async (
+  formData,
+  endpoint,
+  method,
+  delay,
+) => {
+  const response = await fetch(`${apiUrl}${endpoint}`, {
+    method: method,
+    body: formData,
+  });
+
+  return pMinDelay(response, delay);
+};
+
+export { fetchMakeRequestWithFile, fetchMakeRequestWithFilePublic };
