@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { AuthContext } from '../../../context/AuthProvider';
-import UsuarioInfo from '../../../modules/usuario/usuarioInfo/UsuarioInfo';
-import { useIsAdmin } from '../../../modules/utils/userUtils';
-import { ComumStyles } from '../../Styles/ComumStyles';
+import { AuthContext } from '../../context/AuthProvider';
+import UsuarioInfo from '../../modules/usuario/usuarioInfo/UsuarioInfo';
+import { useIsAdmin } from '../../modules/utils/userUtils';
+import { ComumStyles } from '../Styles/ComumStyles';
 import style from './styles/style';
 
 const SideBar = (props) => {
-  const { Button, ButtonCadastroAdmin, ButtonText, Content, Footer } = style;
+  const { button, buttonCadastroAdmin, buttonText, content, footer } = style;
   const { container } = ComumStyles;
   const { logout, user } = useContext(AuthContext);
   const { navigation } = props;
@@ -27,26 +27,32 @@ const SideBar = (props) => {
     navigation.closeDrawer();
   };
 
+  const redirectToPerfilScreen = () => {
+    navigation.navigate('Perfil');
+  };
+
   return (
     <View style={container}>
-      <View style={Content}>
-        <UsuarioInfo usuarioNome={user.nome} />
+      <View style={content}>
+        <TouchableOpacity onPress={redirectToPerfilScreen}>
+          <UsuarioInfo usuarioNome={user.nome} />
+        </TouchableOpacity>
       </View>
 
       {isAdmin && (
-        <View style={Footer}>
+        <View style={footer}>
           <TouchableOpacity
-            style={ButtonCadastroAdmin}
+            style={buttonCadastroAdmin}
             onPress={redirectCadastrarUsuarioAdmin}
           >
-            <Text style={ButtonText}>Cadastrar Usuario Admin</Text>
+            <Text style={buttonText}>Cadastrar Usuario Admin</Text>
           </TouchableOpacity>
         </View>
       )}
 
-      <View style={Footer}>
-        <TouchableOpacity style={Button} onPress={handleLogout}>
-          <Text style={ButtonText}>Sair</Text>
+      <View style={footer}>
+        <TouchableOpacity style={button} onPress={handleLogout}>
+          <Text style={buttonText}>Sair</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -10,6 +10,8 @@ export const AuthProvider = (props) => {
   const [user, setUser] = useState({
     nome: null,
     roles: [],
+    uuid: null,
+    username: null,
   });
   const [loading, setLoading] = useState(true);
 
@@ -34,6 +36,8 @@ export const AuthProvider = (props) => {
       setUser({
         nome: tokenDecoded.usuarioNome || null,
         roles: tokenDecoded.usuarioRoles || [],
+        uuid: tokenDecoded.uuid || null,
+        username: tokenDecoded.username || null,
       });
     } catch (error) {
       console.log('Erro ao decodificar token:', error);
@@ -58,7 +62,9 @@ export const AuthProvider = (props) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout, loading }}>
+    <AuthContext.Provider
+      value={{ token, user, setUser, login, logout, loading }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

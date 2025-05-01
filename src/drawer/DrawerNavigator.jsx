@@ -2,9 +2,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 import { useHeaderContext } from '../components/Header/HeaderProvider';
-import SideBar from '../components/Header/sidebar/SideBar';
+import SideBar from '../components/Sidebar/SideBar';
 import { colors } from '../components/Styles/ComumStyles';
 import UsuarioCadastroForm from '../modules/usuario/cadastro/screens/UsuarioCadastroForm';
+import Perfil from '../modules/usuario/screens/Perfil';
 import Navegacao from '../routes/Navegacao';
 import style from './style/style';
 
@@ -56,6 +57,18 @@ const DrawerNavigator = () => {
             <DrawerHeaderTitle
               title="Cadastro de Admin"
               subtitle="Cadastre um novo Admin"
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Perfil"
+        component={Perfil}
+        options={{
+          headerTitle: () => (
+            <DrawerHeaderTitle
+              title="Perfil"
+              subtitle="Gerencie suas informações"
             />
           ),
         }}
