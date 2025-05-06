@@ -43,7 +43,6 @@ const Perfil = (props) => {
       ...prev,
       [field]: value,
     }));
-    console.log(editData);
   };
 
   const handleSave = async () => {
@@ -59,7 +58,6 @@ const Perfil = (props) => {
       throwToastError(
         'Erro ao editar dados do usuário. Por favor tente mais tarde.',
       );
-      console.log({ ...error });
       console.log('Erro ao editar dados do usuário.', error);
     } finally {
       setLoading(false);

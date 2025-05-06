@@ -1,12 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { SectionList, Text, View } from 'react-native';
+import { SectionList, Text, TouchableOpacity, View } from 'react-native';
 
+import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import AddButton from '../../../../components/Button/AddButton';
 import BackButton from '../../../../components/Button/BackButton';
 import LoadingIndicator from '../../../../components/Loading/LoadingIndicator';
-import { ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
 import * as Api from '../Api';
 import RegistroCardio from '../RegistroCardio';
 import RegistroCarga from '../RegistroCarga';
@@ -21,7 +22,14 @@ const RegistroAtividadesCompleto = (props) => {
     sectionHeader,
     sectionHeaderText,
   } = style;
-  const { container, botoesContainer } = ComumStyles;
+  const {
+    container,
+    botoesContainer,
+    actionSheetContainer,
+    actionSheetButtonText,
+    actionSheetTitle,
+    actionSheetMessage,
+  } = ComumStyles;
   const {
     exercicio: { id, nome, tipoExercicioo },
   } = props.route.params;
@@ -30,6 +38,7 @@ const RegistroAtividadesCompleto = (props) => {
     [],
   );
   const [loading, setLoading] = useState(false);
+  const { showActionSheetWithOptions } = useActionSheet();
 
   const fetchCargas = useCallback(async () => {
     try {
@@ -75,11 +84,62 @@ const RegistroAtividadesCompleto = (props) => {
 
   const redirectToRegistroAtividadeForm = () => {
     props.navigation.navigate('RegistroAtividadeForm', {
-      exercicioId: id,
-      exercicioNome: nome,
+      exercicioData: { id, nome },
+      registroAtividadeData: {},
       isExercicioMusculacao,
+      isEdicao: false,
     });
   };
+
+  const redirectToRegistroAtividadeFormEdit = (item) => {
+    props.navigation.navigate('RegistroAtividadeForm', {
+      exercicioData: { id, nome },
+      registroAtividadeData: { ...item },
+      isExercicioMusculacao,
+      isEdicao: true,
+    });
+  };
+
+  const handlePress = (item) => {
+    const options = ['Editar Registro', 'Cancelar'];
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex: 1,
+        destructiveButtonIndex: 1,
+        title: `Selecione uma opção`,
+        tintColor: colors.textLight,
+        containerStyle: actionSheetContainer,
+        textStyle: actionSheetButtonText,
+        titleTextStyle: actionSheetTitle,
+        messageTextStyle: actionSheetMessage,
+        separatorStyle: {
+          backgroundColor: '#383838',
+        },
+      },
+      (selectedIndex) => {
+        switch (selectedIndex) {
+          case 0:
+            redirectToRegistroAtividadeFormEdit(item);
+            break;
+          case 1:
+            break;
+        }
+      },
+    );
+  };
+
+  const renderItem = ({ item: registro }) => (
+    <TouchableOpacity onPress={() => handlePress(registro)} activeOpacity={0.7}>
+      <View>
+        {isExercicioMusculacao ? (
+          <RegistroCarga registroData={registro} />
+        ) : (
+          <RegistroCardio registroData={registro} />
+        )}
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={container}>
@@ -95,15 +155,7 @@ const RegistroAtividadesCompleto = (props) => {
           sections={groupedRegistros}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={listContent}
-          renderItem={({ item: registro }) => (
-            <View>
-              {isExercicioMusculacao ? (
-                <RegistroCarga registroData={registro} />
-              ) : (
-                <RegistroCardio registroData={registro} />
-              )}
-            </View>
-          )}
+          renderItem={renderItem}
           renderSectionHeader={({ section: { title } }) => (
             <View style={sectionHeader}>
               <Text style={sectionHeaderText}>{title}</Text>

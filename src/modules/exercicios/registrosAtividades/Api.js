@@ -24,3 +24,9 @@ export const saveRegistroAtividade = (request, delay = 0) => {
 
   return pMinDelay(response, delay);
 };
+
+export const editRegistroAtividade = (id, request, delay = 0) => {
+  const response = axiosPrivate.put(`${urlBase}/${id}/editar`, { ...request });
+
+  return pMinDelay(response, delay);
+};

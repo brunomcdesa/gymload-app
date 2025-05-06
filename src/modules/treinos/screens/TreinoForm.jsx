@@ -83,10 +83,13 @@ const TreinoForm = (props) => {
   );
 
   const handleGoBack = () => {
-    navigation.navigate('ListExerciciosTreino', {
-      treino: { id: treinoData.id, nome: formData.nome },
-    });
+    if (isEdicao) {
+      navigation.navigate('ListExerciciosTreino', {
+        treino: { id: treinoData.id, nome: formData.nome },
+      });
+    } else navigation.goBack();
   };
+
   return (
     <View style={formContainer}>
       <Text style={title}>Adicionar Treino</Text>

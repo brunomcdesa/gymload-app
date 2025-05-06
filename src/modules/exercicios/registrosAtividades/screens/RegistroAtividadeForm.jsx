@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 
+import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import BackButton from '../../../../components/Button/BackButton';
 import SaveButton from '../../../../components/Button/SaveButton';
@@ -23,22 +24,34 @@ const RegistroAtividadeForm = (props) => {
     asteriscoObrigatorio,
   } = ComumStyles;
   const { route, navigation } = props;
-  const { exercicioId, exercicioNome, isExercicioMusculacao } = route.params;
+  const {
+    exercicioData,
+    registroAtividadeData,
+    isExercicioMusculacao,
+    isEdicao,
+  } = route.params;
   const [formData, setFormData] = useState({
-    exercicioId: exercicioId,
-    peso: null,
-    unidadePeso: null,
-    qtdRepeticoes: null,
-    qtdSeries: null,
-    distancia: null,
+    exercicioId: exercicioData.id,
+    peso: registroAtividadeData.peso?.toString() || null,
+    unidadePeso: registroAtividadeData.unidadePeso || null,
+    qtdRepeticoes: registroAtividadeData.qtdRepeticoes?.toString() || null,
+    qtdSeries: registroAtividadeData.qtdSeries?.toString() || null,
+    distancia: registroAtividadeData.distancia?.toString() || null,
     duracao: new Date(0, 0, 0, 0, 0, 0),
-    observacao: null,
+    observacao: registroAtividadeData.observacao || null,
   });
   const [loading, setLoading] = useState(false);
   const [unidadesPesosItems, setUnidadesPesosItems] = useState([]);
   const [openUnidadesPesosSelect, setOpenUnidadesPesosSelect] = useState(false);
   const [unidadesPesosLoading, setUnidadesPesosLoading] = useState(false);
   const [unidadePesoSelected, setUnidadePesoSelected] = useState(null);
+
+  const convertDecimalHoursToDate = (decimalHours) => {
+    const hours = Math.floor(decimalHours);
+    const minutes = Math.floor((decimalHours - hours) * 60);
+    const seconds = Math.floor(((decimalHours - hours) * 60 - minutes) * 60);
+    return new Date(0, 0, 0, hours, minutes, seconds);
+  };
 
   const handleChange = (field, value) => {
     handleChangeState(setFormData, formData, field, value);
@@ -72,7 +85,12 @@ const RegistroAtividadeForm = (props) => {
           ? convertDurationToDecimalHours(formData.duracao)
           : null,
       };
-      await Api.saveRegistroAtividade(values);
+
+      if (isEdicao) {
+        await Api.editRegistroAtividade(registroAtividadeData.id, values);
+      } else {
+        await Api.saveRegistroAtividade(values);
+      }
 
       throwToastSuccess('Registro salvo com sucesso!');
       navigation.goBack();
@@ -101,9 +119,18 @@ const RegistroAtividadeForm = (props) => {
     }
   };
 
-  useEffect(() => {
-    fetchUnidadesPesos();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchUnidadesPesos();
+      if (isEdicao) {
+        setUnidadePesoSelected(registroAtividadeData.unidadePeso);
+        setFormData({
+          ...formData,
+          duracao: convertDecimalHoursToDate(registroAtividadeData.duracao),
+        });
+      }
+    }, [registroAtividadeData.unidadePeso]),
+  );
 
   const renderFieldsRegistroCarga = () => {
     return (
@@ -141,7 +168,7 @@ const RegistroAtividadeForm = (props) => {
         />
 
         <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Quantidade de Reperições:</Text>
+          <Text style={formLabel}>Quantidade de Repetições:</Text>
           <Text style={asteriscoObrigatorio}>*</Text>
         </View>
         <TextInput
@@ -203,7 +230,7 @@ const RegistroAtividadeForm = (props) => {
   return (
     <View style={formContainer}>
       <View style={{ alignItems: 'center' }}>
-        <Text style={title}>Adicionar Registro para: {exercicioNome}</Text>
+        <Text style={title}>Adicionar Registro para: {exercicioData.nome}</Text>
         <Text style={{ color: '#aaa', marginBottom: 10 }}>
           Campos marcados com <Text style={{ color: '#ff5555' }}>*</Text> são
           obrigatórios
@@ -235,8 +262,7 @@ const RegistroAtividadeForm = (props) => {
 RegistroAtividadeForm.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
-      exercicioId: PropTypes.number.isRequired,
-      exercicioNome: PropTypes.string.isRequired,
+      exercicioData: PropTypes.object.isRequired,
       isExercicioMusculacao: PropTypes.bool.isRequired,
     }).isRequired,
   }).isRequired,
