@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { SectionList, Text, TouchableOpacity, View } from 'react-native';
+import { SectionList, Text, View } from 'react-native';
 
-import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import AddButton from '../../../../components/Button/AddButton';
 import BackButton from '../../../../components/Button/BackButton';
 import LoadingIndicator from '../../../../components/Loading/LoadingIndicator';
-import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
+import SelectableItem from '../../../../components/SelectableItem/SelectableItem';
+import { ComumStyles } from '../../../../components/Styles/ComumStyles';
 import * as Api from '../Api';
 import RegistroCardio from '../RegistroCardio';
 import RegistroCarga from '../RegistroCarga';
@@ -22,14 +22,7 @@ const RegistroAtividadesCompleto = (props) => {
     sectionHeader,
     sectionHeaderText,
   } = style;
-  const {
-    container,
-    botoesContainer,
-    actionSheetContainer,
-    actionSheetButtonText,
-    actionSheetTitle,
-    actionSheetMessage,
-  } = ComumStyles;
+  const { container, botoesContainer } = ComumStyles;
   const {
     exercicio: { id, nome, tipoExercicioo },
   } = props.route.params;
@@ -38,7 +31,6 @@ const RegistroAtividadesCompleto = (props) => {
     [],
   );
   const [loading, setLoading] = useState(false);
-  const { showActionSheetWithOptions } = useActionSheet();
 
   const fetchCargas = useCallback(async () => {
     try {
@@ -100,37 +92,25 @@ const RegistroAtividadesCompleto = (props) => {
     });
   };
 
-  const handlePress = (item) => {
-    const options = ['Editar Registro', 'Cancelar'];
-    showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex: 1,
-        destructiveButtonIndex: 1,
-        title: `Selecione uma opção`,
-        tintColor: colors.textLight,
-        containerStyle: actionSheetContainer,
-        textStyle: actionSheetButtonText,
-        titleTextStyle: actionSheetTitle,
-        messageTextStyle: actionSheetMessage,
-        separatorStyle: {
-          backgroundColor: '#383838',
-        },
-      },
-      (selectedIndex) => {
-        switch (selectedIndex) {
-          case 0:
-            redirectToRegistroAtividadeFormEdit(item);
-            break;
-          case 1:
-            break;
-        }
-      },
-    );
+  const getOptions = ['Editar Registro', 'Cancelar'];
+
+  const selectOptionsAction = (selectedIndex, item) => {
+    switch (selectedIndex) {
+      case 0:
+        redirectToRegistroAtividadeFormEdit(item);
+        break;
+      case 1:
+        break;
+    }
   };
 
   const renderItem = ({ item: registro }) => (
-    <TouchableOpacity onPress={() => handlePress(registro)} activeOpacity={0.7}>
+    <SelectableItem
+      item={registro}
+      cancelButtonIndex={1}
+      options={getOptions}
+      onActionSelected={selectOptionsAction}
+    >
       <View>
         {isExercicioMusculacao ? (
           <RegistroCarga registroData={registro} />
@@ -138,7 +118,7 @@ const RegistroAtividadesCompleto = (props) => {
           <RegistroCardio registroData={registro} />
         )}
       </View>
-    </TouchableOpacity>
+    </SelectableItem>
   );
 
   return (

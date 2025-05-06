@@ -1,13 +1,13 @@
-import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AddButton from '../../../components/Button/AddButton';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
+import SelectableItem from '../../../components/SelectableItem/SelectableItem';
 import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
@@ -30,18 +30,11 @@ const ListTreino = () => {
     checkboxContainer,
     checkboxLabel,
   } = style;
-  const {
-    container,
-    actionSheetContainer,
-    actionSheetButtonText,
-    actionSheetTitle,
-    actionSheetMessage,
-  } = ComumStyles;
+  const { container } = ComumStyles;
   const [treinos, setTreinos] = useState([]);
   const [filteredTreinos, setFilteredTreinos] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  const { showActionSheetWithOptions } = useActionSheet();
   const [buscarInativos, setBuscarInativos] = useState(false);
 
   const fetchTreinos = useCallback(async () => {
@@ -91,7 +84,7 @@ const ListTreino = () => {
       throwToastSuccess(
         `Situação do treino ${treino.nome} alterada com sucesso`,
       );
-      fetchTreinos();
+      await fetchTreinos();
     } catch (error) {
       throwToastError('Não foi possível alterar a situação do treino.');
       console.error(error);
@@ -100,48 +93,33 @@ const ListTreino = () => {
     }
   };
 
-  const handleTreinoPress = (treino) => {
-    const options = [
+  const getOptions = (treino) => {
+    return [
       'Ver Exercícios',
       treino.situacao === 'ATIVO' ? 'Inativar Treino' : 'Ativar Treino',
       'Cancelar',
     ];
+  };
 
-    showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex: 2,
-        destructiveButtonIndex: 2,
-        title: `Opções para ${treino.nome}`,
-        message: 'Escolha uma ação para este treino',
-        tintColor: colors.textLight,
-        containerStyle: actionSheetContainer,
-        textStyle: actionSheetButtonText,
-        titleTextStyle: actionSheetTitle,
-        messageTextStyle: actionSheetMessage,
-        separatorStyle: {
-          backgroundColor: '#383838',
-        },
-      },
-      (selectedIndex) => {
-        switch (selectedIndex) {
-          case 0:
-            redirectToListExerciciosTreino(treino);
-            break;
-          case 1:
-            toggleTreinoSituacao(treino);
-            break;
-          case 2:
-            break;
-        }
-      },
-    );
+  const selectOptionsAction = (selectedIndex, item) => {
+    switch (selectedIndex) {
+      case 0:
+        redirectToListExerciciosTreino(item);
+        break;
+      case 1:
+        toggleTreinoSituacao(item);
+        break;
+      case 2:
+        break;
+    }
   };
 
   const renderTreinoItem = ({ item: treino }) => (
-    <TouchableOpacity
-      onPress={() => handleTreinoPress(treino)}
-      activeOpacity={0.7}
+    <SelectableItem
+      item={treino}
+      cancelButtonIndex={2}
+      options={getOptions(treino)}
+      onActionSelected={selectOptionsAction}
       onLongPress={() => redirectToListExerciciosTreino(treino)}
     >
       <View style={treinoItem}>
@@ -161,7 +139,7 @@ const ListTreino = () => {
         </View>
         <MaterialIcons name="chevron-right" size={24} color="#aaa" />
       </View>
-    </TouchableOpacity>
+    </SelectableItem>
   );
 
   const renderEmptyList = () => <EmptyList value="treino" style={emptyList} />;
