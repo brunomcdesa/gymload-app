@@ -1,10 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { ComumStyles } from '../Styles/ComumStyles';
+import { colors, ComumStyles } from '../Styles/ComumStyles';
 import style from './styles/style';
 
 const SelectInput = (props) => {
+  const {
+    dropDownContainerStyle,
+    dropdownItem,
+    dropdownText,
+    selectedItemLabel,
+  } = style;
   const {
     open,
     setOpen,
@@ -39,8 +45,8 @@ const SelectInput = (props) => {
       setValue={setValue}
       multiple={multiple}
       onChangeValue={handleSelect}
-      listMode="FLATLIST"
-      mode="BADGE"
+      listMode="SCROLLVIEW"
+      mode="SIMPLE"
       loading={loading}
       placeholder={placeholder}
       searchable={searchable}
@@ -48,12 +54,38 @@ const SelectInput = (props) => {
       searchTextInputProps={
         searchable
           ? {
+              style: {
+                color: colors.inputText,
+                backgroundColor: colors.inputBackground,
+                borderColor: colors.inputBorder,
+              },
+              placeholderTextColor: colors.placeholderText,
               maxLength: 40,
               autoCapitalize: 'none',
             }
           : null
       }
-      dropDownContainerStyle={style.dropDownContainerStyle}
+      dropDownContainerStyle={[
+        dropDownContainerStyle,
+        { zIndex: zIndex * 10 + 1 },
+      ]}
+      listItemContainerStyle={dropdownItem}
+      labelStyle={dropdownText}
+      textStyle={dropdownText}
+      selectedItemLabelStyle={selectedItemLabel}
+      scrollViewProps={{
+        nestedScrollEnabled: true,
+      }}
+      theme="DARK"
+      arrowIconStyle={{
+        tintColor: colors.textLight,
+      }}
+      tickIconStyle={{
+        tintColor: colors.secondary,
+      }}
+      closeIconStyle={{
+        tintColor: colors.textLight,
+      }}
       zIndex={zIndex}
       zIndexInverse={zIndexInverse}
     />

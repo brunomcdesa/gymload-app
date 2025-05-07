@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 
 import PropTypes from 'prop-types';
 import SelectInput from '../../../components/Inputs/SelectInput';
@@ -21,6 +21,7 @@ const ExercicioForm = (props) => {
     formLabelObrigatorio,
     asteriscoObrigatorio,
   } = ComumStyles;
+  const { placeholderText } = colors;
   const { navigation } = props;
   const [formData, setFormData] = useState({
     nome: '',
@@ -218,8 +219,20 @@ const ExercicioForm = (props) => {
       <TextInput
         style={formTextInput}
         placeholder="Digite o nome"
+        placeholderTextColor={placeholderText}
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
+      />
+
+      <Text style={formLabel}>Descrição:</Text>
+      <TextInput
+        style={formTextInput}
+        placeholder="Digite a descrição"
+        placeholderTextColor={placeholderText}
+        value={formData.descricao}
+        onChangeText={(descricaoValue) =>
+          handleChange('descricao', descricaoValue)
+        }
       />
 
       <View style={formLabelObrigatorio}>
@@ -239,16 +252,6 @@ const ExercicioForm = (props) => {
         field="tipoExercicio"
         zIndex={2000}
         zIndexInverse={200}
-      />
-
-      <Text style={formLabel}>Descricao:</Text>
-      <TextInput
-        style={formTextInput}
-        placeholder="Digite a descricao"
-        value={formData.descricao}
-        onChangeText={(descricaoValue) =>
-          handleChange('descricao', descricaoValue)
-        }
       />
 
       {isExercicioMusculacao && renderExerciciosMusculacaoFields()}

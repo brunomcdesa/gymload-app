@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as ExercicioApi from '../../exercicios/Api';
 import * as Api from '../Api';
 
@@ -119,6 +119,7 @@ const TreinoForm = (props) => {
       <TextInput
         style={formTextInput}
         placeholder="Digite o nome"
+        placeholderTextColor={colors.placeholderText}
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />

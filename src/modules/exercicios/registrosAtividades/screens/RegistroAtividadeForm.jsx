@@ -7,7 +7,7 @@ import BackButton from '../../../../components/Button/BackButton';
 import SaveButton from '../../../../components/Button/SaveButton';
 import SelectInput from '../../../../components/Inputs/SelectInput';
 import TimePickerInput from '../../../../components/Inputs/TimePickerInput';
-import { ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
 import * as EnumApi from '../../../../comum/EnumApi';
 import { handleChangeState } from '../../../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
@@ -23,6 +23,7 @@ const RegistroAtividadeForm = (props) => {
     formLabelObrigatorio,
     asteriscoObrigatorio,
   } = ComumStyles;
+  const { placeholderText } = colors;
   const { route, navigation } = props;
   const {
     exercicioData,
@@ -142,6 +143,7 @@ const RegistroAtividadeForm = (props) => {
         <TextInput
           style={formTextInput}
           placeholder="Digite o Peso"
+          placeholderTextColor={placeholderText}
           keyboardType="numeric"
           value={formData.peso}
           onChangeText={(pesoValue) => handleChange('peso', pesoValue)}
@@ -174,6 +176,7 @@ const RegistroAtividadeForm = (props) => {
         <TextInput
           style={formTextInput}
           placeholder="Digite Quantidade de Repetições"
+          placeholderTextColor={placeholderText}
           keyboardType="numeric"
           value={formData.qtdRepeticoes}
           onChangeText={(qtdRepeticoesValue) =>
@@ -188,6 +191,7 @@ const RegistroAtividadeForm = (props) => {
         <TextInput
           style={formTextInput}
           placeholder="Digite Quantidade de Séries"
+          placeholderTextColor={placeholderText}
           keyboardType="numeric"
           value={formData.qtdSeries}
           onChangeText={(qtdSeriesValue) =>
@@ -208,6 +212,7 @@ const RegistroAtividadeForm = (props) => {
         <TextInput
           style={formTextInput}
           placeholder="Digite a distância em km"
+          placeholderTextColor={placeholderText}
           keyboardType="numeric"
           value={formData.distancia}
           onChangeText={(distanciaValue) =>
@@ -241,10 +246,10 @@ const RegistroAtividadeForm = (props) => {
         ? renderFieldsRegistroCarga()
         : renderFieldsRegistroCardio()}
       <Text style={formLabel}>Observação:</Text>
-
       <TextInput
         style={formTextInput}
         placeholder="Informe uma observação"
+        placeholderTextColor={placeholderText}
         value={formData.observacao}
         onChangeText={(observacaoValue) =>
           handleChange('observacao', observacaoValue)

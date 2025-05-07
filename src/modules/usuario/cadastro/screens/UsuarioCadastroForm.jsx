@@ -4,7 +4,7 @@ import { Text, TextInput, View } from 'react-native';
 import BackButton from '../../../../components/Button/BackButton';
 import SaveButton from '../../../../components/Button/SaveButton';
 import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
-import { ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
 import * as Api from '../../Api';
 import style from '../style/style';
@@ -18,6 +18,7 @@ const UsuarioCadastroForm = (props) => {
     formTextInput,
     passwordContainer,
   } = ComumStyles;
+  const { placeholderText } = colors;
   const { navigation, route } = props;
   const { isCadastroAdmin } = route.params;
   const [formData, setFormData] = useState({
@@ -64,15 +65,17 @@ const UsuarioCadastroForm = (props) => {
       <TextInput
         style={formTextInput}
         placeholder="Digite o nome"
+        placeholderTextColor={placeholderText}
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
       <View>
-        <Text style={formLabel}>username:</Text>
+        <Text style={formLabel}>Username:</Text>
         <TextInput
           style={formTextInput}
           placeholder="Digite o username"
+          placeholderTextColor={placeholderText}
           value={formData.username}
           onChangeText={(usernameValue) =>
             handleChange('username', usernameValue)
@@ -83,11 +86,12 @@ const UsuarioCadastroForm = (props) => {
         </Text>
       </View>
 
-      <Text style={formLabel}>senha:</Text>
+      <Text style={formLabel}>Senha:</Text>
       <View style={passwordContainer}>
         <TextInput
           style={formTextInput}
           placeholder="Digite a senha"
+          placeholderTextColor={placeholderText}
           value={formData.password}
           onChangeText={(passwordValue) =>
             handleChange('password', passwordValue)

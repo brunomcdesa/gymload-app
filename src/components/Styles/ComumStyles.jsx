@@ -4,6 +4,10 @@ const colors = {
   primary: '#333',
   secondary: '#ff5555',
   background: '#222',
+  inputBackground: '#2a2a2a',
+  inputBorder: '#383838',
+  inputText: '#fff',
+  placeholderText: '#aaa',
   danger: '#dc3545',
   success: '#28a745',
   textLight: '#FFF',
@@ -51,26 +55,40 @@ const ComumStyles = StyleSheet.create({
   formLabel: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 5,
-    marginTop: '3%',
-    color: '#fff',
+    marginBottom: 8,
+    marginTop: 12,
+    color: colors.textLight,
   },
   formTextInput: {
-    height: 40,
+    height: 50,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: '2%',
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
+    borderColor: colors.inputBorder,
+    borderRadius: 8,
+    marginBottom: 16,
+    paddingHorizontal: 12,
+    backgroundColor: colors.inputBackground,
+    color: colors.inputText,
+    fontSize: 16,
   },
   formSelectInput: {
     height: 50,
     borderWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#f2f2f2',
-    marginBottom: 15,
+    borderColor: colors.inputBorder,
+    borderRadius: 8,
+    backgroundColor: colors.inputBackground,
+    marginBottom: 16,
   },
+  formLabelObrigatorio: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  asteriscoObrigatorio: {
+    color: colors.secondary,
+    marginLeft: 4,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
   elementContainer: {
     flex: 1,
     padding: 20,
@@ -88,14 +106,6 @@ const ComumStyles = StyleSheet.create({
   passwordContainer: {
     position: 'relative',
     justifyContent: 'center',
-  },
-  formLabelObrigatorio: {
-    flexDirection: 'row',
-  },
-  asteriscoObrigatorio: {
-    color: '#ff5555',
-    marginLeft: 2,
-    marginTop: '3%',
   },
 });
 

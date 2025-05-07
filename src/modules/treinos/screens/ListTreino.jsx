@@ -102,7 +102,7 @@ const ListTreino = () => {
   const getOptions = (treino) => {
     return [
       'Ver Exercícios',
-      'Editar',
+      'Editar Treino',
       treino.situacao === 'ATIVO' ? 'Inativar Treino' : 'Ativar Treino',
       'Cancelar',
     ];

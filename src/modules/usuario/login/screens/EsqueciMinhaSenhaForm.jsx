@@ -4,7 +4,7 @@ import { Text, TextInput, View } from 'react-native';
 import BackButton from '../../../../components/Button/BackButton';
 import SaveButton from '../../../../components/Button/SaveButton';
 import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
-import { ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
 import { handleChangeState } from '../../../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
 import * as Api from '../Api';
@@ -18,6 +18,7 @@ const EsqueciMinhaSenhaForm = (props) => {
     formTextInput,
     passwordContainer,
   } = ComumStyles;
+  const { placeholderText } = colors;
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -59,6 +60,7 @@ const EsqueciMinhaSenhaForm = (props) => {
       <TextInput
         style={formTextInput}
         placeholder="Digite seu username"
+        placeholderTextColor={placeholderText}
         value={formData.username}
         onChangeText={(usernameValue) =>
           handleChange('username', usernameValue)
@@ -70,6 +72,7 @@ const EsqueciMinhaSenhaForm = (props) => {
         <TextInput
           style={formTextInput}
           placeholder="Digite a senha"
+          placeholderTextColor={placeholderText}
           value={formData.password}
           onChangeText={(passwordValue) =>
             handleChange('password', passwordValue)

@@ -4,8 +4,8 @@ import { colors } from '../../Styles/ComumStyles';
 export default StyleSheet.create({
   dropDownContainerStyle: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: colors.inputBackground,
+    borderColor: colors.inputBorder,
   },
   searchInput: {
     height: 45,
@@ -64,5 +64,18 @@ export default StyleSheet.create({
     minWidth: 40,
     borderRadius: 4,
     padding: 2,
+  },
+
+  dropdownItem: {
+    backgroundColor: colors.inputBackground,
+  },
+
+  dropdownText: {
+    color: colors.inputText,
+  },
+
+  selectedItemLabel: {
+    fontWeight: 'bold',
+    color: colors.secondary,
   },
 });

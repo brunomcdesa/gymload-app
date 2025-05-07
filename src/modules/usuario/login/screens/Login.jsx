@@ -6,7 +6,7 @@ import EsqueciMinhaSenhaButton from '../../../../components/Button/EsqueciMinhaS
 import LoginButton from '../../../../components/Button/LoginButton';
 import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
 import LoadingIndicator from '../../../../components/Loading/LoadingIndicator';
-import { ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../../context/AuthProvider';
 import { handleChangeState } from '../../../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
@@ -15,6 +15,7 @@ import style from '../style/style';
 
 const Login = (props) => {
   const { title, formTextInput, formLabel, passwordContainer } = ComumStyles;
+  const { placeholderText } = colors;
   const {
     container,
     separatorContainer,
@@ -64,6 +65,7 @@ const Login = (props) => {
       <TextInput
         style={formTextInput}
         placeholder="Digite o username"
+        placeholderTextColor={placeholderText}
         value={formData.username}
         onChangeText={(usernameValue) =>
           handleChange('username', usernameValue)
@@ -75,6 +77,7 @@ const Login = (props) => {
         <TextInput
           style={formTextInput}
           placeholder="Digite sua senha"
+          placeholderTextColor={placeholderText}
           value={formData.password}
           onChangeText={(passwordValue) => {
             handleChange('password', passwordValue);
