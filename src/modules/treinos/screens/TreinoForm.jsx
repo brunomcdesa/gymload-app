@@ -48,6 +48,24 @@ const TreinoForm = (props) => {
     }
   };
 
+  const fetchExerciciosDoTreino = async () => {
+    try {
+      setLoading(true);
+      const { data } = await ExercicioApi.fetchExerciciosDoTreino(
+        treinoData.id,
+      );
+      setSelectedExercicios(data.map((exercicio) => exercicio.id));
+    } catch (error) {
+      throwToastError('Erro ao buscar exercícios do treino.');
+      console.error(
+        `Erro ao buscar exercícios do treino ${treinoData.id}`,
+        error,
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSave = async () => {
     try {
       setLoading(true);
@@ -79,6 +97,9 @@ const TreinoForm = (props) => {
   useFocusEffect(
     useCallback(() => {
       fetchExerciciosSelect();
+      if (isEdicao) {
+        fetchExerciciosDoTreino();
+      }
     }, []),
   );
 

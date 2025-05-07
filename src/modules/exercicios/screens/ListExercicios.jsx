@@ -9,7 +9,7 @@ import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { useIsAdmin } from '../../utils/userUtils';
 import * as Api from '../Api';
 import Exercicio from '../Exercicio';
-import * as RegistroAtividadeApi from '../registrosAtividades/Api';
+import { fetchDestaquesDosExercicios } from '../utils/exerciciosUtils';
 
 const ListExercicios = () => {
   const { container, title } = ComumStyles;
@@ -31,7 +31,10 @@ const ListExercicios = () => {
 
       if (data && data.length > 0) {
         const exerciciosIds = data.map((exercicio) => exercicio.id);
-        await fetchDestaquesDosExercicios(exerciciosIds);
+        await fetchDestaquesDosExercicios(
+          exerciciosIds,
+          setDadosRegistrosAtividades,
+        );
       }
     } catch (error) {
       console.error('Erro ao buscar exercicios:', error);
@@ -40,27 +43,6 @@ const ListExercicios = () => {
       setLoading(false);
     }
   }, []);
-
-  const fetchDestaquesDosExercicios = async (exerciciosIds) => {
-    try {
-      if (!exerciciosIds || exerciciosIds.length === 0) return;
-      const { data } =
-        await RegistroAtividadeApi.fetchDestaquesDeExercicios(exerciciosIds);
-
-      const dadosMap = {};
-      data.forEach((destaque) => {
-        dadosMap[destaque.exercicioId] = destaque;
-      });
-
-      setDadosRegistrosAtividades(dadosMap);
-    } catch (error) {
-      if (error.response && error.response.data) {
-        console.error('Erro ao buscar destaques:', error.response.data);
-      } else {
-        console.error('Erro ao buscar destaques:', error);
-      }
-    }
-  };
 
   useFocusEffect(
     useCallback(() => {

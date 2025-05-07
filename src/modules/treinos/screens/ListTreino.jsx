@@ -62,6 +62,13 @@ const ListTreino = () => {
     navigation.navigate('TreinoForm', { treinoData: {}, isEdicao: false });
   };
 
+  const redirectToTreinoFormEdit = (treino) => {
+    navigation.navigate('TreinoForm', {
+      treinoData: { ...treino },
+      isEdicao: true,
+    });
+  };
+
   const redirectToListExerciciosTreino = (treino) => {
     navigation.navigate('ListExerciciosTreino', {
       treino: { id: treino.id, nome: treino.nome },
@@ -77,13 +84,12 @@ const ListTreino = () => {
       setLoading(true);
       if (treino.situacao === 'ATIVO') {
         await Api.inativarTreino(treino.id);
+        throwToastSuccess(`${treino.nome} inativo com sucesso.`);
       }
       if (treino.situacao === 'INATIVO') {
         await Api.ativarTreino(treino.id);
+        throwToastSuccess(`${treino.nome} ativo com sucesso.`);
       }
-      throwToastSuccess(
-        `Situação do treino ${treino.nome} alterada com sucesso`,
-      );
       await fetchTreinos();
     } catch (error) {
       throwToastError('Não foi possível alterar a situação do treino.');
@@ -96,6 +102,7 @@ const ListTreino = () => {
   const getOptions = (treino) => {
     return [
       'Ver Exercícios',
+      'Editar',
       treino.situacao === 'ATIVO' ? 'Inativar Treino' : 'Ativar Treino',
       'Cancelar',
     ];
@@ -107,9 +114,12 @@ const ListTreino = () => {
         redirectToListExerciciosTreino(item);
         break;
       case 1:
-        toggleTreinoSituacao(item);
+        redirectToTreinoFormEdit(item);
         break;
       case 2:
+        toggleTreinoSituacao(item);
+        break;
+      case 3:
         break;
     }
   };
@@ -117,7 +127,7 @@ const ListTreino = () => {
   const renderTreinoItem = ({ item: treino }) => (
     <SelectableItem
       item={treino}
-      cancelButtonIndex={2}
+      cancelButtonIndex={3}
       options={getOptions(treino)}
       onActionSelected={selectOptionsAction}
       onLongPress={() => redirectToListExerciciosTreino(treino)}
