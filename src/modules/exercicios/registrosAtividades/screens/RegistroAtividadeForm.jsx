@@ -22,6 +22,9 @@ const RegistroAtividadeForm = (props) => {
     formTextInput,
     formLabelObrigatorio,
     asteriscoObrigatorio,
+    inputGroup,
+    lastInputGroup,
+    inlineContainer,
   } = ComumStyles;
   const { placeholderText } = colors;
   const { route, navigation } = props;
@@ -129,6 +132,9 @@ const RegistroAtividadeForm = (props) => {
           ...formData,
           duracao: convertDecimalHoursToDate(registroAtividadeData.duracao),
         });
+      } else {
+        setUnidadePesoSelected('KG');
+        handleChange('unidadePeso', 'KG');
       }
     }, [registroAtividadeData.unidadePeso]),
   );
@@ -136,68 +142,80 @@ const RegistroAtividadeForm = (props) => {
   const renderFieldsRegistroCarga = () => {
     return (
       <View>
-        <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Peso:</Text>
-          <Text style={asteriscoObrigatorio}>*</Text>
-        </View>
-        <TextInput
-          style={formTextInput}
-          placeholder="Digite o Peso"
-          placeholderTextColor={placeholderText}
-          keyboardType="numeric"
-          value={formData.peso}
-          onChangeText={(pesoValue) => handleChange('peso', pesoValue)}
-        />
+        <View style={inlineContainer}>
+          <View style={inputGroup}>
+            <View style={formLabelObrigatorio}>
+              <Text style={formLabel}>Peso</Text>
+              <Text style={asteriscoObrigatorio}>*</Text>
+            </View>
+            <TextInput
+              style={formTextInput}
+              placeholder="Ex: 12.5"
+              placeholderTextColor={placeholderText}
+              keyboardType="numeric"
+              value={formData.peso}
+              onChangeText={(pesoValue) => handleChange('peso', pesoValue)}
+            />
+          </View>
 
-        <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Unidade Peso:</Text>
-          <Text style={asteriscoObrigatorio}>*</Text>
+          <View style={lastInputGroup}>
+            <View style={formLabelObrigatorio}>
+              <Text style={formLabel}>Unidade</Text>
+              <Text style={asteriscoObrigatorio}>*</Text>
+            </View>
+            <SelectInput
+              open={openUnidadesPesosSelect}
+              setOpen={setOpenUnidadesPesosSelect}
+              items={unidadesPesosItems}
+              setItems={setUnidadesPesosItems}
+              value={unidadePesoSelected || 'KG'}
+              setValue={setUnidadePesoSelected}
+              loading={unidadesPesosLoading}
+              multiple={false}
+              placeholder="Unidade"
+              handleChange={handleChange}
+              field="unidadePeso"
+              zIndex={3000}
+              zIndexInverse={1000}
+            />
+          </View>
         </View>
-        <SelectInput
-          open={openUnidadesPesosSelect}
-          setOpen={setOpenUnidadesPesosSelect}
-          items={unidadesPesosItems}
-          setItems={setUnidadesPesosItems}
-          value={unidadePesoSelected || ''}
-          setValue={setUnidadePesoSelected}
-          loading={unidadesPesosLoading}
-          multiple={false}
-          placeholder="Selecione a unidade de peso"
-          handleChange={handleChange}
-          field="unidadePeso"
-          zIndex={3000}
-          zIndexInverse={1000}
-        />
 
-        <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Quantidade de Repetições:</Text>
-          <Text style={asteriscoObrigatorio}>*</Text>
-        </View>
-        <TextInput
-          style={formTextInput}
-          placeholder="Digite Quantidade de Repetições"
-          placeholderTextColor={placeholderText}
-          keyboardType="numeric"
-          value={formData.qtdRepeticoes}
-          onChangeText={(qtdRepeticoesValue) =>
-            handleChange('qtdRepeticoes', qtdRepeticoesValue)
-          }
-        />
+        <View style={inlineContainer}>
+          <View style={inputGroup}>
+            <View style={formLabelObrigatorio}>
+              <Text style={formLabel}>Qtd de Reps:</Text>
+              <Text style={asteriscoObrigatorio}>*</Text>
+            </View>
+            <TextInput
+              style={formTextInput}
+              placeholder="Ex: 12"
+              placeholderTextColor={placeholderText}
+              keyboardType="numeric"
+              value={formData.qtdRepeticoes}
+              onChangeText={(qtdRepeticoesValue) =>
+                handleChange('qtdRepeticoes', qtdRepeticoesValue)
+              }
+            />
+          </View>
 
-        <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Quantidade de séries:</Text>
-          <Text style={asteriscoObrigatorio}>*</Text>
+          <View style={lastInputGroup}>
+            <View style={formLabelObrigatorio}>
+              <Text style={formLabel}>Qtd de Séries</Text>
+              <Text style={asteriscoObrigatorio}>*</Text>
+            </View>
+            <TextInput
+              style={formTextInput}
+              placeholder="Ex: 4"
+              placeholderTextColor={placeholderText}
+              keyboardType="numeric"
+              value={formData.qtdSeries}
+              onChangeText={(qtdSeriesValue) =>
+                handleChange('qtdSeries', qtdSeriesValue)
+              }
+            />
+          </View>
         </View>
-        <TextInput
-          style={formTextInput}
-          placeholder="Digite Quantidade de Séries"
-          placeholderTextColor={placeholderText}
-          keyboardType="numeric"
-          value={formData.qtdSeries}
-          onChangeText={(qtdSeriesValue) =>
-            handleChange('qtdSeries', qtdSeriesValue)
-          }
-        />
       </View>
     );
   };

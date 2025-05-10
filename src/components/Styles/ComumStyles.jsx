@@ -88,7 +88,6 @@ const ComumStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-
   elementContainer: {
     flex: 1,
     padding: 20,
@@ -106,6 +105,19 @@ const ComumStyles = StyleSheet.create({
   passwordContainer: {
     position: 'relative',
     justifyContent: 'center',
+  },
+  inputGroup: {
+    flex: 1,
+    marginRight: 10,
+  },
+  lastInputGroup: {
+    flex: 1,
+  },
+  inlineContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
   },
 });
 

@@ -5,6 +5,7 @@ import { colors, ComumStyles } from '../Styles/ComumStyles';
 import style from './styles/style';
 
 const SelectInput = (props) => {
+  const { formSelectInput } = ComumStyles;
   const {
     dropDownContainerStyle,
     dropdownItem,
@@ -41,7 +42,7 @@ const SelectInput = (props) => {
       items={items}
       setItems={setItems}
       value={value}
-      style={ComumStyles.formSelectInput}
+      style={formSelectInput}
       setValue={setValue}
       multiple={multiple}
       onChangeValue={handleSelect}

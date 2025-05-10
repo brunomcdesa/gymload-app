@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
-import { ComumStyles } from '../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 
 const Treino = (props) => {
   const { elementContainer, subTitle, subSubTitle } = ComumStyles;
