@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import {
   HEADER_SUBTITLE_DASHBOARD,
@@ -32,6 +33,10 @@ export const HeaderProvider = (props) => {
       {children}
     </HeaderContext.Provider>
   );
+};
+
+HeaderProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export const useHeaderContext = () => useContext(HeaderContext);

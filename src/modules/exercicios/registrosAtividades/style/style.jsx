@@ -7,8 +7,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
   },
-  title: {
-    fontSize: 22,
+  titleStyle: {
+    fontSize: 18,
     fontWeight: '600',
     color: colors.textLight,
     marginBottom: 4,

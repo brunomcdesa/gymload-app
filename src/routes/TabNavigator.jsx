@@ -1,7 +1,6 @@
-import React, { memo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useFocusEffect } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useHeaderContext } from '../components/Header/HeaderProvider';
 import { colors } from '../components/Styles/ComumStyles';
@@ -20,21 +19,9 @@ import ExerciciosStack from '../modules/exercicios/stack/ExerciciosStackNavigato
 import GruposMuscularesStack from '../modules/gruposMusculares/stack/GruposMuscularesStackNavigator';
 import TreinosStack from '../modules/treinos/stack/TreinosStackNavigator';
 import { useIsAdmin } from '../modules/utils/userUtils';
+import ScreenWrapper from './ScreenWrapper';
 
 const Tab = createBottomTabNavigator();
-
-const ScreenWrapper = memo(
-  ({ headerTitle, headerSubtitle, Component, onFocus }) => {
-    useFocusEffect(
-      useCallback(() => {
-        onFocus(headerTitle, headerSubtitle);
-        return () => {};
-      }, [headerTitle, headerSubtitle, onFocus]),
-    );
-
-    return <Component />;
-  },
-);
 
 const TabNavigator = () => {
   const isAdmin = useIsAdmin();
@@ -107,24 +94,19 @@ const TabNavigator = () => {
         headerShown: false,
       })}
     >
-      {rotasConfig.map((rota) => {
-        const TabComponent = () => (
-          <ScreenWrapper
-            headerTitle={rota.headerTitle}
-            headerSubtitle={rota.headerSubtitle}
-            Component={rota.component}
-            onFocus={handleTabSelect}
-          />
-        );
-
-        return (
-          <Tab.Screen
-            key={rota.name}
-            name={rota.name}
-            component={TabComponent}
-          />
-        );
-      })}
+      {rotasConfig.map((rota) => (
+        <Tab.Screen key={rota.name} name={rota.name}>
+          {(props) => (
+            <ScreenWrapper
+              {...props}
+              headerTitle={rota.headerTitle}
+              headerSubtitle={rota.headerSubtitle}
+              Component={rota.component}
+              onFocus={handleTabSelect}
+            />
+          )}
+        </Tab.Screen>
+      ))}
     </Tab.Navigator>
   );
 };

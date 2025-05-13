@@ -1,24 +1,18 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import React, { memo } from 'react';
-import { Text, View } from 'react-native';
+import React from 'react';
 import { useHeaderContext } from '../components/Header/HeaderProvider';
 import SideBar from '../components/Sidebar/SideBar';
 import { colors } from '../components/Styles/ComumStyles';
 import UsuarioCadastroForm from '../modules/usuario/cadastro/screens/UsuarioCadastroForm';
 import Perfil from '../modules/usuario/screens/Perfil';
 import Navegacao from '../routes/Navegacao';
+import DrawerHeaderTitle from './DrawerHeaderTitle';
 import style from './style/style';
 
 const Drawer = createDrawerNavigator();
 
-const DrawerHeaderTitle = memo(({ title, subtitle }) => {
-  const { headerTitleStyle, headerSubtitle, headerTextContainer } = style;
-  return (
-    <View style={headerTextContainer}>
-      <Text style={headerTitleStyle}>{title || 'APP'}</Text>
-      <Text style={headerSubtitle}>{subtitle}</Text>
-    </View>
-  );
+const createScreenOptions = (title, subtitle) => ({
+  headerTitle: () => <DrawerHeaderTitle title={title} subtitle={subtitle} />,
 });
 
 const DrawerNavigator = () => {
@@ -40,38 +34,23 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="App"
         component={Navegacao}
-        options={{
-          headerTitle: () => (
-            <DrawerHeaderTitle
-              title={activeTabOptions?.headerTitle}
-              subtitle={activeTabOptions?.headerSubtitle}
-            />
-          ),
-        }}
+        options={createScreenOptions(
+          activeTabOptions?.headerTitle,
+          activeTabOptions?.headerSubtitle,
+        )}
       />
       <Drawer.Screen
         name="UsuarioCadastroForm"
         component={UsuarioCadastroForm}
-        options={{
-          headerTitle: () => (
-            <DrawerHeaderTitle
-              title="Cadastro de Admin"
-              subtitle="Cadastre um novo Admin"
-            />
-          ),
-        }}
+        options={createScreenOptions(
+          'Cadastro de Admin',
+          'Cadastre um novo Admin',
+        )}
       />
       <Drawer.Screen
         name="Perfil"
         component={Perfil}
-        options={{
-          headerTitle: () => (
-            <DrawerHeaderTitle
-              title="Perfil"
-              subtitle="Gerencie suas informações"
-            />
-          ),
-        }}
+        options={createScreenOptions('Perfil', 'Gerencia suas informações')}
       />
     </Drawer.Navigator>
   );

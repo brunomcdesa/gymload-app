@@ -12,7 +12,7 @@ import Exercicio from '../Exercicio';
 import { fetchDestaquesDosExercicios } from '../utils/exerciciosUtils';
 
 const ListExercicios = () => {
-  const { container, title } = ComumStyles;
+  const { container } = ComumStyles;
   const [exercicios, setExercicios] = useState([]);
   const [filteredExercicios, setFilteredExercicios] = useState([]);
   const [dadosRegistrosAtividades, setDadosRegistrosAtividades] = useState({});

@@ -36,7 +36,7 @@ const TreinoForm = (props) => {
     }));
   };
 
-  const fetchExerciciosSelect = async () => {
+  const fetchExerciciosSelect = useCallback(async () => {
     try {
       setExerciciosSelectLodding(true);
       const { data } = await ExercicioApi.fetchExerciciosSelect();
@@ -46,9 +46,9 @@ const TreinoForm = (props) => {
     } finally {
       setExerciciosSelectLodding(false);
     }
-  };
+  }, []);
 
-  const fetchExerciciosDoTreino = async () => {
+  const fetchExerciciosDoTreino = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await ExercicioApi.fetchExerciciosDoTreino(
@@ -64,7 +64,7 @@ const TreinoForm = (props) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [treinoData.id]);
 
   const handleSave = async () => {
     try {
@@ -100,7 +100,7 @@ const TreinoForm = (props) => {
       if (isEdicao) {
         fetchExerciciosDoTreino();
       }
-    }, []),
+    }, [fetchExerciciosSelect, fetchExerciciosDoTreino, isEdicao]),
   );
 
   const handleGoBack = () => {
@@ -156,6 +156,7 @@ const TreinoForm = (props) => {
 
 TreinoForm.propTypes = {
   navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
   }).isRequired,
   route: PropTypes.shape({

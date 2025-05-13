@@ -22,7 +22,7 @@ const ComumStyles = StyleSheet.create({
     padding: 16,
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
     color: colors.textLight,
     textAlign: 'center',
@@ -118,6 +118,13 @@ const ComumStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: 10,
+  },
+  headerForm: {
+    alignItems: 'center',
+  },
+  subTitleForm: {
+    color: '#aaa',
+    marginBottom: 10,
   },
 });
 

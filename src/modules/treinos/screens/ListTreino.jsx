@@ -13,15 +13,17 @@ import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from '../style/style';
 
+const SeparatorItem = () => <View style={style.separator} />;
+
 const ListTreino = () => {
   const {
     treinoItem,
     treinoInfo,
+    treinoContainer,
     treinoData,
     treinoNome,
     emptyList,
     searchInput,
-    separator,
     addButton,
     listContent,
     situacaoIndicator,
@@ -134,7 +136,7 @@ const ListTreino = () => {
     >
       <View style={treinoItem}>
         <View style={treinoInfo}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={treinoContainer}>
             <View
               style={[
                 situacaoIndicator,
@@ -186,7 +188,7 @@ const ListTreino = () => {
           renderItem={renderTreinoItem}
           ListEmptyComponent={renderEmptyList}
           contentContainerStyle={listContent}
-          ItemSeparatorComponent={() => <View style={separator} />}
+          ItemSeparatorComponent={SeparatorItem}
         />
       )}
 

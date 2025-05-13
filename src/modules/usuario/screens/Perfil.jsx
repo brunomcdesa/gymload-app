@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -130,6 +131,12 @@ const Perfil = (props) => {
       </View>
     </View>
   );
+};
+
+Perfil.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default Perfil;

@@ -21,6 +21,10 @@ export default StyleSheet.create({
   treinoInfo: {
     flex: 1,
   },
+  treinoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   treinoNome: {
     fontSize: 16,
     fontWeight: '600',

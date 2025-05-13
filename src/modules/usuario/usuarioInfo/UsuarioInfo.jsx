@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from 'react-native';
+import style from './styles/style';
 
 const UsuarioInfo = (props) => {
-  return (
-    <Text style={{ color: '#fff', fontSize: 18 }}>{props.usuarioNome}</Text>
-  );
+  const { usuarioNomeStyle } = style;
+  return <Text style={usuarioNomeStyle}>{props.usuarioNome}</Text>;
 };
 
 UsuarioInfo.propTypes = {

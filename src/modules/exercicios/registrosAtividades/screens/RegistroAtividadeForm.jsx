@@ -25,6 +25,8 @@ const RegistroAtividadeForm = (props) => {
     inputGroup,
     lastInputGroup,
     inlineContainer,
+    headerForm,
+    subTitleForm,
   } = ComumStyles;
   const { placeholderText } = colors;
   const { route, navigation } = props;
@@ -48,7 +50,9 @@ const RegistroAtividadeForm = (props) => {
   const [unidadesPesosItems, setUnidadesPesosItems] = useState([]);
   const [openUnidadesPesosSelect, setOpenUnidadesPesosSelect] = useState(false);
   const [unidadesPesosLoading, setUnidadesPesosLoading] = useState(false);
-  const [unidadePesoSelected, setUnidadePesoSelected] = useState(null);
+  const [unidadePesoSelected, setUnidadePesoSelected] = useState(
+    registroAtividadeData.unidadePeso || 'KG',
+  );
 
   const convertDecimalHoursToDate = (decimalHours) => {
     const hours = Math.floor(decimalHours);
@@ -57,9 +61,12 @@ const RegistroAtividadeForm = (props) => {
     return new Date(0, 0, 0, hours, minutes, seconds);
   };
 
-  const handleChange = (field, value) => {
-    handleChangeState(setFormData, formData, field, value);
-  };
+  const handleChange = useCallback(
+    (field, value) => {
+      handleChangeState(setFormData, formData, field, value);
+    },
+    [formData],
+  );
 
   const convertDurationToDecimalHours = (date) => {
     const decimalHours =
@@ -127,16 +134,12 @@ const RegistroAtividadeForm = (props) => {
     useCallback(() => {
       fetchUnidadesPesos();
       if (isEdicao) {
-        setUnidadePesoSelected(registroAtividadeData.unidadePeso);
-        setFormData({
-          ...formData,
+        setFormData((prev) => ({
+          ...prev,
           duracao: convertDecimalHoursToDate(registroAtividadeData.duracao),
-        });
-      } else {
-        setUnidadePesoSelected('KG');
-        handleChange('unidadePeso', 'KG');
+        }));
       }
-    }, [registroAtividadeData.unidadePeso]),
+    }, [isEdicao, registroAtividadeData.duracao]),
   );
 
   const renderFieldsRegistroCarga = () => {
@@ -252,10 +255,10 @@ const RegistroAtividadeForm = (props) => {
 
   return (
     <View style={formContainer}>
-      <View style={{ alignItems: 'center' }}>
+      <View style={headerForm}>
         <Text style={title}>Adicionar Registro para: {exercicioData.nome}</Text>
-        <Text style={{ color: '#aaa', marginBottom: 10 }}>
-          Campos marcados com <Text style={{ color: '#ff5555' }}>*</Text> são
+        <Text style={subTitleForm}>
+          Campos marcados com <Text style={asteriscoObrigatorio}>*</Text> são
           obrigatórios
         </Text>
       </View>
@@ -287,6 +290,8 @@ RegistroAtividadeForm.propTypes = {
     params: PropTypes.shape({
       exercicioData: PropTypes.object.isRequired,
       isExercicioMusculacao: PropTypes.bool.isRequired,
+      registroAtividadeData: PropTypes.object,
+      isEdicao: PropTypes.bool.isRequired,
     }).isRequired,
   }).isRequired,
   navigation: PropTypes.shape({

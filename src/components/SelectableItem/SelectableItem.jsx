@@ -1,4 +1,5 @@
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { colors } from '../Styles/ComumStyles';
@@ -16,7 +17,6 @@ const SelectableItem = (props) => {
     onActionSelected,
     children,
     options,
-    title,
     cancelButtonIndex,
     onLongPress,
   } = props;
@@ -28,7 +28,7 @@ const SelectableItem = (props) => {
         options,
         cancelButtonIndex,
         destructiveButtonIndex: cancelButtonIndex,
-        title: title || 'Selecione uma opção',
+        title: 'Selecione uma opção',
         tintColor: colors.textLight,
         containerStyle: actionSheetContainer,
         textStyle: actionSheetButtonText,
@@ -55,6 +55,15 @@ const SelectableItem = (props) => {
       <View>{children}</View>
     </TouchableOpacity>
   );
+};
+
+SelectableItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  onActionSelected: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  options: PropTypes.array.isRequired,
+  cancelButtonIndex: PropTypes.number.isRequired,
+  onLongPress: PropTypes.func.isRequired,
 };
 
 export default SelectableItem;

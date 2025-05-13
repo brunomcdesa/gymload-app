@@ -25,7 +25,7 @@ const ListExerciciosTreino = (props) => {
       setExercicios(data);
 
       if (data && data.length > 0) {
-        const exerciciosIds = getExerciciosIds(data);
+        const exerciciosIds = data.map((exercicio) => exercicio.id);
         await fetchDestaquesDosExercicios(
           exerciciosIds,
           setDadosRegistrosAtividades,
@@ -44,10 +44,6 @@ const ListExerciciosTreino = (props) => {
       fetchExerciciosDoTreino();
     }, [fetchExerciciosDoTreino]),
   );
-
-  const getExerciciosIds = (exercicios) => {
-    return exercicios.map((exercicio) => exercicio.id);
-  };
 
   return (
     <View style={container}>

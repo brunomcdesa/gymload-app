@@ -16,16 +16,17 @@ import style from '../style/style';
 const RegistroAtividadesCompleto = (props) => {
   const {
     header,
-    title,
+    titleStyle,
     subtitle,
     listContent,
     sectionHeader,
     sectionHeaderText,
   } = style;
   const { container, botoesContainer } = ComumStyles;
+  const { navigation, route } = props;
   const {
     exercicio: { id, nome, tipoExercicioo },
-  } = props.route.params;
+  } = route.params;
   const isExercicioMusculacao = tipoExercicioo === 'MUSCULACAO';
   const [registroAtividadeCompleto, setRegistroAtividadeCompleto] = useState(
     [],
@@ -75,7 +76,7 @@ const RegistroAtividadesCompleto = (props) => {
   const groupedRegistros = groupRegistrosByDate(registroAtividadeCompleto);
 
   const redirectToRegistroAtividadeForm = () => {
-    props.navigation.navigate('RegistroAtividadeForm', {
+    navigation.navigate('RegistroAtividadeForm', {
       exercicioData: { id, nome },
       registroAtividadeData: {},
       isExercicioMusculacao,
@@ -84,7 +85,7 @@ const RegistroAtividadesCompleto = (props) => {
   };
 
   const redirectToRegistroAtividadeFormEdit = (item) => {
-    props.navigation.navigate('RegistroAtividadeForm', {
+    navigation.navigate('RegistroAtividadeForm', {
       exercicioData: { id, nome },
       registroAtividadeData: { ...item },
       isExercicioMusculacao,
@@ -110,6 +111,7 @@ const RegistroAtividadesCompleto = (props) => {
       cancelButtonIndex={1}
       options={getOptions}
       onActionSelected={selectOptionsAction}
+      onLongPress={() => redirectToRegistroAtividadeFormEdit(registro)}
     >
       <View>
         {isExercicioMusculacao ? (
@@ -124,7 +126,7 @@ const RegistroAtividadesCompleto = (props) => {
   return (
     <View style={container}>
       <View style={header}>
-        <Text style={title}>{nome}</Text>
+        <Text style={titleStyle}>{nome}</Text>
         <Text style={subtitle}>Registro Completo</Text>
       </View>
 
@@ -145,7 +147,7 @@ const RegistroAtividadesCompleto = (props) => {
       )}
 
       <View style={botoesContainer}>
-        <BackButton onPress={props.navigation.goBack} />
+        <BackButton onPress={navigation.goBack} />
         <AddButton onPress={redirectToRegistroAtividadeForm} />
       </View>
     </View>
@@ -160,6 +162,7 @@ RegistroAtividadesCompleto.propTypes = {
   }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
 };
 
