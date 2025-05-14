@@ -1,13 +1,14 @@
 import React, { useCallback, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import BackButton from '../../../../components/Button/BackButton';
 import SaveButton from '../../../../components/Button/SaveButton';
 import SelectInput from '../../../../components/Inputs/SelectInput';
+import TextoInput from '../../../../components/Inputs/TextoInput';
 import TimePickerInput from '../../../../components/Inputs/TimePickerInput';
-import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../../components/Styles/ComumStyles';
 import * as EnumApi from '../../../../comum/EnumApi';
 import { handleChangeState } from '../../../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
@@ -19,7 +20,6 @@ const RegistroAtividadeForm = (props) => {
     botoesContainer,
     formContainer,
     formLabel,
-    formTextInput,
     formLabelObrigatorio,
     asteriscoObrigatorio,
     inputGroup,
@@ -28,7 +28,6 @@ const RegistroAtividadeForm = (props) => {
     headerForm,
     subTitleForm,
   } = ComumStyles;
-  const { placeholderText } = colors;
   const { route, navigation } = props;
   const {
     exercicioData,
@@ -151,10 +150,8 @@ const RegistroAtividadeForm = (props) => {
               <Text style={formLabel}>Peso</Text>
               <Text style={asteriscoObrigatorio}>*</Text>
             </View>
-            <TextInput
-              style={formTextInput}
+            <TextoInput
               placeholder="Ex: 12.5"
-              placeholderTextColor={placeholderText}
               keyboardType="numeric"
               value={formData.peso}
               onChangeText={(pesoValue) => handleChange('peso', pesoValue)}
@@ -175,7 +172,6 @@ const RegistroAtividadeForm = (props) => {
               setValue={setUnidadePesoSelected}
               loading={unidadesPesosLoading}
               multiple={false}
-              placeholder="Unidade"
               handleChange={handleChange}
               field="unidadePeso"
               zIndex={3000}
@@ -190,10 +186,8 @@ const RegistroAtividadeForm = (props) => {
               <Text style={formLabel}>Qtd de Reps:</Text>
               <Text style={asteriscoObrigatorio}>*</Text>
             </View>
-            <TextInput
-              style={formTextInput}
+            <TextoInput
               placeholder="Ex: 12"
-              placeholderTextColor={placeholderText}
               keyboardType="numeric"
               value={formData.qtdRepeticoes}
               onChangeText={(qtdRepeticoesValue) =>
@@ -207,10 +201,8 @@ const RegistroAtividadeForm = (props) => {
               <Text style={formLabel}>Qtd de Séries</Text>
               <Text style={asteriscoObrigatorio}>*</Text>
             </View>
-            <TextInput
-              style={formTextInput}
+            <TextoInput
               placeholder="Ex: 4"
-              placeholderTextColor={placeholderText}
               keyboardType="numeric"
               value={formData.qtdSeries}
               onChangeText={(qtdSeriesValue) =>
@@ -230,10 +222,8 @@ const RegistroAtividadeForm = (props) => {
           <Text style={formLabel}>Distância:</Text>
           <Text style={asteriscoObrigatorio}>*</Text>
         </View>
-        <TextInput
-          style={formTextInput}
+        <TextoInput
           placeholder="Digite a distância em km"
-          placeholderTextColor={placeholderText}
           keyboardType="numeric"
           value={formData.distancia}
           onChangeText={(distanciaValue) =>
@@ -266,11 +256,10 @@ const RegistroAtividadeForm = (props) => {
       {isExercicioMusculacao
         ? renderFieldsRegistroCarga()
         : renderFieldsRegistroCardio()}
+
       <Text style={formLabel}>Observação:</Text>
-      <TextInput
-        style={formTextInput}
+      <TextoInput
         placeholder="Informe uma observação"
-        placeholderTextColor={placeholderText}
         value={formData.observacao}
         onChangeText={(observacaoValue) =>
           handleChange('observacao', observacaoValue)

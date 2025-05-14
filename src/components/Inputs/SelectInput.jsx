@@ -7,6 +7,14 @@ import style from './styles/style';
 const SelectInput = (props) => {
   const { formSelectInput } = ComumStyles;
   const {
+    inputText,
+    inputBackground,
+    inputBorder,
+    placeholderText,
+    textLight,
+    secondary,
+  } = colors;
+  const {
     dropDownContainerStyle,
     dropdownItem,
     dropdownText,
@@ -21,7 +29,6 @@ const SelectInput = (props) => {
     setValue,
     multiple,
     loading,
-    placeholder,
     searchable,
     searchPlaceholder,
     handleChange,
@@ -49,18 +56,18 @@ const SelectInput = (props) => {
       listMode="SCROLLVIEW"
       mode="SIMPLE"
       loading={loading}
-      placeholder={placeholder}
+      placeholder={'Selecionar'}
       searchable={searchable}
       searchPlaceholder={searchable ? searchPlaceholder : null}
       searchTextInputProps={
         searchable
           ? {
               style: {
-                color: colors.inputText,
-                backgroundColor: colors.inputBackground,
-                borderColor: colors.inputBorder,
+                color: inputText,
+                backgroundColor: inputBackground,
+                borderColor: inputBorder,
               },
-              placeholderTextColor: colors.placeholderText,
+              placeholderTextColor: placeholderText,
               maxLength: 40,
               autoCapitalize: 'none',
             }
@@ -79,13 +86,13 @@ const SelectInput = (props) => {
       }}
       theme="DARK"
       arrowIconStyle={{
-        tintColor: colors.textLight,
+        tintColor: textLight,
       }}
       tickIconStyle={{
-        tintColor: colors.secondary,
+        tintColor: secondary,
       }}
       closeIconStyle={{
-        tintColor: colors.textLight,
+        tintColor: textLight,
       }}
       zIndex={zIndex}
       zIndexInverse={zIndexInverse}
@@ -106,7 +113,6 @@ SelectInput.propTypes = {
   setValue: PropTypes.func.isRequired,
   multiple: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
-  placeholder: PropTypes.string.isRequired,
   searchable: PropTypes.bool,
   searchPlaceholder: PropTypes.string,
   handleChange: PropTypes.func.isRequired,

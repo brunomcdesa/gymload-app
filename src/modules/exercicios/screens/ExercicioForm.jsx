@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
-import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 
 import PropTypes from 'prop-types';
 import SelectInput from '../../../components/Inputs/SelectInput';
+import TextoInput from '../../../components/Inputs/TextoInput';
 import * as EnumApi from '../../../comum/EnumApi';
 import * as GrupoMuscularApi from '../../gruposMusculares/Api';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
@@ -17,11 +18,11 @@ const ExercicioForm = (props) => {
     botoesContainer,
     formContainer,
     formLabel,
-    formTextInput,
     formLabelObrigatorio,
     asteriscoObrigatorio,
+    inlineContainer,
+    inputGroup,
   } = ComumStyles;
-  const { placeholderText } = colors;
   const { navigation } = props;
   const [formData, setFormData] = useState({
     nome: '',
@@ -147,44 +148,48 @@ const ExercicioForm = (props) => {
   const renderExerciciosMusculacaoFields = () => {
     return (
       <View>
-        <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Grupo Muscular:</Text>
-          <Text style={asteriscoObrigatorio}>*</Text>
-        </View>
-        <SelectInput
-          open={openGrupoMuscularSelect}
-          setOpen={setOpenGrupoMuscularSelect}
-          items={gruposMuscularesItems}
-          setItems={setGruposMuscularesItems}
-          value={grupoMuscularIdSelected || ''}
-          setValue={setGrupoMuscularIdSelected}
-          loading={gruposMuscularesLoading}
-          multiple={false}
-          placeholder="Selecione o grupo muscular"
-          handleChange={handleChange}
-          field="grupoMuscularId"
-          zIndex={3000}
-          zIndexInverse={1000}
-        />
+        <View style={inlineContainer}>
+          <View style={inputGroup}>
+            <View style={formLabelObrigatorio}>
+              <Text style={formLabel}>Grupo Muscular:</Text>
+              <Text style={asteriscoObrigatorio}>*</Text>
+            </View>
+            <SelectInput
+              open={openGrupoMuscularSelect}
+              setOpen={setOpenGrupoMuscularSelect}
+              items={gruposMuscularesItems}
+              setItems={setGruposMuscularesItems}
+              value={grupoMuscularIdSelected || ''}
+              setValue={setGrupoMuscularIdSelected}
+              loading={gruposMuscularesLoading}
+              multiple={false}
+              handleChange={handleChange}
+              field="grupoMuscularId"
+              zIndex={3000}
+              zIndexInverse={1000}
+            />
+          </View>
 
-        <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Tipo de Equipamento:</Text>
-          <Text style={asteriscoObrigatorio}>*</Text>
+          <View style={inputGroup}>
+            <View style={formLabelObrigatorio}>
+              <Text style={formLabel}>Tipo de Equipamento:</Text>
+              <Text style={asteriscoObrigatorio}>*</Text>
+            </View>
+            <SelectInput
+              open={openTipoEquipamentoSelect}
+              setOpen={setOpenTipoEquipamentoSelect}
+              items={tipoEquipamentoItems}
+              setItems={setTipoEquipamentoItems}
+              value={tipoEquipamentoSelected || ''}
+              setValue={setTipoEquipamentoSelected}
+              loading={tipoEquipamentoLoading}
+              handleChange={handleChange}
+              field="tipoEquipamento"
+              zIndex={2000}
+              zIndexInverse={200}
+            />
+          </View>
         </View>
-        <SelectInput
-          open={openTipoEquipamentoSelect}
-          setOpen={setOpenTipoEquipamentoSelect}
-          items={tipoEquipamentoItems}
-          setItems={setTipoEquipamentoItems}
-          value={tipoEquipamentoSelected || ''}
-          setValue={setTipoEquipamentoSelected}
-          loading={tipoEquipamentoLoading}
-          placeholder="Selecione o tipo de equipamento"
-          handleChange={handleChange}
-          field="tipoEquipamento"
-          zIndex={2000}
-          zIndexInverse={200}
-        />
 
         <View style={formLabelObrigatorio}>
           <Text style={formLabel}>Tipo de Pegada:</Text>
@@ -198,7 +203,6 @@ const ExercicioForm = (props) => {
           value={tipoPegadaSelected || ''}
           setValue={setTipoPegadaSelected}
           loading={tipoPegadaLoading}
-          placeholder="Selecione o tipo de pegada"
           handleChange={handleChange}
           field="tipoPegada"
           zIndex={1000}
@@ -212,46 +216,47 @@ const ExercicioForm = (props) => {
     <View style={formContainer}>
       <Text style={title}>Adicionar Exercício</Text>
 
-      <View style={formLabelObrigatorio}>
-        <Text style={formLabel}>Nome:</Text>
-        <Text style={asteriscoObrigatorio}>*</Text>
+      <View style={inlineContainer}>
+        <View style={inputGroup}>
+          <View style={formLabelObrigatorio}>
+            <Text style={formLabel}>Nome:</Text>
+            <Text style={asteriscoObrigatorio}>*</Text>
+          </View>
+          <TextoInput
+            placeholder="Digite o nome"
+            value={formData.nome}
+            onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
+          />
+        </View>
+
+        <View style={inputGroup}>
+          <View style={formLabelObrigatorio}>
+            <Text style={formLabel}>Tipo de Exercício:</Text>
+            <Text style={asteriscoObrigatorio}>*</Text>
+          </View>
+          <SelectInput
+            open={openTipoExercicioSelect}
+            setOpen={setOpenTipoExercicioSelect}
+            items={tiposExercicioItems}
+            setItems={setTiposExercicioItems}
+            value={tipoExercicioSelected || ''}
+            setValue={setTipoExercicioSelected}
+            loading={tipoExercicioLoading}
+            handleChange={handleChange}
+            field="tipoExercicio"
+            zIndex={2000}
+            zIndexInverse={200}
+          />
+        </View>
       </View>
-      <TextInput
-        style={formTextInput}
-        placeholder="Digite o nome"
-        placeholderTextColor={placeholderText}
-        value={formData.nome}
-        onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
-      />
 
       <Text style={formLabel}>Descrição:</Text>
-      <TextInput
-        style={formTextInput}
+      <TextoInput
         placeholder="Digite a descrição"
-        placeholderTextColor={placeholderText}
         value={formData.descricao}
         onChangeText={(descricaoValue) =>
           handleChange('descricao', descricaoValue)
         }
-      />
-
-      <View style={formLabelObrigatorio}>
-        <Text style={formLabel}>Tipo de Exercício:</Text>
-        <Text style={asteriscoObrigatorio}>*</Text>
-      </View>
-      <SelectInput
-        open={openTipoExercicioSelect}
-        setOpen={setOpenTipoExercicioSelect}
-        items={tiposExercicioItems}
-        setItems={setTiposExercicioItems}
-        value={tipoExercicioSelected || ''}
-        setValue={setTipoExercicioSelected}
-        loading={tipoExercicioLoading}
-        placeholder="Selecione o tipo de exercício"
-        handleChange={handleChange}
-        field="tipoExercicio"
-        zIndex={2000}
-        zIndexInverse={200}
       />
 
       {isExercicioMusculacao && renderExerciciosMusculacaoFields()}

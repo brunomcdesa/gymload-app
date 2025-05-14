@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
+import TextoInput from '../../../components/Inputs/TextoInput';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { handleChangeState } from '../../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 
 const GrupoMuscularForm = (props) => {
-  const { title, botoesContainer, formContainer, formLabel, formTextInput } =
-    ComumStyles;
+  const { title, botoesContainer, formContainer, formLabel } = ComumStyles;
   const { navigation } = props;
   const [formData, setFormData] = useState({
     nome: null,
@@ -47,16 +47,14 @@ const GrupoMuscularForm = (props) => {
       <Text style={title}>Adicionar Grupo Muscular</Text>
 
       <Text style={formLabel}>Nome:</Text>
-      <TextInput
-        style={formTextInput}
+      <TextoInput
         placeholder="Digite o nome"
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
       <Text style={formLabel}>Codigo:</Text>
-      <TextInput
-        style={formTextInput}
+      <TextoInput
         placeholder="Digite o codigo"
         value={formData.codigo}
         onChangeText={(codigoValue) => handleChange('codigo', codigoValue)}

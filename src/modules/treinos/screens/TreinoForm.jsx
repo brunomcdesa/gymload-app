@@ -1,19 +1,19 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
-import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as ExercicioApi from '../../exercicios/Api';
 import * as Api from '../Api';
 
 import PropTypes from 'prop-types';
 import SelectInput from '../../../components/Inputs/SelectInput';
+import TextoInput from '../../../components/Inputs/TextoInput';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 
 const TreinoForm = (props) => {
-  const { formContainer, title, formLabel, formTextInput, botoesContainer } =
-    ComumStyles;
+  const { formContainer, title, formLabel, botoesContainer } = ComumStyles;
   const { navigation, route } = props;
   const { treinoData, isEdicao } = route.params;
 
@@ -116,10 +116,8 @@ const TreinoForm = (props) => {
       <Text style={title}>Adicionar Treino</Text>
 
       <Text style={formLabel}>Nome:</Text>
-      <TextInput
-        style={formTextInput}
+      <TextoInput
         placeholder="Digite o nome"
-        placeholderTextColor={colors.placeholderText}
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
@@ -134,7 +132,6 @@ const TreinoForm = (props) => {
         setValue={setSelectedExercicios}
         multiple={true}
         loading={exerciciosSelectLoading}
-        placeholder="Selecione os Exercícios"
         handleChange={handleChange}
         field={'exerciciosIds'}
         searchable={true}

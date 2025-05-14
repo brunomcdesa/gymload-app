@@ -2,9 +2,6 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../../components/Styles/ComumStyles';
 
 export default StyleSheet.create({
-  searchInput: {
-    marginBottom: 12,
-  },
   listContent: {
     paddingBottom: 20,
   },

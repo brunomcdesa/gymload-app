@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import BackButton from '../../../../components/Button/BackButton';
 import SaveButton from '../../../../components/Button/SaveButton';
 import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
-import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
+import TextoInput from '../../../../components/Inputs/TextoInput';
+import { ComumStyles } from '../../../../components/Styles/ComumStyles';
 import { handleChangeState } from '../../../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
 import * as Api from '../Api';
@@ -15,10 +16,8 @@ const EsqueciMinhaSenhaForm = (props) => {
     botoesContainer,
     formContainer,
     formLabel,
-    formTextInput,
     passwordContainer,
   } = ComumStyles;
-  const { placeholderText } = colors;
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -57,10 +56,8 @@ const EsqueciMinhaSenhaForm = (props) => {
       <Text style={title}>Alterar Senha</Text>
 
       <Text style={formLabel}>Username:</Text>
-      <TextInput
-        style={formTextInput}
+      <TextoInput
         placeholder="Digite seu username"
-        placeholderTextColor={placeholderText}
         value={formData.username}
         onChangeText={(usernameValue) =>
           handleChange('username', usernameValue)
@@ -69,10 +66,8 @@ const EsqueciMinhaSenhaForm = (props) => {
 
       <Text style={formLabel}>Nova senha:</Text>
       <View style={passwordContainer}>
-        <TextInput
-          style={formTextInput}
+        <TextoInput
           placeholder="Digite a senha"
-          placeholderTextColor={placeholderText}
           value={formData.password}
           onChangeText={(passwordValue) =>
             handleChange('password', passwordValue)

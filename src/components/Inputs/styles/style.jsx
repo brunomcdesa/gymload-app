@@ -7,17 +7,6 @@ export default StyleSheet.create({
     backgroundColor: colors.inputBackground,
     borderColor: colors.inputBorder,
   },
-  searchInput: {
-    height: 45,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    backgroundColor: '#fff',
-    fontSize: 16,
-    color: '#333',
-    margin: 10,
-  },
   timePickerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -65,17 +54,25 @@ export default StyleSheet.create({
     borderRadius: 4,
     padding: 2,
   },
-
   dropdownItem: {
     backgroundColor: colors.inputBackground,
   },
-
   dropdownText: {
     color: colors.inputText,
   },
-
   selectedItemLabel: {
     fontWeight: 'bold',
     color: colors.secondary,
+  },
+  formTextInput: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: colors.inputBorder,
+    borderRadius: 8,
+    marginBottom: 16,
+    paddingHorizontal: 12,
+    backgroundColor: colors.inputBackground,
+    color: colors.inputText,
+    fontSize: 16,
   },
 });

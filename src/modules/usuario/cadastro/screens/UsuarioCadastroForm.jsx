@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import BackButton from '../../../../components/Button/BackButton';
 import SaveButton from '../../../../components/Button/SaveButton';
 import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
-import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
+import TextoInput from '../../../../components/Inputs/TextoInput';
+import { ComumStyles } from '../../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
 import * as Api from '../../Api';
 import style from '../style/style';
@@ -15,10 +16,8 @@ const UsuarioCadastroForm = (props) => {
     botoesContainer,
     formContainer,
     formLabel,
-    formTextInput,
     passwordContainer,
   } = ComumStyles;
-  const { placeholderText } = colors;
   const { navigation, route } = props;
   const { isCadastroAdmin } = route.params;
   const [formData, setFormData] = useState({
@@ -62,20 +61,16 @@ const UsuarioCadastroForm = (props) => {
       {!isCadastroAdmin && <Text style={title}>Cadastrar-se</Text>}
 
       <Text style={formLabel}>Nome:</Text>
-      <TextInput
-        style={formTextInput}
+      <TextoInput
         placeholder="Digite o nome"
-        placeholderTextColor={placeholderText}
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
       <View>
         <Text style={formLabel}>Username:</Text>
-        <TextInput
-          style={formTextInput}
+        <TextoInput
           placeholder="Digite o username"
-          placeholderTextColor={placeholderText}
           value={formData.username}
           onChangeText={(usernameValue) =>
             handleChange('username', usernameValue)
@@ -88,10 +83,8 @@ const UsuarioCadastroForm = (props) => {
 
       <Text style={formLabel}>Senha:</Text>
       <View style={passwordContainer}>
-        <TextInput
-          style={formTextInput}
+        <TextoInput
           placeholder="Digite a senha"
-          placeholderTextColor={placeholderText}
           value={formData.password}
           onChangeText={(passwordValue) =>
             handleChange('password', passwordValue)

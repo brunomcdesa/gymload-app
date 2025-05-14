@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
-import { TextInput } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
-import style from './styles/style';
+import TextoInput from './TextoInput';
 
 const SearchInput = (props) => {
-  const { searchInput } = style;
   const { placeholder, onSearch, initialData, searchKeys = ['nome'] } = props;
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -41,13 +39,10 @@ const SearchInput = (props) => {
   );
 
   return (
-    <TextInput
-      style={searchInput}
+    <TextoInput
       placeholder={placeholder}
       value={searchTerm}
       onChangeText={handleSearch}
-      autoCapitalize="none"
-      placeholderTextColor="#888"
     />
   );
 };

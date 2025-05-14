@@ -59,17 +59,6 @@ const ComumStyles = StyleSheet.create({
     marginTop: 12,
     color: colors.textLight,
   },
-  formTextInput: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: colors.inputBorder,
-    borderRadius: 8,
-    marginBottom: 16,
-    paddingHorizontal: 12,
-    backgroundColor: colors.inputBackground,
-    color: colors.inputText,
-    fontSize: 16,
-  },
   formSelectInput: {
     height: 50,
     borderWidth: 1,

@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import CadastroButton from '../../../../components/Button/CadastroButton';
 import EsqueciMinhaSenhaButton from '../../../../components/Button/EsqueciMinhaSenhaButton';
 import LoginButton from '../../../../components/Button/LoginButton';
 import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
+import TextoInput from '../../../../components/Inputs/TextoInput';
 import LoadingIndicator from '../../../../components/Loading/LoadingIndicator';
-import { colors, ComumStyles } from '../../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../../context/AuthProvider';
 import { handleChangeState } from '../../../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
@@ -14,8 +15,7 @@ import * as Api from '../Api';
 import style from '../style/style';
 
 const Login = (props) => {
-  const { title, formTextInput, formLabel, passwordContainer } = ComumStyles;
-  const { placeholderText } = colors;
+  const { title, formLabel, passwordContainer } = ComumStyles;
   const {
     container,
     separatorContainer,
@@ -62,10 +62,8 @@ const Login = (props) => {
     <View style={container}>
       <Text style={title}>Login:</Text>
       <Text style={formLabel}>Username:</Text>
-      <TextInput
-        style={formTextInput}
+      <TextoInput
         placeholder="Digite o username"
-        placeholderTextColor={placeholderText}
         value={formData.username}
         onChangeText={(usernameValue) =>
           handleChange('username', usernameValue)
@@ -74,10 +72,8 @@ const Login = (props) => {
 
       <Text style={formLabel}>senha:</Text>
       <View style={passwordContainer}>
-        <TextInput
-          style={formTextInput}
+        <TextoInput
           placeholder="Digite sua senha"
-          placeholderTextColor={placeholderText}
           value={formData.password}
           onChangeText={(passwordValue) => {
             handleChange('password', passwordValue);

@@ -23,7 +23,6 @@ const ListTreino = () => {
     treinoData,
     treinoNome,
     emptyList,
-    searchInput,
     addButton,
     listContent,
     situacaoIndicator,
@@ -167,7 +166,6 @@ const ListTreino = () => {
         onSearch={handleSearchResults}
         initialData={treinos}
         searchKeys={['nome']}
-        style={searchInput}
       />
 
       <View style={checkboxContainer}>
