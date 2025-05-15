@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
@@ -10,10 +10,21 @@ import * as Api from '../Api';
 import PropTypes from 'prop-types';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
+import EmptyList from '../../../components/List/EmptyList';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
+import style from '../style/style';
+
+const renderEmptyList = () => <EmptyList value="exercício" isSelect={true} />;
 
 const TreinoForm = (props) => {
   const { formContainer, title, formLabel, botoesContainer } = ComumStyles;
+  const {
+    selectedExercisesContainer,
+    selectedExerciseItem,
+    selectedExerciseText,
+    selectedExercisesTitle,
+    selectedExercicioList,
+  } = style;
   const { navigation, route } = props;
   const { treinoData, isEdicao } = route.params;
 
@@ -26,6 +37,7 @@ const TreinoForm = (props) => {
   const [selectedExercicios, setSelectedExercicios] = useState(
     treinoData.exerciciosIds || [],
   );
+  const [selectedExerciciosNomes, setSelectedExerciciosNomes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -34,6 +46,10 @@ const TreinoForm = (props) => {
       ...prev,
       [field]: value,
     }));
+
+    if (field === 'exerciciosIds') {
+      updateSelectedExercisesNames(value);
+    }
   };
 
   const fetchExerciciosSelect = useCallback(async () => {
@@ -111,6 +127,13 @@ const TreinoForm = (props) => {
     } else navigation.goBack();
   };
 
+  const updateSelectedExercisesNames = (selectedIds) => {
+    const selectedNames = exerciciosSelect
+      .filter((ex) => selectedIds.includes(ex.value))
+      .map((ex) => ex.label);
+    setSelectedExerciciosNomes(selectedNames);
+  };
+
   return (
     <View style={formContainer}>
       <Text style={title}>Adicionar Treino</Text>
@@ -139,6 +162,22 @@ const TreinoForm = (props) => {
         zIndex={2000}
         zIndexInverse={100}
       />
+
+      <View style={selectedExercisesContainer}>
+        <Text style={selectedExercisesTitle}>Exercícios Selecionados:</Text>
+        <View style={selectedExercicioList}>
+          <FlatList
+            data={selectedExerciciosNomes}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <View style={selectedExerciseItem}>
+                <Text style={selectedExerciseText}>{item}</Text>
+              </View>
+            )}
+            ListEmptyComponent={renderEmptyList}
+          />
+        </View>
+      </View>
 
       <View style={botoesContainer}>
         <BackButton onPress={navigation.goBack} />

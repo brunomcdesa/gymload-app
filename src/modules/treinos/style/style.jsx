@@ -71,4 +71,30 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
+  selectedExercisesContainer: {
+    marginTop: 10,
+    flex: 1,
+    marginBottom: 1,
+  },
+  selectedExercicioList: {
+    height: '70%',
+  },
+  selectedExerciseItem: {
+    backgroundColor: colors.inputBackground,
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: colors.secondary,
+  },
+  selectedExerciseText: {
+    color: colors.textLight,
+    fontSize: 16,
+  },
+  selectedExercisesTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: colors.textLight,
+    marginBottom: 8,
+  },
 });

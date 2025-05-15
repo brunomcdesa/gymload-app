@@ -45,10 +45,15 @@ const ComumStyles = StyleSheet.create({
   botoesContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10,
+    padding: 16,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   formContainer: {
     padding: 20,
+    paddingBottom: 20,
     flex: 1,
     backgroundColor: colors.background,
   },
