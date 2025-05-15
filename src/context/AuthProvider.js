@@ -45,6 +45,16 @@ export const AuthProvider = (props) => {
     }
   };
 
+  const isValidToken = () => {
+    try {
+      const tokenDecoded = jwtDecode(token);
+      const secondsAtual = Date.now() / 1000;
+      return tokenDecoded.exp > secondsAtual;
+    } catch (error) {
+      return false;
+    }
+  };
+
   useEffect(() => {
     loadToken();
   }, [loadToken]);
@@ -63,7 +73,7 @@ export const AuthProvider = (props) => {
 
   return (
     <AuthContext.Provider
-      value={{ token, user, setUser, login, logout, loading }}
+      value={{ token, user, setUser, login, logout, isValidToken, loading }}
     >
       {props.children}
     </AuthContext.Provider>

@@ -96,6 +96,7 @@ const SelectInput = (props) => {
       }}
       zIndex={zIndex}
       zIndexInverse={zIndexInverse}
+      language="PT"
     />
   );
 };

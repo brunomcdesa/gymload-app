@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View } from 'react-native';
 import LoadingIndicator from '../components/Loading/LoadingIndicator';
 import { AuthContext } from '../context/AuthProvider';
@@ -7,7 +7,14 @@ import AuthStack from '../stack/AuthStack';
 import style from './styles/style';
 
 const MainNavigator = () => {
-  const { token, loading } = useContext(AuthContext);
+  const { token, loading, isValidToken, logout } = useContext(AuthContext);
+  const tokenValido = token ? isValidToken(token) : false;
+
+  useEffect(() => {
+    if (token && !tokenValido) {
+      logout();
+    }
+  }, [token, tokenValido, logout]);
 
   if (loading) {
     return (
@@ -16,7 +23,8 @@ const MainNavigator = () => {
       </View>
     );
   }
-  return token ? <AppStack /> : <AuthStack />;
+
+  return tokenValido ? <AppStack /> : <AuthStack />;
 };
 
 export default MainNavigator;
