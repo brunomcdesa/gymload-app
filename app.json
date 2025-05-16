@@ -4,11 +4,7 @@
   "expo": {
     "name": "Gymload",
     "slug": "gymloadapp",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "newArchEnabled": true,
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,17 +17,24 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.gymloadapp"
     },
     "android": {
-      "package": "com.gymloadapp"
+      "package": "com.gymloadapp",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-3977686093704418~7718286453"
+      }
     },
     "plugins": [
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-ads-admob",
+        {
+          "userTrackingPermission": "Este aplicativo utiliza identificação de publicidade para exibir anúncios mais relevantes."
+        }
+      ]
     ],
     "extra": {
       "eas": {

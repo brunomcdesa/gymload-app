@@ -19,6 +19,7 @@
     "axios": "^1.8.2",
     "eas": "^0.1.0",
     "expo": "^52.0.39",
+    "expo-ads-admob": "^13.0.0",
     "expo-dev-client": "^5.0.15",
     "expo-secure-store": "~14.0.1",
     "expo-status-bar": "~2.0.1",
