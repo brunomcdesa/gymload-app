@@ -2,6 +2,18 @@
   "name": "gymload-app",
   "version": "0.0.3",
   "private": true,
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": [
+          "jwt-decode",
+          "eas",
+          "prop-types",
+          "react-native-vector-icons"
+        ]
+      }
+    }
+  },
   "scripts": {
     "android": "(adb devices | grep 'device$' || emulator -avd Pixel_3_API_35 &) && npx react-native run-android",
     "ios": "expo run:ios",
