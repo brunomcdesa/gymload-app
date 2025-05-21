@@ -10,3 +10,4 @@ export const HEADER_SUBTITLE_GRUPOS_MUSCULARES =
   'Gerencie os Grupos musculares do sistema';
 
 export const apiUrl = 'https://gymload-api.onrender.com';
+export const BANNER_ID = 'ca-app-pub-3977686093704418/1046387115';
