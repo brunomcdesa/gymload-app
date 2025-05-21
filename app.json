@@ -22,7 +22,12 @@
       "bundleIdentifier": "com.gymloadapp"
     },
     "android": {
-      "package": "com.gymloadapp"
+      "package": "com.gymloadapp",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "plugins": [
       "expo-secure-store",
@@ -33,6 +38,13 @@
           "ios_app_id": "ca-app-pub-xxxxxxxx~xxxxxxxx",
           "androidAppId": "ca-app-pub-3977686093704418~7718286453",
           "iosAppId": "ca-app-pub-xxxxxxxx~xxxxxxxx"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O aplicativo precisa acessar suas fotos para permitir que você escolha uma imagem de perfil.",
+          "cameraPermission": "O aplicativo precisa acessar sua câmera para permitir que você tire uma foto para o perfil."
         }
       ]
     ],

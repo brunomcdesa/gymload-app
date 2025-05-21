@@ -7,7 +7,7 @@ import { pMinDelay } from '../utils/promisse';
 
 const usuarioUrl = '/api/usuarios';
 
-const getFormDataUsuarioRequest = (request) => {
+const getFormDataUsuarioRequest = (request, uriImagemPerfil) => {
   const formData = new FormData();
   formData.append('usuarioRequest', {
     string: JSON.stringify({
@@ -18,6 +18,14 @@ const getFormDataUsuarioRequest = (request) => {
     type: 'application/json',
     name: 'usuarioRequest.json',
   });
+
+  if (uriImagemPerfil) {
+    formData.append('imagem', {
+      uri: uriImagemPerfil,
+      name: 'imagem.jpg',
+      type: 'image/jpeg',
+    });
+  }
 
   return formData;
 };
@@ -30,8 +38,12 @@ export const cadastrarUsuarioAdmin = (request, delay = 0) => {
   return pMinDelay(response, delay);
 };
 
-export const cadastrarUsuario = async (request, delay = 0) => {
-  const formData = getFormDataUsuarioRequest(request);
+export const cadastrarUsuario = async (
+  request,
+  uriImagemPerfil = null,
+  delay = 0,
+) => {
+  const formData = getFormDataUsuarioRequest(request, uriImagemPerfil);
 
   return await fetchMakeRequestWithFilePublic(
     formData,
@@ -41,8 +53,13 @@ export const cadastrarUsuario = async (request, delay = 0) => {
   );
 };
 
-export const editarDadosUsuario = async (usuarioUuid, request, delay = 0) => {
-  const formData = getFormDataUsuarioRequest(request);
+export const editarDadosUsuario = async (
+  usuarioUuid,
+  request,
+  uriImagemPerfil = null,
+  delay = 0,
+) => {
+  const formData = getFormDataUsuarioRequest(request, uriImagemPerfil);
 
   return await fetchMakeRequestWithFile(
     formData,

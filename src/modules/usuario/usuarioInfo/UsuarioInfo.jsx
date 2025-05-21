@@ -9,7 +9,7 @@ const UsuarioInfo = (props) => {
 };
 
 UsuarioInfo.propTypes = {
-  usuarioNome: PropTypes.string.isRequired,
+  usuarioNome: PropTypes.string,
 };
 
 export default UsuarioInfo;
