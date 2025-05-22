@@ -4,6 +4,8 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
+import ImagemUsuario from '../../../components/Imagem/ImagemUsuario';
+import SelectableImage from '../../../components/SelectableItem/SelectableImage';
 import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../context/AuthProvider';
 import { throwToastError } from '../../utils/toastUtils';
@@ -11,11 +13,10 @@ import * as Api from '../Api';
 import style from './styles/style';
 
 const Perfil = (props) => {
-  const { container } = ComumStyles;
+  const { container, userInfoContainer, userInfoName } = ComumStyles;
   const {
     mainContainer,
     header,
-    headerTitle,
     editButton,
     editButtonText,
     cancelButton,
@@ -32,12 +33,14 @@ const Perfil = (props) => {
   } = style;
   const { navigation } = props;
   const { user, setUser } = useContext(AuthContext);
+  const { imagemPerfilUrl } = user;
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [editData, setEditData] = useState({
     nome: user.nome,
     username: user.username,
   });
+  const [uriImagemUsuario, setUriImagemUsuario] = useState(imagemPerfilUrl);
 
   const handleEditChange = (field, value) => {
     setEditData((prev) => ({
@@ -49,10 +52,13 @@ const Perfil = (props) => {
   const handleSave = async () => {
     try {
       setLoading(true);
-      await Api.editarDadosUsuario(user.uuid, editData);
+      await Api.editarDadosUsuario(user.uuid, editData, uriImagemUsuario);
+      const { data } = await Api.getUrlImagemPerfil();
+
       setUser((prev) => ({
         ...prev,
         ...editData,
+        imagemPerfilUrl: data,
       }));
       setIsEditing(false);
     } catch (error) {
@@ -70,6 +76,10 @@ const Perfil = (props) => {
       <View style={header}>
         {isEditing ? (
           <View style={editingContainer}>
+            <SelectableImage
+              uriImagemUsuario={uriImagemUsuario}
+              setUriImagemUsuario={setUriImagemUsuario}
+            />
             <TextInput
               style={input}
               value={editData.nome}
@@ -80,7 +90,13 @@ const Perfil = (props) => {
             />
           </View>
         ) : (
-          <Text style={headerTitle}>{editData.nome}</Text>
+          <View style={userInfoContainer}>
+            <ImagemUsuario
+              uriImagemUsuario={imagemPerfilUrl}
+              isCadastro={false}
+            />
+            <Text style={userInfoName}>{editData.nome}</Text>
+          </View>
         )}
 
         {!isEditing ? (

@@ -12,11 +12,6 @@ export default StyleSheet.create({
     marginBottom: 30,
     paddingHorizontal: 16,
   },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: colors.textLight,
-  },
   editButton: {
     flexDirection: 'row',
     alignItems: 'center',

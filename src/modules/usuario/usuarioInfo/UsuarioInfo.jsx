@@ -1,15 +1,24 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Text } from 'react-native';
-import style from './styles/style';
+import { Text, View } from 'react-native';
+import ImagemUsuario from '../../../components/Imagem/ImagemUsuario';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 
 const UsuarioInfo = (props) => {
-  const { usuarioNomeStyle } = style;
-  return <Text style={usuarioNomeStyle}>{props.usuarioNome}</Text>;
+  const { userInfoContainer, userInfoName } = ComumStyles;
+  const { usuarioNome, uriImagemUsuario } = props;
+
+  return (
+    <View style={userInfoContainer}>
+      <ImagemUsuario uriImagemUsuario={uriImagemUsuario} isCadastro={false} />
+      <Text style={userInfoName}>{usuarioNome}</Text>
+    </View>
+  );
 };
 
 UsuarioInfo.propTypes = {
   usuarioNome: PropTypes.string,
+  uriImagemUsuario: PropTypes.string,
 };
 
 export default UsuarioInfo;

@@ -120,6 +120,16 @@ const ComumStyles = StyleSheet.create({
     color: '#aaa',
     marginBottom: 10,
   },
+  userInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userInfoName: {
+    paddingLeft: 15,
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
 });
 
 export { colors, ComumStyles };

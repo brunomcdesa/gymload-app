@@ -68,3 +68,9 @@ export const editarDadosUsuario = async (
     delay,
   );
 };
+
+export const getUrlImagemPerfil = (delay = 0) => {
+  const response = axiosPrivate.get(`${usuarioUrl}/url-imagem-perfil`);
+
+  return pMinDelay(response, delay);
+};

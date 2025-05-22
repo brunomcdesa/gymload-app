@@ -35,7 +35,10 @@ const SideBar = (props) => {
     <View style={container}>
       <View style={content}>
         <TouchableOpacity onPress={redirectToPerfilScreen}>
-          <UsuarioInfo usuarioNome={user.nome} />
+          <UsuarioInfo
+            usuarioNome={user.nome}
+            uriImagemUsuario={user.imagemPerfilUrl}
+          />
         </TouchableOpacity>
       </View>
 

@@ -12,6 +12,7 @@ export const AuthProvider = (props) => {
     roles: [],
     uuid: null,
     username: null,
+    imagemPerfilUrl: null,
   });
   const [loading, setLoading] = useState(true);
 
@@ -28,9 +29,9 @@ export const AuthProvider = (props) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [decodeToken]);
 
-  const decodeToken = (jwtToken) => {
+  const decodeToken = useCallback((jwtToken) => {
     try {
       const tokenDecoded = jwtDecode(jwtToken);
       setUser({
@@ -38,12 +39,13 @@ export const AuthProvider = (props) => {
         roles: tokenDecoded.usuarioRoles || [],
         uuid: tokenDecoded.uuid || null,
         username: tokenDecoded.username || null,
+        imagemPerfilUrl: tokenDecoded.imagemPerfilUrl || null,
       });
     } catch (error) {
       console.log('Erro ao decodificar token:', error);
       setUser({ nome: null, roles: [] });
     }
-  };
+  }, []);
 
   const isValidToken = () => {
     try {
