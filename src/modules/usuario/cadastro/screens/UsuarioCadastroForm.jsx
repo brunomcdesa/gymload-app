@@ -5,7 +5,7 @@ import BackButton from '../../../../components/Button/BackButton';
 import SaveButton from '../../../../components/Button/SaveButton';
 import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
 import TextoInput from '../../../../components/Inputs/TextoInput';
-import SelectableImage from '../../../../components/SelectableItem/SelectableImage';
+import SelectableImage from '../../../../components/Selectable/SelectableImage/SelectableImage';
 import { ComumStyles } from '../../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
 import * as Api from '../../Api';

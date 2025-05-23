@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import AddButton from '../../../../components/Button/AddButton';
 import BackButton from '../../../../components/Button/BackButton';
 import LoadingIndicator from '../../../../components/Loading/LoadingIndicator';
-import SelectableItem from '../../../../components/SelectableItem/SelectableItem';
+import SelectableItem from '../../../../components/Selectable/SelectableItem/SelectableItem';
 import { ComumStyles } from '../../../../components/Styles/ComumStyles';
 import * as Api from '../Api';
 import RegistroCardio from '../RegistroCardio';

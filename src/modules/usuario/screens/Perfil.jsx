@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import ImagemUsuario from '../../../components/Imagem/ImagemUsuario';
-import SelectableImage from '../../../components/SelectableItem/SelectableImage';
+import SelectableImage from '../../../components/Selectable/SelectableImage/SelectableImage';
 import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../context/AuthProvider';
 import { throwToastError } from '../../utils/toastUtils';

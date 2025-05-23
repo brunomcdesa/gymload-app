@@ -46,6 +46,13 @@
           "photosPermission": "O aplicativo precisa acessar suas fotos para permitir que você escolha uma imagem de perfil.",
           "cameraPermission": "O aplicativo precisa acessar sua câmera para permitir que você tire uma foto para o perfil."
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permitir acesso à câmera",
+          "microphonePermission": "Permitir acesso ao microfone"
+        }
       ]
     ],
     "extra": {

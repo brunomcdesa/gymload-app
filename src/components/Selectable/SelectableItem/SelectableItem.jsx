@@ -2,8 +2,9 @@ import { useActionSheet } from '@expo/react-native-action-sheet';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import { colors } from '../Styles/ComumStyles';
-import style from './styles/style';
+
+import { colors } from '../../Styles/ComumStyles';
+import style from '../styles/style';
 
 const SelectableItem = (props) => {
   const {
