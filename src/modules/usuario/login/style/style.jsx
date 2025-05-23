@@ -39,4 +39,9 @@ export default StyleSheet.create({
     alignItems: 'center',
     marginTop: 8,
   },
+  botoesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 16,
+  },
 });

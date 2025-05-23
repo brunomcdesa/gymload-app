@@ -70,7 +70,7 @@ const Login = (props) => {
         }
       />
 
-      <Text style={formLabel}>senha:</Text>
+      <Text style={formLabel}>Senha:</Text>
       <View style={passwordContainer}>
         <TextoInput
           placeholder="Digite sua senha"

@@ -12,15 +12,14 @@ import * as Api from '../../Api';
 import style from '../style/style';
 
 const UsuarioCadastroForm = (props) => {
+  const { title, formContainer, formLabel, passwordContainer } = ComumStyles;
   const {
-    title,
+    adminContainer,
+    infoText,
+    imagePickerContainer,
+    imageDescription,
     botoesContainer,
-    formContainer,
-    formLabel,
-    passwordContainer,
-  } = ComumStyles;
-  const { adminContainer, infoText, imagePickerContainer, imageDescription } =
-    style;
+  } = style;
   const { navigation, route } = props;
   const { isCadastroAdmin } = route.params;
   const [formData, setFormData] = useState({

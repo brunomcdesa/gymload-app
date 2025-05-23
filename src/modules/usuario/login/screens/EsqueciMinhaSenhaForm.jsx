@@ -9,15 +9,11 @@ import { ComumStyles } from '../../../../components/Styles/ComumStyles';
 import { handleChangeState } from '../../../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
 import * as Api from '../Api';
+import style from '../style/style';
 
 const EsqueciMinhaSenhaForm = (props) => {
-  const {
-    title,
-    botoesContainer,
-    formContainer,
-    formLabel,
-    passwordContainer,
-  } = ComumStyles;
+  const { title, formLabel, passwordContainer } = ComumStyles;
+  const { container, botoesContainer } = style;
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -52,7 +48,7 @@ const EsqueciMinhaSenhaForm = (props) => {
   };
 
   return (
-    <View style={formContainer}>
+    <View style={container}>
       <Text style={title}>Alterar Senha</Text>
 
       <Text style={formLabel}>Username:</Text>
