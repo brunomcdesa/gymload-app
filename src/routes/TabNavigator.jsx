@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -64,17 +64,10 @@ const TabNavigator = () => {
 
   const renderTabIcon = (routeName, color, size) => {
     const rotaAtual = rotasConfig.find((rota) => rota.name === routeName);
-    return (
+    return rotaAtual ? (
       <MaterialIcons name={rotaAtual.iconName} size={size} color={color} />
-    );
+    ) : null;
   };
-
-  const handleTabSelect = useCallback(
-    (headerTitle, headerSubtitle) => {
-      setActiveTabOptions({ headerTitle, headerSubtitle });
-    },
-    [setActiveTabOptions],
-  );
 
   return (
     <Tab.Navigator
@@ -95,16 +88,19 @@ const TabNavigator = () => {
       })}
     >
       {rotasConfig.map((rota) => (
-        <Tab.Screen key={rota.name} name={rota.name}>
-          {(props) => (
-            <ScreenWrapper
-              {...props}
-              headerTitle={rota.headerTitle}
-              headerSubtitle={rota.headerSubtitle}
-              Component={rota.component}
-              onFocus={handleTabSelect}
-            />
-          )}
+        <Tab.Screen
+          key={rota.name}
+          name={rota.name}
+          listeners={{
+            focus: () => {
+              setActiveTabOptions({
+                headerTitle: rota.headerTitle,
+                headerSubtitle: rota.headerSubtitle,
+              });
+            },
+          }}
+        >
+          {(props) => <ScreenWrapper {...props} Component={rota.component} />}
         </Tab.Screen>
       ))}
     </Tab.Navigator>

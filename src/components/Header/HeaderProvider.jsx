@@ -15,15 +15,7 @@ export const HeaderProvider = (props) => {
   });
 
   const updateHeaderOptions = useCallback((newOptions) => {
-    setActiveTabOptions((prev) => {
-      if (
-        prev.headerTitle !== newOptions.headerTitle ||
-        prev.headerSubtitle !== newOptions.headerSubtitle
-      ) {
-        return newOptions;
-      }
-      return prev;
-    });
+    setActiveTabOptions(newOptions);
   }, []);
 
   return (

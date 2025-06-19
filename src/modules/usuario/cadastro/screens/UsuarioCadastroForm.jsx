@@ -12,18 +12,9 @@ import * as Api from '../../Api';
 import style from '../style/style';
 
 const UsuarioCadastroForm = (props) => {
-  const {
-    title,
-    formContainer,
-    formLabel,
-    passwordContainer,
-    inlineContainer,
-    inputGroup,
-    lastInputGroup,
-  } = ComumStyles;
+  const { title, formContainer, formLabel, passwordContainer } = ComumStyles;
   const {
     adminContainer,
-    infoText,
     imagePickerContainer,
     imageDescription,
     botoesContainer,
