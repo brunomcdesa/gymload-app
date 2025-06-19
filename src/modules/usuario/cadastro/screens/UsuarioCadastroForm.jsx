@@ -12,7 +12,15 @@ import * as Api from '../../Api';
 import style from '../style/style';
 
 const UsuarioCadastroForm = (props) => {
-  const { title, formContainer, formLabel, passwordContainer } = ComumStyles;
+  const {
+    title,
+    formContainer,
+    formLabel,
+    passwordContainer,
+    inlineContainer,
+    inputGroup,
+    lastInputGroup,
+  } = ComumStyles;
   const {
     adminContainer,
     infoText,
@@ -24,6 +32,7 @@ const UsuarioCadastroForm = (props) => {
   const { isCadastroAdmin } = route.params;
   const [formData, setFormData] = useState({
     nome: null,
+    email: null,
     username: null,
     password: null,
   });
@@ -36,7 +45,12 @@ const UsuarioCadastroForm = (props) => {
   };
 
   const handleSubmit = async () => {
-    if (!formData.nome || !formData.username || !formData.password) {
+    if (
+      !formData.nome ||
+      !formData.email ||
+      !formData.username ||
+      !formData.password
+    ) {
       throwToastError('Todos os campos são obrigatórios');
       return;
     }
@@ -52,8 +66,8 @@ const UsuarioCadastroForm = (props) => {
       throwToastSuccess('Usuário cadastrado com sucesso!');
       navigation.goBack();
     } catch (error) {
-      throwToastError('Erro ao cadastrar usuário.');
-      console.log('Erro ao cadastrar usuário', error);
+      const errorMessage = error.data?.message || 'Erro ao cadastrar usuário.';
+      throwToastError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -75,29 +89,33 @@ const UsuarioCadastroForm = (props) => {
         </View>
       )}
 
-      <Text style={formLabel}>Nome:</Text>
+      <Text style={formLabel}>Nome Completo:</Text>
       <TextoInput
-        placeholder="Digite o nome"
+        placeholder="Digite seu nome completo"
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
-      <View>
-        <Text style={formLabel}>Username:</Text>
-        <TextoInput
-          placeholder="Digite o username"
-          value={formData.username}
-          onChangeText={(usernameValue) =>
-            handleChange('username', usernameValue)
-          }
-        />
-        <Text style={infoText}>Será utilizado para realizar o login.</Text>
-      </View>
+      <Text style={formLabel}>Email:</Text>
+      <TextoInput
+        placeholder="Digite seu email"
+        value={formData.email}
+        onChangeText={(emailValue) => handleChange('email', emailValue)}
+      />
+
+      <Text style={formLabel}>Username:</Text>
+      <TextoInput
+        placeholder="Digite seu username"
+        value={formData.username}
+        onChangeText={(usernameValue) =>
+          handleChange('username', usernameValue)
+        }
+      />
 
       <Text style={formLabel}>Senha:</Text>
       <View style={passwordContainer}>
         <TextoInput
-          placeholder="Digite a senha"
+          placeholder="Digite sua senha"
           value={formData.password}
           onChangeText={(passwordValue) =>
             handleChange('password', passwordValue)

@@ -1,12 +1,13 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import { apiUrl } from '../comum/constants';
 
 const axiosPublic = axios.create({
-  baseURL: 'https://gymload-api.onrender.com',
+  baseURL: apiUrl,
 });
 
 const axiosPrivate = axios.create({
-  baseURL: 'https://gymload-api.onrender.com',
+  baseURL: apiUrl,
 });
 
 axiosPrivate.interceptors.request.use(async (config) => {

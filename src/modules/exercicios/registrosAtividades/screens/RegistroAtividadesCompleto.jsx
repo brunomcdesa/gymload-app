@@ -25,9 +25,9 @@ const RegistroAtividadesCompleto = (props) => {
   const { container, botoesContainer } = ComumStyles;
   const { navigation, route } = props;
   const {
-    exercicio: { id, nome, tipoExercicioo },
+    exercicio: { id, nome, tipoExercicio },
   } = route.params;
-  const isExercicioMusculacao = tipoExercicioo === 'MUSCULACAO';
+  const isExercicioMusculacao = tipoExercicio === 'MUSCULACAO';
   const [registroAtividadeCompleto, setRegistroAtividadeCompleto] = useState(
     [],
   );

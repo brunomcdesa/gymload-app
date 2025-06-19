@@ -12,6 +12,7 @@ const getFormDataUsuarioRequest = (request, uriImagemPerfil) => {
   formData.append('usuarioRequest', {
     string: JSON.stringify({
       nome: request.nome,
+      email: request.email,
       username: request.username,
       password: request.password || null,
     }),
