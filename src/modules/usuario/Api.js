@@ -70,8 +70,14 @@ export const editarDadosUsuario = async (
   );
 };
 
-export const getUrlImagemPerfil = (delay = 0) => {
+export const fetchUrlImagemPerfil = (delay = 0) => {
   const response = axiosPrivate.get(`${usuarioUrl}/url-imagem-perfil`);
+
+  return pMinDelay(response, delay);
+};
+
+export const fetchDadosUsuarioLogado = (delay = 0) => {
+  const response = axiosPrivate.get(`${usuarioUrl}/detalhar`);
 
   return pMinDelay(response, delay);
 };

@@ -42,6 +42,9 @@ export default StyleSheet.create({
     color: colors.textLight,
     fontWeight: '500',
   },
+  infoContainer: {
+    marginBottom: 5,
+  },
   separator: {
     height: 1,
     backgroundColor: '#383838',
@@ -54,7 +57,7 @@ export default StyleSheet.create({
     color: '#aaa',
     fontSize: 16,
   },
-  input: {
+  inputNome: {
     fontSize: 24,
     fontWeight: 'bold',
     color: colors.secondary,
@@ -63,7 +66,7 @@ export default StyleSheet.create({
     paddingVertical: 4,
     minWidth: '60%',
   },
-  inputUsername: {
+  input: {
     fontSize: 16,
     color: colors.secondary,
     fontWeight: '500',
