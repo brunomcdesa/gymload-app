@@ -29,7 +29,7 @@ const InfoBlock = ({
           children || (
             <TextInput
               style={input}
-              value={String(value || '')}
+              value={value}
               onChangeText={(text) => onChangeText(field, text)}
               placeholder={placeholder}
               placeholderTextColor="#666"

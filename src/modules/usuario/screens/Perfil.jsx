@@ -208,7 +208,11 @@ const Perfil = (props) => {
           <InfoBlock
             icon="cake"
             label="Idade"
-            value={`${editData.idade} anos`}
+            value={
+              !isEditing && editData.idade
+                ? `${editData.idade} anos`
+                : editData.idade
+            }
             isEditing={isEditing}
             onChangeText={handleEditChange}
             placeholder="Sua idade"
@@ -218,7 +222,11 @@ const Perfil = (props) => {
           <InfoBlock
             icon="fitness-center"
             label="Peso"
-            value={`${editData.pesoCorporal} kg`}
+            value={
+              !isEditing && editData.pesoCorporal
+                ? `${editData.pesoCorporal} kg`
+                : editData.pesoCorporal
+            }
             isEditing={isEditing}
             onChangeText={handleEditChange}
             placeholder="Seu peso"
@@ -233,7 +241,11 @@ const Perfil = (props) => {
           <InfoBlock
             icon="height"
             label="Altura"
-            value={`${editData.altura} m`}
+            value={
+              !isEditing && editData.altura
+                ? `${editData.altura} m`
+                : editData.altura
+            }
             isEditing={isEditing}
             onChangeText={handleEditChange}
             placeholder="Ex: 1.75"
