@@ -2,13 +2,23 @@ import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { AuthContext } from '../../context/AuthProvider';
-import UsuarioInfo from '../../modules/usuario/usuarioInfo/UsuarioInfo';
+
+import UsuarioInfo from '../../modules/usuario/components/UsuarioInfo';
 import { useIsAdmin } from '../../modules/utils/userUtils';
 import { ComumStyles } from '../Styles/ComumStyles';
 import style from './styles/style';
 
 const SideBar = (props) => {
-  const { button, buttonCadastroAdmin, buttonText, content, footer } = style;
+  const {
+    logoutButton,
+    buttonCadastroAdmin,
+    logoutButtonText,
+    content,
+    footer,
+    button,
+    buttonText,
+    buttonsContainer,
+  } = style;
   const { container } = ComumStyles;
   const { logout, user } = useContext(AuthContext);
   const { navigation } = props;
@@ -31,6 +41,12 @@ const SideBar = (props) => {
     navigation.navigate('Perfil');
   };
 
+  const redirectGerenciarUsuarios = () => {
+    navigation.navigate('GerenciarUsuarios');
+
+    navigation.closeDrawer();
+  };
+
   return (
     <View style={container}>
       <View style={content}>
@@ -40,6 +56,17 @@ const SideBar = (props) => {
             uriImagemUsuario={user.imagemPerfilUrl}
           />
         </TouchableOpacity>
+
+        <View style={buttonsContainer}>
+          {isAdmin && (
+            <TouchableOpacity
+              style={button}
+              onPress={redirectGerenciarUsuarios}
+            >
+              <Text style={buttonText}>Gerenciar Usuários</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
       {isAdmin && (
@@ -54,8 +81,8 @@ const SideBar = (props) => {
       )}
 
       <View style={footer}>
-        <TouchableOpacity style={button} onPress={handleLogout}>
-          <Text style={buttonText}>Sair</Text>
+        <TouchableOpacity style={logoutButton} onPress={handleLogout}>
+          <Text style={logoutButtonText}>Sair</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -1,23 +1,23 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
-import BackButton from '../../../../components/Button/BackButton';
-import SaveButton from '../../../../components/Button/SaveButton';
-import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
-import TextoInput from '../../../../components/Inputs/TextoInput';
-import SelectableImage from '../../../../components/Selectable/SelectableImage/SelectableImage';
-import { ComumStyles } from '../../../../components/Styles/ComumStyles';
-import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
-import * as Api from '../../Api';
-import style from '../style/style';
+import BackButton from '../../../components/Button/BackButton';
+import SaveButton from '../../../components/Button/SaveButton';
+import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
+import TextoInput from '../../../components/Inputs/TextoInput';
+import SelectableImage from '../../../components/Selectable/SelectableImage/SelectableImage';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
+import * as Api from '../Api';
+import style from './styles/style';
 
 const UsuarioCadastroForm = (props) => {
   const { title, formContainer, formLabel, passwordContainer } = ComumStyles;
   const {
-    adminContainer,
-    imagePickerContainer,
-    imageDescription,
-    botoesContainer,
+    cadastroFormAdminContainer,
+    cadastroFormImagePickerContainer,
+    cadastroFormiImageDescription,
+    cadastroFormBotoesContainer,
   } = style;
   const { navigation, route } = props;
   const { isCadastroAdmin } = route.params;
@@ -67,15 +67,17 @@ const UsuarioCadastroForm = (props) => {
   return (
     <View style={formContainer}>
       {!isCadastroAdmin && (
-        <View style={adminContainer}>
+        <View style={cadastroFormAdminContainer}>
           <Text style={title}>Cadastrar-se</Text>
 
-          <View style={imagePickerContainer}>
+          <View style={cadastroFormImagePickerContainer}>
             <SelectableImage
               uriImagemUsuario={uriImagemUsuario}
               setUriImagemUsuario={setUriImagemUsuario}
             />
-            <Text style={imageDescription}>Toque para adicionar foto</Text>
+            <Text style={cadastroFormiImageDescription}>
+              Toque para adicionar foto
+            </Text>
           </View>
         </View>
       )}
@@ -119,7 +121,7 @@ const UsuarioCadastroForm = (props) => {
         />
       </View>
 
-      <View style={botoesContainer}>
+      <View style={cadastroFormBotoesContainer}>
         <BackButton onPress={navigation.goBack} />
         <SaveButton onPress={handleSubmit} loading={loading} />
       </View>

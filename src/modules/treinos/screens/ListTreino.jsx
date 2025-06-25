@@ -6,14 +6,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AddButton from '../../../components/Button/AddButton';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
+import SeparatorItem from '../../../components/List/SeparatorItem';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
 import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from '../style/style';
-
-const SeparatorItem = () => <View style={style.separator} />;
 
 const ListTreino = () => {
   const {
@@ -22,7 +21,6 @@ const ListTreino = () => {
     treinoContainer,
     treinoData,
     treinoNome,
-    emptyList,
     addButton,
     listContent,
     situacaoIndicator,
@@ -153,7 +151,7 @@ const ListTreino = () => {
     </SelectableItem>
   );
 
-  const renderEmptyList = () => <EmptyList value="treino" style={emptyList} />;
+  const renderEmptyList = () => <EmptyList value="treino" />;
 
   const handleToggleInativos = async () => {
     setBuscarInativos((prev) => !prev);

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../../../components/Styles/ComumStyles';
 
 export default StyleSheet.create({
   mainContainer: {
@@ -109,5 +110,62 @@ export default StyleSheet.create({
   actionButtonContainer: {
     paddingHorizontal: 16,
     marginTop: 20,
+  },
+  loginContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: colors.background,
+  },
+  loginSeparatorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 15,
+  },
+  loginLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: colors.textLight,
+    marginHorizontal: 10,
+  },
+  loginSeparatorText: {
+    color: colors.textLight,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  loginCadastroButton: {
+    backgroundColor: colors.secondary,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  loginCadastroButtonText: {
+    color: colors.buttonText,
+    fontWeight: 'bold',
+  },
+  loginContainerEsqueciSenha: {
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  loginBotoesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 16,
+  },
+  cadastroFormAdminContainer: {
+    marginTop: '10%',
+  },
+  cadastroFormImagePickerContainer: {
+    alignItems: 'center',
+  },
+  cadastroFormiImageDescription: {
+    marginTop: 5,
+    color: '#666',
+  },
+  cadastroFormBotoesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 16,
   },
 });

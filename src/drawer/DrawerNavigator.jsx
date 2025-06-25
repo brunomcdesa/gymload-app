@@ -3,8 +3,10 @@ import React from 'react';
 import { useHeaderContext } from '../components/Header/HeaderProvider';
 import SideBar from '../components/Sidebar/SideBar';
 import { colors } from '../components/Styles/ComumStyles';
-import UsuarioCadastroForm from '../modules/usuario/cadastro/screens/UsuarioCadastroForm';
+
+import GerenciarUsuarios from '../modules/usuario/screens/GerenciarUsuarios';
 import Perfil from '../modules/usuario/screens/Perfil';
+import UsuarioCadastroForm from '../modules/usuario/screens/UsuarioCadastroForm';
 import Navegacao from '../routes/Navegacao';
 import DrawerHeaderTitle from './DrawerHeaderTitle';
 import style from './style/style';
@@ -51,6 +53,14 @@ const DrawerNavigator = () => {
         name="Perfil"
         component={Perfil}
         options={createScreenOptions('Perfil', 'Gerencia suas informações')}
+      />
+      <Drawer.Screen
+        name="GerenciarUsuarios"
+        component={GerenciarUsuarios}
+        options={createScreenOptions(
+          'Gerenciar Usuários',
+          'Gerencie os usuários cadastrados',
+        )}
       />
     </Drawer.Navigator>
   );

@@ -1,19 +1,20 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
-import BackButton from '../../../../components/Button/BackButton';
-import SaveButton from '../../../../components/Button/SaveButton';
-import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
-import TextoInput from '../../../../components/Inputs/TextoInput';
-import { ComumStyles } from '../../../../components/Styles/ComumStyles';
-import { handleChangeState } from '../../../utils/stateUtils';
-import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
+
+import BackButton from '../../../components/Button/BackButton';
+import SaveButton from '../../../components/Button/SaveButton';
+import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
+import TextoInput from '../../../components/Inputs/TextoInput';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { handleChangeState } from '../../utils/stateUtils';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
-import style from '../style/style';
+import style from './styles/style';
 
 const EsqueciMinhaSenhaForm = (props) => {
   const { title, formLabel, passwordContainer } = ComumStyles;
-  const { container, botoesContainer } = style;
+  const { loginContainer, loginBotoesContainer } = style;
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -48,7 +49,7 @@ const EsqueciMinhaSenhaForm = (props) => {
   };
 
   return (
-    <View style={container}>
+    <View style={loginContainer}>
       <Text style={title}>Alterar Senha</Text>
 
       <Text style={formLabel}>Username:</Text>
@@ -76,7 +77,7 @@ const EsqueciMinhaSenhaForm = (props) => {
         />
       </View>
 
-      <View style={botoesContainer}>
+      <View style={loginBotoesContainer}>
         <BackButton onPress={navigation.goBack} />
         <SaveButton onPress={handleSubmit} loading={loading} />
       </View>

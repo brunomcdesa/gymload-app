@@ -1,27 +1,29 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
 import { Text, View } from 'react-native';
-import CadastroButton from '../../../../components/Button/CadastroButton';
-import EsqueciMinhaSenhaButton from '../../../../components/Button/EsqueciMinhaSenhaButton';
-import LoginButton from '../../../../components/Button/LoginButton';
-import ShowPasswordButton from '../../../../components/Button/ShowPasswordButton';
-import TextoInput from '../../../../components/Inputs/TextoInput';
-import LoadingIndicator from '../../../../components/Loading/LoadingIndicator';
-import { ComumStyles } from '../../../../components/Styles/ComumStyles';
-import { AuthContext } from '../../../../context/AuthProvider';
-import { handleChangeState } from '../../../utils/stateUtils';
-import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
+
+import CadastroButton from '../../../components/Button/CadastroButton';
+import EsqueciMinhaSenhaButton from '../../../components/Button/EsqueciMinhaSenhaButton';
+import LoginButton from '../../../components/Button/LoginButton';
+import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
+import TextoInput from '../../../components/Inputs/TextoInput';
+import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
+
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { AuthContext } from '../../../context/AuthProvider';
+import { handleChangeState } from '../../utils/stateUtils';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
-import style from '../style/style';
+import style from './styles/style';
 
 const Login = (props) => {
   const { title, formLabel, passwordContainer } = ComumStyles;
   const {
-    container,
-    separatorContainer,
-    line,
-    separatorText,
-    containerEsqueciSenha,
+    loginContainer,
+    loginSeparatorContainer,
+    loginLine,
+    loginSeparatorText,
+    loginContainerEsqueciSenha,
   } = style;
   const { navigation } = props;
   const { login } = useContext(AuthContext);
@@ -59,7 +61,7 @@ const Login = (props) => {
   };
 
   return (
-    <View style={container}>
+    <View style={loginContainer}>
       <Text style={title}>Login:</Text>
       <Text style={formLabel}>Username:</Text>
       <TextoInput
@@ -92,14 +94,14 @@ const Login = (props) => {
         <LoginButton onPress={handleRealizarLogin} />
       )}
 
-      <View style={containerEsqueciSenha}>
+      <View style={loginContainerEsqueciSenha}>
         <EsqueciMinhaSenhaButton onPress={handleRedirectResetPasswordForm} />
       </View>
 
-      <View style={separatorContainer}>
-        <View style={line} />
-        <Text style={separatorText}>OU</Text>
-        <View style={line} />
+      <View style={loginSeparatorContainer}>
+        <View style={loginLine} />
+        <Text style={loginSeparatorText}>OU</Text>
+        <View style={loginLine} />
       </View>
 
       <CadastroButton

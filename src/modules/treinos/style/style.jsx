@@ -32,12 +32,6 @@ export default StyleSheet.create({
     fontSize: 13,
     color: '#aaa',
   },
-  separator: {
-    height: 10,
-  },
-  emptyList: {
-    marginTop: 40,
-  },
   addButton: {
     position: 'absolute',
     right: 20,

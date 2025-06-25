@@ -1,4 +1,4 @@
-import { axiosPrivate } from '../../config/axios';
+import { axiosPrivate, axiosPublic } from '../../config/axios';
 import {
   fetchMakeRequestWithFile,
   fetchMakeRequestWithFilePublic,
@@ -6,6 +6,7 @@ import {
 import { pMinDelay } from '../utils/promisse';
 
 const usuarioUrl = '/api/usuarios';
+const authUrl = '/auth';
 
 const getFormDataUsuarioRequest = (request, uriImagemPerfil) => {
   const formData = new FormData();
@@ -82,6 +83,24 @@ export const fetchUrlImagemPerfil = (delay = 0) => {
 
 export const fetchDadosUsuarioLogado = (delay = 0) => {
   const response = axiosPrivate.get(`${usuarioUrl}/detalhar`);
+
+  return pMinDelay(response, delay);
+};
+
+export const realizarLogin = (request, delay = 0) => {
+  const response = axiosPublic.post(`${authUrl}/login`, { ...request });
+
+  return pMinDelay(response, delay);
+};
+
+export const alterarSenha = (request, delay = 0) => {
+  const response = axiosPublic.put(`${authUrl}/alterar-senha`, { ...request });
+
+  return pMinDelay(response, delay);
+};
+
+export const fetchUsuarios = (delay = 0) => {
+  const response = axiosPrivate.get(usuarioUrl);
 
   return pMinDelay(response, delay);
 };

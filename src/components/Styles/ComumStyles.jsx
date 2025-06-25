@@ -130,6 +130,9 @@ const ComumStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  listContent: {
+    paddingBottom: 20,
+  },
 });
 
 export { colors, ComumStyles };
