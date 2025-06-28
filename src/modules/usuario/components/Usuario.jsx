@@ -6,7 +6,7 @@ import style from './styles/style';
 import UsuarioDetalhesModal from './UsuarioDetalhesModal';
 
 const Usuario = (props) => {
-  const { item } = props;
+  const { item, navigation } = props;
   const {
     elementContainer,
     userInfoContainer,
@@ -19,6 +19,11 @@ const Usuario = (props) => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
+  const redirectToUsuarioEdicaoForm = () => {
+    console.log(item);
+    navigation.navigate('UsuarioEdicaoForm', { usuario: item });
+  };
+
   const getOptions = (usuario) => {
     return ['Detalhar Usuário', 'Editar Usuário', 'Cancelar'];
   };
@@ -29,7 +34,7 @@ const Usuario = (props) => {
         setModalVisible(true);
         break;
       case 1:
-        console.log('Editando Usuário...');
+        redirectToUsuarioEdicaoForm();
         break;
       case 3:
         break;

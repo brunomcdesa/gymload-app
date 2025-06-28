@@ -7,6 +7,7 @@ import { colors } from '../components/Styles/ComumStyles';
 import GerenciarUsuarios from '../modules/usuario/screens/GerenciarUsuarios';
 import Perfil from '../modules/usuario/screens/Perfil';
 import UsuarioCadastroForm from '../modules/usuario/screens/UsuarioCadastroForm';
+import UsuarioEdicaoForm from '../modules/usuario/screens/UsuarioEdicaoForm';
 import Navegacao from '../routes/Navegacao';
 import DrawerHeaderTitle from './DrawerHeaderTitle';
 import style from './style/style';
@@ -60,6 +61,14 @@ const DrawerNavigator = () => {
         options={createScreenOptions(
           'Gerenciar Usuários',
           'Gerencie os usuários cadastrados',
+        )}
+      />
+      <Drawer.Screen
+        name="UsuarioEdicaoForm"
+        component={UsuarioEdicaoForm}
+        options={createScreenOptions(
+          'Edição de Usuário',
+          'Atualize as informações de um Usuário',
         )}
       />
     </Drawer.Navigator>

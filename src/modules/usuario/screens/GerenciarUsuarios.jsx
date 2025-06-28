@@ -11,6 +11,7 @@ import * as Api from '../Api';
 import Usuario from '../components/Usuario';
 
 const GerenciarUsuarios = (props) => {
+  const { navigation } = props;
   const { container, listContent } = ComumStyles;
   const [usuarios, setUsuarios] = useState([]);
   const [filteredUsuarios, setFilteredUsuarios] = useState([]);
@@ -58,7 +59,9 @@ const GerenciarUsuarios = (props) => {
         <FlatList
           data={filteredUsuarios}
           keyExtractor={(usuario) => usuario.uuid}
-          renderItem={({ item }) => <Usuario item={item} />}
+          renderItem={({ item }) => (
+            <Usuario item={item} navigation={navigation} />
+          )}
           ListEmptyComponent={renderEmptyList}
           contentContainerStyle={listContent}
           ItemSeparatorComponent={SeparatorItem}
