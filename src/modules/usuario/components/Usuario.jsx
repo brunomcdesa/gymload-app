@@ -20,7 +20,6 @@ const Usuario = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const redirectToUsuarioEdicaoForm = () => {
-    console.log(item);
     navigation.navigate('UsuarioEdicaoForm', { usuario: item });
   };
 
@@ -48,7 +47,7 @@ const Usuario = (props) => {
         cancelButtonIndex={2}
         options={getOptions(item)}
         onActionSelected={selectOptionsAction}
-        onLongPress={() => {}}
+        onLongPress={() => setModalVisible(true)}
       >
         <View style={userInfoContainer}>
           <View style={avatar}>
@@ -71,15 +70,9 @@ const Usuario = (props) => {
 };
 
 Usuario.propTypes = {
-  item: PropTypes.shape({
-    uuid: PropTypes.string.isRequired,
-    nome: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    idade: PropTypes.number,
-    sexo: PropTypes.string,
-    altura: PropTypes.number,
-    peso: PropTypes.number,
+  item: PropTypes.object.isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
   }).isRequired,
 };
 

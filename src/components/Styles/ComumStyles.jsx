@@ -61,7 +61,6 @@ const ComumStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 8,
-    marginTop: 12,
     color: colors.textLight,
   },
   formSelectInput: {

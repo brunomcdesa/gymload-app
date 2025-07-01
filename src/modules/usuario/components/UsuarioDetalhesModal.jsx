@@ -62,7 +62,9 @@ const UsuarioDetalhesModal = (props) => {
 
           <View style={detailRow}>
             <Text style={detailLabel}>Peso</Text>
-            <Text style={detailValue}>{renderDetail(usuario.peso, ' kg')}</Text>
+            <Text style={detailValue}>
+              {renderDetail(usuario.pesoCorporal, ' kg')}
+            </Text>
           </View>
 
           <TouchableOpacity style={closeButton} onPress={onClose}>

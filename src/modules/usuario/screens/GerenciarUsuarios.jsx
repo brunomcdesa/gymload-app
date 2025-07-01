@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import SearchInput from '../../../components/Inputs/SearchInput';
@@ -11,11 +11,11 @@ import * as Api from '../Api';
 import Usuario from '../components/Usuario';
 
 const GerenciarUsuarios = (props) => {
-  const { navigation } = props;
   const { container, listContent } = ComumStyles;
   const [usuarios, setUsuarios] = useState([]);
   const [filteredUsuarios, setFilteredUsuarios] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
 
   const fetchUsuariosDoSistema = useCallback(async () => {
     try {

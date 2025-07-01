@@ -42,8 +42,7 @@ const SideBar = (props) => {
   };
 
   const redirectGerenciarUsuarios = () => {
-    navigation.navigate('GerenciarUsuarios');
-
+    navigation.navigate('GerenciarUsuariosStack');
     navigation.closeDrawer();
   };
 

@@ -4,10 +4,9 @@ import { useHeaderContext } from '../components/Header/HeaderProvider';
 import SideBar from '../components/Sidebar/SideBar';
 import { colors } from '../components/Styles/ComumStyles';
 
-import GerenciarUsuarios from '../modules/usuario/screens/GerenciarUsuarios';
 import Perfil from '../modules/usuario/screens/Perfil';
 import UsuarioCadastroForm from '../modules/usuario/screens/UsuarioCadastroForm';
-import UsuarioEdicaoForm from '../modules/usuario/screens/UsuarioEdicaoForm';
+import UsuarioStackNavigator from '../modules/usuario/stack/UsuarioStackNavigator';
 import Navegacao from '../routes/Navegacao';
 import DrawerHeaderTitle from './DrawerHeaderTitle';
 import style from './style/style';
@@ -56,19 +55,11 @@ const DrawerNavigator = () => {
         options={createScreenOptions('Perfil', 'Gerencia suas informações')}
       />
       <Drawer.Screen
-        name="GerenciarUsuarios"
-        component={GerenciarUsuarios}
+        name="GerenciarUsuariosStack"
+        component={UsuarioStackNavigator}
         options={createScreenOptions(
           'Gerenciar Usuários',
           'Gerencie os usuários cadastrados',
-        )}
-      />
-      <Drawer.Screen
-        name="UsuarioEdicaoForm"
-        component={UsuarioEdicaoForm}
-        options={createScreenOptions(
-          'Edição de Usuário',
-          'Atualize as informações de um Usuário',
         )}
       />
     </Drawer.Navigator>

@@ -168,4 +168,24 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
   },
+  scrollContentContainer: {
+    padding: 20,
+    paddingBottom: 120,
+  },
+  fieldContainer: {
+    marginBottom: 16,
+  },
+  botoesContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 16,
+    paddingBottom: 32,
+    backgroundColor: colors.background,
+    borderTopWidth: 1,
+    borderTopColor: colors.inputBorder,
+  },
 });
