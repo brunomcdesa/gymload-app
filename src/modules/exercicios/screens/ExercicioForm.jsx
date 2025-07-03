@@ -25,12 +25,11 @@ const ExercicioForm = (props) => {
   } = ComumStyles;
   const { navigation } = props;
   const [formData, setFormData] = useState({
-    nome: '',
+    nome: null,
     tipoExercicio: null,
-    descricao: '',
+    descricao: null,
     grupoMuscularId: null,
     tipoEquipamento: null,
-    tipoPegada: null,
   });
   const [loading, setLoading] = useState(false);
 
@@ -44,11 +43,6 @@ const ExercicioForm = (props) => {
   const [tipoExercicioLoading, setTipoExercicioLoading] = useState(false);
   const [tipoExercicioSelected, setTipoExercicioSelected] = useState(null);
 
-  const [tiposPegadaItems, setTiposPegadaItems] = useState([]);
-  const [openTipoPegadaSelect, setOpenTipoPegadaSelect] = useState(false);
-  const [tipoPegadaLoading, setTipoPegadaLoading] = useState(false);
-  const [tipoPegadaSelected, setTipoPegadaSelected] = useState(null);
-
   const [tipoEquipamentoItems, setTipoEquipamentoItems] = useState([]);
   const [openTipoEquipamentoSelect, setOpenTipoEquipamentoSelect] =
     useState(false);
@@ -56,6 +50,7 @@ const ExercicioForm = (props) => {
   const [tipoEquipamentoSelected, setTipoEquipamentoSelected] = useState(null);
 
   const isExercicioMusculacao = tipoExercicioSelected === 'MUSCULACAO';
+  const isExercicioCalistenia = tipoExercicioSelected === 'CALISTENIA';
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({
@@ -83,8 +78,10 @@ const ExercicioForm = (props) => {
       throwToastSuccess('Exercicio salvo com sucesso!');
       navigation.goBack();
     } catch (error) {
-      throwToastError('Erro ao salvar novo Exercício.');
-      console.log('Erro ao salvar novo Exercício.', error);
+      const errorMessage =
+        error?.response?.data?.message || 'Erro ao salvar novo Exercício.';
+      throwToastError(errorMessage);
+      console.log('Erro ao salvar novo Exercício.', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -114,18 +111,6 @@ const ExercicioForm = (props) => {
     }
   };
 
-  const fetchTiposPegadasSelect = async () => {
-    try {
-      setTipoPegadaLoading(true);
-      const { data } = await EnumApi.fetchTiposPegadasSelect();
-      setTiposPegadaItems(data);
-    } catch (error) {
-      console.log('Erro ao buscar select de tipos pegadas.', error);
-    } finally {
-      setTipoPegadaLoading(false);
-    }
-  };
-
   const fetchTiposEquipamentosSelect = async () => {
     try {
       setTipoEquipamentoLoading(true);
@@ -141,7 +126,6 @@ const ExercicioForm = (props) => {
   useEffect(() => {
     fetchGruposMuscularesSelect();
     fetchTiposExerciciosSelect();
-    fetchTiposPegadasSelect();
     fetchTiposEquipamentosSelect();
   }, []);
 
@@ -190,24 +174,35 @@ const ExercicioForm = (props) => {
             />
           </View>
         </View>
+      </View>
+    );
+  };
 
-        <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Tipo de Pegada:</Text>
-          <Text style={asteriscoObrigatorio}>*</Text>
+  const renderExerciciosCalisteniaFields = () => {
+    return (
+      <View>
+        <View style={inlineContainer}>
+          <View style={inputGroup}>
+            <View style={formLabelObrigatorio}>
+              <Text style={formLabel}>Grupo Muscular:</Text>
+              <Text style={asteriscoObrigatorio}>*</Text>
+            </View>
+            <SelectInput
+              open={openGrupoMuscularSelect}
+              setOpen={setOpenGrupoMuscularSelect}
+              items={gruposMuscularesItems}
+              setItems={setGruposMuscularesItems}
+              value={grupoMuscularIdSelected || ''}
+              setValue={setGrupoMuscularIdSelected}
+              loading={gruposMuscularesLoading}
+              multiple={false}
+              handleChange={handleChange}
+              field="grupoMuscularId"
+              zIndex={3000}
+              zIndexInverse={1000}
+            />
+          </View>
         </View>
-        <SelectInput
-          open={openTipoPegadaSelect}
-          setOpen={setOpenTipoPegadaSelect}
-          items={tiposPegadaItems}
-          setItems={setTiposPegadaItems}
-          value={tipoPegadaSelected || ''}
-          setValue={setTipoPegadaSelected}
-          loading={tipoPegadaLoading}
-          handleChange={handleChange}
-          field="tipoPegada"
-          zIndex={1000}
-          zIndexInverse={100}
-        />
       </View>
     );
   };
@@ -250,6 +245,9 @@ const ExercicioForm = (props) => {
         </View>
       </View>
 
+      {isExercicioMusculacao && renderExerciciosMusculacaoFields()}
+      {isExercicioCalistenia && renderExerciciosCalisteniaFields()}
+
       <Text style={formLabel}>Descrição:</Text>
       <TextoInput
         placeholder="Digite a descrição"
@@ -258,8 +256,6 @@ const ExercicioForm = (props) => {
           handleChange('descricao', descricaoValue)
         }
       />
-
-      {isExercicioMusculacao && renderExerciciosMusculacaoFields()}
 
       <View style={botoesContainer}>
         <BackButton onPress={navigation.goBack} />

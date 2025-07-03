@@ -2,10 +2,11 @@ import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
-import { colors } from '../../../components/Styles/ComumStyles';
-import style from './style/style';
 
-const RegistroCardio = (props) => {
+import { colors } from '../../../components/Styles/ComumStyles';
+import style from '../style/style';
+
+const RegistroAerobico = (props) => {
   const { registroContainer, dataContainer, divider, dataText } = style;
   const { registroData } = props;
   const { distancia, duracao, velocidadeMedia } = registroData;
@@ -42,7 +43,7 @@ const RegistroCardio = (props) => {
   );
 };
 
-RegistroCardio.propTypes = {
+RegistroAerobico.propTypes = {
   registroData: PropTypes.object.isRequired,
 };
-export default RegistroCardio;
+export default RegistroAerobico;

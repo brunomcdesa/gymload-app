@@ -1,9 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import RegistroAtividadeForm from '../../exercicios/registrosAtividades/screens/RegistroAtividadeForm';
-import RegistroAtividadesCompleto from '../../exercicios/registrosAtividades/screens/RegistroAtividadesCompleto';
 import ListExerciciosTreino from '../../exercicios/screens/ListExerciciosTreino';
+import RegistroAtividadeForm from '../../registrosAtividades/screens/RegistroAtividadeForm';
+import RegistroAtividadesCompleto from '../../registrosAtividades/screens/RegistroAtividadesCompleto';
 import ListTreino from '../screens/ListTreino';
 import TreinoForm from '../screens/TreinoForm';
 

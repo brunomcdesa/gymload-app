@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { colors, ComumStyles } from '../Styles/ComumStyles';
 import style from './styles/style';
@@ -42,11 +42,17 @@ const SelectInput = (props) => {
     handleChange(field, selectedValues);
   };
 
+  const pickerItems = useMemo(() => {
+    return !searchable
+      ? [{ label: 'Selecionar', value: null }, ...items]
+      : items;
+  }, [items, searchable]);
+
   return (
     <DropDownPicker
       open={open}
       setOpen={setOpen}
-      items={items}
+      items={pickerItems}
       setItems={setItems}
       value={value}
       style={formSelectInput}
@@ -110,7 +116,7 @@ SelectInput.propTypes = {
     PropTypes.array,
     PropTypes.string,
     PropTypes.number,
-  ]).isRequired,
+  ]),
   setValue: PropTypes.func.isRequired,
   multiple: PropTypes.bool,
   loading: PropTypes.bool.isRequired,

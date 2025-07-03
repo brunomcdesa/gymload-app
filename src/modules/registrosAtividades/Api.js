@@ -1,5 +1,5 @@
-import { axiosPrivate } from '../../../config/axios';
-import { pMinDelay } from '../../utils/promisse';
+import { axiosPrivate } from '../../config/axios';
+import { pMinDelay } from '../utils/promisse';
 
 const urlBase = '/api/registro-atividades';
 

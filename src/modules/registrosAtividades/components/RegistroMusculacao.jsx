@@ -4,9 +4,9 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { colors } from '../../../components/Styles/ComumStyles';
-import style from './style/style';
+import style from '../style/style';
 
-const RegistroCarga = (props) => {
+const RegistroMusculacao = (props) => {
   const { registroData } = props;
   const { qtdSeries, carga, qtdRepeticoes } = registroData;
   const { registroContainer, dataContainer, dataText, divider } = style;
@@ -35,8 +35,8 @@ const RegistroCarga = (props) => {
   );
 };
 
-RegistroCarga.propTypes = {
+RegistroMusculacao.propTypes = {
   registroData: PropTypes.object.isRequired,
 };
 
-export default RegistroCarga;
+export default RegistroMusculacao;

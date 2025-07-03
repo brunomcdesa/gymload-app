@@ -3,14 +3,16 @@ import { SectionList, Text, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import AddButton from '../../../../components/Button/AddButton';
-import BackButton from '../../../../components/Button/BackButton';
-import LoadingIndicator from '../../../../components/Loading/LoadingIndicator';
-import SelectableItem from '../../../../components/Selectable/SelectableItem/SelectableItem';
-import { ComumStyles } from '../../../../components/Styles/ComumStyles';
+import AddButton from '../../../components/Button/AddButton';
+import BackButton from '../../../components/Button/BackButton';
+import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
+import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as Api from '../Api';
-import RegistroCardio from '../RegistroCardio';
-import RegistroCarga from '../RegistroCarga';
+
+import RegistroAerobico from '../components/RegistroAerobico';
+import RegistroCalistenia from '../components/RegistroCalistenia';
+import RegistroMusculacao from '../components/RegistroMusculacao';
 import style from '../style/style';
 
 const RegistroAtividadesCompleto = (props) => {
@@ -28,6 +30,8 @@ const RegistroAtividadesCompleto = (props) => {
     exercicio: { id, nome, tipoExercicio },
   } = route.params;
   const isExercicioMusculacao = tipoExercicio === 'MUSCULACAO';
+  const isExercicioCalistenia = tipoExercicio === 'CALISTENIA';
+  const isExercicioAerobico = tipoExercicio === 'AEROBICO';
   const [registroAtividadeCompleto, setRegistroAtividadeCompleto] = useState(
     [],
   );
@@ -77,18 +81,28 @@ const RegistroAtividadesCompleto = (props) => {
 
   const redirectToRegistroAtividadeForm = () => {
     navigation.navigate('RegistroAtividadeForm', {
-      exercicioData: { id, nome },
+      exercicioData: {
+        id,
+        nome,
+        isExercicioMusculacao,
+        isExercicioAerobico,
+        isExercicioCalistenia,
+      },
       registroAtividadeData: {},
-      isExercicioMusculacao,
       isEdicao: false,
     });
   };
 
   const redirectToRegistroAtividadeFormEdit = (item) => {
     navigation.navigate('RegistroAtividadeForm', {
-      exercicioData: { id, nome },
+      exercicioData: {
+        id,
+        nome,
+        isExercicioMusculacao,
+        isExercicioAerobico,
+        isExercicioCalistenia,
+      },
       registroAtividadeData: { ...item },
-      isExercicioMusculacao,
       isEdicao: true,
     });
   };
@@ -114,10 +128,12 @@ const RegistroAtividadesCompleto = (props) => {
       onLongPress={() => redirectToRegistroAtividadeFormEdit(registro)}
     >
       <View>
-        {isExercicioMusculacao ? (
-          <RegistroCarga registroData={registro} />
-        ) : (
-          <RegistroCardio registroData={registro} />
+        {isExercicioAerobico && <RegistroAerobico registroData={registro} />}
+        {isExercicioMusculacao && (
+          <RegistroMusculacao registroData={registro} />
+        )}
+        {isExercicioCalistenia && (
+          <RegistroCalistenia registroData={registro} />
         )}
       </View>
     </SelectableItem>

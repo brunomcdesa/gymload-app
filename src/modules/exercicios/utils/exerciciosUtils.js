@@ -1,4 +1,4 @@
-import * as RegistroAtividadeApi from '../registrosAtividades/Api';
+import * as RegistroAtividadeApi from '../../registrosAtividades/Api';
 
 export const fetchDestaquesDosExercicios = async (
   exerciciosIds,

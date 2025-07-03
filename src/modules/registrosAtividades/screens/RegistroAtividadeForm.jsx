@@ -3,15 +3,15 @@ import { Text, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import BackButton from '../../../../components/Button/BackButton';
-import SaveButton from '../../../../components/Button/SaveButton';
-import SelectInput from '../../../../components/Inputs/SelectInput';
-import TextoInput from '../../../../components/Inputs/TextoInput';
-import TimePickerInput from '../../../../components/Inputs/TimePickerInput';
-import { ComumStyles } from '../../../../components/Styles/ComumStyles';
-import * as EnumApi from '../../../../comum/EnumApi';
-import { handleChangeState } from '../../../utils/stateUtils';
-import { throwToastError, throwToastSuccess } from '../../../utils/toastUtils';
+import BackButton from '../../../components/Button/BackButton';
+import SaveButton from '../../../components/Button/SaveButton';
+import SelectInput from '../../../components/Inputs/SelectInput';
+import TextoInput from '../../../components/Inputs/TextoInput';
+import TimePickerInput from '../../../components/Inputs/TimePickerInput';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import * as EnumApi from '../../../comum/EnumApi';
+import { handleChangeState } from '../../utils/stateUtils';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 
 const RegistroAtividadeForm = (props) => {
@@ -29,14 +29,16 @@ const RegistroAtividadeForm = (props) => {
     subTitleForm,
   } = ComumStyles;
   const { route, navigation } = props;
+  const { exercicioData, registroAtividadeData, isEdicao } = route.params;
   const {
-    exercicioData,
-    registroAtividadeData,
+    id,
+    nome,
     isExercicioMusculacao,
-    isEdicao,
-  } = route.params;
+    isExercicioAerobico,
+    isExercicioCalistenia,
+  } = exercicioData;
   const [formData, setFormData] = useState({
-    exercicioId: exercicioData.id,
+    exercicioId: id,
     peso: registroAtividadeData.peso?.toString() || null,
     unidadePeso: registroAtividadeData.unidadePeso || null,
     qtdRepeticoes: registroAtividadeData.qtdRepeticoes?.toString() || null,
@@ -50,7 +52,7 @@ const RegistroAtividadeForm = (props) => {
   const [openUnidadesPesosSelect, setOpenUnidadesPesosSelect] = useState(false);
   const [unidadesPesosLoading, setUnidadesPesosLoading] = useState(false);
   const [unidadePesoSelected, setUnidadePesoSelected] = useState(
-    registroAtividadeData.unidadePeso || 'KG',
+    registroAtividadeData.unidadePeso,
   );
 
   const convertDecimalHoursToDate = (decimalHours) => {
@@ -75,14 +77,12 @@ const RegistroAtividadeForm = (props) => {
 
   const handleSubmit = async () => {
     if (
-      isExercicioMusculacao &&
-      (!formData.peso || !formData.unidadePeso || !formData.qtdRepeticoes)
+      (isExercicioMusculacao &&
+        (!formData.peso || !formData.unidadePeso || !formData.qtdRepeticoes)) ||
+      (isExercicioAerobico && (!formData.distancia || !formData.duracao)) ||
+      (isExercicioCalistenia &&
+        (!formData.qtdSeries || !formData.qtdRepeticoes))
     ) {
-      throwToastError('Todos os campos são obrigatórios!');
-      return;
-    }
-
-    if (!isExercicioMusculacao && (!formData.distancia || !formData.duracao)) {
       throwToastError('Todos os campos são obrigatórios!');
       return;
     }
@@ -91,7 +91,7 @@ const RegistroAtividadeForm = (props) => {
       setLoading(true);
       const values = {
         ...formData,
-        duracao: !isExercicioMusculacao
+        duracao: isExercicioAerobico
           ? convertDurationToDecimalHours(formData.duracao)
           : null,
       };
@@ -105,13 +105,11 @@ const RegistroAtividadeForm = (props) => {
       throwToastSuccess('Registro salvo com sucesso!');
       navigation.goBack();
     } catch (error) {
-      throwToastError(
-        `Erro ao salvar novo registro de ${isExercicioMusculacao ? 'carga' : 'cardio'}`,
-      );
-      console.log(
-        `Erro ao salvar novo registro de ${isExercicioMusculacao ? 'carga' : 'cardio'}`,
-        error,
-      );
+      console.log(error?.data[0]?.message);
+      const errorMessage =
+        error.data[0]?.message || 'Erro ao salvar novo registro';
+      throwToastError(errorMessage);
+      console.log('Erro ao salvar novo registro', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -141,7 +139,7 @@ const RegistroAtividadeForm = (props) => {
     }, [isEdicao, registroAtividadeData.duracao]),
   );
 
-  const renderFieldsRegistroCarga = () => {
+  const renderFieldsRegistroMusculacao = () => {
     return (
       <View>
         <View style={inlineContainer}>
@@ -183,21 +181,6 @@ const RegistroAtividadeForm = (props) => {
         <View style={inlineContainer}>
           <View style={inputGroup}>
             <View style={formLabelObrigatorio}>
-              <Text style={formLabel}>Qtd de Reps:</Text>
-              <Text style={asteriscoObrigatorio}>*</Text>
-            </View>
-            <TextoInput
-              placeholder="Ex: 12"
-              keyboardType="numeric"
-              value={formData.qtdRepeticoes}
-              onChangeText={(qtdRepeticoesValue) =>
-                handleChange('qtdRepeticoes', qtdRepeticoesValue)
-              }
-            />
-          </View>
-
-          <View style={lastInputGroup}>
-            <View style={formLabelObrigatorio}>
               <Text style={formLabel}>Qtd de Séries</Text>
               <Text style={asteriscoObrigatorio}>*</Text>
             </View>
@@ -210,12 +193,27 @@ const RegistroAtividadeForm = (props) => {
               }
             />
           </View>
+
+          <View style={lastInputGroup}>
+            <View style={formLabelObrigatorio}>
+              <Text style={formLabel}>Qtd de Reps:</Text>
+              <Text style={asteriscoObrigatorio}>*</Text>
+            </View>
+            <TextoInput
+              placeholder="Ex: 12"
+              keyboardType="numeric"
+              value={formData.qtdRepeticoes}
+              onChangeText={(qtdRepeticoesValue) =>
+                handleChange('qtdRepeticoes', qtdRepeticoesValue)
+              }
+            />
+          </View>
         </View>
       </View>
     );
   };
 
-  const renderFieldsRegistroCardio = () => {
+  const renderFieldsRegistroAerobico = () => {
     return (
       <View>
         <View style={formLabelObrigatorio}>
@@ -243,19 +241,86 @@ const RegistroAtividadeForm = (props) => {
     );
   };
 
+  const renderFieldsRegistroCalistenia = () => {
+    return (
+      <View>
+        <View style={inlineContainer}>
+          <View style={inputGroup}>
+            <View style={formLabelObrigatorio}>
+              <Text style={formLabel}>Qtd de Séries</Text>
+              <Text style={asteriscoObrigatorio}>*</Text>
+            </View>
+            <TextoInput
+              placeholder="Ex: 4"
+              keyboardType="numeric"
+              value={formData.qtdSeries}
+              onChangeText={(qtdSeriesValue) =>
+                handleChange('qtdSeries', qtdSeriesValue)
+              }
+            />
+          </View>
+          <View style={lastInputGroup}>
+            <View style={formLabelObrigatorio}>
+              <Text style={formLabel}>Qtd de Reps:</Text>
+              <Text style={asteriscoObrigatorio}>*</Text>
+            </View>
+            <TextoInput
+              placeholder="Ex: 12"
+              keyboardType="numeric"
+              value={formData.qtdRepeticoes}
+              onChangeText={(qtdRepeticoesValue) =>
+                handleChange('qtdRepeticoes', qtdRepeticoesValue)
+              }
+            />
+          </View>
+        </View>
+
+        <View style={inlineContainer}>
+          <View style={inputGroup}>
+            <Text style={formLabel}>Peso Adicional</Text>
+            <TextoInput
+              placeholder="Ex: 12.5"
+              keyboardType="numeric"
+              value={formData.peso}
+              onChangeText={(pesoValue) => handleChange('peso', pesoValue)}
+            />
+          </View>
+
+          <View style={lastInputGroup}>
+            <Text style={formLabel}>Unidade</Text>
+            <SelectInput
+              open={openUnidadesPesosSelect}
+              setOpen={setOpenUnidadesPesosSelect}
+              items={unidadesPesosItems}
+              setItems={setUnidadesPesosItems}
+              value={unidadePesoSelected}
+              setValue={setUnidadePesoSelected}
+              loading={unidadesPesosLoading}
+              multiple={false}
+              handleChange={handleChange}
+              field="unidadePeso"
+              zIndex={3000}
+              zIndexInverse={1000}
+            />
+          </View>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <View style={formContainer}>
       <View style={headerForm}>
-        <Text style={title}>Adicionar Registro para: {exercicioData.nome}</Text>
+        <Text style={title}>Adicionar Registro para: {nome}</Text>
         <Text style={subTitleForm}>
           Campos marcados com <Text style={asteriscoObrigatorio}>*</Text> são
           obrigatórios
         </Text>
       </View>
 
-      {isExercicioMusculacao
-        ? renderFieldsRegistroCarga()
-        : renderFieldsRegistroCardio()}
+      {isExercicioMusculacao && renderFieldsRegistroMusculacao()}
+      {isExercicioAerobico && renderFieldsRegistroAerobico()}
+      {isExercicioCalistenia && renderFieldsRegistroCalistenia()}
 
       <Text style={formLabel}>Observação:</Text>
       <TextoInput
@@ -278,7 +343,6 @@ RegistroAtividadeForm.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       exercicioData: PropTypes.object.isRequired,
-      isExercicioMusculacao: PropTypes.bool.isRequired,
       registroAtividadeData: PropTypes.object,
       isEdicao: PropTypes.bool.isRequired,
     }).isRequired,
