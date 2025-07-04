@@ -3,7 +3,6 @@ import { ScrollView, Text, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
@@ -17,7 +16,7 @@ import * as Api from '../Api';
 const RegistroAtividadeForm = (props) => {
   const {
     title,
-    botoesContainer,
+    fabContainer,
     formContainer,
     formLabel,
     formLabelObrigatorio,
@@ -371,8 +370,7 @@ const RegistroAtividadeForm = (props) => {
         />
       </ScrollView>
 
-      <View style={botoesContainer}>
-        <BackButton onPress={navigation.goBack} />
+      <View style={fabContainer}>
         <SaveButton onPress={handleSubmit} loading={loading} />
       </View>
     </View>

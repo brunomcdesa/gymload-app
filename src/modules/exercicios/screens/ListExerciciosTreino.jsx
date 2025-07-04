@@ -2,7 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import BackButton from '../../../components/Button/BackButton';
+import BackButton from '../../../components/Button/HeaderBackButton';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError } from '../../utils/toastUtils';

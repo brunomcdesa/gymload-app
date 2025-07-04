@@ -4,7 +4,6 @@ import { SectionList, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import AddButton from '../../../components/Button/AddButton';
-import BackButton from '../../../components/Button/BackButton';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
@@ -24,7 +23,7 @@ const RegistroAtividadesCompleto = (props) => {
     sectionHeader,
     sectionHeaderText,
   } = style;
-  const { container, botoesContainer } = ComumStyles;
+  const { container, fabContainer } = ComumStyles;
   const { navigation, route } = props;
   const {
     exercicio: { id, nome, tipoExercicio },
@@ -162,8 +161,7 @@ const RegistroAtividadesCompleto = (props) => {
         />
       )}
 
-      <View style={botoesContainer}>
-        <BackButton onPress={navigation.goBack} />
+      <View style={fabContainer}>
         <AddButton onPress={redirectToRegistroAtividadeForm} />
       </View>
     </View>

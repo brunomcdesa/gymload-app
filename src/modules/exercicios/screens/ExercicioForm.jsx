@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import BackButton from '../../../components/Button/BackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 
@@ -15,7 +14,7 @@ import * as Api from '../Api';
 const ExercicioForm = (props) => {
   const {
     title,
-    botoesContainer,
+    fabContainer,
     formContainer,
     formLabel,
     formLabelObrigatorio,
@@ -257,8 +256,7 @@ const ExercicioForm = (props) => {
         }
       />
 
-      <View style={botoesContainer}>
-        <BackButton onPress={navigation.goBack} />
+      <View style={fabContainer}>
         <SaveButton onPress={handleSubmit} loading={loading} />
       </View>
     </View>

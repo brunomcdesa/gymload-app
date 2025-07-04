@@ -21,12 +21,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   backButtonStyle: {
-    backgroundColor: '#dc3545',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginLeft: 16,
   },
   saveButtonStyle: {
     backgroundColor: '#28a745',

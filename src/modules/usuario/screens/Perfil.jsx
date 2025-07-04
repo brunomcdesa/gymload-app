@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import BackButton from '../../../components/Button/BackButton';
+import BackButton from '../../../components/Button/HeaderBackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import ImagemUsuario from '../../../components/Imagem/ImagemUsuario';
 import InfoBlock from '../../../components/Infos/InfoBlock';

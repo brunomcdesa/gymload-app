@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 
-import BackButton from '../../../components/Button/BackButton';
+import BackButton from '../../../components/Button/HeaderBackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
 import TextoInput from '../../../components/Inputs/TextoInput';
