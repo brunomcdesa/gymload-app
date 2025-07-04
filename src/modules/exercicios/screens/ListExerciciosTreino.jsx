@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import BackButton from '../../../components/Button/HeaderBackButton';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError } from '../../utils/toastUtils';
@@ -11,7 +10,7 @@ import Exercicio from '../Exercicio';
 import { fetchDestaquesDosExercicios } from '../utils/exerciciosUtils';
 
 const ListExerciciosTreino = (props) => {
-  const { route, navigation } = props;
+  const { route } = props;
   const { treino } = route.params;
   const { container, title } = ComumStyles;
   const [exercicios, setExercicios] = useState([]);
@@ -64,8 +63,6 @@ const ListExerciciosTreino = (props) => {
           )}
         />
       )}
-
-      <BackButton onPress={navigation.goBack} />
     </View>
   );
 };
@@ -76,7 +73,6 @@ ListExerciciosTreino.propTypes = {
       treino: PropTypes.object.isRequired,
     }).isRequired,
   }).isRequired,
-  navigation: PropTypes.object.isRequired,
 };
 
 export default ListExerciciosTreino;

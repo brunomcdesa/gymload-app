@@ -1,7 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import BackButton from '../../../components/Button/HeaderBackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as ExercicioApi from '../../exercicios/Api';
@@ -17,7 +16,7 @@ import style from '../style/style';
 const renderEmptyList = () => <EmptyList value="exercício" isSelect={true} />;
 
 const TreinoForm = (props) => {
-  const { formContainer, title, formLabel, botoesContainer } = ComumStyles;
+  const { formContainer, title, formLabel, fabContainer } = ComumStyles;
   const {
     selectedExercisesContainer,
     selectedExerciseItem,
@@ -179,8 +178,7 @@ const TreinoForm = (props) => {
         </View>
       </View>
 
-      <View style={botoesContainer}>
-        <BackButton onPress={navigation.goBack} />
+      <View style={fabContainer}>
         <SaveButton
           onPress={isEdicao ? handleEditar : handleSave}
           loading={loading}

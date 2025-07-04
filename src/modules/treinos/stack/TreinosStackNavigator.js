@@ -1,6 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
+import HeaderBackButton from '../../../components/Button/HeaderBackButton';
+import { colors } from '../../../components/Styles/ComumStyles';
 import ListExerciciosTreino from '../../exercicios/screens/ListExerciciosTreino';
 import RegistroAtividadeForm from '../../registrosAtividades/screens/RegistroAtividadeForm';
 import RegistroAtividadesCompleto from '../../registrosAtividades/screens/RegistroAtividadesCompleto';
@@ -11,8 +13,24 @@ const Stack = createNativeStackNavigator();
 
 const TreinosStackNavigator = (props) => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="ListTreino" component={ListTreino} />
+    <Stack.Navigator
+      screenOptions={({ navigation }) => ({
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: colors.background,
+        },
+        headerShadowVisible: false,
+        headerLeft: () => (
+          <HeaderBackButton onPress={() => navigation.goBack()} />
+        ),
+        headerTitle: '',
+      })}
+    >
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ListTreino"
+        component={ListTreino}
+      />
       <Stack.Screen name="TreinoForm" component={TreinoForm} />
       <Stack.Screen
         name="ListExerciciosTreino"
