@@ -10,7 +10,7 @@ import * as Api from '../Api';
 import GrupoMuscular from '../GrupoMuscular';
 
 const ListGruposMusculares = () => {
-  const { container } = ComumStyles;
+  const { container, fabContainer } = ComumStyles;
   const [gruposMusculares, setGruposMusculares] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -52,7 +52,7 @@ const ListGruposMusculares = () => {
         />
       )}
 
-      <View>
+      <View style={fabContainer}>
         <AddButton onPress={redirectGrupoMuscularForm} />
       </View>
     </View>

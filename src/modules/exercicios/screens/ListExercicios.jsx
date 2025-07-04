@@ -12,7 +12,7 @@ import Exercicio from '../Exercicio';
 import { fetchDestaquesDosExercicios } from '../utils/exerciciosUtils';
 
 const ListExercicios = () => {
-  const { container } = ComumStyles;
+  const { container, fabContainer } = ComumStyles;
   const [exercicios, setExercicios] = useState([]);
   const [filteredExercicios, setFilteredExercicios] = useState([]);
   const [dadosRegistrosAtividades, setDadosRegistrosAtividades] = useState({});
@@ -85,7 +85,7 @@ const ListExercicios = () => {
         />
       )}
       {isAdmin && (
-        <View>
+        <View style={fabContainer}>
           <AddButton onPress={redirectExercicioForm} />
         </View>
       )}

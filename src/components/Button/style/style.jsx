@@ -1,13 +1,24 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../Styles/ComumStyles';
 
 export default StyleSheet.create({
-  addButtonStyle: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
+  circularAddButton: {
+    backgroundColor: colors.secondary,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  addIcon: {
+    color: colors.buttonText,
+    fontSize: 30,
+    fontWeight: 'bold',
   },
   backButtonStyle: {
     backgroundColor: '#dc3545',

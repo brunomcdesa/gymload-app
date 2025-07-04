@@ -29,7 +29,7 @@ const ListTreino = () => {
     checkboxContainer,
     checkboxLabel,
   } = style;
-  const { container } = ComumStyles;
+  const { container, fabContainer } = ComumStyles;
   const [treinos, setTreinos] = useState([]);
   const [filteredTreinos, setFilteredTreinos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -188,7 +188,9 @@ const ListTreino = () => {
         />
       )}
 
-      <AddButton onPress={redirectToTreinoForm} style={addButton} />
+      <View style={fabContainer}>
+        <AddButton onPress={redirectToTreinoForm} style={addButton} />
+      </View>
     </View>
   );
 };

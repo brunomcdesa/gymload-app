@@ -136,6 +136,11 @@ const ComumStyles = StyleSheet.create({
   listContent: {
     paddingBottom: 20,
   },
+  fabContainer: {
+    position: 'absolute', // Faz o elemento flutuar sobre os outros
+    right: 24, // Distância da direita
+    bottom: 24, // Distância de baixo
+  },
 });
 
 export { colors, ComumStyles };

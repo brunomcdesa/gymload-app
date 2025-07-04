@@ -4,22 +4,21 @@ import { Text, TouchableOpacity } from 'react-native';
 import style from './style/style';
 
 const AddButton = (props) => {
-  const { addButtonStyle, textStyle } = style;
-  const { onPress, text } = props;
+  const { circularAddButton, addIcon } = style;
+  const { onPress } = props;
   return (
     <TouchableOpacity
-      style={addButtonStyle}
+      style={circularAddButton}
       onPress={onPress}
-      activeOpacity={0.7}
+      activeOpacity={0.8}
     >
-      <Text style={textStyle}>{text || 'Adicionar'}</Text>
+      <Text style={addIcon}>+</Text>
     </TouchableOpacity>
   );
 };
 
 AddButton.propTypes = {
   onPress: PropTypes.func.isRequired,
-  text: PropTypes.string,
 };
 
 export default AddButton;
