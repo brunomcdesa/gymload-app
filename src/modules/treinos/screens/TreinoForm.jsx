@@ -1,5 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import SaveButton from '../../../components/Button/SaveButton';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
@@ -7,6 +7,7 @@ import * as ExercicioApi from '../../exercicios/Api';
 import * as Api from '../Api';
 
 import PropTypes from 'prop-types';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import EmptyList from '../../../components/List/EmptyList';
@@ -16,7 +17,13 @@ import style from '../style/style';
 const renderEmptyList = () => <EmptyList value="exercício" isSelect={true} />;
 
 const TreinoForm = (props) => {
-  const { formContainer, title, formLabel, fabContainer } = ComumStyles;
+  const {
+    formContainer,
+    formLabel,
+    fabContainer,
+    formLabelObrigatorio,
+    asteriscoObrigatorio,
+  } = ComumStyles;
   const {
     selectedExercisesContainer,
     selectedExerciseItem,
@@ -26,15 +33,16 @@ const TreinoForm = (props) => {
   } = style;
   const { navigation, route } = props;
   const { treinoData, isEdicao } = route.params;
+  const { id, nome, exerciciosIds } = treinoData;
 
   const [formData, setFormData] = useState({
-    nome: treinoData.nome || null,
-    exerciciosIds: treinoData.exerciciosIds || [],
+    nome: nome || null,
+    exerciciosIds: exerciciosIds || [],
   });
   const [exerciciosSelect, setExerciciosSelect] = useState([]);
   const [exerciciosSelectLoading, setExerciciosSelectLodding] = useState(false);
   const [selectedExercicios, setSelectedExercicios] = useState(
-    treinoData.exerciciosIds || [],
+    exerciciosIds || [],
   );
   const [selectedExerciciosNomes, setSelectedExerciciosNomes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -66,20 +74,15 @@ const TreinoForm = (props) => {
   const fetchExerciciosDoTreino = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await ExercicioApi.fetchExerciciosDoTreino(
-        treinoData.id,
-      );
+      const { data } = await ExercicioApi.fetchExerciciosDoTreino(id);
       setSelectedExercicios(data.map((exercicio) => exercicio.id));
     } catch (error) {
       throwToastError('Erro ao buscar exercícios do treino.');
-      console.error(
-        `Erro ao buscar exercícios do treino ${treinoData.id}`,
-        error,
-      );
+      console.error(`Erro ao buscar exercícios do treino ${id}`, error);
     } finally {
       setLoading(false);
     }
-  }, [treinoData.id]);
+  }, [id]);
 
   const handleSave = async () => {
     try {
@@ -118,10 +121,25 @@ const TreinoForm = (props) => {
     }, [fetchExerciciosSelect, fetchExerciciosDoTreino, isEdicao]),
   );
 
+  const renderHeaderTitle = useCallback(() => {
+    return (
+      <HeaderTitle
+        title={isEdicao ? 'Editar Treino' : 'Adicionar Treino'}
+        isForm={true}
+      />
+    );
+  }, [isEdicao]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+    });
+  }, [navigation, renderHeaderTitle]);
+
   const handleGoBack = () => {
     if (isEdicao) {
       navigation.navigate('ListExerciciosTreino', {
-        treino: { id: treinoData.id, nome: formData.nome },
+        treino: { id, nome },
       });
     } else navigation.goBack();
   };
@@ -135,16 +153,20 @@ const TreinoForm = (props) => {
 
   return (
     <View style={formContainer}>
-      <Text style={title}>Adicionar Treino</Text>
-
-      <Text style={formLabel}>Nome:</Text>
+      <View style={formLabelObrigatorio}>
+        <Text style={formLabel}>Nome</Text>
+        <Text style={asteriscoObrigatorio}>*</Text>
+      </View>
       <TextoInput
         placeholder="Digite o nome"
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
-      <Text style={formLabel}>Exercicios:</Text>
+      <View style={formLabelObrigatorio}>
+        <Text style={formLabel}>Exercicios</Text>
+        <Text style={asteriscoObrigatorio}>*</Text>
+      </View>
       <SelectInput
         open={open}
         setOpen={setOpen}
@@ -192,6 +214,7 @@ TreinoForm.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
   }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({

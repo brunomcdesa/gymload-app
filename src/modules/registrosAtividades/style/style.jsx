@@ -2,22 +2,6 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../../components/Styles/ComumStyles';
 
 export default StyleSheet.create({
-  header: {
-    marginBottom: 25,
-    alignItems: 'center',
-    paddingTop: 10,
-  },
-  titleStyle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: colors.textLight,
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#aaa',
-    letterSpacing: 1,
-  },
   listContent: {
     paddingBottom: 20,
   },

@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import SaveButton from '../../../components/Button/SaveButton';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
@@ -16,7 +17,6 @@ const UsuarioEdicaoForm = (props) => {
     formLabel,
     inlineContainer,
     inputGroup,
-    title,
     scrollContentContainer,
     fabContainer,
   } = ComumStyles;
@@ -59,12 +59,20 @@ const UsuarioEdicaoForm = (props) => {
     }
   };
 
+  const renderHeaderTitle = useCallback(() => {
+    return <HeaderTitle title={'Editar Usuário'} isForm={true} />;
+  }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+    });
+  }, [navigation, renderHeaderTitle]);
+
   return (
     <View style={formContainer}>
       <ScrollView contentContainerStyle={scrollContentContainer}>
         <View style={fieldContainer}>
-          <Text style={title}>Editar Usuário</Text>
-
           <Text style={formLabel}>Nome Completo</Text>
           <TextoInput
             placeholder="Digite o nome completo"
@@ -183,6 +191,7 @@ const UsuarioEdicaoForm = (props) => {
 UsuarioEdicaoForm.propTypes = {
   navigation: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
   }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({

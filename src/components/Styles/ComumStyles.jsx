@@ -107,13 +107,6 @@ const ComumStyles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 10,
   },
-  headerForm: {
-    alignItems: 'center',
-  },
-  subTitleForm: {
-    color: '#aaa',
-    marginBottom: 10,
-  },
   userInfoContainer: {
     flexDirection: 'row',
     alignItems: 'center',

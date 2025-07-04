@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import SaveButton from '../../../components/Button/SaveButton';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import TimePickerInput from '../../../components/Inputs/TimePickerInput';
@@ -15,7 +16,6 @@ import * as Api from '../Api';
 
 const RegistroAtividadeForm = (props) => {
   const {
-    title,
     fabContainer,
     formContainer,
     formLabel,
@@ -24,8 +24,6 @@ const RegistroAtividadeForm = (props) => {
     inputGroup,
     lastInputGroup,
     inlineContainer,
-    headerForm,
-    subTitleForm,
     scrollContentContainer,
   } = ComumStyles;
   const { route, navigation } = props;
@@ -156,6 +154,16 @@ const RegistroAtividadeForm = (props) => {
       }
     }, [isEdicao, registroAtividadeData.duracao]),
   );
+
+  const renderHeaderTitle = useCallback(() => {
+    return <HeaderTitle title={nome} isForm={true} />;
+  }, [nome]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+    });
+  }, [navigation, renderHeaderTitle]);
 
   const renderFieldsRegistroMusculacao = () => {
     return (
@@ -348,14 +356,6 @@ const RegistroAtividadeForm = (props) => {
   return (
     <View style={formContainer}>
       <ScrollView contentContainerStyle={scrollContentContainer}>
-        <View style={headerForm}>
-          <Text style={title}>Adicionar Registro para: {nome}</Text>
-          <Text style={subTitleForm}>
-            Campos marcados com <Text style={asteriscoObrigatorio}>*</Text> são
-            obrigatórios
-          </Text>
-        </View>
-
         {isExercicioMusculacao && renderFieldsRegistroMusculacao()}
         {isExercicioAerobico && renderFieldsRegistroAerobico()}
         {isExercicioCalistenia && renderFieldsRegistroCalistenia()}
@@ -387,6 +387,7 @@ RegistroAtividadeForm.propTypes = {
   }).isRequired,
   navigation: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
   }).isRequired,
 };
 

@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import BackButton from '../../../components/Button/HeaderBackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import SelectableImage from '../../../components/Selectable/SelectableImage/SelectableImage';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
@@ -12,12 +12,18 @@ import * as Api from '../Api';
 import style from './styles/style';
 
 const UsuarioCadastroForm = (props) => {
-  const { title, formContainer, formLabel, passwordContainer } = ComumStyles;
+  const {
+    fabContainer,
+    formContainer,
+    formLabel,
+    passwordContainer,
+    formLabelObrigatorio,
+    asteriscoObrigatorio,
+  } = ComumStyles;
   const {
     cadastroFormAdminContainer,
     cadastroFormImagePickerContainer,
     cadastroFormiImageDescription,
-    cadastroFormBotoesContainer,
   } = style;
   const { navigation, route } = props;
   const { isCadastroAdmin } = route.params;
@@ -64,12 +70,25 @@ const UsuarioCadastroForm = (props) => {
     }
   };
 
+  const renderHeaderTitle = useCallback(() => {
+    return (
+      <HeaderTitle
+        title={!isCadastroAdmin ? 'Cadastrar-se' : 'Cadastre um novo Admin'}
+        isForm={true}
+      />
+    );
+  }, [isCadastroAdmin]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+    });
+  }, [navigation, renderHeaderTitle]);
+
   return (
     <View style={formContainer}>
       {!isCadastroAdmin && (
         <View style={cadastroFormAdminContainer}>
-          <Text style={title}>Cadastrar-se</Text>
-
           <View style={cadastroFormImagePickerContainer}>
             <SelectableImage
               uriImagemUsuario={uriImagemUsuario}
@@ -82,21 +101,30 @@ const UsuarioCadastroForm = (props) => {
         </View>
       )}
 
-      <Text style={formLabel}>Nome Completo:</Text>
+      <View style={formLabelObrigatorio}>
+        <Text style={formLabel}>Nome Completo</Text>
+        <Text style={asteriscoObrigatorio}>*</Text>
+      </View>
       <TextoInput
         placeholder="Digite seu nome completo"
         value={formData.nome}
         onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
       />
 
-      <Text style={formLabel}>Email:</Text>
+      <View style={formLabelObrigatorio}>
+        <Text style={formLabel}>Email</Text>
+        <Text style={asteriscoObrigatorio}>*</Text>
+      </View>
       <TextoInput
         placeholder="Digite seu email"
         value={formData.email}
         onChangeText={(emailValue) => handleChange('email', emailValue)}
       />
 
-      <Text style={formLabel}>Username:</Text>
+      <View style={formLabelObrigatorio}>
+        <Text style={formLabel}>Username</Text>
+        <Text style={asteriscoObrigatorio}>*</Text>
+      </View>
       <TextoInput
         placeholder="Digite seu username"
         value={formData.username}
@@ -105,7 +133,10 @@ const UsuarioCadastroForm = (props) => {
         }
       />
 
-      <Text style={formLabel}>Senha:</Text>
+      <View style={formLabelObrigatorio}>
+        <Text style={formLabel}>Senha</Text>
+        <Text style={asteriscoObrigatorio}>*</Text>
+      </View>
       <View style={passwordContainer}>
         <TextoInput
           placeholder="Digite sua senha"
@@ -121,8 +152,7 @@ const UsuarioCadastroForm = (props) => {
         />
       </View>
 
-      <View style={cadastroFormBotoesContainer}>
-        <BackButton onPress={navigation.goBack} />
+      <View style={fabContainer}>
         <SaveButton onPress={handleSubmit} loading={loading} />
       </View>
     </View>
@@ -132,6 +162,7 @@ const UsuarioCadastroForm = (props) => {
 UsuarioCadastroForm.propTypes = {
   navigation: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
   }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({

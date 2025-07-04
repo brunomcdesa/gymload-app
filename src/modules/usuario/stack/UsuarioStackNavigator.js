@@ -16,10 +16,7 @@ const UsuarioStackNavigator = () => {
           backgroundColor: colors.background,
         },
         headerShadowVisible: false,
-        headerLeft: () => (
-          <HeaderBackButton onPress={() => navigation.goBack()} />
-        ),
-        headerTitle: '',
+        headerLeft: () => <HeaderBackButton onPress={navigation.goBack} />,
       })}
     >
       <Stack.Screen

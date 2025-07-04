@@ -2,23 +2,17 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../Styles/ComumStyles';
 
 export default StyleSheet.create({
-  headerStyle: {
-    backgroundColor: '#696969',
-    paddingTop: '2%',
-    paddingHorizontal: '3%',
-    paddingBottom: 15,
-    flexDirection: 'row',
+  container: {
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
-  menuIcon: {
-    color: colors.secondary,
-    fontSize: 24,
+  titleStyle: {
+    color: colors.textLight,
+    fontSize: 17,
+    fontWeight: '600',
   },
-  HeaderText: {
-    fontSize: 30,
-    color: 'white',
-    textAlign: 'center',
-    flex: 1,
+  subtitleStyle: {
+    color: '#aaa',
+    fontSize: 12,
   },
 });

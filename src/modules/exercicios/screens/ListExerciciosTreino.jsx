@@ -1,7 +1,8 @@
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import React, { useCallback, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
+import { FlatList, View } from 'react-native';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError } from '../../utils/toastUtils';
@@ -10,9 +11,10 @@ import Exercicio from '../Exercicio';
 import { fetchDestaquesDosExercicios } from '../utils/exerciciosUtils';
 
 const ListExerciciosTreino = (props) => {
-  const { route } = props;
+  const { navigation, route } = props;
   const { treino } = route.params;
-  const { container, title } = ComumStyles;
+  const { id, nome } = treino;
+  const { container } = ComumStyles;
   const [exercicios, setExercicios] = useState([]);
   const [dadosRegistrosAtividades, setDadosRegistrosAtividades] = useState({});
   const [loading, setLoading] = useState(false);
@@ -20,7 +22,7 @@ const ListExerciciosTreino = (props) => {
   const fetchExerciciosDoTreino = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await Api.fetchExerciciosDoTreino(treino.id);
+      const { data } = await Api.fetchExerciciosDoTreino(id);
       setExercicios(data);
 
       if (data && data.length > 0) {
@@ -32,11 +34,11 @@ const ListExerciciosTreino = (props) => {
       }
     } catch (error) {
       throwToastError('Erro ao buscar exercícios deste treino.');
-      console.error(`Erro ao buscar exercícios do treino ${treino.id}`, error);
+      console.error(`Erro ao buscar exercícios do treino ${id}`, error);
     } finally {
       setLoading(false);
     }
-  }, [treino.id]);
+  }, [id]);
 
   useFocusEffect(
     useCallback(() => {
@@ -44,9 +46,18 @@ const ListExerciciosTreino = (props) => {
     }, [fetchExerciciosDoTreino]),
   );
 
+  const renderHeaderTitle = useCallback(() => {
+    return <HeaderTitle title={nome} />;
+  }, [nome]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+    });
+  }, [navigation, renderHeaderTitle]);
+
   return (
     <View style={container}>
-      <Text style={title}>{treino.nome}</Text>
       {loading ? (
         <LoadingIndicator />
       ) : (
@@ -72,6 +83,9 @@ ListExerciciosTreino.propTypes = {
     params: PropTypes.shape({
       treino: PropTypes.object.isRequired,
     }).isRequired,
+  }).isRequired,
+  navigation: PropTypes.shape({
+    setOptions: PropTypes.func.isRequired,
   }).isRequired,
 };
 

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useHeaderContext } from '../components/Header/HeaderProvider';
 import { colors } from '../components/Styles/ComumStyles';
 import {
   HEADER_SUBTITLE_DASHBOARD,
@@ -14,6 +13,7 @@ import {
   HEADER_TITLE_GRUPOS_MUSCULARES,
   HEADER_TITLE_TREINOS,
 } from '../comum/constants';
+import { useHeaderContext } from '../context/HeaderProvider';
 import Dashboard from '../modules/dashboard/Dashboard';
 import ExerciciosStack from '../modules/exercicios/stack/ExerciciosStackNavigator';
 import GruposMuscularesStack from '../modules/gruposMusculares/stack/GruposMuscularesStackNavigator';

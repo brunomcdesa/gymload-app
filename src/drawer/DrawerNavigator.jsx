@@ -1,8 +1,8 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
-import { useHeaderContext } from '../components/Header/HeaderProvider';
 import SideBar from '../components/Sidebar/SideBar';
 import { colors } from '../components/Styles/ComumStyles';
+import { useHeaderContext } from '../context/HeaderProvider';
 
 import Perfil from '../modules/usuario/screens/Perfil';
 import UsuarioCadastroForm from '../modules/usuario/screens/UsuarioCadastroForm';

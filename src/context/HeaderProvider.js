@@ -3,7 +3,7 @@ import React, { createContext, useCallback, useContext, useState } from 'react';
 import {
   HEADER_SUBTITLE_DASHBOARD,
   HEADER_TITLE_DASHBOARD,
-} from '../../comum/constants';
+} from '../comum/constants';
 
 const HeaderContext = createContext();
 

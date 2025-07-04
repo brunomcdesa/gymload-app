@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 
-import BackButton from '../../../components/Button/HeaderBackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
 import TextoInput from '../../../components/Inputs/TextoInput';
@@ -13,7 +12,7 @@ import * as Api from '../Api';
 import style from './styles/style';
 
 const EsqueciMinhaSenhaForm = (props) => {
-  const { title, formLabel, passwordContainer } = ComumStyles;
+  const { title, formLabel, passwordContainer, fabContainer } = ComumStyles;
   const { loginContainer, loginBotoesContainer } = style;
   const [formData, setFormData] = useState({
     username: '',
@@ -77,8 +76,7 @@ const EsqueciMinhaSenhaForm = (props) => {
         />
       </View>
 
-      <View style={loginBotoesContainer}>
-        <BackButton onPress={navigation.goBack} />
+      <View style={fabContainer}>
         <SaveButton onPress={handleSubmit} loading={loading} />
       </View>
     </View>

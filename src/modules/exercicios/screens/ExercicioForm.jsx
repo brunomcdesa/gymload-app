@@ -1,9 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { Text, View } from 'react-native';
 import SaveButton from '../../../components/Button/SaveButton';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 
 import PropTypes from 'prop-types';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import * as EnumApi from '../../../comum/EnumApi';
@@ -13,7 +19,6 @@ import * as Api from '../Api';
 
 const ExercicioForm = (props) => {
   const {
-    title,
     fabContainer,
     formContainer,
     formLabel,
@@ -128,6 +133,16 @@ const ExercicioForm = (props) => {
     fetchTiposEquipamentosSelect();
   }, []);
 
+  const renderHeaderTitle = useCallback(() => {
+    return <HeaderTitle title={'Adicionar Exercício'} isForm={true} />;
+  }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+    });
+  }, [navigation, renderHeaderTitle]);
+
   const renderExerciciosMusculacaoFields = () => {
     return (
       <View>
@@ -208,8 +223,6 @@ const ExercicioForm = (props) => {
 
   return (
     <View style={formContainer}>
-      <Text style={title}>Adicionar Exercício</Text>
-
       <View style={inlineContainer}>
         <View style={inputGroup}>
           <View style={formLabelObrigatorio}>
@@ -266,6 +279,7 @@ const ExercicioForm = (props) => {
 ExercicioForm.propTypes = {
   navigation: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
   }).isRequired,
 };
 

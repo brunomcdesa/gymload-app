@@ -163,11 +163,6 @@ export default StyleSheet.create({
     marginTop: 5,
     color: '#666',
   },
-  cadastroFormBotoesContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
-  },
   fieldContainer: {
     marginBottom: 16,
   },

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { SectionList, Text, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
@@ -9,20 +9,14 @@ import SelectableItem from '../../../components/Selectable/SelectableItem/Select
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as Api from '../Api';
 
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import RegistroAerobico from '../components/RegistroAerobico';
 import RegistroCalistenia from '../components/RegistroCalistenia';
 import RegistroMusculacao from '../components/RegistroMusculacao';
 import style from '../style/style';
 
 const RegistroAtividadesCompleto = (props) => {
-  const {
-    header,
-    titleStyle,
-    subtitle,
-    listContent,
-    sectionHeader,
-    sectionHeaderText,
-  } = style;
+  const { listContent, sectionHeader, sectionHeaderText } = style;
   const { container, fabContainer } = ComumStyles;
   const { navigation, route } = props;
   const {
@@ -56,6 +50,16 @@ const RegistroAtividadesCompleto = (props) => {
       fetchCargas();
     }, [fetchCargas]),
   );
+
+  const renderHeaderTitle = useCallback(() => {
+    return <HeaderTitle title={nome} subtitle="Registro Completo" />;
+  }, [nome]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+    });
+  }, [navigation, renderHeaderTitle]);
 
   const groupRegistrosByDate = (registros) => {
     const grouped = {};
@@ -140,11 +144,6 @@ const RegistroAtividadesCompleto = (props) => {
 
   return (
     <View style={container}>
-      <View style={header}>
-        <Text style={titleStyle}>{nome}</Text>
-        <Text style={subtitle}>Registro Completo</Text>
-      </View>
-
       {loading ? (
         <LoadingIndicator />
       ) : (
@@ -176,7 +175,7 @@ RegistroAtividadesCompleto.propTypes = {
   }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
-    goBack: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
   }).isRequired,
 };
 
