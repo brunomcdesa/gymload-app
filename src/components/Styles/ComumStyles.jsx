@@ -46,15 +46,6 @@ const ComumStyles = StyleSheet.create({
     marginBottom: 8,
     textAlign: 'center',
   },
-  botoesContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
   formContainer: {
     padding: 20,
     paddingBottom: 20,

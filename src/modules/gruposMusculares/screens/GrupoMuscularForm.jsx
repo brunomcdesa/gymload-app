@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
-import BackButton from '../../../components/Button/HeaderBackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
@@ -10,7 +9,7 @@ import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 
 const GrupoMuscularForm = (props) => {
-  const { title, botoesContainer, formContainer, formLabel } = ComumStyles;
+  const { title, fabContainer, formContainer, formLabel } = ComumStyles;
   const { navigation } = props;
   const [formData, setFormData] = useState({
     nome: null,
@@ -60,8 +59,7 @@ const GrupoMuscularForm = (props) => {
         onChangeText={(codigoValue) => handleChange('codigo', codigoValue)}
       />
 
-      <View style={botoesContainer}>
-        <BackButton onPress={navigation.goBack} />
+      <View style={fabContainer}>
         <SaveButton onPress={handleSubmit} loading={loading} />
       </View>
     </View>
