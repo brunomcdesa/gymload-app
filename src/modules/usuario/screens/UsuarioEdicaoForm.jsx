@@ -12,11 +12,16 @@ import style from './styles/style';
 const UsuarioEdicaoForm = (props) => {
   const { navigation, route } = props;
   const { usuario } = route.params;
-  const { formContainer, formLabel, inlineContainer, inputGroup, title } =
-    ComumStyles;
+  const {
+    formContainer,
+    formLabel,
+    inlineContainer,
+    inputGroup,
+    title,
+    scrollContentContainer,
+  } = ComumStyles;
   const {
     botoesContainer,
-    scrollContentContainer,
     fieldContainer,
     genderButton,
     genderButtonSelected,

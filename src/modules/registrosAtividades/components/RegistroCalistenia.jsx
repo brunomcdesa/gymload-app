@@ -26,14 +26,14 @@ const RegistroCalistenia = (props) => {
       </View>
 
       {carga && (
-        <View>
+        <>
           <View style={divider} />
 
           <View style={dataContainer}>
             <FontAwesome5 name="dumbbell" size={16} color={colors.secondary} />
             <Text style={dataText}>{carga}</Text>
           </View>
-        </View>
+        </>
       )}
     </View>
   );

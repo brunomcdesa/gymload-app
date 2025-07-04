@@ -52,7 +52,7 @@ export default StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   dataContainer: {
     flexDirection: 'row',

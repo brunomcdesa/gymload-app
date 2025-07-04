@@ -28,6 +28,10 @@ const ComumStyles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 5,
   },
+  scrollContentContainer: {
+    padding: '2%',
+    paddingBottom: 120,
+  },
   subTitle: {
     fontSize: 20,
     fontWeight: 'bold',

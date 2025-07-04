@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -27,6 +27,7 @@ const RegistroAtividadeForm = (props) => {
     inlineContainer,
     headerForm,
     subTitleForm,
+    scrollContentContainer,
   } = ComumStyles;
   const { route, navigation } = props;
   const { exercicioData, registroAtividadeData, isEdicao } = route.params;
@@ -46,14 +47,19 @@ const RegistroAtividadeForm = (props) => {
     distancia: registroAtividadeData.distancia?.toString() || null,
     duracao: new Date(0, 0, 0, 0, 0, 0),
     observacao: registroAtividadeData.observacao || null,
+    tipoPegada: null,
   });
   const [loading, setLoading] = useState(false);
-  const [unidadesPesosItems, setUnidadesPesosItems] = useState([]);
+  const [unidadesPesosItens, setUnidadesPesosItens] = useState([]);
+  const [tiposPegadasItens, setTiposPegadasItens] = useState([]);
   const [openUnidadesPesosSelect, setOpenUnidadesPesosSelect] = useState(false);
+  const [openTiposPegadasSelect, setOpenTiposPegadasSelect] = useState(false);
   const [unidadesPesosLoading, setUnidadesPesosLoading] = useState(false);
+  const [tiposPegadasLoading, setTiposPegadasLoading] = useState(false);
   const [unidadePesoSelected, setUnidadePesoSelected] = useState(
     registroAtividadeData.unidadePeso,
   );
+  const [tipoPegadaSelected, setTipoPegadaSelected] = useState(null);
 
   const convertDecimalHoursToDate = (decimalHours) => {
     const hours = Math.floor(decimalHours);
@@ -119,7 +125,7 @@ const RegistroAtividadeForm = (props) => {
     try {
       setUnidadesPesosLoading(true);
       const { data } = await EnumApi.fetchUnidadesPesosSelect();
-      setUnidadesPesosItems(data);
+      setUnidadesPesosItens(data);
     } catch (error) {
       console.error('Erro ao carregar select de unidades de pesos.', error);
     } finally {
@@ -127,9 +133,22 @@ const RegistroAtividadeForm = (props) => {
     }
   };
 
+  const fetchTiposPegadas = async () => {
+    try {
+      setTiposPegadasLoading(true);
+      const { data } = await EnumApi.fetchTiposPegadasSelect();
+      setTiposPegadasItens(data);
+    } catch (error) {
+      console.error('Erro ao carregar select de tipos de pegadas.', error);
+    } finally {
+      setTiposPegadasLoading(false);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetchUnidadesPesos();
+      fetchTiposPegadas();
       if (isEdicao) {
         setFormData((prev) => ({
           ...prev,
@@ -164,8 +183,8 @@ const RegistroAtividadeForm = (props) => {
             <SelectInput
               open={openUnidadesPesosSelect}
               setOpen={setOpenUnidadesPesosSelect}
-              items={unidadesPesosItems}
-              setItems={setUnidadesPesosItems}
+              items={unidadesPesosItens}
+              setItems={setUnidadesPesosItens}
               value={unidadePesoSelected || 'KG'}
               setValue={setUnidadePesoSelected}
               loading={unidadesPesosLoading}
@@ -209,6 +228,25 @@ const RegistroAtividadeForm = (props) => {
             />
           </View>
         </View>
+
+        <View style={formLabelObrigatorio}>
+          <Text style={formLabel}>Tipo de pegada</Text>
+          <Text style={asteriscoObrigatorio}>*</Text>
+        </View>
+        <SelectInput
+          open={openTiposPegadasSelect}
+          setOpen={setOpenTiposPegadasSelect}
+          items={tiposPegadasItens}
+          setItems={setTiposPegadasItens}
+          value={tipoPegadaSelected}
+          setValue={setTipoPegadaSelected}
+          loading={tiposPegadasLoading}
+          multiple={false}
+          handleChange={handleChange}
+          field="tipoPegada"
+          zIndex={3000}
+          zIndexInverse={1000}
+        />
       </View>
     );
   };
@@ -291,8 +329,8 @@ const RegistroAtividadeForm = (props) => {
             <SelectInput
               open={openUnidadesPesosSelect}
               setOpen={setOpenUnidadesPesosSelect}
-              items={unidadesPesosItems}
-              setItems={setUnidadesPesosItems}
+              items={unidadesPesosItens}
+              setItems={setUnidadesPesosItens}
               value={unidadePesoSelected}
               setValue={setUnidadePesoSelected}
               loading={unidadesPesosLoading}
@@ -310,26 +348,28 @@ const RegistroAtividadeForm = (props) => {
 
   return (
     <View style={formContainer}>
-      <View style={headerForm}>
-        <Text style={title}>Adicionar Registro para: {nome}</Text>
-        <Text style={subTitleForm}>
-          Campos marcados com <Text style={asteriscoObrigatorio}>*</Text> são
-          obrigatórios
-        </Text>
-      </View>
+      <ScrollView contentContainerStyle={scrollContentContainer}>
+        <View style={headerForm}>
+          <Text style={title}>Adicionar Registro para: {nome}</Text>
+          <Text style={subTitleForm}>
+            Campos marcados com <Text style={asteriscoObrigatorio}>*</Text> são
+            obrigatórios
+          </Text>
+        </View>
 
-      {isExercicioMusculacao && renderFieldsRegistroMusculacao()}
-      {isExercicioAerobico && renderFieldsRegistroAerobico()}
-      {isExercicioCalistenia && renderFieldsRegistroCalistenia()}
+        {isExercicioMusculacao && renderFieldsRegistroMusculacao()}
+        {isExercicioAerobico && renderFieldsRegistroAerobico()}
+        {isExercicioCalistenia && renderFieldsRegistroCalistenia()}
 
-      <Text style={formLabel}>Observação:</Text>
-      <TextoInput
-        placeholder="Informe uma observação"
-        value={formData.observacao}
-        onChangeText={(observacaoValue) =>
-          handleChange('observacao', observacaoValue)
-        }
-      />
+        <Text style={formLabel}>Observação:</Text>
+        <TextoInput
+          placeholder="Informe uma observação"
+          value={formData.observacao}
+          onChangeText={(observacaoValue) =>
+            handleChange('observacao', observacaoValue)
+          }
+        />
+      </ScrollView>
 
       <View style={botoesContainer}>
         <BackButton onPress={navigation.goBack} />

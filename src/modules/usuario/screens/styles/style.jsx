@@ -168,10 +168,6 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
   },
-  scrollContentContainer: {
-    padding: 20,
-    paddingBottom: 120,
-  },
   fieldContainer: {
     marginBottom: 16,
   },
