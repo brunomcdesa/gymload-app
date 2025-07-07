@@ -1,5 +1,4 @@
 import { useFocusEffect } from '@react-navigation/native';
-import PropTypes from 'prop-types';
 import React, { useCallback, useContext, useState } from 'react';
 import {
   ScrollView,
@@ -9,19 +8,18 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import BackButton from '../../../components/Button/HeaderBackButton';
 import SaveButton from '../../../components/Button/SaveButton';
 import ImagemUsuario from '../../../components/Imagem/ImagemUsuario';
 import InfoBlock from '../../../components/Infos/InfoBlock';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableImage from '../../../components/Selectable/SelectableImage/SelectableImage';
 import { AuthContext } from '../../../context/AuthProvider';
+import { useScreenTitle } from '../../../hooks/useScreenTitle';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from './styles/style';
 
-const Perfil = (props) => {
-  const { navigation } = props;
+const Perfil = () => {
   const { user, setUser } = useContext(AuthContext);
   const {
     mainContainer,
@@ -93,6 +91,8 @@ const Perfil = (props) => {
       fetchDadosUsuario();
     }, [fetchDadosUsuario]),
   );
+
+  useScreenTitle('Meu Perfil', 'Gerencie suas informações');
 
   const handleEditChange = (field, value) => {
     setEditData((prev) => ({ ...prev, [field]: value }));
@@ -299,20 +299,10 @@ const Perfil = (props) => {
       </View>
 
       <View style={actionButtonContainer}>
-        {isEditing ? (
-          <SaveButton onPress={handleSave} loading={saveLoading} />
-        ) : (
-          <BackButton onPress={navigation.goBack} />
-        )}
+        {isEditing && <SaveButton onPress={handleSave} loading={saveLoading} />}
       </View>
     </ScrollView>
   );
-};
-
-Perfil.propTypes = {
-  navigation: PropTypes.shape({
-    goBack: PropTypes.func.isRequired,
-  }).isRequired,
 };
 
 export default Perfil;

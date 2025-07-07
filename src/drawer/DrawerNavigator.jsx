@@ -4,9 +4,6 @@ import SideBar from '../components/Sidebar/SideBar';
 import { colors } from '../components/Styles/ComumStyles';
 import { useHeaderContext } from '../context/HeaderProvider';
 
-import Perfil from '../modules/usuario/screens/Perfil';
-import UsuarioCadastroForm from '../modules/usuario/screens/UsuarioCadastroForm';
-import UsuarioStackNavigator from '../modules/usuario/stack/UsuarioStackNavigator';
 import Navegacao from '../routes/Navegacao';
 import DrawerHeaderTitle from './DrawerHeaderTitle';
 import style from './style/style';
@@ -39,27 +36,6 @@ const DrawerNavigator = () => {
         options={createScreenOptions(
           activeTabOptions?.headerTitle,
           activeTabOptions?.headerSubtitle,
-        )}
-      />
-      <Drawer.Screen
-        name="UsuarioCadastroForm"
-        component={UsuarioCadastroForm}
-        options={createScreenOptions(
-          'Cadastro de Admin',
-          'Cadastre um novo Admin',
-        )}
-      />
-      <Drawer.Screen
-        name="Perfil"
-        component={Perfil}
-        options={createScreenOptions('Perfil', 'Gerencia suas informações')}
-      />
-      <Drawer.Screen
-        name="GerenciarUsuariosStack"
-        component={UsuarioStackNavigator}
-        options={createScreenOptions(
-          'Gerenciar Usuários',
-          'Gerencie os usuários cadastrados',
         )}
       />
     </Drawer.Navigator>

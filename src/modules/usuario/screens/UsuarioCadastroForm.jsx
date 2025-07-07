@@ -7,6 +7,7 @@ import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import SelectableImage from '../../../components/Selectable/SelectableImage/SelectableImage';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { useScreenTitle } from '../../../hooks/useScreenTitle';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from './styles/style';
@@ -71,19 +72,16 @@ const UsuarioCadastroForm = (props) => {
   };
 
   const renderHeaderTitle = useCallback(() => {
-    return (
-      <HeaderTitle
-        title={!isCadastroAdmin ? 'Cadastrar-se' : 'Cadastre um novo Admin'}
-        isForm={true}
-      />
-    );
-  }, [isCadastroAdmin]);
+    return <HeaderTitle title={'Cadastro'} isForm={true} />;
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
     });
   }, [navigation, renderHeaderTitle]);
+
+  useScreenTitle('Cadastro de Admin', 'Cadastre um novo Admin');
 
   return (
     <View style={formContainer}>

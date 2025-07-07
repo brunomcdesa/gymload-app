@@ -14,7 +14,7 @@ import {
   HEADER_TITLE_TREINOS,
 } from '../comum/constants';
 import { useHeaderContext } from '../context/HeaderProvider';
-import Dashboard from '../modules/dashboard/Dashboard';
+import DashboardStack from '../modules/dashboard/stack/DashboardStackNavigator';
 import ExerciciosStack from '../modules/exercicios/stack/ExerciciosStackNavigator';
 import GruposMuscularesStack from '../modules/gruposMusculares/stack/GruposMuscularesStackNavigator';
 import TreinosStack from '../modules/treinos/stack/TreinosStackNavigator';
@@ -30,7 +30,7 @@ const TabNavigator = () => {
   const rotasConfig = [
     {
       name: 'Dashboard',
-      component: Dashboard,
+      component: DashboardStack,
       iconName: 'dashboard',
       headerTitle: HEADER_TITLE_DASHBOARD,
       headerSubtitle: HEADER_SUBTITLE_DASHBOARD,

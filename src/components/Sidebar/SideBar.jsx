@@ -29,27 +29,21 @@ const SideBar = (props) => {
     navigation.replace('Login');
   };
 
-  const redirectCadastrarUsuarioAdmin = () => {
-    navigation.navigate('UsuarioCadastroForm', {
-      isCadastroAdmin: true,
+  const navigateToScreen = (screenName, params = {}) => {
+    navigation.navigate('App', {
+      screen: 'Dashboard',
+      params: {
+        screen: screenName,
+        params,
+      },
     });
-
-    navigation.closeDrawer();
-  };
-
-  const redirectToPerfilScreen = () => {
-    navigation.navigate('Perfil');
-  };
-
-  const redirectGerenciarUsuarios = () => {
-    navigation.navigate('GerenciarUsuariosStack');
     navigation.closeDrawer();
   };
 
   return (
     <View style={container}>
       <View style={content}>
-        <TouchableOpacity onPress={redirectToPerfilScreen}>
+        <TouchableOpacity onPress={() => navigateToScreen('Perfil')}>
           <UsuarioInfo
             usuarioNome={user.nome}
             uriImagemUsuario={user.imagemPerfilUrl}
@@ -60,7 +54,7 @@ const SideBar = (props) => {
           {isAdmin && (
             <TouchableOpacity
               style={button}
-              onPress={redirectGerenciarUsuarios}
+              onPress={() => navigateToScreen('GerenciarUsuariosStack')}
             >
               <Text style={buttonText}>Gerenciar Usuários</Text>
             </TouchableOpacity>
@@ -72,7 +66,9 @@ const SideBar = (props) => {
         <View style={footer}>
           <TouchableOpacity
             style={buttonCadastroAdmin}
-            onPress={redirectCadastrarUsuarioAdmin}
+            onPress={() =>
+              navigateToScreen('UsuarioCadastroForm', { isCadastroAdmin: true })
+            }
           >
             <Text style={buttonText}>Cadastrar Usuario Admin</Text>
           </TouchableOpacity>

@@ -6,6 +6,7 @@ import EmptyList from '../../../components/List/EmptyList';
 import SeparatorItem from '../../../components/List/SeparatorItem';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { useScreenTitle } from '../../../hooks/useScreenTitle';
 import { throwToastError } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import Usuario from '../components/Usuario';
@@ -38,6 +39,8 @@ const GerenciarUsuarios = (props) => {
       fetchUsuariosDoSistema();
     }, [fetchUsuariosDoSistema]),
   );
+
+  useScreenTitle('Gerenciar Usuários', 'Gerencie os usuários cadastrados');
 
   const renderEmptyList = () => <EmptyList value="usuário" />;
 

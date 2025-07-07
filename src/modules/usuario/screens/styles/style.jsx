@@ -4,7 +4,7 @@ import { colors } from '../../../../components/Styles/ComumStyles';
 export default StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#1C1C1E',
+    backgroundColor: colors.background,
     paddingTop: 24,
   },
   header: {
