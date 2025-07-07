@@ -13,7 +13,7 @@ import style from './styles/style';
 
 const EsqueciMinhaSenhaForm = (props) => {
   const { title, formLabel, passwordContainer, fabContainer } = ComumStyles;
-  const { loginContainer, loginBotoesContainer } = style;
+  const { loginContainer } = style;
   const [formData, setFormData] = useState({
     username: '',
     password: '',
