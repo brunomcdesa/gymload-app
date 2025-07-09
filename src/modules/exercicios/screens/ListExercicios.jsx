@@ -8,6 +8,7 @@ import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as EnumApi from '../../../comum/EnumApi';
 import * as GrupoMuscularApi from '../../gruposMusculares/Api';
+import { renderIconeTipoExercicio } from '../../utils/iconesUtils';
 import { useIsAdmin } from '../../utils/userUtils';
 import * as Api from '../Api';
 import Exercicio from '../Exercicio';
@@ -24,6 +25,7 @@ const ListExercicios = () => {
     listHeader,
     backButton,
     backButtonText,
+    gridButtonInner,
   } = style;
   const [exercicios, setExercicios] = useState([]);
   const [filteredExercicios, setFilteredExercicios] = useState([]);
@@ -167,7 +169,10 @@ const ListExercicios = () => {
               style={gridButton}
               onPress={() => handleTypeSelection(item.value)}
             >
-              <Text style={gridButtonText}>{item.label}</Text>
+              <View style={gridButtonInner}>
+                {renderIconeTipoExercicio(item.value)}
+                <Text style={gridButtonText}>{item.label}</Text>
+              </View>
             </TouchableOpacity>
           )}
           ListEmptyComponent={<EmptyList value="grupo muscular" />}

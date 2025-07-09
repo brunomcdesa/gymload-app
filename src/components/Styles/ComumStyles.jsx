@@ -121,9 +121,9 @@ const ComumStyles = StyleSheet.create({
     paddingBottom: 20,
   },
   fabContainer: {
-    position: 'absolute', // Faz o elemento flutuar sobre os outros
-    right: 24, // Distância da direita
-    bottom: 24, // Distância de baixo
+    position: 'absolute',
+    right: 24,
+    bottom: 24,
   },
 });
 
