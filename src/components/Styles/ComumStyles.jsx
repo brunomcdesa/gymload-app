@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 const colors = {
   primary: '#333',
   secondary: '#ff5555',
+  terciary: '#AAA',
   background: '#222',
   inputBackground: '#2a2a2a',
   inputBorder: '#383838',
