@@ -1,11 +1,18 @@
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '../../components/Styles/ComumStyles';
+import IconeAbdomen from '../../icons/gruposMusculares/IconeAbdomen';
+import IconeAdutor from '../../icons/gruposMusculares/IconeAdutor';
+import IconeAntebraco from '../../icons/gruposMusculares/IconeAntebraco';
 import IconeBiceps from '../../icons/gruposMusculares/IconeBiceps';
 import IconeCostas from '../../icons/gruposMusculares/IconeCostas';
+import IconeGluteo from '../../icons/gruposMusculares/IconeGluteo';
+import IconeOmbro from '../../icons/gruposMusculares/IconeOmbro';
+import IconePanturrilha from '../../icons/gruposMusculares/IconePanturrilha';
 import IconePeitoral from '../../icons/gruposMusculares/IconePeitoral';
 import IconePosteriorCoxa from '../../icons/gruposMusculares/IconePosteriorCoxa';
 import IconeQuadriceps from '../../icons/gruposMusculares/IconeQuadriceps';
+import IconeTrapezio from '../../icons/gruposMusculares/IconeTrapezio';
 import IconeTriceps from '../../icons/gruposMusculares/IconeTriceps';
 import IconeAerobico from '../../icons/tiposExercicio/IconeAerobico';
 import IconeCalistenia from '../../icons/tiposExercicio/IconeCalistenia';
@@ -53,23 +60,35 @@ const iconesGruposMusculares = [
   },
   {
     grupoMuscular: 'Ombro',
-    icone: <IconeCostas size={85} color={colors.secondary} />, //
+    icone: <IconeOmbro size={85} color={colors.secondary} />,
   },
   {
     grupoMuscular: 'Abdomen',
-    icone: <IconeCostas size={85} color={colors.secondary} />, //
+    icone: <IconeAbdomen size={85} color={colors.secondary} />,
   },
   {
     grupoMuscular: 'Antebraço',
-    icone: <IconeCostas size={85} color={colors.secondary} />, //
+    icone: <IconeAntebraco size={85} color={colors.secondary} />,
   },
   {
     grupoMuscular: 'Panturrilha',
-    icone: <IconeCostas size={85} color={colors.secondary} />, //
+    icone: <IconePanturrilha size={85} color={colors.secondary} />,
   },
   {
     grupoMuscular: 'Glúteo',
-    icone: <IconeCostas size={85} color={colors.secondary} />, //
+    icone: <IconeGluteo size={85} color={colors.secondary} />,
+  },
+  {
+    grupoMuscular: 'Trapézio',
+    icone: <IconeTrapezio size={85} color={colors.secondary} />,
+  },
+  {
+    grupoMuscular: 'Glúteo',
+    icone: <IconeGluteo size={85} color={colors.secondary} />,
+  },
+  {
+    grupoMuscular: 'Adutor',
+    icone: <IconeAdutor size={85} color={colors.secondary} />,
   },
 ];
 
