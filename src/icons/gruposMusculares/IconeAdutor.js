@@ -14,7 +14,7 @@ const IconeAdutor = ({ size = 24, ...props }) => {
       {...props}
     >
       <Path
-        fill={terciary}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -689,7 +689,7 @@ M258.025391,1209.496582
 z"
       />
       <Path
-        fill={terciary}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -701,7 +701,7 @@ M655.531372,0.999997
 z"
       />
       <Path
-        fill={secondary}
+        fill={terciary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -887,7 +887,7 @@ M641.104919,452.836731
 z"
       />
       <Path
-        fill={secondary}
+        fill={terciary}
         opacity="1.000000"
         stroke="none"
         d="

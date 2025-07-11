@@ -14,7 +14,7 @@ const IconePeitoral = ({ size = 24, color = 'black', ...props }) => {
       {...props}
     >
       <Path
-        fill={terciary}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -416,7 +416,7 @@ z"
       />
 
       <Path
-        fill={secondary}
+        fill={terciary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -449,7 +449,7 @@ M793.252258,278.269775
 z"
       />
       <Path
-        fill={secondary}
+        fill={terciary}
         opacity="1.000000"
         stroke="none"
         d="
