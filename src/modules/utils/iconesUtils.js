@@ -44,7 +44,7 @@ const iconesGruposMusculares = [
   },
   {
     grupoMuscular: 'Quadríceps',
-    icone: <IconeQuadriceps size={85} color={colors.secondary} />,
+    icone: <IconeQuadriceps size={85} />,
   },
   {
     grupoMuscular: 'Posterior de Coxa',
