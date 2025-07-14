@@ -3,7 +3,7 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { colors } from '../../components/Styles/ComumStyles';
 
-const IconePeitoral = ({ size = 24, color = 'black', ...props }) => {
+const IconePeitoral = ({ size = 24, ...props }) => {
   const { secondary, terciary } = colors;
   return (
     <Svg

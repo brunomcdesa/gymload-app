@@ -36,11 +36,11 @@ const iconesTipoExercicio = [
 const iconesGruposMusculares = [
   {
     grupoMuscular: 'Peitoral',
-    icone: <IconePeitoral size={85} color={colors.secondary} />,
+    icone: <IconePeitoral size={85} />,
   },
   {
     grupoMuscular: 'Costas',
-    icone: <IconeCostas size={85} color={colors.secondary} />,
+    icone: <IconeCostas size={85} />,
   },
   {
     grupoMuscular: 'Quadríceps',
