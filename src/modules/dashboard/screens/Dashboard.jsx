@@ -16,7 +16,6 @@ const Dashboard = () => {
   return (
     <View style={container}>
       <Text style={subSubTitle}>Dashboard em desenvolvimento...</Text>
-
       <AnuncioBanner posicao="top" />
     </View>
   );

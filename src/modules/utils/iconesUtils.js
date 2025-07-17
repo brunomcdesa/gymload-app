@@ -56,7 +56,7 @@ const iconesGruposMusculares = [
   },
   {
     grupoMuscular: 'Tríceps',
-    icone: <IconeTriceps size={85} color={colors.secondary} />,
+    icone: <IconeTriceps size={85} />,
   },
   {
     grupoMuscular: 'Ombro',
@@ -64,11 +64,11 @@ const iconesGruposMusculares = [
   },
   {
     grupoMuscular: 'Abdomen',
-    icone: <IconeAbdomen size={85} color={colors.secondary} />,
+    icone: <IconeAbdomen size={85} />,
   },
   {
     grupoMuscular: 'Antebraço',
-    icone: <IconeAntebraco size={85} color={colors.secondary} />,
+    icone: <IconeAntebraco size={85} />,
   },
   {
     grupoMuscular: 'Panturrilha',
