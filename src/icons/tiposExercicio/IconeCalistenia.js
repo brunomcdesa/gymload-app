@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
+import { colors } from '../../components/Styles/ComumStyles';
 
-const IconeCalistenia = ({ size = 24, color = 'black', ...props }) => {
+const IconeCalistenia = ({ size = 24, ...props }) => {
+  const { secondary } = colors;
   return (
     <Svg
       width={size}
@@ -12,7 +14,7 @@ const IconeCalistenia = ({ size = 24, color = 'black', ...props }) => {
       {...props}
     >
       <Path
-        fill={color}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -230,7 +232,6 @@ z"
 };
 
 IconeCalistenia.propTypes = {
-  color: PropTypes.string,
   size: PropTypes.number,
 };
 

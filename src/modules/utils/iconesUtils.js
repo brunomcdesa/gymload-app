@@ -21,15 +21,15 @@ import IconeMusculacao from '../../icons/tiposExercicio/IconeMusculacao';
 const iconesTipoExercicio = [
   {
     tipo: 'MUSCULACAO',
-    icone: <IconeMusculacao size={100} color={colors.secondary} />,
+    icone: <IconeMusculacao size={100} />,
   },
   {
     tipo: 'CALISTENIA',
-    icone: <IconeCalistenia size={100} color={colors.secondary} />,
+    icone: <IconeCalistenia size={100} />,
   },
   {
     tipo: 'AEROBICO',
-    icone: <IconeAerobico size={100} color={colors.secondary} />,
+    icone: <IconeAerobico size={100} />,
   },
 ];
 
@@ -52,7 +52,7 @@ const iconesGruposMusculares = [
   },
   {
     grupoMuscular: 'Bíceps',
-    icone: <IconeBiceps size={85} color={colors.secondary} />,
+    icone: <IconeBiceps size={85} />,
   },
   {
     grupoMuscular: 'Tríceps',
@@ -60,7 +60,7 @@ const iconesGruposMusculares = [
   },
   {
     grupoMuscular: 'Ombro',
-    icone: <IconeOmbro size={85} color={colors.secondary} />,
+    icone: <IconeOmbro size={85} />,
   },
   {
     grupoMuscular: 'Abdomen',
@@ -72,23 +72,19 @@ const iconesGruposMusculares = [
   },
   {
     grupoMuscular: 'Panturrilha',
-    icone: <IconePanturrilha size={85} color={colors.secondary} />,
+    icone: <IconePanturrilha size={85} />,
   },
   {
     grupoMuscular: 'Glúteo',
-    icone: <IconeGluteo size={85} color={colors.secondary} />,
-  },
-  {
-    grupoMuscular: 'Trapézio',
-    icone: <IconeTrapezio size={85} color={colors.secondary} />,
-  },
-  {
-    grupoMuscular: 'Glúteo',
-    icone: <IconeGluteo size={85} color={colors.secondary} />,
+    icone: <IconeGluteo size={85} />,
   },
   {
     grupoMuscular: 'Adutor',
-    icone: <IconeAdutor size={85} color={colors.secondary} />,
+    icone: <IconeAdutor size={85} />,
+  },
+  {
+    grupoMuscular: 'Trapézio',
+    icone: <IconeTrapezio size={85} />,
   },
 ];
 

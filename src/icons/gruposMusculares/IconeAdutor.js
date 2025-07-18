@@ -915,7 +915,6 @@ z"
 };
 
 IconeAdutor.propTypes = {
-  color: PropTypes.string,
   size: PropTypes.number,
 };
 

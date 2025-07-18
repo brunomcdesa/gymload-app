@@ -942,7 +942,6 @@ z"
 };
 
 IconePosteriorCoxa.propTypes = {
-  color: PropTypes.string,
   size: PropTypes.number,
 };
 

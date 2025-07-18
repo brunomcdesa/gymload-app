@@ -647,7 +647,6 @@ z"
 };
 
 IconeAbdomen.propTypes = {
-  color: PropTypes.string,
   size: PropTypes.number,
 };
 

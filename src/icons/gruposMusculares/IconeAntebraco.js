@@ -1269,7 +1269,6 @@ z"
 };
 
 IconeAntebraco.propTypes = {
-  color: PropTypes.string,
   size: PropTypes.number,
 };
 

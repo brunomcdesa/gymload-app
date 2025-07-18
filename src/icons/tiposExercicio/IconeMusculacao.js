@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
+import { colors } from '../../components/Styles/ComumStyles';
 
-const IconeMusculacao = ({ size = 24, color = 'black', ...props }) => {
+const IconeMusculacao = ({ size = 24, ...props }) => {
+  const { secondary } = colors;
   return (
     <Svg
       width={size}
@@ -12,7 +14,7 @@ const IconeMusculacao = ({ size = 24, color = 'black', ...props }) => {
       {...props}
     >
       <Path
-        fill={color}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -575,7 +577,7 @@ M647.196716,260.743896
 z"
       />
       <Path
-        fill={color}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -588,7 +590,7 @@ M558.984863,492.764160
 z"
       />
       <Path
-        fill={color}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -600,7 +602,7 @@ M458.462646,491.286377
 z"
       />
       <Path
-        fill={color}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -611,7 +613,7 @@ M656.931519,352.500854
 z"
       />
       <Path
-        fill={color}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -622,7 +624,7 @@ M653.296875,406.342529
 z"
       />
       <Path
-        fill={color}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -633,7 +635,7 @@ M356.868347,343.978638
 z"
       />
       <Path
-        fill={color}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
@@ -648,7 +650,6 @@ z"
 };
 
 IconeMusculacao.propTypes = {
-  color: PropTypes.string,
   size: PropTypes.number,
 };
 

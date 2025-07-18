@@ -914,7 +914,6 @@ z"
 };
 
 IconeTriceps.propTypes = {
-  color: PropTypes.string,
   size: PropTypes.number,
 };
 

@@ -7456,7 +7456,6 @@ z"
 };
 
 IconeCostas.propTypes = {
-  color: PropTypes.string,
   size: PropTypes.number,
 };
 
