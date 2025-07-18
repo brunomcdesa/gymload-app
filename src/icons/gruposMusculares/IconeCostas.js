@@ -7046,7 +7046,7 @@ M335.162537,677.118042
 z"
       />
       <Path
-        fill={terciary}
+        fill={secondary}
         opacity="1.000000"
         stroke="none"
         d="
