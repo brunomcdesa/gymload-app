@@ -60,11 +60,11 @@ const iconesGruposMusculares = (isSexoFeminino) => [
   },
   {
     grupoMuscular: 'Ombro',
-    icone: <IconeOmbro size={85} />, //
+    icone: <IconeOmbro size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Abdomen',
-    icone: <IconeAbdomen size={85} />, //
+    icone: <IconeAbdomen size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Antebraço',

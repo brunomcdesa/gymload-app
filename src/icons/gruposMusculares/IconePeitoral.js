@@ -5,6 +5,7 @@ import { colors } from '../../components/Styles/ComumStyles';
 
 const IconePeitoral = ({ size = 24, isSexoFeminino, ...props }) => {
   const { secondary, terciary } = colors;
+
   const renderIconeMasculino = () => (
     <Svg
       width={size}
