@@ -48,7 +48,7 @@ const iconesGruposMusculares = (isSexoFeminino) => [
   },
   {
     grupoMuscular: 'Posterior de Coxa',
-    icone: <IconePosteriorCoxa size={85} />, //
+    icone: <IconePosteriorCoxa size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Bíceps',
@@ -76,11 +76,11 @@ const iconesGruposMusculares = (isSexoFeminino) => [
   },
   {
     grupoMuscular: 'Glúteo',
-    icone: <IconeGluteo size={85} />, //
+    icone: <IconeGluteo size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Adutor',
-    icone: <IconeAdutor size={85} />,
+    icone: <IconeAdutor size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Trapézio',
