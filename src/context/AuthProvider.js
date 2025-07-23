@@ -13,6 +13,7 @@ export const AuthProvider = (props) => {
     uuid: null,
     username: null,
     imagemPerfilUrl: null,
+    sexo: null,
   });
   const [loading, setLoading] = useState(true);
 
@@ -40,6 +41,7 @@ export const AuthProvider = (props) => {
         uuid: tokenDecoded.uuid || null,
         username: tokenDecoded.username || null,
         imagemPerfilUrl: tokenDecoded.imagemPerfilUrl || null,
+        sexo: tokenDecoded.sexo || null,
       });
     } catch (error) {
       console.log('Erro ao decodificar token:', error);

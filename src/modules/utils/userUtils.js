@@ -7,3 +7,9 @@ export const useIsAdmin = () => {
 
   return user?.roles?.includes(ROLE_ADMIN) ?? false;
 };
+
+export const useUserSexo = () => {
+  const { user } = useContext(AuthContext);
+
+  return user?.sexo || 'MASCULINO';
+};

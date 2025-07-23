@@ -33,26 +33,26 @@ const iconesTipoExercicio = [
   },
 ];
 
-const iconesGruposMusculares = [
+const iconesGruposMusculares = (isSexoFeminino) => [
   {
     grupoMuscular: 'Peitoral',
-    icone: <IconePeitoral size={85} />,
+    icone: <IconePeitoral size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Costas',
-    icone: <IconeCostas size={85} />,
+    icone: <IconeCostas size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Quadríceps',
-    icone: <IconeQuadriceps size={85} />,
+    icone: <IconeQuadriceps size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Posterior de Coxa',
-    icone: <IconePosteriorCoxa size={85} />,
+    icone: <IconePosteriorCoxa size={85} />, //
   },
   {
     grupoMuscular: 'Bíceps',
-    icone: <IconeBiceps size={85} />,
+    icone: <IconeBiceps size={85} />, //
   },
   {
     grupoMuscular: 'Tríceps',
@@ -60,15 +60,15 @@ const iconesGruposMusculares = [
   },
   {
     grupoMuscular: 'Ombro',
-    icone: <IconeOmbro size={85} />,
+    icone: <IconeOmbro size={85} />, //
   },
   {
     grupoMuscular: 'Abdomen',
-    icone: <IconeAbdomen size={85} />,
+    icone: <IconeAbdomen size={85} />, //
   },
   {
     grupoMuscular: 'Antebraço',
-    icone: <IconeAntebraco size={85} />,
+    icone: <IconeAntebraco size={85} />, //
   },
   {
     grupoMuscular: 'Panturrilha',
@@ -76,7 +76,7 @@ const iconesGruposMusculares = [
   },
   {
     grupoMuscular: 'Glúteo',
-    icone: <IconeGluteo size={85} />,
+    icone: <IconeGluteo size={85} />, //
   },
   {
     grupoMuscular: 'Adutor',
@@ -101,8 +101,8 @@ export const renderIconeTipoExercicio = (tipo) => {
   );
 };
 
-export const renderIconeGrupoMuscular = (grupoMuscular) => {
-  const icone = iconesGruposMusculares.find(
+export const renderIconeGrupoMuscular = (grupoMuscular, isSexoFeminino) => {
+  const icone = iconesGruposMusculares(isSexoFeminino).find(
     (index) => index.grupoMuscular === grupoMuscular,
   );
 

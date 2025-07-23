@@ -12,7 +12,7 @@ import {
   renderIconeGrupoMuscular,
   renderIconeTipoExercicio,
 } from '../../utils/iconesUtils';
-import { useIsAdmin } from '../../utils/userUtils';
+import { useIsAdmin, useUserSexo } from '../../utils/userUtils';
 import * as Api from '../Api';
 import Exercicio from '../Exercicio';
 import style from '../style/style';
@@ -53,6 +53,8 @@ const ListExercicios = () => {
 
   const navigation = useNavigation();
   const isAdmin = useIsAdmin();
+  const userSexo = useUserSexo();
+  const userIsSexoFeminino = userSexo === 'FEMININO';
 
   const renderEmptyList = () => <EmptyList value="exercício" />;
 
@@ -205,7 +207,7 @@ const ListExercicios = () => {
               onPress={() => handleGrupoMuscularSelection(item.value)}
             >
               <View style={gridButtonInner}>
-                {renderIconeGrupoMuscular(item.label)}
+                {renderIconeGrupoMuscular(item.label, userIsSexoFeminino)}
                 <Text style={gridButtonText}>{item.label}</Text>
               </View>
             </TouchableOpacity>
