@@ -175,7 +175,7 @@ const ListExercicios = () => {
               onPress={() => handleTypeSelection(item.value)}
             >
               <View style={gridButtonInner}>
-                {renderIconeTipoExercicio(item.value)}
+                {renderIconeTipoExercicio(item.value, userIsSexoFeminino)}
                 <Text style={gridButtonText}>{item.label}</Text>
               </View>
             </TouchableOpacity>

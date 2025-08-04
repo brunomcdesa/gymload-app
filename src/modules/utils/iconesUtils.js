@@ -18,18 +18,18 @@ import IconeAerobico from '../../icons/tiposExercicio/IconeAerobico';
 import IconeCalistenia from '../../icons/tiposExercicio/IconeCalistenia';
 import IconeMusculacao from '../../icons/tiposExercicio/IconeMusculacao';
 
-const iconesTipoExercicio = [
+const iconesTipoExercicio = (isSexoFeminino) => [
   {
     tipo: 'MUSCULACAO',
-    icone: <IconeMusculacao size={100} />,
+    icone: <IconeMusculacao size={100} isSexoFeminino={isSexoFeminino} />,
   },
   {
     tipo: 'CALISTENIA',
-    icone: <IconeCalistenia size={100} />,
+    icone: <IconeCalistenia size={100} isSexoFeminino={isSexoFeminino} />,
   },
   {
     tipo: 'AEROBICO',
-    icone: <IconeAerobico size={100} />,
+    icone: <IconeAerobico size={100} isSexoFeminino={isSexoFeminino} />,
   },
 ];
 
@@ -52,11 +52,11 @@ const iconesGruposMusculares = (isSexoFeminino) => [
   },
   {
     grupoMuscular: 'Bíceps',
-    icone: <IconeBiceps size={85} />, //
+    icone: <IconeBiceps size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Tríceps',
-    icone: <IconeTriceps size={85} />,
+    icone: <IconeTriceps size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Ombro',
@@ -68,11 +68,11 @@ const iconesGruposMusculares = (isSexoFeminino) => [
   },
   {
     grupoMuscular: 'Antebraço',
-    icone: <IconeAntebraco size={85} />, //
+    icone: <IconeAntebraco size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Panturrilha',
-    icone: <IconePanturrilha size={85} />,
+    icone: <IconePanturrilha size={85} isSexoFeminino={isSexoFeminino} />,
   },
   {
     grupoMuscular: 'Glúteo',
@@ -84,12 +84,14 @@ const iconesGruposMusculares = (isSexoFeminino) => [
   },
   {
     grupoMuscular: 'Trapézio',
-    icone: <IconeTrapezio size={85} />,
+    icone: <IconeTrapezio size={85} isSexoFeminino={isSexoFeminino} />,
   },
 ];
 
-export const renderIconeTipoExercicio = (tipo) => {
-  const icone = iconesTipoExercicio.find((index) => index.tipo === tipo);
+export const renderIconeTipoExercicio = (tipo, isSexoFeminino) => {
+  const icone = iconesTipoExercicio(isSexoFeminino).find(
+    (index) => index.tipo === tipo,
+  );
   return icone ? (
     icone.icone
   ) : (
