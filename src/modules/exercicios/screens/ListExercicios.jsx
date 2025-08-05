@@ -5,13 +5,16 @@ import AddButton from '../../../components/Button/AddButton';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
+import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as EnumApi from '../../../comum/EnumApi';
 import * as GrupoMuscularApi from '../../gruposMusculares/Api';
+import * as RegistroAtividadeApi from '../../registrosAtividades/Api';
 import {
   renderIconeGrupoMuscular,
   renderIconeTipoExercicio,
 } from '../../utils/iconesUtils';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import { useIsAdmin, useUserSexo } from '../../utils/userUtils';
 import * as Api from '../Api';
 import Exercicio from '../Exercicio';
@@ -50,6 +53,7 @@ const ListExercicios = () => {
     tipoExercicio: tipoExercicioSelecionado,
     grupoMuscularId: grupoMuscularSelecionado,
   });
+  const [ultimoRegistroLoading, setUltimoRegistroLoading] = useState(false);
 
   const navigation = useNavigation();
   const isAdmin = useIsAdmin();
@@ -218,6 +222,62 @@ const ListExercicios = () => {
     );
   };
 
+  const redirectRegistroAtividadesCompleto = (exercicio) => {
+    navigation.navigate('RegistroAtividadesCompleto', {
+      exercicio,
+    });
+  };
+
+  const repetirUltimoRegistro = async (exercicioId) => {
+    try {
+      setUltimoRegistroLoading(true);
+      await RegistroAtividadeApi.repetirUltimoRegistro(exercicioId);
+      throwToastSuccess('Registro salvo com sucesso.');
+    } catch (error) {
+      throwToastError('Erro ao tentar repetir ultimo registro do exercício.');
+    } finally {
+      setUltimoRegistroLoading(false);
+    }
+  };
+
+  const getOptions = (exercicio) => {
+    return ['Visualizar Registros', 'Repetir ultimo Registro', 'Cancelar'];
+  };
+
+  const selectOptionsAction = (selectedIndex, item) => {
+    switch (selectedIndex) {
+      case 0:
+        redirectRegistroAtividadesCompleto(item);
+        break;
+      case 1:
+        repetirUltimoRegistro(item.id);
+        break;
+      case 2:
+        break;
+    }
+  };
+
+  const renderExercicioItem = ({ item: exercicio }) => (
+    <SelectableItem
+      item={exercicio}
+      cancelButtonIndex={2}
+      options={getOptions(exercicio)}
+      onActionSelected={selectOptionsAction}
+      onLongPress={() => redirectRegistroAtividadesCompleto(exercicio)}
+    >
+      {ultimoRegistroLoading ? (
+        <LoadingIndicator />
+      ) : (
+        <Exercicio
+          exercicioData={exercicio}
+          dadosRegistrosAtividades={
+            dadosRegistrosAtividades[exercicio.id] || null
+          }
+        />
+      )}
+    </SelectableItem>
+  );
+
   const renderExerciseList = () => (
     <>
       <View style={listHeader}>
@@ -238,14 +298,7 @@ const ListExercicios = () => {
         <FlatList
           data={filteredExercicios}
           keyExtractor={(exercicio) => exercicio.id.toString()}
-          renderItem={({ item: exercicio }) => (
-            <Exercicio
-              exercicioData={exercicio}
-              dadosRegistrosAtividades={
-                dadosRegistrosAtividades[exercicio.id] || null
-              }
-            />
-          )}
+          renderItem={renderExercicioItem}
           ListEmptyComponent={renderEmptyList}
           contentContainerStyle={{ flexGrow: 1 }}
         />

@@ -30,3 +30,11 @@ export const editRegistroAtividade = (id, request, delay = 0) => {
 
   return pMinDelay(response, delay);
 };
+
+export const repetirUltimoRegistro = (exercicioId, delay = 0) => {
+  const response = axiosPrivate.post(
+    `${urlBase}/exercicio/${exercicioId}/repetir-ultimo-registro`,
+  );
+
+  return pMinDelay(response, delay);
+};

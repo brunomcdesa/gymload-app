@@ -68,7 +68,6 @@ const ExercicioForm = (props) => {
       !formData.nome ||
       !formData.tipoExercicio ||
       (isExercicioMusculacao && !formData.grupoMuscularId) ||
-      (isExercicioMusculacao && !formData.tipoPegada) ||
       (isExercicioMusculacao && !formData.tipoEquipamento)
     ) {
       throwToastError('Todos os campos são obrigatórios!');

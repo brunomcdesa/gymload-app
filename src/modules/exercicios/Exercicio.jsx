@@ -1,8 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Text, View } from 'react-native';
 import { ComumStyles } from '../../components/Styles/ComumStyles';
 import style from './style/style';
 
@@ -10,7 +8,6 @@ const Exercicio = (props) => {
   const { exercicioData, dadosRegistrosAtividades } = props;
   const { nome, grupoMuscular } = exercicioData;
   const { destaque, ultimaCarga, ultimaDistancia } = dadosRegistrosAtividades;
-  const navigation = useNavigation();
   const {
     exercicioHeader,
     exercicioNome,
@@ -18,19 +15,11 @@ const Exercicio = (props) => {
     historicoSection,
     recordeValue,
     ultimoDadoValue,
-    botaoHistorico,
-    botaoTexto,
     divider,
     destaquesRow,
     destaqueBox,
     destaqueLabel,
   } = style;
-
-  const redirectRegistroAtividadesCompleto = () => {
-    navigation.navigate('RegistroAtividadesCompleto', {
-      exercicio: exercicioData,
-    });
-  };
 
   const hasDestaque =
     dadosRegistrosAtividades !== null && dadosRegistrosAtividades !== undefined;
@@ -68,15 +57,6 @@ const Exercicio = (props) => {
           <View style={divider} />
         </View>
       )}
-
-      <TouchableOpacity
-        style={botaoHistorico}
-        onPress={redirectRegistroAtividadesCompleto}
-        activeOpacity={0.7}
-      >
-        <MaterialIcons name="history" size={18} color="#fff" />
-        <Text style={botaoTexto}>VER HISTÓRICO</Text>
-      </TouchableOpacity>
     </View>
   );
 };

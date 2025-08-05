@@ -59,23 +59,6 @@ export default StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
-  botaoHistorico: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.secondary,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 25,
-    justifyContent: 'center',
-    marginTop: 8,
-  },
-  botaoTexto: {
-    color: '#fff',
-    marginLeft: 8,
-    fontWeight: '600',
-    fontSize: 13,
-    letterSpacing: 0.5,
-  },
   divider: {
     height: 1,
     backgroundColor: '#383838',
