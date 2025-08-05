@@ -38,3 +38,11 @@ export const repetirUltimoRegistro = (exercicioId, delay = 0) => {
 
   return pMinDelay(response, delay);
 };
+
+export const repetirRegistro = ({ exercicioId, registroId }, delay = 0) => {
+  const response = axiosPrivate.post(
+    `${urlBase}/exercicio/${exercicioId}/repetir-registro/${registroId}`,
+  );
+
+  return pMinDelay(response, delay);
+};

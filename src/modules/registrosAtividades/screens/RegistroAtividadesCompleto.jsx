@@ -10,6 +10,7 @@ import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as Api from '../Api';
 
 import HeaderTitle from '../../../components/Header/HeaderTitle';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import RegistroAerobico from '../components/RegistroAerobico';
 import RegistroCalistenia from '../components/RegistroCalistenia';
 import RegistroMusculacao from '../components/RegistroMusculacao';
@@ -110,7 +111,19 @@ const RegistroAtividadesCompleto = (props) => {
     });
   };
 
-  const getOptions = ['Editar Registro', 'Cancelar'];
+  const repetirRegistro = async (registroId) => {
+    try {
+      setLoading(true);
+      await Api.repetirRegistro({ exercicioId: id, registroId });
+      throwToastSuccess('Registro salvo com sucesso.');
+    } catch (error) {
+      throwToastError('Erro ao tentar repetir registro.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getOptions = ['Editar Registro', 'Repetir Registro', 'Cancelar'];
 
   const selectOptionsAction = (selectedIndex, item) => {
     switch (selectedIndex) {
@@ -118,6 +131,9 @@ const RegistroAtividadesCompleto = (props) => {
         redirectToRegistroAtividadeFormEdit(item);
         break;
       case 1:
+        repetirRegistro(item.id);
+        break;
+      case 2:
         break;
     }
   };
@@ -125,7 +141,7 @@ const RegistroAtividadesCompleto = (props) => {
   const renderItem = ({ item: registro }) => (
     <SelectableItem
       item={registro}
-      cancelButtonIndex={1}
+      cancelButtonIndex={2}
       options={getOptions}
       onActionSelected={selectOptionsAction}
       onLongPress={() => redirectToRegistroAtividadeFormEdit(registro)}
