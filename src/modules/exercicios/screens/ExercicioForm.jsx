@@ -27,31 +27,47 @@ const ExercicioForm = (props) => {
     inlineContainer,
     inputGroup,
   } = ComumStyles;
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { exercicioData, isEdicao } = route.params;
+  const {
+    id,
+    nome,
+    tipoEquipamento,
+    tipoExercicio,
+    grupoMuscularId,
+    descricao,
+  } = exercicioData;
   const [formData, setFormData] = useState({
-    nome: null,
-    tipoExercicio: null,
-    descricao: null,
-    grupoMuscularId: null,
-    tipoEquipamento: null,
+    nome: nome || null,
+    tipoExercicio: tipoExercicio || null,
+    descricao: descricao || null,
+    grupoMuscularId: grupoMuscularId || null,
+    tipoEquipamento: tipoEquipamento || null,
   });
+
   const [loading, setLoading] = useState(false);
 
   const [gruposMuscularesItems, setGruposMuscularesItems] = useState([]);
   const [openGrupoMuscularSelect, setOpenGrupoMuscularSelect] = useState(false);
   const [gruposMuscularesLoading, setGruposMuscularesLoading] = useState(false);
-  const [grupoMuscularIdSelected, setGrupoMuscularIdSelected] = useState(null);
+  const [grupoMuscularIdSelected, setGrupoMuscularIdSelected] = useState(
+    grupoMuscularId || null,
+  );
 
   const [tiposExercicioItems, setTiposExercicioItems] = useState([]);
   const [openTipoExercicioSelect, setOpenTipoExercicioSelect] = useState(false);
   const [tipoExercicioLoading, setTipoExercicioLoading] = useState(false);
-  const [tipoExercicioSelected, setTipoExercicioSelected] = useState(null);
+  const [tipoExercicioSelected, setTipoExercicioSelected] = useState(
+    tipoExercicio || null,
+  );
 
   const [tipoEquipamentoItems, setTipoEquipamentoItems] = useState([]);
   const [openTipoEquipamentoSelect, setOpenTipoEquipamentoSelect] =
     useState(false);
   const [tipoEquipamentoLoading, setTipoEquipamentoLoading] = useState(false);
-  const [tipoEquipamentoSelected, setTipoEquipamentoSelected] = useState(null);
+  const [tipoEquipamentoSelected, setTipoEquipamentoSelected] = useState(
+    tipoEquipamento || null,
+  );
 
   const isExercicioMusculacao = tipoExercicioSelected === 'MUSCULACAO';
   const isExercicioCalistenia = tipoExercicioSelected === 'CALISTENIA';
@@ -76,7 +92,11 @@ const ExercicioForm = (props) => {
 
     try {
       setLoading(true);
-      await Api.saveExercicio(formData);
+      if (isEdicao) {
+        await Api.editarExercicio(id, formData);
+      } else {
+        await Api.saveExercicio(formData);
+      }
 
       throwToastSuccess('Exercicio salvo com sucesso!');
       navigation.goBack();
@@ -133,14 +153,15 @@ const ExercicioForm = (props) => {
   }, []);
 
   const renderHeaderTitle = useCallback(() => {
-    return <HeaderTitle title={'Adicionar Exercício'} isForm={true} />;
-  }, []);
+    const title = isEdicao ? 'Editar Exercício' : 'Adicionar Exercício';
+    return <HeaderTitle title={title} isForm={true} />;
+  }, [isEdicao]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
     });
-  }, [navigation, renderHeaderTitle]);
+  }, [navigation, renderHeaderTitle, isEdicao]);
 
   const renderExerciciosMusculacaoFields = () => {
     return (
@@ -280,6 +301,12 @@ ExercicioForm.propTypes = {
     goBack: PropTypes.func.isRequired,
     setOptions: PropTypes.func.isRequired,
   }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      exercicioData: PropTypes.object,
+      isEdicao: PropTypes.bool,
+    }),
+  }),
 };
 
 export default ExercicioForm;

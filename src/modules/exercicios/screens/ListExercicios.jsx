@@ -53,7 +53,6 @@ const ListExercicios = () => {
     tipoExercicio: tipoExercicioSelecionado,
     grupoMuscularId: grupoMuscularSelecionado,
   });
-  const [ultimoRegistroLoading, setUltimoRegistroLoading] = useState(false);
 
   const navigation = useNavigation();
   const isAdmin = useIsAdmin();
@@ -156,7 +155,17 @@ const ListExercicios = () => {
   };
 
   const redirectExercicioForm = () => {
-    navigation.navigate('ExercicioForm');
+    navigation.navigate('ExercicioForm', {
+      exercicioData: {},
+      isEdicao: false,
+    });
+  };
+
+  const redirectToExercicioFormEdit = (exercicio) => {
+    navigation.navigate('ExercicioForm', {
+      exercicioData: { ...exercicio },
+      isEdicao: true,
+    });
   };
 
   const handleSearchResults = (filteredData) => {
@@ -230,29 +239,44 @@ const ListExercicios = () => {
 
   const repetirUltimoRegistro = async (exercicioId) => {
     try {
-      setUltimoRegistroLoading(true);
+      setLoading(true);
+      console.log();
       await RegistroAtividadeApi.repetirUltimoRegistro(exercicioId);
       throwToastSuccess('Registro salvo com sucesso.');
     } catch (error) {
       throwToastError('Erro ao tentar repetir ultimo registro do exercício.');
     } finally {
-      setUltimoRegistroLoading(false);
+      setLoading(false);
     }
   };
 
-  const getOptions = (exercicio) => {
-    return ['Visualizar Registros', 'Repetir ultimo Registro', 'Cancelar'];
+  const getOptions = () => {
+    const options = ['Visualizar Registros', 'Repetir ultimo Registro'];
+
+    if (isAdmin) {
+      options.splice(0, 0, 'Editar Exercício');
+    }
+
+    options.push('Cancelar');
+
+    return options;
   };
 
   const selectOptionsAction = (selectedIndex, item) => {
-    switch (selectedIndex) {
-      case 0:
+    const options = getOptions();
+    const selectedOption = options[selectedIndex];
+
+    switch (selectedOption) {
+      case 'Visualizar Registros':
         redirectRegistroAtividadesCompleto(item);
         break;
-      case 1:
+      case 'Editar Exercício':
+        redirectToExercicioFormEdit(item);
+        break;
+      case 'Repetir ultimo Registro':
         repetirUltimoRegistro(item.id);
         break;
-      case 2:
+      case 'Cancelar':
         break;
     }
   };
@@ -260,21 +284,17 @@ const ListExercicios = () => {
   const renderExercicioItem = ({ item: exercicio }) => (
     <SelectableItem
       item={exercicio}
-      cancelButtonIndex={2}
+      cancelButtonIndex={isAdmin ? 3 : 2}
       options={getOptions(exercicio)}
       onActionSelected={selectOptionsAction}
       onLongPress={() => redirectRegistroAtividadesCompleto(exercicio)}
     >
-      {ultimoRegistroLoading ? (
-        <LoadingIndicator />
-      ) : (
-        <Exercicio
-          exercicioData={exercicio}
-          dadosRegistrosAtividades={
-            dadosRegistrosAtividades[exercicio.id] || null
-          }
-        />
-      )}
+      <Exercicio
+        exercicioData={exercicio}
+        dadosRegistrosAtividades={
+          dadosRegistrosAtividades[exercicio.id] || null
+        }
+      />
     </SelectableItem>
   );
 

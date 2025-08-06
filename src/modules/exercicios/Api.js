@@ -26,3 +26,11 @@ export const fetchExerciciosDoTreino = (treinoId, delay = 0) => {
 
   return pMinDelay(response, delay);
 };
+
+export const editarExercicio = (exercicioId, request, delay = 0) => {
+  const response = axiosPrivate.put(`${exerciciosUrl}/${exercicioId}/editar`, {
+    ...request,
+  });
+
+  return pMinDelay(response, delay);
+};

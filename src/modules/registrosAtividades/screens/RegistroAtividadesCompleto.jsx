@@ -116,9 +116,10 @@ const RegistroAtividadesCompleto = (props) => {
       setLoading(true);
       await Api.repetirRegistro({ exercicioId: id, registroId });
       throwToastSuccess('Registro salvo com sucesso.');
+      await fetchCargas();
     } catch (error) {
       throwToastError('Erro ao tentar repetir registro.');
-    } finally {
+      console.error('Erro ao repetir ou buscar registros:', error);
       setLoading(false);
     }
   };
