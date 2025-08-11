@@ -168,6 +168,12 @@ const ListExercicios = () => {
     });
   };
 
+  const redirectToExercicioVariacaoForm = (exercicio) => {
+    navigation.navigate('ExercicioVariacaoForm', {
+      exercicioData: { ...exercicio },
+    });
+  };
+
   const handleSearchResults = (filteredData) => {
     setFilteredExercicios(filteredData);
   };
@@ -255,6 +261,7 @@ const ListExercicios = () => {
 
     if (isAdmin) {
       options.splice(0, 0, 'Editar Exercício');
+      options.splice(1, 0, 'Adicionar Variação');
     }
 
     options.push('Cancelar');
@@ -273,6 +280,9 @@ const ListExercicios = () => {
       case 'Editar Exercício':
         redirectToExercicioFormEdit(item);
         break;
+      case 'Adicionar Variação':
+        redirectToExercicioVariacaoForm(item);
+        break;
       case 'Repetir ultimo Registro':
         repetirUltimoRegistro(item.id);
         break;
@@ -284,7 +294,7 @@ const ListExercicios = () => {
   const renderExercicioItem = ({ item: exercicio }) => (
     <SelectableItem
       item={exercicio}
-      cancelButtonIndex={isAdmin ? 3 : 2}
+      cancelButtonIndex={isAdmin ? 4 : 2}
       options={getOptions(exercicio)}
       onActionSelected={selectOptionsAction}
       onLongPress={() => redirectRegistroAtividadesCompleto(exercicio)}

@@ -5,6 +5,7 @@ import { colors } from '../../../components/Styles/ComumStyles';
 import RegistroAtividadeForm from '../../registrosAtividades/screens/RegistroAtividadeForm';
 import RegistroAtividadesCompleto from '../../registrosAtividades/screens/RegistroAtividadesCompleto';
 import ExercicioForm from '../screens/ExercicioForm';
+import ExercicioVariacaoForm from '../screens/ExercicioVariacaoForm';
 import ListExercicios from '../screens/ListExercicios';
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +28,10 @@ const ExerciciosStackNavigator = () => {
         component={ListExercicios}
       />
       <Stack.Screen name="ExercicioForm" component={ExercicioForm} />
+      <Stack.Screen
+        name="ExercicioVariacaoForm"
+        component={ExercicioVariacaoForm}
+      />
       <Stack.Screen
         name="RegistroAtividadesCompleto"
         component={RegistroAtividadesCompleto}

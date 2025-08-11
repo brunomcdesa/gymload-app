@@ -2,6 +2,7 @@ import { axiosPrivate } from '../../config/axios';
 import { pMinDelay } from '../utils/promisse';
 
 const exerciciosUrl = '/api/exercicios';
+const exerciciosVariacoesUrl = '/api/exercicios-variacoes';
 
 export const fetchExercicios = (filtros, delay = 0) => {
   const response = axiosPrivate.get(exerciciosUrl, { params: filtros });
@@ -29,6 +30,14 @@ export const fetchExerciciosDoTreino = (treinoId, delay = 0) => {
 
 export const editarExercicio = (exercicioId, request, delay = 0) => {
   const response = axiosPrivate.put(`${exerciciosUrl}/${exercicioId}/editar`, {
+    ...request,
+  });
+
+  return pMinDelay(response, delay);
+};
+
+export const saveExercicioVariacao = (request, delay) => {
+  const response = axiosPrivate.post(`${exerciciosVariacoesUrl}`, {
     ...request,
   });
 
