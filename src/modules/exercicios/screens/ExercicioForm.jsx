@@ -1,4 +1,3 @@
-import Checkbox from '@react-native-community/checkbox';
 import React, {
   useCallback,
   useEffect,
@@ -12,6 +11,7 @@ import { ComumStyles } from '../../../components/Styles/ComumStyles';
 
 import PropTypes from 'prop-types';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
+import CHeckboxInput from '../../../components/Inputs/CheckboxInput';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import * as EnumApi from '../../../comum/EnumApi';
@@ -28,7 +28,6 @@ const ExercicioForm = (props) => {
     asteriscoObrigatorio,
     inlineContainer,
     inputGroup,
-    checkboxContainer,
   } = ComumStyles;
   const { navigation, route } = props;
   const { exercicioData, isEdicao } = route.params;
@@ -78,8 +77,7 @@ const ExercicioForm = (props) => {
     if (
       !formData.nome ||
       !formData.tipoExercicio ||
-      (isExercicioMusculacao && !formData.grupoMuscularId) ||
-      (isExercicioMusculacao && !formData.tipoEquipamento)
+      (isExercicioMusculacao && !formData.grupoMuscularId)
     ) {
       throwToastError('Todos os campos são obrigatórios!');
       return;
@@ -170,18 +168,16 @@ const ExercicioForm = (props) => {
               zIndexInverse={1000}
             />
           </View>
-        </View>
 
-        {/* PASSO 4: Adicionar o Checkbox */}
-        <View style={checkboxContainer}>
-          <Checkbox
-            value={formData.possuiVariacao}
-            onValueChange={(newValue) =>
-              handleChange('possuiVariacao', newValue)
-            }
-            tintColors={{ true: '#1E90FF', false: '#A9A9A9' }} // Cores opcionais
-          />
-          <Text style={formLabel}>Possui Variação?</Text>
+          <View style={inputGroup}>
+            <CHeckboxInput
+              value={formData.possuiVariacao}
+              onChangeValue={(newValue) =>
+                handleChange('possuiVariacao', newValue)
+              }
+              label={'Possui Variação?'}
+            />
+          </View>
         </View>
       </View>
     );

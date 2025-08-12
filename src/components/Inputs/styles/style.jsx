@@ -75,4 +75,10 @@ export default StyleSheet.create({
     color: colors.inputText,
     fontSize: 16,
   },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+    marginTop: 10,
+  },
 });

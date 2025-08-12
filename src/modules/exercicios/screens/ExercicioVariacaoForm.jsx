@@ -54,7 +54,11 @@ const ExercicioVariacaoForm = (props) => {
   };
 
   const handleSubmit = async () => {
-    if (!formData.exercicioBaseId || !formData.tipoEquipamento) {
+    if (
+      !formData.exercicioBaseId ||
+      (isExercicioMusculacao && !formData.tipoEquipamento) ||
+      (isExercicioCalistenia && !formData.nome)
+    ) {
       throwToastError('Todos os campos são obrigatórios!');
       return;
     }

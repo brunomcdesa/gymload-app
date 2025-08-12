@@ -271,7 +271,9 @@ const ListExercicios = () => {
 
     if (isAdmin) {
       options.splice(0, 0, 'Editar Exercício');
-      options.splice(1, 0, 'Adicionar Variação');
+      if (item.possuiVariacao) {
+        options.splice(1, 0, 'Adicionar Variação');
+      }
     }
 
     options.push('Cancelar');
@@ -304,10 +306,20 @@ const ListExercicios = () => {
     }
   };
 
+  const getCancelButtonIndex = (item) => {
+    if (isAdmin) {
+      if (item.possuiVariacao) {
+        return 4;
+      }
+      return 3;
+    }
+    return 2;
+  };
+
   const renderExercicioItem = ({ item: exercicio }) => (
     <SelectableItem
       item={exercicio}
-      cancelButtonIndex={isAdmin ? 4 : 2}
+      cancelButtonIndex={getCancelButtonIndex(exercicio)}
       options={getOptions(exercicio)}
       onActionSelected={selectOptionsAction}
       onLongPress={() =>
