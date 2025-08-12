@@ -7,6 +7,7 @@ import RegistroAtividadesCompleto from '../../registrosAtividades/screens/Regist
 import ExercicioForm from '../screens/ExercicioForm';
 import ExercicioVariacaoForm from '../screens/ExercicioVariacaoForm';
 import ListExercicios from '../screens/ListExercicios';
+import ListExercicioVariacoes from '../screens/ListExercicioVariacoes';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,10 @@ const ExerciciosStackNavigator = () => {
       <Stack.Screen
         name="ExercicioVariacaoForm"
         component={ExercicioVariacaoForm}
+      />
+      <Stack.Screen
+        name="ListExercicioVariacoes"
+        component={ListExercicioVariacoes}
       />
       <Stack.Screen
         name="RegistroAtividadesCompleto"

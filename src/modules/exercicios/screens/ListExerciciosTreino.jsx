@@ -7,7 +7,8 @@ import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError } from '../../utils/toastUtils';
 import * as Api from '../Api';
-import Exercicio from '../Exercicio';
+
+import Exercicio from '../components/Exercicio';
 import { fetchDestaquesDosExercicios } from '../utils/exerciciosUtils';
 
 const ListExerciciosTreino = (props) => {

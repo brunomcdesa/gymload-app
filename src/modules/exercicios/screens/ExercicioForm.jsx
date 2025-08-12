@@ -1,3 +1,4 @@
+import Checkbox from '@react-native-community/checkbox';
 import React, {
   useCallback,
   useEffect,
@@ -6,6 +7,7 @@ import React, {
 } from 'react';
 import { Text, View } from 'react-native';
 import SaveButton from '../../../components/Button/SaveButton';
+
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 
 import PropTypes from 'prop-types';
@@ -26,23 +28,24 @@ const ExercicioForm = (props) => {
     asteriscoObrigatorio,
     inlineContainer,
     inputGroup,
+    checkboxContainer,
   } = ComumStyles;
   const { navigation, route } = props;
   const { exercicioData, isEdicao } = route.params;
   const {
     id,
     nome,
-    tipoEquipamento,
     tipoExercicio,
     grupoMuscularId,
     descricao,
+    possuiVariacao,
   } = exercicioData;
   const [formData, setFormData] = useState({
     nome: nome || null,
     tipoExercicio: tipoExercicio || null,
     descricao: descricao || null,
     grupoMuscularId: grupoMuscularId || null,
-    tipoEquipamento: tipoEquipamento || null,
+    possuiVariacao: possuiVariacao || false,
   });
 
   const [loading, setLoading] = useState(false);
@@ -59,14 +62,6 @@ const ExercicioForm = (props) => {
   const [tipoExercicioLoading, setTipoExercicioLoading] = useState(false);
   const [tipoExercicioSelected, setTipoExercicioSelected] = useState(
     tipoExercicio || null,
-  );
-
-  const [tipoEquipamentoItems, setTipoEquipamentoItems] = useState([]);
-  const [openTipoEquipamentoSelect, setOpenTipoEquipamentoSelect] =
-    useState(false);
-  const [tipoEquipamentoLoading, setTipoEquipamentoLoading] = useState(false);
-  const [tipoEquipamentoSelected, setTipoEquipamentoSelected] = useState(
-    tipoEquipamento || null,
   );
 
   const isExercicioMusculacao = tipoExercicioSelected === 'MUSCULACAO';
@@ -134,22 +129,9 @@ const ExercicioForm = (props) => {
     }
   };
 
-  const fetchTiposEquipamentosSelect = async () => {
-    try {
-      setTipoEquipamentoLoading(true);
-      const { data } = await EnumApi.fetchTiposEquipamentosSelect();
-      setTipoEquipamentoItems(data);
-    } catch (error) {
-      console.log('Erro ao buscar select de tipos de exercícios.', error);
-    } finally {
-      setTipoEquipamentoLoading(false);
-    }
-  };
-
   useEffect(() => {
     fetchGruposMuscularesSelect();
     fetchTiposExerciciosSelect();
-    fetchTiposEquipamentosSelect();
   }, []);
 
   const renderHeaderTitle = useCallback(() => {
@@ -163,9 +145,10 @@ const ExercicioForm = (props) => {
     });
   }, [navigation, renderHeaderTitle, isEdicao]);
 
-  const renderExerciciosMusculacaoFields = () => {
+  const renderCamposCondicionais = () => {
     return (
       <View>
+        {/* Campo de Grupo Muscular */}
         <View style={inlineContainer}>
           <View style={inputGroup}>
             <View style={formLabelObrigatorio}>
@@ -185,57 +168,20 @@ const ExercicioForm = (props) => {
               field="grupoMuscularId"
               zIndex={3000}
               zIndexInverse={1000}
-            />
-          </View>
-
-          <View style={inputGroup}>
-            <View style={formLabelObrigatorio}>
-              <Text style={formLabel}>Tipo de Equipamento:</Text>
-              <Text style={asteriscoObrigatorio}>*</Text>
-            </View>
-            <SelectInput
-              open={openTipoEquipamentoSelect}
-              setOpen={setOpenTipoEquipamentoSelect}
-              items={tipoEquipamentoItems}
-              setItems={setTipoEquipamentoItems}
-              value={tipoEquipamentoSelected || ''}
-              setValue={setTipoEquipamentoSelected}
-              loading={tipoEquipamentoLoading}
-              handleChange={handleChange}
-              field="tipoEquipamento"
-              zIndex={2000}
-              zIndexInverse={200}
             />
           </View>
         </View>
-      </View>
-    );
-  };
 
-  const renderExerciciosCalisteniaFields = () => {
-    return (
-      <View>
-        <View style={inlineContainer}>
-          <View style={inputGroup}>
-            <View style={formLabelObrigatorio}>
-              <Text style={formLabel}>Grupo Muscular:</Text>
-              <Text style={asteriscoObrigatorio}>*</Text>
-            </View>
-            <SelectInput
-              open={openGrupoMuscularSelect}
-              setOpen={setOpenGrupoMuscularSelect}
-              items={gruposMuscularesItems}
-              setItems={setGruposMuscularesItems}
-              value={grupoMuscularIdSelected || ''}
-              setValue={setGrupoMuscularIdSelected}
-              loading={gruposMuscularesLoading}
-              multiple={false}
-              handleChange={handleChange}
-              field="grupoMuscularId"
-              zIndex={3000}
-              zIndexInverse={1000}
-            />
-          </View>
+        {/* PASSO 4: Adicionar o Checkbox */}
+        <View style={checkboxContainer}>
+          <Checkbox
+            value={formData.possuiVariacao}
+            onValueChange={(newValue) =>
+              handleChange('possuiVariacao', newValue)
+            }
+            tintColors={{ true: '#1E90FF', false: '#A9A9A9' }} // Cores opcionais
+          />
+          <Text style={formLabel}>Possui Variação?</Text>
         </View>
       </View>
     );
@@ -277,8 +223,8 @@ const ExercicioForm = (props) => {
         </View>
       </View>
 
-      {isExercicioMusculacao && renderExerciciosMusculacaoFields()}
-      {isExercicioCalistenia && renderExerciciosCalisteniaFields()}
+      {(isExercicioMusculacao || isExercicioCalistenia) &&
+        renderCamposCondicionais()}
 
       <Text style={formLabel}>Descrição:</Text>
       <TextoInput

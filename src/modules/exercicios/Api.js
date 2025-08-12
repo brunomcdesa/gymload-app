@@ -43,3 +43,9 @@ export const saveExercicioVariacao = (request, delay) => {
 
   return pMinDelay(response, delay);
 };
+
+export const fetchExercicioVariacoes = (exercicioId, delay = 0) => {
+  const response = axiosPrivate.get(`${exerciciosVariacoesUrl}/${exercicioId}`);
+
+  return pMinDelay(response, delay);
+};

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
-import { ComumStyles } from '../../components/Styles/ComumStyles';
-import style from './style/style';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import style from '../style/style';
 
 const Exercicio = (props) => {
   const { exercicioData, dadosRegistrosAtividades } = props;
@@ -20,13 +20,14 @@ const Exercicio = (props) => {
     destaqueBox,
     destaqueLabel,
   } = style;
+  const { elementContainer } = ComumStyles;
 
   const hasDestaque =
     dadosRegistrosAtividades !== null && dadosRegistrosAtividades !== undefined;
   const showDistancia = ultimaDistancia && !ultimaCarga;
 
   return (
-    <View style={ComumStyles.elementContainer}>
+    <View style={elementContainer}>
       <View style={exercicioHeader}>
         <Text style={exercicioNome}>{nome}</Text>
         {grupoMuscular && (

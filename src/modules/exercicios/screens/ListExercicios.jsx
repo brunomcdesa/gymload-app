@@ -17,7 +17,8 @@ import {
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import { useIsAdmin, useUserSexo } from '../../utils/userUtils';
 import * as Api from '../Api';
-import Exercicio from '../Exercicio';
+
+import Exercicio from '../components/Exercicio';
 import style from '../style/style';
 import { fetchDestaquesDosExercicios } from '../utils/exerciciosUtils';
 
@@ -174,6 +175,18 @@ const ListExercicios = () => {
     });
   };
 
+  const redirectRegistroAtividadesCompleto = (exercicio) => {
+    navigation.navigate('RegistroAtividadesCompleto', {
+      exercicio,
+    });
+  };
+
+  const redirectToListExercicioVariacoes = (exercicio) => {
+    navigation.navigate('ListExercicioVariacoes', {
+      exercicioBase: { id: exercicio.id, nome: exercicio.nome },
+    });
+  };
+
   const handleSearchResults = (filteredData) => {
     setFilteredExercicios(filteredData);
   };
@@ -237,12 +250,6 @@ const ListExercicios = () => {
     );
   };
 
-  const redirectRegistroAtividadesCompleto = (exercicio) => {
-    navigation.navigate('RegistroAtividadesCompleto', {
-      exercicio,
-    });
-  };
-
   const repetirUltimoRegistro = async (exercicioId) => {
     try {
       setLoading(true);
@@ -256,8 +263,11 @@ const ListExercicios = () => {
     }
   };
 
-  const getOptions = () => {
-    const options = ['Visualizar Registros', 'Repetir ultimo Registro'];
+  const getOptions = (item) => {
+    const options = [
+      item.possuiVariacao ? 'Visualizar Variações' : 'Visualizar Registros',
+      'Repetir ultimo Registro',
+    ];
 
     if (isAdmin) {
       options.splice(0, 0, 'Editar Exercício');
@@ -270,7 +280,7 @@ const ListExercicios = () => {
   };
 
   const selectOptionsAction = (selectedIndex, item) => {
-    const options = getOptions();
+    const options = getOptions(item);
     const selectedOption = options[selectedIndex];
 
     switch (selectedOption) {
@@ -282,6 +292,9 @@ const ListExercicios = () => {
         break;
       case 'Adicionar Variação':
         redirectToExercicioVariacaoForm(item);
+        break;
+      case 'Visualizar Variações':
+        redirectToListExercicioVariacoes(item);
         break;
       case 'Repetir ultimo Registro':
         repetirUltimoRegistro(item.id);
@@ -297,7 +310,11 @@ const ListExercicios = () => {
       cancelButtonIndex={isAdmin ? 4 : 2}
       options={getOptions(exercicio)}
       onActionSelected={selectOptionsAction}
-      onLongPress={() => redirectRegistroAtividadesCompleto(exercicio)}
+      onLongPress={() =>
+        exercicio.possuiVariacao
+          ? redirectToListExercicioVariacoes(exercicio)
+          : redirectRegistroAtividadesCompleto(exercicio)
+      }
     >
       <Exercicio
         exercicioData={exercicio}

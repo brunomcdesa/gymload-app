@@ -126,6 +126,12 @@ const ComumStyles = StyleSheet.create({
     right: 24,
     bottom: 24,
   },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+    marginTop: 10,
+  },
 });
 
 export { colors, ComumStyles };
