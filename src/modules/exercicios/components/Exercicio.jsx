@@ -19,17 +19,29 @@ const Exercicio = (props) => {
     destaquesRow,
     destaqueBox,
     destaqueLabel,
+    statDivider,
+    recordeBadge,
+    recordeBadgeText,
+    exercicioTitleRow,
   } = style;
   const { elementContainer } = ComumStyles;
 
   const hasDestaque =
     dadosRegistrosAtividades !== null && dadosRegistrosAtividades !== undefined;
   const showDistancia = ultimaDistancia && !ultimaCarga;
+  const hasRecord = destaque && destaque !== '-';
 
   return (
     <View style={elementContainer}>
       <View style={exercicioHeader}>
-        <Text style={exercicioNome}>{nome}</Text>
+        <View style={exercicioTitleRow}>
+          <Text style={exercicioNome}>{nome}</Text>
+          {hasRecord && (
+            <View style={recordeBadge}>
+              <Text style={recordeBadgeText}>PR</Text>
+            </View>
+          )}
+        </View>
         {grupoMuscular && (
           <Text style={grupoMuscularText}>{grupoMuscular}</Text>
         )}
@@ -44,6 +56,8 @@ const Exercicio = (props) => {
               <Text style={destaqueLabel}>RECORDE</Text>
               <Text style={recordeValue}>{destaque || '-'}</Text>
             </View>
+
+            <View style={statDivider} />
 
             <View style={destaqueBox}>
               <Text style={destaqueLabel}>

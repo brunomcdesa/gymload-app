@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -8,11 +8,180 @@ import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import TimePickerInput from '../../../components/Inputs/TimePickerInput';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { ComumStyles, colors } from '../../../components/Styles/ComumStyles';
 import * as EnumApi from '../../../comum/EnumApi';
 import { handleChangeState } from '../../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
+
+const stepperStyle = StyleSheet.create({
+  stepperSection: {
+    marginBottom: 16,
+  },
+  stepperLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#888',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+    marginBottom: 8,
+  },
+  stepperRequired: {
+    color: colors.secondary,
+    marginLeft: 2,
+  },
+  stepperRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#2a2a2a',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#383838',
+    padding: 12,
+  },
+  stepperMinus: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: '#333',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepperPlus: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: colors.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepperButtonText: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: '700',
+    lineHeight: 26,
+  },
+  stepperValueContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  stepperValue: {
+    fontSize: 42,
+    fontWeight: '800',
+    color: colors.secondary,
+    letterSpacing: -1,
+    lineHeight: 48,
+  },
+  stepperUnit: {
+    fontSize: 14,
+    color: '#888',
+    fontWeight: '600',
+    marginTop: 2,
+  },
+  smallStepperRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#2a2a2a',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#383838',
+    padding: 10,
+  },
+  smallStepperMinus: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: '#333',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  smallStepperPlus: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: '#333',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  smallStepperButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '700',
+    lineHeight: 22,
+  },
+  smallStepperValue: {
+    flex: 1,
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#fff',
+    textAlign: 'center',
+    letterSpacing: -0.5,
+  },
+  smallStepperPair: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 16,
+  },
+  smallStepperItem: {
+    flex: 1,
+  },
+});
+
+const StepperLarge = ({ label, value, unit, onDecrement, onIncrement, required }) => (
+  <View style={stepperStyle.stepperSection}>
+    <Text style={stepperStyle.stepperLabel}>
+      {label}
+      {required && <Text style={stepperStyle.stepperRequired}> *</Text>}
+    </Text>
+    <View style={stepperStyle.stepperRow}>
+      <TouchableOpacity style={stepperStyle.stepperMinus} onPress={onDecrement} activeOpacity={0.7}>
+        <Text style={stepperStyle.stepperButtonText}>−</Text>
+      </TouchableOpacity>
+      <View style={stepperStyle.stepperValueContainer}>
+        <Text style={stepperStyle.stepperValue}>{value || '0'}</Text>
+        {unit ? <Text style={stepperStyle.stepperUnit}>{unit}</Text> : null}
+      </View>
+      <TouchableOpacity style={stepperStyle.stepperPlus} onPress={onIncrement} activeOpacity={0.7}>
+        <Text style={stepperStyle.stepperButtonText}>+</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+);
+
+StepperLarge.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  unit: PropTypes.string,
+  onDecrement: PropTypes.func.isRequired,
+  onIncrement: PropTypes.func.isRequired,
+  required: PropTypes.bool,
+};
+
+const StepperSmall = ({ label, value, onDecrement, onIncrement, required }) => (
+  <View style={stepperStyle.smallStepperItem}>
+    <Text style={stepperStyle.stepperLabel}>
+      {label}
+      {required && <Text style={stepperStyle.stepperRequired}> *</Text>}
+    </Text>
+    <View style={stepperStyle.smallStepperRow}>
+      <TouchableOpacity style={stepperStyle.smallStepperMinus} onPress={onDecrement} activeOpacity={0.7}>
+        <Text style={stepperStyle.smallStepperButtonText}>−</Text>
+      </TouchableOpacity>
+      <Text style={stepperStyle.smallStepperValue}>{value || '0'}</Text>
+      <TouchableOpacity style={stepperStyle.smallStepperPlus} onPress={onIncrement} activeOpacity={0.7}>
+        <Text style={stepperStyle.smallStepperButtonText}>+</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+);
+
+StepperSmall.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  onDecrement: PropTypes.func.isRequired,
+  onIncrement: PropTypes.func.isRequired,
+  required: PropTypes.bool,
+};
 
 const RegistroAtividadeForm = (props) => {
   const {
@@ -37,10 +206,10 @@ const RegistroAtividadeForm = (props) => {
   } = exercicioData;
   const [formData, setFormData] = useState({
     exercicioId: id,
-    peso: registroAtividadeData.peso?.toString() || null,
+    peso: registroAtividadeData.peso?.toString() || '0',
     unidadePeso: registroAtividadeData.unidadePeso || null,
-    qtdRepeticoes: registroAtividadeData.qtdRepeticoes?.toString() || null,
-    qtdSeries: registroAtividadeData.qtdSeries?.toString() || null,
+    qtdRepeticoes: registroAtividadeData.qtdRepeticoes?.toString() || '1',
+    qtdSeries: registroAtividadeData.qtdSeries?.toString() || '1',
     distancia: registroAtividadeData.distancia?.toString() || null,
     duracao: new Date(0, 0, 0, 0, 0, 0),
     observacao: registroAtividadeData.observacao || null,
@@ -76,6 +245,21 @@ const RegistroAtividadeForm = (props) => {
     const decimalHours =
       date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 3600;
     return parseFloat(decimalHours.toFixed(2));
+  };
+
+  const pesoStep = unidadePesoSelected === 'LB' ? 1 : 2.5;
+
+  const adjustPeso = (delta) => {
+    const current = parseFloat(formData.peso) || 0;
+    const next = Math.max(0, current + delta);
+    const formatted = Number.isInteger(next) ? String(next) : next.toFixed(1);
+    handleChange('peso', formatted);
+  };
+
+  const adjustInt = (field, delta, min = 1) => {
+    const current = parseInt(formData[field]) || min;
+    const next = Math.max(min, current + delta);
+    handleChange(field, String(next));
   };
 
   const handleSubmit = async () => {
@@ -168,20 +352,18 @@ const RegistroAtividadeForm = (props) => {
   const renderFieldsRegistroMusculacao = () => {
     return (
       <View>
-        <View style={inlineContainer}>
-          <View style={inputGroup}>
-            <View style={formLabelObrigatorio}>
-              <Text style={formLabel}>Peso</Text>
-              <Text style={asteriscoObrigatorio}>*</Text>
-            </View>
-            <TextoInput
-              placeholder="Ex: 12.5"
-              keyboardType="numeric"
-              value={formData.peso}
-              onChangeText={(pesoValue) => handleChange('peso', pesoValue)}
-            />
-          </View>
+        {/* Peso stepper */}
+        <StepperLarge
+          label="Carga"
+          value={formData.peso}
+          unit={unidadePesoSelected || 'KG'}
+          onDecrement={() => adjustPeso(-pesoStep)}
+          onIncrement={() => adjustPeso(pesoStep)}
+          required
+        />
 
+        {/* Unidade select */}
+        <View style={inlineContainer}>
           <View style={lastInputGroup}>
             <View style={formLabelObrigatorio}>
               <Text style={formLabel}>Unidade</Text>
@@ -204,36 +386,22 @@ const RegistroAtividadeForm = (props) => {
           </View>
         </View>
 
-        <View style={inlineContainer}>
-          <View style={inputGroup}>
-            <View style={formLabelObrigatorio}>
-              <Text style={formLabel}>Qtd de Séries</Text>
-              <Text style={asteriscoObrigatorio}>*</Text>
-            </View>
-            <TextoInput
-              placeholder="Ex: 4"
-              keyboardType="numeric"
-              value={formData.qtdSeries}
-              onChangeText={(qtdSeriesValue) =>
-                handleChange('qtdSeries', qtdSeriesValue)
-              }
-            />
-          </View>
-
-          <View style={lastInputGroup}>
-            <View style={formLabelObrigatorio}>
-              <Text style={formLabel}>Qtd de Reps:</Text>
-              <Text style={asteriscoObrigatorio}>*</Text>
-            </View>
-            <TextoInput
-              placeholder="Ex: 12"
-              keyboardType="numeric"
-              value={formData.qtdRepeticoes}
-              onChangeText={(qtdRepeticoesValue) =>
-                handleChange('qtdRepeticoes', qtdRepeticoesValue)
-              }
-            />
-          </View>
+        {/* Séries + Repetições steppers side by side */}
+        <View style={stepperStyle.smallStepperPair}>
+          <StepperSmall
+            label="Séries"
+            value={formData.qtdSeries}
+            onDecrement={() => adjustInt('qtdSeries', -1)}
+            onIncrement={() => adjustInt('qtdSeries', 1)}
+            required
+          />
+          <StepperSmall
+            label="Repetições"
+            value={formData.qtdRepeticoes}
+            onDecrement={() => adjustInt('qtdRepeticoes', -1)}
+            onIncrement={() => adjustInt('qtdRepeticoes', 1)}
+            required
+          />
         </View>
 
         <View style={formLabelObrigatorio}>
@@ -289,37 +457,25 @@ const RegistroAtividadeForm = (props) => {
   const renderFieldsRegistroCalistenia = () => {
     return (
       <View>
-        <View style={inlineContainer}>
-          <View style={inputGroup}>
-            <View style={formLabelObrigatorio}>
-              <Text style={formLabel}>Qtd de Séries</Text>
-              <Text style={asteriscoObrigatorio}>*</Text>
-            </View>
-            <TextoInput
-              placeholder="Ex: 4"
-              keyboardType="numeric"
-              value={formData.qtdSeries}
-              onChangeText={(qtdSeriesValue) =>
-                handleChange('qtdSeries', qtdSeriesValue)
-              }
-            />
-          </View>
-          <View style={lastInputGroup}>
-            <View style={formLabelObrigatorio}>
-              <Text style={formLabel}>Qtd de Reps:</Text>
-              <Text style={asteriscoObrigatorio}>*</Text>
-            </View>
-            <TextoInput
-              placeholder="Ex: 12"
-              keyboardType="numeric"
-              value={formData.qtdRepeticoes}
-              onChangeText={(qtdRepeticoesValue) =>
-                handleChange('qtdRepeticoes', qtdRepeticoesValue)
-              }
-            />
-          </View>
+        {/* Séries + Repetições steppers */}
+        <View style={stepperStyle.smallStepperPair}>
+          <StepperSmall
+            label="Séries"
+            value={formData.qtdSeries}
+            onDecrement={() => adjustInt('qtdSeries', -1)}
+            onIncrement={() => adjustInt('qtdSeries', 1)}
+            required
+          />
+          <StepperSmall
+            label="Repetições"
+            value={formData.qtdRepeticoes}
+            onDecrement={() => adjustInt('qtdRepeticoes', -1)}
+            onIncrement={() => adjustInt('qtdRepeticoes', 1)}
+            required
+          />
         </View>
 
+        {/* Optional weight */}
         <View style={inlineContainer}>
           <View style={inputGroup}>
             <Text style={formLabel}>Peso Adicional</Text>

@@ -1,7 +1,6 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
-import { Checkbox } from 'react-native-paper';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AddButton from '../../../components/Button/AddButton';
 import SearchInput from '../../../components/Inputs/SearchInput';
@@ -9,27 +8,30 @@ import EmptyList from '../../../components/List/EmptyList';
 import SeparatorItem from '../../../components/List/SeparatorItem';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
-import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from '../style/style';
 
 const ListTreino = () => {
+  const { container, fabContainer } = ComumStyles;
   const {
-    treinoItem,
-    treinoInfo,
-    treinoContainer,
-    treinoData,
-    treinoNome,
     addButton,
     listContent,
-    situacaoIndicator,
-    situacaoAtiva,
-    situacaoInativa,
-    checkboxContainer,
-    checkboxLabel,
+    chipRow,
+    chip,
+    chipActive,
+    chipText,
+    chipTextActive,
+    treinoCard,
+    treinoAccentBarAtivo,
+    treinoAccentBarInativo,
+    treinoIconContainer,
+    treinoInfo,
+    treinoNome,
+    treinoData,
   } = style;
-  const { container, fabContainer } = ComumStyles;
+
   const [treinos, setTreinos] = useState([]);
   const [filteredTreinos, setFilteredTreinos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -123,39 +125,43 @@ const ListTreino = () => {
     }
   };
 
-  const renderTreinoItem = ({ item: treino }) => (
-    <SelectableItem
-      item={treino}
-      cancelButtonIndex={3}
-      options={getOptions(treino)}
-      onActionSelected={selectOptionsAction}
-      onLongPress={() => redirectToListExerciciosTreino(treino)}
-    >
-      <View style={treinoItem}>
-        <View style={treinoInfo}>
-          <View style={treinoContainer}>
-            <View
-              style={[
-                situacaoIndicator,
-                treino.situacao === 'ATIVO' ? situacaoAtiva : situacaoInativa,
-              ]}
+  const renderTreinoItem = ({ item: treino }) => {
+    const isAtivo = treino.situacao === 'ATIVO';
+    return (
+      <SelectableItem
+        item={treino}
+        cancelButtonIndex={3}
+        options={getOptions(treino)}
+        onActionSelected={selectOptionsAction}
+        onLongPress={() => redirectToListExerciciosTreino(treino)}
+      >
+        <View style={treinoCard}>
+          <View
+            style={[
+              { width: 4, alignSelf: 'stretch', borderRadius: 4 },
+              isAtivo ? treinoAccentBarAtivo : treinoAccentBarInativo,
+            ]}
+          />
+          <View style={treinoIconContainer}>
+            <MaterialIcons
+              name="fitness-center"
+              size={22}
+              color={isAtivo ? '#28a745' : '#dc3545'}
             />
-            <Text style={treinoNome}>{treino.nome}</Text>
           </View>
-          <Text style={treinoData}>
-            Criado em: {treino.dataCadastro.split(' ')[0]}
-          </Text>
+          <View style={treinoInfo}>
+            <Text style={treinoNome}>{treino.nome}</Text>
+            <Text style={treinoData}>
+              Criado em: {treino.dataCadastro.split(' ')[0]}
+            </Text>
+          </View>
+          <MaterialIcons name="chevron-right" size={24} color="#666" />
         </View>
-        <MaterialIcons name="chevron-right" size={24} color="#aaa" />
-      </View>
-    </SelectableItem>
-  );
+      </SelectableItem>
+    );
+  };
 
   const renderEmptyList = () => <EmptyList value="treino" />;
-
-  const handleToggleInativos = async () => {
-    setBuscarInativos((prev) => !prev);
-  };
 
   return (
     <View style={container}>
@@ -166,13 +172,39 @@ const ListTreino = () => {
         searchKeys={['nome']}
       />
 
-      <View style={checkboxContainer}>
-        <Checkbox
-          status={buscarInativos ? 'checked' : 'unchecked'}
-          onPress={handleToggleInativos}
-          color={colors.secondary}
-        />
-        <Text style={checkboxLabel}>Mostrar treinos inativos</Text>
+      {/* Chip filter: Ativos / Inativos */}
+      <View style={chipRow}>
+        <TouchableOpacity
+          style={[chip, !buscarInativos && chipActive]}
+          onPress={() => setBuscarInativos(false)}
+          activeOpacity={0.8}
+        >
+          <MaterialIcons
+            name="check-circle"
+            size={14}
+            color={!buscarInativos ? '#fff' : '#aaa'}
+            style={{ marginRight: 4 }}
+          />
+          <Text style={[chipText, !buscarInativos && chipTextActive]}>
+            Ativos
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[chip, buscarInativos && chipActive]}
+          onPress={() => setBuscarInativos(true)}
+          activeOpacity={0.8}
+        >
+          <MaterialIcons
+            name="archive"
+            size={14}
+            color={buscarInativos ? '#fff' : '#aaa'}
+            style={{ marginRight: 4 }}
+          />
+          <Text style={[chipText, buscarInativos && chipTextActive]}>
+            Inativos
+          </Text>
+        </TouchableOpacity>
       </View>
 
       {loading ? (

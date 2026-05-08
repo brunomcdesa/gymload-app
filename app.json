@@ -4,7 +4,11 @@
   "expo": {
     "name": "Gymload",
     "slug": "gymloadapp",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "newArchEnabled": false,
     "version": "0.0.4",
     "orientation": "portrait",
@@ -17,7 +21,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "com.gymloadapp"
     },
@@ -53,7 +59,9 @@
           "cameraPermission": "Permitir acesso à câmera",
           "microphonePermission": "Permitir acesso ao microfone"
         }
-      ]
+      ],
+      "expo-asset",
+      "expo-font"
     ],
     "extra": {
       "eas": {

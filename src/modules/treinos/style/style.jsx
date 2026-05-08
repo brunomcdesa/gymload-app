@@ -5,6 +5,76 @@ export default StyleSheet.create({
   listContent: {
     paddingBottom: 20,
   },
+  chipRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 14,
+  },
+  chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: '#383838',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+  },
+  chipActive: {
+    backgroundColor: colors.secondary,
+    borderColor: colors.secondary,
+  },
+  chipText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#aaa',
+  },
+  chipTextActive: {
+    color: '#fff',
+  },
+  treinoCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#2a2a2a',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#383838',
+    overflow: 'hidden',
+    paddingVertical: 14,
+    paddingRight: 14,
+    gap: 12,
+  },
+  treinoAccentBarAtivo: {
+    backgroundColor: '#28a745',
+  },
+  treinoAccentBarInativo: {
+    backgroundColor: '#dc3545',
+  },
+  treinoIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: '#333',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  treinoInfo: {
+    flex: 1,
+  },
+  treinoNome: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.textLight,
+    marginBottom: 3,
+  },
+  treinoData: {
+    fontSize: 12,
+    color: '#777',
+  },
+  treinoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   treinoItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -14,23 +84,6 @@ export default StyleSheet.create({
     padding: 16,
     borderWidth: 1,
     borderColor: '#383838',
-  },
-  treinoInfo: {
-    flex: 1,
-  },
-  treinoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  treinoNome: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: colors.textLight,
-    marginBottom: 4,
-  },
-  treinoData: {
-    fontSize: 13,
-    color: '#aaa',
   },
   addButton: {
     position: 'absolute',

@@ -4,10 +4,10 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SaveButton from '../../../components/Button/SaveButton';
 
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { ComumStyles, colors } from '../../../components/Styles/ComumStyles';
 
 import PropTypes from 'prop-types';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
@@ -18,6 +18,42 @@ import * as EnumApi from '../../../comum/EnumApi';
 import * as GrupoMuscularApi from '../../gruposMusculares/Api';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
+
+const formStyle = StyleSheet.create({
+  segmentedRow: {
+    flexDirection: 'row',
+    backgroundColor: '#2a2a2a',
+    borderRadius: 14,
+    padding: 4,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#383838',
+  },
+  segmentedButton: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  segmentedButtonActive: {
+    backgroundColor: colors.secondary,
+  },
+  segmentedButtonText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#aaa',
+  },
+  segmentedButtonTextActive: {
+    color: '#fff',
+  },
+  fieldLabel: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#e8e8e8',
+    marginBottom: 8,
+  },
+});
 
 const ExercicioForm = (props) => {
   const {
@@ -57,7 +93,6 @@ const ExercicioForm = (props) => {
   );
 
   const [tiposExercicioItems, setTiposExercicioItems] = useState([]);
-  const [openTipoExercicioSelect, setOpenTipoExercicioSelect] = useState(false);
   const [tipoExercicioLoading, setTipoExercicioLoading] = useState(false);
   const [tipoExercicioSelected, setTipoExercicioSelected] = useState(
     tipoExercicio || null,
@@ -143,10 +178,57 @@ const ExercicioForm = (props) => {
     });
   }, [navigation, renderHeaderTitle, isEdicao]);
 
+  const handleSelectTipo = (value) => {
+    setTipoExercicioSelected(value);
+    handleChange('tipoExercicio', value);
+    if (value === 'AEROBICO') {
+      handleChange('grupoMuscularId', null);
+      setGrupoMuscularIdSelected(null);
+    }
+  };
+
+  const renderTipoSegmented = () => {
+    if (tipoExercicioLoading || tiposExercicioItems.length === 0) {
+      return null;
+    }
+    return (
+      <View>
+        <View style={formLabelObrigatorio}>
+          <Text style={formLabel}>Tipo de Exercício:</Text>
+          <Text style={asteriscoObrigatorio}>*</Text>
+        </View>
+        <View style={formStyle.segmentedRow}>
+          {tiposExercicioItems.map((item) => {
+            const isActive = tipoExercicioSelected === item.value;
+            return (
+              <TouchableOpacity
+                key={item.value}
+                style={[
+                  formStyle.segmentedButton,
+                  isActive && formStyle.segmentedButtonActive,
+                ]}
+                onPress={() => handleSelectTipo(item.value)}
+                activeOpacity={0.8}
+              >
+                <Text
+                  style={[
+                    formStyle.segmentedButtonText,
+                    isActive && formStyle.segmentedButtonTextActive,
+                  ]}
+                >
+                  {item.label}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </View>
+    );
+  };
+
   const renderCamposCondicionais = () => {
     return (
       <View>
-        {/* Campo de Grupo Muscular */}
         <View style={inlineContainer}>
           <View style={inputGroup}>
             <View style={formLabelObrigatorio}>
@@ -185,42 +267,17 @@ const ExercicioForm = (props) => {
 
   return (
     <View style={formContainer}>
-      <View style={inlineContainer}>
-        <View style={inputGroup}>
-          <View style={formLabelObrigatorio}>
-            <Text style={formLabel}>Nome:</Text>
-            <Text style={asteriscoObrigatorio}>*</Text>
-          </View>
-          <TextoInput
-            placeholder="Digite o nome"
-            value={formData.nome}
-            onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
-          />
-        </View>
+      {renderTipoSegmented()}
 
-        <View style={inputGroup}>
-          <View style={formLabelObrigatorio}>
-            <Text style={formLabel}>Tipo de Exercício:</Text>
-            <Text style={asteriscoObrigatorio}>*</Text>
-          </View>
-          <SelectInput
-            open={openTipoExercicioSelect}
-            setOpen={setOpenTipoExercicioSelect}
-            items={tiposExercicioItems}
-            setItems={setTiposExercicioItems}
-            value={tipoExercicioSelected || ''}
-            setValue={setTipoExercicioSelected}
-            loading={tipoExercicioLoading}
-            handleChange={handleChange}
-            field="tipoExercicio"
-            zIndex={2000}
-            zIndexInverse={200}
-          />
-        </View>
+      <View style={formLabelObrigatorio}>
+        <Text style={formLabel}>Nome:</Text>
+        <Text style={asteriscoObrigatorio}>*</Text>
       </View>
-
-      {(isExercicioMusculacao || isExercicioCalistenia) &&
-        renderCamposCondicionais()}
+      <TextoInput
+        placeholder="Digite o nome"
+        value={formData.nome}
+        onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
+      />
 
       <Text style={formLabel}>Descrição:</Text>
       <TextoInput
@@ -230,6 +287,9 @@ const ExercicioForm = (props) => {
           handleChange('descricao', descricaoValue)
         }
       />
+
+      {(isExercicioMusculacao || isExercicioCalistenia) &&
+        renderCamposCondicionais()}
 
       <View style={fabContainer}>
         <SaveButton onPress={handleSubmit} loading={loading} />
