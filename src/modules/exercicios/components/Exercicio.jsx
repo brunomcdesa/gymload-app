@@ -1,84 +1,90 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Text, View } from 'react-native';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { Text, TouchableOpacity, View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import style from '../style/style';
 
-const Exercicio = (props) => {
-  const { exercicioData, dadosRegistrosAtividades } = props;
-  const { nome, grupoMuscular } = exercicioData;
-  const { destaque, ultimaCarga, ultimaDistancia } = dadosRegistrosAtividades;
-  const {
-    exercicioHeader,
-    exercicioNome,
-    grupoMuscularText,
-    historicoSection,
-    recordeValue,
-    ultimoDadoValue,
-    divider,
-    destaquesRow,
-    destaqueBox,
-    destaqueLabel,
-    statDivider,
-    recordeBadge,
-    recordeBadgeText,
-    exercicioTitleRow,
-  } = style;
+const ICONE_TIPO = {
+  MUSCULACAO: 'fitness_center',
+  CALISTENIA: 'sports_gymnastics',
+  AEROBICO: 'directions_run',
+};
+
+const Exercicio = ({
+  exercicioData,
+  dadosRegistrosAtividades,
+  onViewHistorico,
+}) => {
+  const { nome, grupoMuscular, tipoExercicio } = exercicioData;
+  const { destaque, ultimaCarga, ultimaDistancia } =
+    dadosRegistrosAtividades || {};
   const { elementContainer } = ComumStyles;
 
-  const hasDestaque =
-    dadosRegistrosAtividades !== null && dadosRegistrosAtividades !== undefined;
-  const showDistancia = ultimaDistancia && !ultimaCarga;
   const hasRecord = destaque && destaque !== '-';
+  const hasDestaque = dadosRegistrosAtividades != null;
+  const showDistancia = ultimaDistancia && !ultimaCarga;
+  const iconName = ICONE_TIPO[tipoExercicio] || 'fitness_center';
+  const iconBg = hasRecord ? `${colors.secondary}1a` : colors.inputBackground;
+  const iconColor = hasRecord ? colors.secondary : colors.terciary;
 
   return (
     <View style={elementContainer}>
-      <View style={exercicioHeader}>
-        <View style={exercicioTitleRow}>
-          <Text style={exercicioNome}>{nome}</Text>
-          {hasRecord && (
-            <View style={recordeBadge}>
-              <Text style={recordeBadgeText}>PR</Text>
-            </View>
+      {/* Header row: icon + name/group + PR badge */}
+      <View style={style.cardRow}>
+        <View style={[style.iconBox, { backgroundColor: iconBg }]}>
+          <MaterialIcons name={iconName} size={24} color={iconColor} />
+        </View>
+        <View style={style.exercicioInfo}>
+          <Text style={style.exercicioNome}>{nome}</Text>
+          {grupoMuscular && (
+            <Text style={style.grupoMuscularText}>{grupoMuscular}</Text>
           )}
         </View>
-        {grupoMuscular && (
-          <Text style={grupoMuscularText}>{grupoMuscular}</Text>
+        {hasRecord && (
+          <View style={style.recordeBadge}>
+            <MaterialIcons name="emoji_events" size={10} color="#fff" />
+            <Text style={style.recordeBadgeText}>PR</Text>
+          </View>
         )}
       </View>
 
+      {/* Stats row */}
       {hasDestaque && (
-        <View style={historicoSection}>
-          <View style={divider} />
-
-          <View style={destaquesRow}>
-            <View style={destaqueBox}>
-              <Text style={destaqueLabel}>RECORDE</Text>
-              <Text style={recordeValue}>{destaque || '-'}</Text>
-            </View>
-
-            <View style={statDivider} />
-
-            <View style={destaqueBox}>
-              <Text style={destaqueLabel}>
-                {showDistancia ? 'ÚLTIMA DISTÂNCIA' : 'ÚLTIMA CARGA'}
-              </Text>
-              <Text style={ultimoDadoValue}>
-                {showDistancia ? ultimaDistancia : ultimaCarga || '-'}
-              </Text>
-            </View>
+        <View style={style.destaquesRow}>
+          <View style={style.destaqueBox}>
+            <Text style={style.destaqueLabel}>RECORDE</Text>
+            <Text style={style.recordeValue}>{destaque || '-'}</Text>
           </View>
-
-          <View style={divider} />
+          <View style={style.statDivider} />
+          <View style={style.destaqueBox}>
+            <Text style={style.destaqueLabel}>
+              {showDistancia ? 'ÚLTIMA DISTÂNCIA' : 'ÚLTIMA CARGA'}
+            </Text>
+            <Text style={style.ultimoDadoValue}>
+              {showDistancia ? ultimaDistancia : ultimaCarga || '-'}
+            </Text>
+          </View>
         </View>
       )}
+
+      {/* VER HISTÓRICO button */}
+      <TouchableOpacity
+        style={style.viewHistoryButton}
+        onPress={onViewHistorico}
+        activeOpacity={0.75}
+      >
+        <MaterialIcons name="history" size={16} color="#fff" />
+        <Text style={style.viewHistoryText}>VER HISTÓRICO</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 Exercicio.propTypes = {
   exercicioData: PropTypes.object.isRequired,
-  dadosRegistrosAtividades: PropTypes.object.isRequired,
+  dadosRegistrosAtividades: PropTypes.object,
+  onViewHistorico: PropTypes.func.isRequired,
 };
 
 export default Exercicio;

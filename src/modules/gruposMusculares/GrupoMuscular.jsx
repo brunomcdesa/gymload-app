@@ -1,17 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
-import { ComumStyles } from '../../components/Styles/ComumStyles';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import style from './style/style';
 
 const GrupoMuscular = (props) => {
   const { nome } = props;
-  const { grupoMuscularNome } = style;
-  const { elementContainer } = ComumStyles;
+  const { cardContainer, stripe, iconContainer, nomeText } = style;
 
   return (
-    <View style={elementContainer}>
-      <Text style={grupoMuscularNome}>{nome}</Text>
+    <View style={cardContainer}>
+      <View style={stripe} />
+      <View style={iconContainer}>
+        <MaterialIcons name="man" size={22} color="#ff5555" />
+      </View>
+      <Text style={nomeText}>{nome}</Text>
     </View>
   );
 };

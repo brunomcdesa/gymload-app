@@ -2,16 +2,22 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../../components/Styles/ComumStyles';
 
 export default StyleSheet.create({
+  screenWrapper: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
   container: {
     flex: 1,
     backgroundColor: colors.background,
   },
   scrollContent: {
     padding: 16,
-    paddingBottom: 32,
+    paddingBottom: 60,
   },
+
+  // Greeting card
   greetingCard: {
-    backgroundColor: '#2a2a2a',
+    backgroundColor: '#2a1a1a',
     borderRadius: 16,
     padding: 20,
     marginBottom: 14,
@@ -21,24 +27,25 @@ export default StyleSheet.create({
     borderLeftColor: colors.secondary,
   },
   greetingDate: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: '700',
-    color: '#888',
-    letterSpacing: 1.5,
-    textTransform: 'uppercase',
-    marginBottom: 6,
+    color: '#aaa',
+    letterSpacing: 2,
+    marginBottom: 4,
   },
   greetingTitle: {
     fontSize: 22,
     fontWeight: '800',
     color: '#fff',
-    marginBottom: 6,
+    marginBottom: 4,
   },
   greetingSubtitle: {
     fontSize: 13,
     color: '#aaa',
     lineHeight: 18,
   },
+
+  // Stats row
   statsRow: {
     flexDirection: 'row',
     gap: 8,
@@ -48,25 +55,32 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: '#2a2a2a',
     borderRadius: 14,
-    padding: 14,
+    padding: 12,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#383838',
   },
-  statValue: {
-    fontSize: 24,
+  statValueAccent: {
+    fontSize: 22,
     fontWeight: '800',
     color: colors.secondary,
-    marginBottom: 4,
+    marginBottom: 2,
+  },
+  statValueNeutral: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#fff',
+    marginBottom: 2,
   },
   statLabel: {
-    fontSize: 9,
+    fontSize: 10,
     fontWeight: '700',
-    color: '#888',
+    color: '#aaa',
     letterSpacing: 1,
-    textTransform: 'uppercase',
     textAlign: 'center',
   },
+
+  // Generic card
   card: {
     backgroundColor: '#2a2a2a',
     borderRadius: 16,
@@ -75,11 +89,13 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: '#383838',
   },
+
+  // Week section
   weekHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 14,
+    marginBottom: 12,
   },
   weekTitle: {
     fontSize: 14,
@@ -88,7 +104,7 @@ export default StyleSheet.create({
   },
   weekSub: {
     fontSize: 12,
-    color: '#666',
+    color: '#aaa',
   },
   weekDots: {
     flexDirection: 'row',
@@ -103,26 +119,50 @@ export default StyleSheet.create({
     height: 32,
     borderRadius: 10,
     backgroundColor: '#333',
-    marginBottom: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   dayLabel: {
     fontSize: 11,
-    color: '#666',
+    color: '#aaa',
     fontWeight: '600',
+    marginTop: 6,
   },
-  wipCard: {
+
+  // PRs section
+  sectionLabel: {
+    fontSize: 11,
+    letterSpacing: 2,
+    fontWeight: '700',
+    color: '#888',
+    marginBottom: 8,
+    paddingLeft: 4,
+  },
+  prCard: {
     backgroundColor: '#2a2a2a',
-    borderRadius: 12,
-    padding: 14,
-    marginTop: 4,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 14,
     borderWidth: 1,
     borderColor: '#383838',
-    borderStyle: 'dashed',
+    borderLeftWidth: 4,
+    borderLeftColor: colors.secondary,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
   },
-  wipText: {
-    fontSize: 12,
+  prIconWrap: {
+    width: 46,
+    height: 46,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255,85,85,0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  prEmptyText: {
+    flex: 1,
+    fontSize: 13,
     color: '#666',
-    textAlign: 'center',
-    lineHeight: 18,
+    lineHeight: 20,
   },
 });

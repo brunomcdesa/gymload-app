@@ -225,19 +225,27 @@ export default ListRecurso;
 
 ### Formulário (padrão canônico)
 
+**Regras obrigatórias para toda tela de formulário (push screen):**
+1. **Footer fixo** — os botões "Voltar" e "Salvar" ficam em uma `View` fora do `ScrollView`, ancorada no fundo da tela naturalmente pelo layout flex. Nunca usar `fabContainer` (FAB absoluto) em formulários com esse padrão.
+2. **Botão nativo de voltar oculto** — use `headerLeft: () => null` e `gestureEnabled: false` em `navigation.setOptions`. A navegação de retorno acontece exclusivamente pelo botão "Voltar" do footer.
+3. **Título centralizado** — use `headerTitleAlign: 'center'` em `navigation.setOptions`.
+4. **Botão Salvar** — `flex: 1`, `flexDirection: 'row'`, `backgroundColor: '#28a745'`, `borderRadius: 12`, ícone `MaterialIcons name="save"`, texto `"SALVAR"`, mostra `ActivityIndicator` no loading.
+5. **Botão Voltar** — ghost: borda `#3a3a3a`, fundo transparente, `borderRadius: 12`, desabilitado durante loading.
+
 ```jsx
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { View } from 'react-native';
-import SaveButton from '../../../components/Button/SaveButton';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
+import style from '../style/style';
 
 const RecursoForm = ({ navigation, route }) => {
-  const { formContainer, fabContainer, formLabel, formLabelObrigatorio, asteriscoObrigatorio } = ComumStyles;
+  const { asteriscoObrigatorio } = ComumStyles;
   const { data, isEdicao } = route.params;
   const [formData, setFormData] = useState({ nome: data.nome || null });
   const [loading, setLoading] = useState(false);
@@ -262,17 +270,63 @@ const RecursoForm = ({ navigation, route }) => {
   };
 
   const renderHeaderTitle = useCallback(
-    () => <HeaderTitle title={isEdicao ? 'Editar' : 'Adicionar'} isForm />,
+    () => <HeaderTitle title={isEdicao ? 'Editar Recurso' : 'Adicionar Recurso'} />,
     [isEdicao],
   );
 
-  useLayoutEffect(() => { navigation.setOptions({ headerTitle: renderHeaderTitle }); }, [navigation, renderHeaderTitle]);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+      headerTitleAlign: 'center',
+      headerLeft: () => null,
+      gestureEnabled: false,
+    });
+  }, [navigation, renderHeaderTitle]);
 
   return (
-    <View style={formContainer}>
-      {/* campos do formulário */}
-      <View style={fabContainer}>
-        <SaveButton onPress={handleSave} loading={loading} />
+    <View style={style.screenContainer}>
+      <ScrollView contentContainerStyle={style.scrollContent}>
+        <Text style={style.formDescription}>Descrição da tela de formulário.</Text>
+        <Text style={style.requiredNote}>
+          Campos com <Text style={asteriscoObrigatorio}>*</Text> são obrigatórios
+        </Text>
+
+        <View style={style.fieldContainer}>
+          <Text style={style.fieldLabel}>
+            Nome <Text style={asteriscoObrigatorio}>*</Text>
+          </Text>
+          <TextoInput
+            placeholder="Digite o nome"
+            value={formData.nome}
+            onChangeText={(v) => handleChange('nome', v)}
+          />
+        </View>
+      </ScrollView>
+
+      {/* Footer fixo — fora do ScrollView */}
+      <View style={style.formFooter}>
+        <TouchableOpacity
+          style={style.backButton}
+          onPress={() => navigation.goBack()}
+          disabled={loading}
+        >
+          <Text style={style.backButtonText}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[style.saveButton, loading && style.saveButtonDisabled]}
+          onPress={!loading ? handleSave : null}
+          disabled={loading}
+          activeOpacity={0.7}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" size="small" />
+          ) : (
+            <>
+              <MaterialIcons name="save" size={18} color="#fff" />
+              <Text style={style.saveButtonText}>SALVAR</Text>
+            </>
+          )}
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -293,6 +347,32 @@ RecursoForm.propTypes = {
 };
 
 export default RecursoForm;
+```
+
+**Estilos obrigatórios no `style/style.jsx` do módulo:**
+
+```js
+screenContainer: { flex: 1, backgroundColor: '#222' },
+scrollContent: { padding: 20, paddingBottom: 16 },
+formDescription: { fontSize: 13, color: '#aaa', marginBottom: 12, lineHeight: 20 },
+requiredNote: { fontSize: 12, color: '#777', marginBottom: 20 },
+fieldContainer: { marginBottom: 4 },
+fieldLabel: { fontSize: 13, fontWeight: '700', color: '#e8e8e8', marginBottom: 6 },
+formFooter: {
+  flexDirection: 'row', gap: 10, padding: 16, paddingBottom: 24,
+  borderTopWidth: 1, borderTopColor: '#333', backgroundColor: '#222', alignItems: 'center',
+},
+backButton: {
+  paddingHorizontal: 18, paddingVertical: 14, borderRadius: 12,
+  borderWidth: 1, borderColor: '#3a3a3a', justifyContent: 'center', alignItems: 'center',
+},
+backButtonText: { color: '#e8e8e8', fontSize: 15, fontWeight: '600' },
+saveButton: {
+  flex: 1, flexDirection: 'row', backgroundColor: '#28a745',
+  paddingVertical: 14, borderRadius: 12, alignItems: 'center', justifyContent: 'center', gap: 8,
+},
+saveButtonDisabled: { backgroundColor: '#555' },
+saveButtonText: { color: '#fff', fontSize: 15, fontWeight: '700' },
 ```
 
 ---
@@ -396,3 +476,4 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 - [ ] `PropTypes` definidos em todos os componentes que recebem props
 - [ ] Arquivo no caminho correto do módulo (`screens/`, `components/`, `style/`)
 - [ ] Estilo de módulo em `style/style.jsx` do módulo correspondente
+- [ ] **Formulários (push screens)**: footer com "Voltar"+"Salvar" fora do ScrollView; `headerLeft: () => null`; `gestureEnabled: false`; `headerTitleAlign: 'center'` — ver padrão canônico acima

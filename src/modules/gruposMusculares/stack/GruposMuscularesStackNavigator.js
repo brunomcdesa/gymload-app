@@ -1,7 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import HeaderBackButton from '../../../components/Button/HeaderBackButton';
-import { colors } from '../../../components/Styles/ComumStyles';
 import GrupoMuscularForm from '../screens/GrupoMuscularForm';
 import ListGruposMusculares from '../screens/ListGruposMusculares';
 
@@ -13,7 +12,9 @@ const GruposMuscularesStackNavigator = () => {
       screenOptions={({ navigation }) => ({
         headerShown: true,
         headerStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: '#1d1d1d',
+          borderBottomWidth: 1,
+          borderBottomColor: '#333',
         },
         headerShadowVisible: false,
         headerLeft: () => <HeaderBackButton onPress={navigation.goBack} />,

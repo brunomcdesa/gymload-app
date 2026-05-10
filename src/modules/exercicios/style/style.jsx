@@ -14,17 +14,20 @@ export default StyleSheet.create({
     marginBottom: 4,
   },
   exercicioNome: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: '700',
     color: '#fff',
-    textAlign: 'center',
-    letterSpacing: 0.3,
+    letterSpacing: -0.3,
+    marginBottom: 2,
   },
   recordeBadge: {
     backgroundColor: colors.secondary,
     borderRadius: 999,
     paddingHorizontal: 8,
-    paddingVertical: 2,
+    paddingVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
   },
   recordeBadgeText: {
     fontSize: 10,
@@ -33,12 +36,11 @@ export default StyleSheet.create({
     letterSpacing: 1,
   },
   grupoMuscularText: {
-    fontSize: 12,
-    color: '#aaa',
-    textAlign: 'center',
-    marginBottom: 12,
+    fontSize: 11,
+    color: colors.terciary,
     textTransform: 'uppercase',
     letterSpacing: 1.2,
+    fontWeight: '700',
   },
   descricaoText: {
     fontSize: 14,
@@ -146,5 +148,72 @@ export default StyleSheet.create({
     color: colors.secondary,
     fontSize: 18,
     fontWeight: '700',
+  },
+  // Chip row (filter bar)
+  chipRow: {
+    paddingHorizontal: 16,
+    paddingBottom: 10,
+    paddingTop: 4,
+    alignItems: 'center',
+  },
+  chip: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 999,
+    marginRight: 8,
+    borderWidth: 1,
+    alignSelf: 'flex-start',
+  },
+  chipAtivo: {
+    backgroundColor: colors.secondary,
+    borderColor: colors.secondary,
+  },
+  chipInativo: {
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderColor: colors.inputBorder,
+  },
+  chipText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.terciary,
+  },
+  chipTextAtivo: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  // New card layout
+  cardRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 14,
+    marginBottom: 12,
+  },
+  iconBox: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  },
+  exercicioInfo: {
+    flex: 1,
+  },
+  viewHistoryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 10,
+    borderRadius: 999,
+    backgroundColor: colors.secondary,
+    marginTop: 12,
+  },
+  viewHistoryText: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
 });

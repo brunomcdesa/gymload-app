@@ -1,37 +1,31 @@
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
-import SaveButton from '../../../components/Button/SaveButton';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
-import * as ExercicioApi from '../../exercicios/Api';
-import * as Api from '../Api';
-
 import PropTypes from 'prop-types';
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
-import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import EmptyList from '../../../components/List/EmptyList';
+import SeparatorItem from '../../../components/List/SeparatorItem';
+import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
+import { ComumStyles, colors } from '../../../components/Styles/ComumStyles';
+import * as ExercicioApi from '../../exercicios/Api';
+import * as GrupoMuscularApi from '../../gruposMusculares/Api';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
+import * as Api from '../Api';
 import style from '../style/style';
 
-const renderEmptyList = () => <EmptyList value="exercício" isSelect={true} />;
+const CHIP_TODOS = { id: 'todos', label: 'Todos', tipo: 'todos', value: null };
 
-const TreinoForm = (props) => {
-  const {
-    formContainer,
-    formLabel,
-    fabContainer,
-    formLabelObrigatorio,
-    asteriscoObrigatorio,
-  } = ComumStyles;
-  const {
-    selectedExercisesContainer,
-    selectedExerciseItem,
-    selectedExerciseText,
-    selectedExercisesTitle,
-    selectedExercicioList,
-  } = style;
-  const { navigation, route } = props;
+const TreinoForm = ({ navigation, route }) => {
+  const { asteriscoObrigatorio } = ComumStyles;
   const { treinoData, isEdicao } = route.params;
   const { id, nome, exerciciosIds } = treinoData;
 
@@ -40,34 +34,84 @@ const TreinoForm = (props) => {
     exerciciosIds: exerciciosIds || [],
   });
   const [exerciciosSelect, setExerciciosSelect] = useState([]);
-  const [exerciciosSelectLoading, setExerciciosSelectLodding] = useState(false);
+  const [exerciciosSelectLoading, setExerciciosSelectLoading] = useState(false);
   const [selectedExercicios, setSelectedExercicios] = useState(
     exerciciosIds || [],
   );
-  const [selectedExerciciosNomes, setSelectedExerciciosNomes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [chips, setChips] = useState([CHIP_TODOS]);
+  const [chipSelecionado, setChipSelecionado] = useState(CHIP_TODOS);
+  const [chipsLoading, setChipsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+
+  const filteredExercicios = useMemo(() => {
+    let items = exerciciosSelect;
+    if (chipSelecionado.tipo === 'grupo') {
+      items = items.filter(
+        (ex) => Number(ex.grupoMuscularId) === Number(chipSelecionado.value),
+      );
+    } else if (chipSelecionado.tipo === 'tipo') {
+      items = items.filter((ex) => ex.tipoExercicio === chipSelecionado.value);
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      items = items.filter((ex) => ex.label.toLowerCase().includes(q));
+    }
+    return items;
+  }, [exerciciosSelect, chipSelecionado, searchQuery]);
 
   const handleChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-
-    if (field === 'exerciciosIds') {
-      updateSelectedExercisesNames(value);
-    }
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
+  const handleToggleExercicio = useCallback((exercicioId) => {
+    setSelectedExercicios((prev) => {
+      const next = prev.includes(exercicioId)
+        ? prev.filter((itemId) => itemId !== exercicioId)
+        : [...prev, exercicioId];
+      setFormData((prevForm) => ({ ...prevForm, exerciciosIds: next }));
+      return next;
+    });
+  }, []);
+
+  const fetchChips = useCallback(async () => {
+    try {
+      setChipsLoading(true);
+      const { data } = await GrupoMuscularApi.fetchGruposMuscularesSelect();
+      const grupoChips = data.map((g) => ({
+        id: `grupo_${g.value}`,
+        label: g.label,
+        tipo: 'grupo',
+        value: g.value,
+      }));
+      setChips([
+        CHIP_TODOS,
+        ...grupoChips,
+        { id: 'AEROBICO', label: 'Aeróbico', tipo: 'tipo', value: 'AEROBICO' },
+      ]);
+    } catch {
+      throwToastError('Erro ao carregar filtros.');
+    } finally {
+      setChipsLoading(false);
+    }
+  }, []);
 
   const fetchExerciciosSelect = useCallback(async () => {
     try {
-      setExerciciosSelectLodding(true);
-      const { data } = await ExercicioApi.fetchExerciciosSelect();
-      setExerciciosSelect(data);
-    } catch (error) {
-      console.error('Erro ao carregar select de exercícios.');
+      setExerciciosSelectLoading(true);
+      const { data } = await ExercicioApi.fetchExercicios({});
+      setExerciciosSelect(
+        data.map((ex) => ({
+          value: ex.id,
+          label: ex.nome,
+          tipoExercicio: ex.tipoExercicio,
+          grupoMuscularId: ex.grupoMuscularId ?? null,
+        })),
+      );
+    } catch {
+      throwToastError('Erro ao carregar exercícios.');
     } finally {
-      setExerciciosSelectLodding(false);
+      setExerciciosSelectLoading(false);
     }
   }, []);
 
@@ -75,7 +119,9 @@ const TreinoForm = (props) => {
     try {
       setLoading(true);
       const { data } = await ExercicioApi.fetchExerciciosDoTreino(id);
-      setSelectedExercicios(data.map((exercicio) => exercicio.id));
+      const ids = data.map((exercicio) => exercicio.id);
+      setSelectedExercicios(ids);
+      setFormData((prev) => ({ ...prev, exerciciosIds: ids }));
     } catch (error) {
       throwToastError('Erro ao buscar exercícios do treino.');
       console.error(`Erro ao buscar exercícios do treino ${id}`, error);
@@ -114,25 +160,31 @@ const TreinoForm = (props) => {
 
   useFocusEffect(
     useCallback(() => {
+      fetchChips();
       fetchExerciciosSelect();
       if (isEdicao) {
         fetchExerciciosDoTreino();
       }
-    }, [fetchExerciciosSelect, fetchExerciciosDoTreino, isEdicao]),
+    }, [fetchChips, fetchExerciciosSelect, fetchExerciciosDoTreino, isEdicao]),
   );
 
-  const renderHeaderTitle = useCallback(() => {
-    return (
+  const renderHeaderTitle = useCallback(
+    () => (
       <HeaderTitle
         title={isEdicao ? 'Editar Treino' : 'Adicionar Treino'}
         isForm={true}
       />
-    );
-  }, [isEdicao]);
+    ),
+    [isEdicao],
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
+      headerTitleAlign: 'center',
+      headerLeft: () => null,
+      headerBackVisible: false,
+      gestureEnabled: false,
     });
   }, [navigation, renderHeaderTitle]);
 
@@ -141,70 +193,137 @@ const TreinoForm = (props) => {
       navigation.navigate('ListExerciciosTreino', {
         treino: { id, nome },
       });
-    } else navigation.goBack();
+    } else {
+      navigation.goBack();
+    }
   };
 
-  const updateSelectedExercisesNames = (selectedIds) => {
-    const selectedNames = exerciciosSelect
-      .filter((ex) => selectedIds.includes(ex.value))
-      .map((ex) => ex.label);
-    setSelectedExerciciosNomes(selectedNames);
-  };
+  const renderExercicioItem = useCallback(
+    ({ item }) => {
+      const isSelected = selectedExercicios.includes(item.value);
+      return (
+        <TouchableOpacity
+          style={[style.exerciseItem, isSelected && style.exerciseItemSelected]}
+          onPress={() => handleToggleExercicio(item.value)}
+          activeOpacity={0.7}
+        >
+          <MaterialIcons
+            name={isSelected ? 'check-box' : 'check-box-outline-blank'}
+            size={22}
+            color={isSelected ? colors.secondary : colors.terciary}
+          />
+          <Text style={style.exerciseItemText}>{item.label}</Text>
+        </TouchableOpacity>
+      );
+    },
+    [selectedExercicios, handleToggleExercicio],
+  );
 
   return (
-    <View style={formContainer}>
-      <View style={formLabelObrigatorio}>
-        <Text style={formLabel}>Nome</Text>
-        <Text style={asteriscoObrigatorio}>*</Text>
-      </View>
-      <TextoInput
-        placeholder="Digite o nome"
-        value={formData.nome}
-        onChangeText={(nomeValue) => handleChange('nome', nomeValue)}
-      />
-
-      <View style={formLabelObrigatorio}>
-        <Text style={formLabel}>Exercicios</Text>
-        <Text style={asteriscoObrigatorio}>*</Text>
-      </View>
-      <SelectInput
-        open={open}
-        setOpen={setOpen}
-        items={exerciciosSelect}
-        setItems={setExerciciosSelect}
-        value={selectedExercicios || []}
-        setValue={setSelectedExercicios}
-        multiple={true}
-        loading={exerciciosSelectLoading}
-        handleChange={handleChange}
-        field={'exerciciosIds'}
-        searchable={true}
-        searchPlaceholder="Buscar exercícios..."
-        zIndex={2000}
-        zIndexInverse={100}
-      />
-
-      <View style={selectedExercisesContainer}>
-        <Text style={selectedExercisesTitle}>Exercícios Selecionados:</Text>
-        <View style={selectedExercicioList}>
-          <FlatList
-            data={selectedExerciciosNomes}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <View style={selectedExerciseItem}>
-                <Text style={selectedExerciseText}>{item}</Text>
-              </View>
-            )}
-            ListEmptyComponent={renderEmptyList}
+    <View style={style.screenContainer}>
+      <ScrollView
+        contentContainerStyle={style.scrollContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={style.fieldContainer}>
+          <Text style={style.fieldLabel}>
+            Nome <Text style={asteriscoObrigatorio}>*</Text>
+          </Text>
+          <TextoInput
+            placeholder="Digite o nome do treino"
+            value={formData.nome}
+            onChangeText={(v) => handleChange('nome', v)}
           />
         </View>
-      </View>
 
-      <View style={fabContainer}>
-        <SaveButton
-          onPress={isEdicao ? handleEditar : handleSave}
-          loading={loading}
-        />
+        <View style={style.fieldContainer}>
+          <View style={style.fieldLabelRow}>
+            <Text style={style.fieldLabel}>
+              Exercícios <Text style={asteriscoObrigatorio}>*</Text>
+            </Text>
+            {selectedExercicios.length > 0 && (
+              <View style={style.counterBadge}>
+                <Text style={style.counterBadgeText}>
+                  {selectedExercicios.length} selecionado
+                  {selectedExercicios.length !== 1 ? 's' : ''}
+                </Text>
+              </View>
+            )}
+          </View>
+
+          <TextoInput
+            placeholder="Buscar exercícios..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+
+          {!chipsLoading && chips.length > 1 && (
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={style.chipScrollRow}
+              style={style.chipScrollContainer}
+            >
+              {chips.map((chip) => {
+                const isActive = chipSelecionado.id === chip.id;
+                return (
+                  <TouchableOpacity
+                    key={chip.id}
+                    style={[style.chip, isActive && style.chipActive]}
+                    onPress={() => setChipSelecionado(chip)}
+                    activeOpacity={0.8}
+                  >
+                    <Text
+                      style={[style.chipText, isActive && style.chipTextActive]}
+                    >
+                      {chip.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          )}
+
+          {exerciciosSelectLoading ? (
+            <LoadingIndicator />
+          ) : (
+            <FlatList
+              data={filteredExercicios}
+              keyExtractor={(item) => item.value.toString()}
+              renderItem={renderExercicioItem}
+              ListEmptyComponent={<EmptyList value="exercício" />}
+              ItemSeparatorComponent={SeparatorItem}
+              extraData={selectedExercicios}
+              scrollEnabled={false}
+            />
+          )}
+        </View>
+      </ScrollView>
+
+      <View style={style.formFooter}>
+        <TouchableOpacity
+          style={style.backButton}
+          onPress={handleGoBack}
+          disabled={loading}
+        >
+          <Text style={style.backButtonText}>Voltar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[style.saveButton, loading && style.saveButtonDisabled]}
+          onPress={!loading ? (isEdicao ? handleEditar : handleSave) : null}
+          disabled={loading}
+          activeOpacity={0.7}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" size="small" />
+          ) : (
+            <>
+              <MaterialIcons name="save" size={18} color="#fff" />
+              <Text style={style.saveButtonText}>SALVAR</Text>
+            </>
+          )}
+        </TouchableOpacity>
       </View>
     </View>
   );

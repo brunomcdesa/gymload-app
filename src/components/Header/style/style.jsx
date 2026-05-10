@@ -8,11 +8,12 @@ export default StyleSheet.create({
   },
   titleStyle: {
     color: colors.textLight,
-    fontSize: 17,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: '800',
+    letterSpacing: -0.5,
   },
   subtitleStyle: {
     color: '#aaa',
-    fontSize: 12,
+    fontSize: 13,
   },
 });

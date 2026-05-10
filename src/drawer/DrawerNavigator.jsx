@@ -25,7 +25,7 @@ const DrawerNavigator = () => {
         swipeEnabled: true,
         headerStyle: headerContainer,
         headerTintColor: colors.textLight,
-        headerTitleAlign: 'center',
+        headerTitleAlign: 'left',
         headerLeftContainerStyle: { paddingLeft: 16 },
         headerRightContainerStyle: { paddingLeft: 16 },
       }}
