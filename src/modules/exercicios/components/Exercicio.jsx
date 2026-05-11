@@ -6,9 +6,9 @@ import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import style from '../style/style';
 
 const ICONE_TIPO = {
-  MUSCULACAO: 'fitness_center',
-  CALISTENIA: 'sports_gymnastics',
-  AEROBICO: 'directions_run',
+  MUSCULACAO: 'fitness-center',
+  CALISTENIA: 'sports-gymnastics',
+  AEROBICO: 'directions-run',
 };
 
 const Exercicio = ({
@@ -24,7 +24,7 @@ const Exercicio = ({
   const hasRecord = destaque && destaque !== '-';
   const hasDestaque = dadosRegistrosAtividades != null;
   const showDistancia = ultimaDistancia && !ultimaCarga;
-  const iconName = ICONE_TIPO[tipoExercicio] || 'fitness_center';
+  const iconName = ICONE_TIPO[tipoExercicio] || 'fitness-center';
   const iconBg = hasRecord ? `${colors.secondary}1a` : colors.inputBackground;
   const iconColor = hasRecord ? colors.secondary : colors.terciary;
 
@@ -43,7 +43,7 @@ const Exercicio = ({
         </View>
         {hasRecord && (
           <View style={style.recordeBadge}>
-            <MaterialIcons name="emoji_events" size={10} color="#fff" />
+            <MaterialIcons name="emoji-events" size={10} color="#fff" />
             <Text style={style.recordeBadgeText}>PR</Text>
           </View>
         )}

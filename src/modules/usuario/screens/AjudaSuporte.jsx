@@ -1,0 +1,40 @@
+import PropTypes from 'prop-types';
+import React, { useCallback, useLayoutEffect } from 'react';
+import { Text, View } from 'react-native';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import style from './styles/style';
+
+const AjudaSuporte = (props) => {
+  const { navigation } = props;
+  const { container } = ComumStyles;
+  const { placeholderCard, placeholderText } = style;
+
+  const renderHeaderTitle = useCallback(
+    () => <HeaderTitle title="Ajuda e Suporte" />,
+    [],
+  );
+
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerTitle: renderHeaderTitle });
+  }, [navigation, renderHeaderTitle]);
+
+  return (
+    <View style={container}>
+      <View style={placeholderCard}>
+        <Text style={placeholderText}>
+          Precisa de ajuda? Entre em contato com nosso suporte através do e-mail
+          suporte@gymload.com
+        </Text>
+      </View>
+    </View>
+  );
+};
+
+AjudaSuporte.propTypes = {
+  navigation: PropTypes.shape({
+    setOptions: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+export default AjudaSuporte;

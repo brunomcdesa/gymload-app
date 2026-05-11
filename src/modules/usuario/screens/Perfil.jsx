@@ -1,85 +1,133 @@
 import { useFocusEffect } from '@react-navigation/native';
+import PropTypes from 'prop-types';
 import React, { useCallback, useContext, useState } from 'react';
-import {
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import SaveButton from '../../../components/Button/SaveButton';
-import ImagemUsuario from '../../../components/Imagem/ImagemUsuario';
-import InfoBlock from '../../../components/Infos/InfoBlock';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import SelectableImage from '../../../components/Selectable/SelectableImage/SelectableImage';
+import { colors } from '../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../context/AuthProvider';
 import { useScreenTitle } from '../../../hooks/useScreenTitle';
-import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
+import { throwToastError } from '../../utils/toastUtils';
+import { useIsAdmin } from '../../utils/userUtils';
 import * as Api from '../Api';
 import style from './styles/style';
 
-const Perfil = () => {
-  const { user, setUser } = useContext(AuthContext);
-  const {
-    mainContainer,
-    header,
-    headerEditContainer,
-    headerViewContainer,
-    inputNome,
-    userNameText,
-    cancelButton,
-    editButton,
-    cancelButtonText,
-    editButtonText,
-    card,
-    cardTitle,
-    separator,
-    infoRow,
-    genderSelector,
-    genderButton,
-    genderButtonSelected,
-    genderButtonText,
-    genderButtonTextSelected,
-    actionButtonContainer,
-  } = style;
+const MENU_ICON_SIZE = 22;
+const CHEVRON_SIZE = 20;
+const INFO_ICON_SIZE = 18;
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [saveLoading, setSaveLoading] = useState(false);
+const getInitials = (nome, username) => {
+  if (nome) {
+    const partes = nome.trim().split(/\s+/);
+    const primeira = partes[0]?.[0] || '';
+    const ultima = partes.length > 1 ? partes[partes.length - 1]?.[0] : '';
+    return `${primeira}${ultima}`.toUpperCase();
+  }
+  if (username) {
+    return username[0]?.toUpperCase() || '';
+  }
+  return '';
+};
 
-  const [usuario, setUsuario] = useState({
-    nome: null,
-    username: null,
-    email: null,
-    idade: null,
-    pesoCorporal: null,
-    altura: null,
-    sexo: null,
-  });
-  const [editData, setEditData] = useState({});
-  const [uriImagemUsuario, setUriImagemUsuario] = useState(
-    user.imagemPerfilUrl,
+const formatarMesAno = (dataCadastro) => {
+  if (!dataCadastro) {
+    return null;
+  }
+  try {
+    const data = new Date(dataCadastro);
+    if (Number.isNaN(data.getTime())) {
+      return null;
+    }
+    return new Intl.DateTimeFormat('pt-BR', {
+      month: 'short',
+      year: 'numeric',
+    }).format(data);
+  } catch {
+    return null;
+  }
+};
+
+const MenuRow = (props) => {
+  const { icon, label, onPress, danger } = props;
+  const labelStyle = danger ? style.menuRowLabelDanger : style.menuRowLabel;
+  const iconColor = danger ? colors.danger : colors.terciary;
+
+  return (
+    <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+      <View style={style.menuRow}>
+        <MaterialIcons name={icon} size={MENU_ICON_SIZE} color={iconColor} />
+        <Text style={labelStyle}>{label}</Text>
+        <MaterialIcons
+          name="chevron-right"
+          size={CHEVRON_SIZE}
+          color={colors.terciary}
+        />
+      </View>
+    </TouchableOpacity>
   );
+};
+
+MenuRow.propTypes = {
+  icon: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
+  danger: PropTypes.bool,
+};
+
+MenuRow.defaultProps = {
+  danger: false,
+};
+
+const InfoRow = (props) => {
+  const { icon, label, value, isLast } = props;
+  return (
+    <View style={isLast ? style.infoRowReadLast : style.infoRowRead}>
+      <MaterialIcons
+        name={icon}
+        size={INFO_ICON_SIZE}
+        color={colors.terciary}
+        style={style.infoIcon}
+      />
+      <Text style={style.infoLabel}>{label}</Text>
+      <Text style={style.infoValue}>{value}</Text>
+    </View>
+  );
+};
+
+InfoRow.propTypes = {
+  icon: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  isLast: PropTypes.bool,
+};
+
+InfoRow.defaultProps = {
+  isLast: false,
+};
+
+const formatSexo = (sexo) => {
+  if (sexo === 'MASCULINO') return 'Masculino';
+  if (sexo === 'FEMININO') return 'Feminino';
+  return null;
+};
+
+const Perfil = (props) => {
+  const { navigation } = props;
+  const { user, logout } = useContext(AuthContext);
+  const isAdmin = useIsAdmin();
+  const [usuario, setUsuario] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useScreenTitle('Meu Perfil', 'Sua conta e ajustes');
 
   const fetchDadosUsuario = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await Api.fetchDadosUsuarioLogado();
-      const userData = {
-        nome: data.nome,
-        username: data.username,
-        email: data.email,
-        idade: data.idade ? String(data.idade) : null,
-        pesoCorporal: data.pesoCorporal ? String(data.pesoCorporal) : null,
-        altura: data.altura ? String(data.altura) : null,
-        sexo: data.sexo || null,
-      };
-      setUsuario(userData);
-      setEditData(userData);
+      setUsuario(data);
     } catch (error) {
       throwToastError(
-        error?.data[0]?.message || 'Erro ao buscar dados do usuário',
+        error?.data?.[0]?.message || 'Erro ao buscar dados do usuário.',
       );
     } finally {
       setLoading(false);
@@ -92,217 +140,131 @@ const Perfil = () => {
     }, [fetchDadosUsuario]),
   );
 
-  useScreenTitle('Meu Perfil', 'Gerencie suas informações');
-
-  const handleEditChange = (field, value) => {
-    setEditData((prev) => ({ ...prev, [field]: value }));
+  const handleLogout = async () => {
+    await logout();
   };
 
-  const handleCancel = () => {
-    setEditData(usuario);
-    setUriImagemUsuario(user.imagemPerfilUrl);
-    setIsEditing(false);
-  };
-
-  const handleSave = async () => {
-    try {
-      setSaveLoading(true);
-      await Api.editarDadosUsuario(user.uuid, editData, uriImagemUsuario);
-      const { data } = await Api.fetchUrlImagemPerfil();
-
-      const updatedUser = { ...user, ...editData, imagemPerfilUrl: data };
-      setUser(updatedUser);
-      setUsuario(editData);
-
-      setIsEditing(false);
-      throwToastSuccess('Usuário atualizado com sucesso');
-    } catch (error) {
-      throwToastError(
-        error?.data[0]?.message || 'Erro ao atualizar informações do usuário.',
-      );
-    } finally {
-      setSaveLoading(false);
-    }
-  };
-
-  if (loading) {
+  if (loading || !usuario) {
     return (
-      <View style={mainContainer}>
+      <View style={style.screenContainer}>
         <LoadingIndicator />
       </View>
     );
   }
 
+  const mesAno = formatarMesAno(usuario.dataCadastro);
+  const subtitle = mesAno
+    ? `${usuario.username} · Membro desde ${mesAno}`
+    : usuario.username;
+
+  const infoRows = [
+    usuario.email && { icon: 'email', label: 'Email', value: usuario.email },
+    usuario.idade && {
+      icon: 'cake',
+      label: 'Idade',
+      value: `${usuario.idade} anos`,
+    },
+    usuario.pesoCorporal && {
+      icon: 'fitness-center',
+      label: 'Peso',
+      value: `${usuario.pesoCorporal} kg`,
+    },
+    usuario.altura && {
+      icon: 'height',
+      label: 'Altura',
+      value: `${usuario.altura} m`,
+    },
+    formatSexo(usuario.sexo) && {
+      icon: 'wc',
+      label: 'Sexo',
+      value: formatSexo(usuario.sexo),
+    },
+  ].filter(Boolean);
+
   return (
     <ScrollView
-      style={mainContainer}
-      contentContainerStyle={{ paddingBottom: 50 }}
+      style={style.screenContainer}
+      contentContainerStyle={style.perfilScrollContent}
     >
-      <View style={header}>
-        {isEditing ? (
-          <View style={headerEditContainer}>
-            <SelectableImage
-              uriImagemUsuario={uriImagemUsuario}
-              setUriImagemUsuario={setUriImagemUsuario}
-            />
-            <TextInput
-              style={inputNome}
-              value={editData.nome}
-              onChangeText={(text) => handleEditChange('nome', text)}
-              placeholder="Seu Nome"
-              placeholderTextColor="#666"
-            />
-          </View>
+      <View style={style.avatarCard}>
+        {user.imagemPerfilUrl ? (
+          <Image
+            source={{ uri: user.imagemPerfilUrl }}
+            style={style.avatarImage}
+          />
         ) : (
-          <View style={headerViewContainer}>
-            <ImagemUsuario
-              uriImagemUsuario={uriImagemUsuario}
-              isCadastro={false}
-            />
-            <Text style={userNameText}>{usuario.nome}</Text>
-          </View>
-        )}
-        <TouchableOpacity
-          onPress={() => (isEditing ? handleCancel() : setIsEditing(true))}
-        >
-          <View style={isEditing ? cancelButton : editButton}>
-            {!isEditing && (
-              <Icon name="edit" size={20} color={editButtonText.color} />
-            )}
-            <Text style={isEditing ? cancelButtonText : editButtonText}>
-              {isEditing ? 'Cancelar' : 'Editar Perfil'}
+          <View style={style.avatarGradient}>
+            <Text style={style.avatarInitials}>
+              {getInitials(usuario.nome, usuario.username)}
             </Text>
           </View>
-        </TouchableOpacity>
+        )}
+        <Text style={style.nomeText}>{usuario.nome}</Text>
+        <Text style={style.subtitleText}>{subtitle}</Text>
       </View>
 
-      <View style={card}>
-        <Text style={cardTitle}>Informações da Conta</Text>
-
-        <View style={infoRow}>
-          <InfoBlock
-            icon="person"
-            label="Username"
-            value={editData.username}
-            isEditing={isEditing}
-            onChangeText={handleEditChange}
-            placeholder="Seu username"
-            field="username"
-          />
-
-          <InfoBlock
-            icon="email"
-            label="Email"
-            value={editData.email}
-            isEditing={isEditing}
-            onChangeText={handleEditChange}
-            placeholder="Seu email"
-            keyboardType="email-address"
-            field="email"
-          />
+      {infoRows.length > 0 && (
+        <View style={style.infoCard}>
+          <Text style={style.infoCardTitle}>Informações da Conta</Text>
+          {infoRows.map((row, index) => (
+            <InfoRow
+              key={row.label}
+              icon={row.icon}
+              label={row.label}
+              value={row.value}
+              isLast={index === infoRows.length - 1}
+            />
+          ))}
         </View>
+      )}
 
-        <View style={separator} />
-
-        <View style={infoRow}>
-          <InfoBlock
-            icon="cake"
-            label="Idade"
-            value={
-              !isEditing && editData.idade
-                ? `${editData.idade} anos`
-                : editData.idade
-            }
-            isEditing={isEditing}
-            onChangeText={handleEditChange}
-            placeholder="Sua idade"
-            keyboardType="numeric"
-            field="idade"
-          />
-          <InfoBlock
-            icon="fitness-center"
-            label="Peso"
-            value={
-              !isEditing && editData.pesoCorporal
-                ? `${editData.pesoCorporal} kg`
-                : editData.pesoCorporal
-            }
-            isEditing={isEditing}
-            onChangeText={handleEditChange}
-            placeholder="Seu peso"
-            keyboardType="numeric"
-            field="pesoCorporal"
-          />
-        </View>
-
-        <View style={separator} />
-
-        <View style={infoRow}>
-          <InfoBlock
-            icon="height"
-            label="Altura"
-            value={
-              !isEditing && editData.altura
-                ? `${editData.altura} m`
-                : editData.altura
-            }
-            isEditing={isEditing}
-            onChangeText={handleEditChange}
-            placeholder="Ex: 1.75"
-            keyboardType="numeric"
-            field="altura"
-          />
-          <InfoBlock
-            icon="wc"
-            label="Sexo"
-            value={editData.sexo}
-            isEditing={isEditing}
-          >
-            {isEditing && (
-              <View style={genderSelector}>
-                <TouchableOpacity
-                  style={[
-                    genderButton,
-                    editData.sexo === 'MASCULINO' && genderButtonSelected,
-                  ]}
-                  onPress={() => handleEditChange('sexo', 'MASCULINO')}
-                >
-                  <Text
-                    style={[
-                      genderButtonText,
-                      editData.sexo === 'MASCULINO' && genderButtonTextSelected,
-                    ]}
-                  >
-                    M
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    genderButton,
-                    editData.sexo === 'FEMININO' && genderButtonSelected,
-                  ]}
-                  onPress={() => handleEditChange('sexo', 'FEMININO')}
-                >
-                  <Text
-                    style={[
-                      genderButtonText,
-                      editData.sexo === 'FEMININO' && genderButtonTextSelected,
-                    ]}
-                  >
-                    F
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </InfoBlock>
-        </View>
-      </View>
-
-      <View style={actionButtonContainer}>
-        {isEditing && <SaveButton onPress={handleSave} loading={saveLoading} />}
-      </View>
+      <MenuRow
+        icon="edit"
+        label="Editar perfil"
+        onPress={() => navigation.navigate('EditarPerfilForm')}
+      />
+      <MenuRow
+        icon="notifications"
+        label="Notificações"
+        onPress={() => navigation.navigate('Notificacoes')}
+      />
+      <MenuRow
+        icon="lock"
+        label="Senha e segurança"
+        onPress={() => navigation.navigate('AlterarSenhaForm')}
+      />
+      <MenuRow
+        icon="help"
+        label="Ajuda e suporte"
+        onPress={() => navigation.navigate('AjudaSuporte')}
+      />
+      {isAdmin && (
+        <MenuRow
+          icon="manage-accounts"
+          label="Gerenciar Usuários"
+          onPress={() => navigation.navigate('GerenciarUsuariosStack')}
+        />
+      )}
+      {isAdmin && (
+        <MenuRow
+          icon="person-add"
+          label="Cadastrar Usuário Admin"
+          onPress={() =>
+            navigation.navigate('UsuarioCadastroForm', {
+              isCadastroAdmin: true,
+            })
+          }
+        />
+      )}
+      <MenuRow icon="logout" label="Sair" onPress={handleLogout} danger />
     </ScrollView>
   );
+};
+
+Perfil.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default Perfil;

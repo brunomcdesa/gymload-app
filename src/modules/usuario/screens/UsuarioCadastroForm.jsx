@@ -176,7 +176,7 @@ const UsuarioCadastroForm = (props) => {
         </Text>
         <View style={inputRow('username')}>
           <MaterialIcons
-            name="alternate_email"
+            name="alternate-email"
             size={20}
             color={iconColor('username')}
             style={style.loginInputIcon}

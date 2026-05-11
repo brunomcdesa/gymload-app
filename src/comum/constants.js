@@ -10,6 +10,8 @@ export const HEADER_SUBTITLE_TREINOS = 'Gerencie seus treinos cadastrados';
 export const HEADER_TITLE_GRUPOS_MUSCULARES = 'Grupos Musculares';
 export const HEADER_SUBTITLE_GRUPOS_MUSCULARES =
   'Gerencie os Grupos musculares do sistema';
+export const HEADER_TITLE_PERFIL = 'Meu Perfil';
+export const HEADER_SUBTITLE_PERFIL = 'Sua conta e ajustes';
 
 export const apiUrl = __DEV__
   ? 'https://gymload-api-dev.onrender.com'

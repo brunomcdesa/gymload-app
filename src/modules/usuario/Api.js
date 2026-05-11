@@ -99,6 +99,14 @@ export const alterarSenha = (request, delay = 0) => {
   return pMinDelay(response, delay);
 };
 
+export const alterarSenhaUsuarioLogado = (request, delay = 0) => {
+  const response = axiosPrivate.put(`${usuarioUrl}/alterar-senha`, {
+    ...request,
+  });
+
+  return pMinDelay(response, delay);
+};
+
 export const fetchUsuarios = (delay = 0) => {
   const response = axiosPrivate.get(usuarioUrl);
 

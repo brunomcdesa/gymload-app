@@ -1,10 +1,6 @@
 import React from 'react';
-import DrawerNavigator from '../drawer/DrawerNavigator';
+import AppShell from '../routes/AppShell';
 
-const AppStack = () => (
-  <>
-    <DrawerNavigator />
-  </>
-);
+const AppStack = () => <AppShell />;
 
 export default AppStack;
