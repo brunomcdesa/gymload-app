@@ -24,7 +24,15 @@ const TiposVariacoesStackNavigator = () => {
         name="ListTiposVariacoes"
         component={ListTiposVariacoes}
       />
-      <Stack.Screen name="TipoVariacaoForm" component={TipoVariacaoForm} />
+      <Stack.Screen
+        name="TipoVariacaoForm"
+        component={TipoVariacaoForm}
+        options={{
+          headerLeft: () => null,
+          headerBackVisible: false,
+          gestureEnabled: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };

@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import React, {
   useCallback,
   useLayoutEffect,
@@ -56,10 +57,22 @@ const TipoVariacaoForm = (props) => {
     return <HeaderTitle title={title} isForm />;
   }, [isEdicao]);
 
+  useFocusEffect(
+    useCallback(() => {
+      const parentNav = navigation.getParent();
+      parentNav?.setOptions({ headerShown: false });
+      return () => {
+        parentNav?.setOptions({ headerShown: true });
+      };
+    }, [navigation])
+  );
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
+      headerTitleAlign: 'center',
       headerLeft: () => null,
+      headerBackVisible: false,
       gestureEnabled: false,
     });
   }, [navigation, renderHeaderTitle]);
