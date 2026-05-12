@@ -1,5 +1,16 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { SectionList, Text, View } from 'react-native';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
+import {
+  ScrollView,
+  SectionList,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -10,6 +21,8 @@ import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as Api from '../Api';
 
 import HeaderTitle from '../../../components/Header/HeaderTitle';
+import * as ExerciciosApi from '../../exercicios/Api';
+import exerciciosStyle from '../../exercicios/style/style';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import RegistroAerobico from '../components/RegistroAerobico';
 import RegistroCalistenia from '../components/RegistroCalistenia';
@@ -18,10 +31,12 @@ import style from '../style/style';
 
 const RegistroAtividadesCompleto = (props) => {
   const { listContent, sectionHeader, sectionHeaderText } = style;
+  const { chip, chipAtivo, chipInativo, chipText, chipTextAtivo, chipRow } =
+    exerciciosStyle;
   const { container, fabContainer } = ComumStyles;
   const { navigation, route } = props;
   const {
-    exercicio: { id, nome, tipoExercicio },
+    exercicio: { id, nome, tipoExercicio, possuiVariacao },
   } = route.params;
   const isExercicioMusculacao = tipoExercicio === 'MUSCULACAO';
   const isExercicioCalistenia = tipoExercicio === 'CALISTENIA';
@@ -30,12 +45,38 @@ const RegistroAtividadesCompleto = (props) => {
     [],
   );
   const [loading, setLoading] = useState(false);
+  const [variacoes, setVariacoes] = useState([]);
+  const [variacaoSelecionada, setVariacaoSelecionada] = useState(null);
+
+  const fetchVariacoes = useCallback(async () => {
+    try {
+      const { data } = await ExerciciosApi.fetchExercicioVariacoes(id);
+      setVariacoes(data || []);
+      if (data && data.length > 0) {
+        setVariacaoSelecionada(data[0]);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar variações do exercício:', error);
+      throwToastError('Erro ao buscar variações do exercício.');
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (possuiVariacao) {
+      fetchVariacoes();
+    }
+  }, [possuiVariacao, fetchVariacoes]);
 
   const fetchCargas = useCallback(async () => {
+    if (possuiVariacao && !variacaoSelecionada?.id) {
+      setRegistroAtividadeCompleto([]);
+      return;
+    }
     try {
       setLoading(true);
       const { data } = await Api.fetchRegistroAtividadeCompleto({
         exercicioId: id,
+        variacaoId: variacaoSelecionada?.id,
       });
       setRegistroAtividadeCompleto(data);
     } catch (error) {
@@ -44,7 +85,7 @@ const RegistroAtividadesCompleto = (props) => {
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [id, possuiVariacao, variacaoSelecionada]);
 
   useFocusEffect(
     useCallback(() => {
@@ -53,8 +94,11 @@ const RegistroAtividadesCompleto = (props) => {
   );
 
   const renderHeaderTitle = useCallback(() => {
-    return <HeaderTitle title={nome} subtitle="Registro Completo" />;
-  }, [nome]);
+    const subtitle = possuiVariacao
+      ? variacaoSelecionada?.nome || 'Selecione uma variação'
+      : 'Registro Completo';
+    return <HeaderTitle title={nome} subtitle={subtitle} />;
+  }, [nome, possuiVariacao, variacaoSelecionada]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -88,10 +132,12 @@ const RegistroAtividadesCompleto = (props) => {
       exercicioData: {
         id,
         nome,
+        possuiVariacao,
         isExercicioMusculacao,
         isExercicioAerobico,
         isExercicioCalistenia,
       },
+      variacaoData: variacaoSelecionada,
       registroAtividadeData: {},
       isEdicao: false,
     });
@@ -102,10 +148,12 @@ const RegistroAtividadesCompleto = (props) => {
       exercicioData: {
         id,
         nome,
+        possuiVariacao,
         isExercicioMusculacao,
         isExercicioAerobico,
         isExercicioCalistenia,
       },
+      variacaoData: variacaoSelecionada,
       registroAtividadeData: { ...item },
       isEdicao: true,
     });
@@ -159,8 +207,40 @@ const RegistroAtividadesCompleto = (props) => {
     </SelectableItem>
   );
 
+  const renderVariacoesPicker = () => {
+    if (!possuiVariacao || variacoes.length === 0) {
+      return null;
+    }
+
+    return (
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={chipRow}
+        style={{ flexShrink: 0 }}
+      >
+        {variacoes.map((variacao) => {
+          const ativo = variacaoSelecionada?.id === variacao.id;
+          return (
+            <TouchableOpacity
+              key={variacao.id}
+              testID={`chip-variacao-${variacao.id}`}
+              style={[chip, ativo ? chipAtivo : chipInativo]}
+              onPress={() => setVariacaoSelecionada(variacao)}
+            >
+              <Text style={ativo ? chipTextAtivo : chipText}>
+                {variacao.nome}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+    );
+  };
+
   return (
     <View style={container}>
+      {renderVariacoesPicker()}
       {loading ? (
         <LoadingIndicator />
       ) : (

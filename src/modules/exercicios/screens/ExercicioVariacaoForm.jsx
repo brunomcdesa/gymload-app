@@ -12,9 +12,9 @@ import PropTypes from 'prop-types';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
-import * as EnumApi from '../../../comum/EnumApi';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
+import { fetchTiposVariacoesSelect } from '../../tipovariacao/Api';
 
 const ExercicioVariacaoForm = (props) => {
   const {
@@ -32,16 +32,15 @@ const ExercicioVariacaoForm = (props) => {
   const [formData, setFormData] = useState({
     exercicioBaseId: id,
     nome: null,
-    tipoEquipamento: null,
+    tipoVariacaoId: null,
   });
 
   const [loading, setLoading] = useState(false);
 
-  const [tipoEquipamentoItems, setTipoEquipamentoItems] = useState([]);
-  const [openTipoEquipamentoSelect, setOpenTipoEquipamentoSelect] =
-    useState(false);
-  const [tipoEquipamentoLoading, setTipoEquipamentoLoading] = useState(false);
-  const [tipoEquipamentoSelected, setTipoEquipamentoSelected] = useState(null);
+  const [tipoVariacaoItems, setTipoVariacaoItems] = useState([]);
+  const [openTipoVariacaoSelect, setOpenTipoVariacaoSelect] = useState(false);
+  const [tipoVariacaoLoading, setTipoVariacaoLoading] = useState(false);
+  const [tipoVariacaoSelected, setTipoVariacaoSelected] = useState(null);
 
   const isExercicioMusculacao = tipoExercicio === 'MUSCULACAO';
   const isExercicioCalistenia = tipoExercicio === 'CALISTENIA';
@@ -56,7 +55,7 @@ const ExercicioVariacaoForm = (props) => {
   const handleSubmit = async () => {
     if (
       !formData.exercicioBaseId ||
-      (isExercicioMusculacao && !formData.tipoEquipamento) ||
+      (isExercicioMusculacao && !formData.tipoVariacaoId) ||
       (isExercicioCalistenia && !formData.nome)
     ) {
       throwToastError('Todos os campos são obrigatórios!');
@@ -75,27 +74,29 @@ const ExercicioVariacaoForm = (props) => {
         error?.response?.data?.message ||
         `Erro ao salvar Variação para ${nome}.`;
       throwToastError(errorMessage);
-      console.log('Erro ao salvar novo Exercício.', errorMessage);
+      console.log('Erro ao salvar nova Variação.', errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchTiposEquipamentosSelect = async () => {
+  const fetchTiposVariacoes = async () => {
     try {
-      setTipoEquipamentoLoading(true);
-      const { data } = await EnumApi.fetchTiposEquipamentosSelect();
-      setTipoEquipamentoItems(data);
+      setTipoVariacaoLoading(true);
+      const { data } = await fetchTiposVariacoesSelect();
+      setTipoVariacaoItems(data);
     } catch (error) {
-      console.log('Erro ao buscar select de tipos de exercícios.', error);
+      console.log('Erro ao buscar tipos de variação.', error);
     } finally {
-      setTipoEquipamentoLoading(false);
+      setTipoVariacaoLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchTiposEquipamentosSelect();
-  }, []);
+    if (isExercicioMusculacao) {
+      fetchTiposVariacoes();
+    }
+  }, [isExercicioMusculacao]);
 
   const renderHeaderTitle = useCallback(() => {
     return (
@@ -135,19 +136,19 @@ const ExercicioVariacaoForm = (props) => {
         <View style={inlineContainer}>
           <View style={inputGroup}>
             <View style={formLabelObrigatorio}>
-              <Text style={formLabel}>Tipo de Equipamento:</Text>
+              <Text style={formLabel}>Tipo de Variação:</Text>
               <Text style={asteriscoObrigatorio}>*</Text>
             </View>
             <SelectInput
-              open={openTipoEquipamentoSelect}
-              setOpen={setOpenTipoEquipamentoSelect}
-              items={tipoEquipamentoItems}
-              setItems={setTipoEquipamentoItems}
-              value={tipoEquipamentoSelected || ''}
-              setValue={setTipoEquipamentoSelected}
-              loading={tipoEquipamentoLoading}
+              open={openTipoVariacaoSelect}
+              setOpen={setOpenTipoVariacaoSelect}
+              items={tipoVariacaoItems}
+              setItems={setTipoVariacaoItems}
+              value={tipoVariacaoSelected || ''}
+              setValue={setTipoVariacaoSelected}
+              loading={tipoVariacaoLoading}
               handleChange={handleChange}
-              field="tipoEquipamento"
+              field="tipoVariacaoId"
               zIndex={2000}
               zIndexInverse={200}
             />

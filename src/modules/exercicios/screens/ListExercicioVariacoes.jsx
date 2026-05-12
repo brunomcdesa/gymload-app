@@ -7,8 +7,6 @@ import EmptyList from '../../../components/List/EmptyList';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
-import * as RegistroAtividadeApi from '../../registrosAtividades/Api';
-import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import { useIsAdmin } from '../../utils/userUtils';
 import * as Api from '../Api';
 
@@ -21,11 +19,10 @@ const ListExercicioVariacoes = (props) => {
   const { listHeader } = style;
   const { navigation, route } = props;
   const { exercicioBase } = route.params;
-  const { id, nome } = exercicioBase;
+  const { id, nome, tipoExercicio } = exercicioBase;
   const [exerciciosVariacoes, setExerciciosVariacoes] = useState([]);
   const [filteredExerciciosVariacoes, setFilteredExerciciosVariacoes] =
     useState([]);
-  // const [dadosRegistrosAtividades, setDadosRegistrosAtividades] = useState({});
   const [loading, setLoading] = useState(false);
 
   const isAdmin = useIsAdmin();
@@ -36,20 +33,9 @@ const ListExercicioVariacoes = (props) => {
     try {
       setLoading(true);
       const { data } = await Api.fetchExercicioVariacoes(id);
-      console.log(...data);
       setExerciciosVariacoes(data);
       setFilteredExerciciosVariacoes(data);
-
-      // DESTAQUES FAZER POSTERIORMENTE
-      // if (data && data.length > 0) {
-      //   const exerciciosIds = data.map((exercicio) => exercicio.id);
-      //   await fetchDestaquesDosExercicios(
-      //     exerciciosIds,
-      //     setDadosRegistrosAtividades,
-      //   );
-      // }
     } catch (error) {
-      console.log({ ...error });
       console.error('Erro ao buscar exercicios:', error);
       return [];
     } finally {
@@ -73,10 +59,9 @@ const ListExercicioVariacoes = (props) => {
     });
   }, [navigation, renderHeaderTitle]);
 
-  const redirectExercicioForm = () => {
-    navigation.navigate('ExercicioForm', {
-      exercicioData: {},
-      isEdicao: false,
+  const redirectToExercicioVariacaoForm = () => {
+    navigation.navigate('ExercicioVariacaoForm', {
+      exercicioData: { ...exercicioBase },
     });
   };
 
@@ -84,27 +69,16 @@ const ListExercicioVariacoes = (props) => {
     setFilteredExerciciosVariacoes(filteredData);
   };
 
-  const redirectRegistroAtividadesCompleto = (exercicio) => {
+  const redirectRegistroAtividadesCompleto = () => {
     navigation.navigate('RegistroAtividadesCompleto', {
-      exercicio,
+      exercicio: { ...exercicioBase },
     });
   };
 
-  const repetirUltimoRegistro = async (exercicioId) => {
-    try {
-      setLoading(true);
-      console.log();
-      await RegistroAtividadeApi.repetirUltimoRegistro(exercicioId);
-      throwToastSuccess('Registro salvo com sucesso.');
-    } catch (error) {
-      throwToastError('Erro ao tentar repetir ultimo registro do exercício.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // TODO: repetir ultimo registro com variacaoId — requer ajuste no backend
 
   const getOptions = () => {
-    const options = ['Visualizar Registros', 'Repetir ultimo Registro'];
+    const options = ['Visualizar Registros'];
 
     if (isAdmin) {
       options.splice(0, 0, 'Editar Variação'); // FAZER POSTERIORMENTE
@@ -115,19 +89,16 @@ const ListExercicioVariacoes = (props) => {
     return options;
   };
 
-  const selectOptionsAction = (selectedIndex, item) => {
+  const selectOptionsAction = (selectedIndex) => {
     const options = getOptions();
     const selectedOption = options[selectedIndex];
 
     switch (selectedOption) {
       case 'Visualizar Registros':
-        redirectRegistroAtividadesCompleto(item);
+        redirectRegistroAtividadesCompleto();
         break;
       case 'Editar Variação':
         console.log('TODO: Edição de Variação');
-        break;
-      case 'Repetir ultimo Registro':
-        repetirUltimoRegistro(item.id);
         break;
       case 'Cancelar':
         break;
@@ -137,12 +108,15 @@ const ListExercicioVariacoes = (props) => {
   const renderExercicioItem = ({ item: exercicioVariacao }) => (
     <SelectableItem
       item={exercicioVariacao}
-      cancelButtonIndex={isAdmin ? 3 : 2}
-      options={getOptions(exercicioVariacao)}
+      cancelButtonIndex={getOptions().length - 1}
+      options={getOptions()}
       onActionSelected={selectOptionsAction}
-      onLongPress={() => redirectRegistroAtividadesCompleto(exercicioVariacao)}
+      onLongPress={() => redirectRegistroAtividadesCompleto()}
     >
-      <ExercicioVariacao exercicioVariacaoData={exercicioVariacao} />
+      <ExercicioVariacao
+        exercicioVariacaoData={exercicioVariacao}
+        tipoExercicio={tipoExercicio}
+      />
     </SelectableItem>
   );
 
@@ -177,7 +151,7 @@ const ListExercicioVariacoes = (props) => {
 
       {isAdmin && (
         <View style={fabContainer}>
-          <AddButton onPress={redirectExercicioForm} />
+          <AddButton onPress={redirectToExercicioVariacaoForm} />
         </View>
       )}
     </View>

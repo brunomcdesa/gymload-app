@@ -126,7 +126,7 @@ const ListExercicios = () => {
 
   const redirectToListExercicioVariacoes = (exercicio) => {
     navigation.navigate('ListExercicioVariacoes', {
-      exercicioBase: { id: exercicio.id, nome: exercicio.nome },
+      exercicioBase: { ...exercicio },
     });
   };
 
@@ -143,16 +143,17 @@ const ListExercicios = () => {
   };
 
   const getOptions = (item) => {
-    const options = [
-      item.possuiVariacao ? 'Visualizar Variações' : 'Visualizar Registros',
-      'Repetir ultimo Registro',
-    ];
+    const options = ['Visualizar Registros'];
+
+    if (isAdmin && item.possuiVariacao) {
+      options.push('Visualizar Variações');
+      options.push('Adicionar Variação');
+    }
+
+    options.push('Repetir ultimo Registro');
 
     if (isAdmin) {
       options.splice(0, 0, 'Editar Exercício');
-      if (item.possuiVariacao) {
-        options.splice(1, 0, 'Adicionar Variação');
-      }
     }
 
     options.push('Cancelar');
@@ -186,13 +187,7 @@ const ListExercicios = () => {
   };
 
   const getCancelButtonIndex = (item) => {
-    if (isAdmin) {
-      if (item.possuiVariacao) {
-        return 4;
-      }
-      return 3;
-    }
-    return 2;
+    return getOptions(item).length - 1;
   };
 
   const renderExercicioItem = ({ item: exercicio }) => (
@@ -201,22 +196,14 @@ const ListExercicios = () => {
       cancelButtonIndex={getCancelButtonIndex(exercicio)}
       options={getOptions(exercicio)}
       onActionSelected={selectOptionsAction}
-      onLongPress={() =>
-        exercicio.possuiVariacao
-          ? redirectToListExercicioVariacoes(exercicio)
-          : redirectRegistroAtividadesCompleto(exercicio)
-      }
+      onLongPress={() => redirectRegistroAtividadesCompleto(exercicio)}
     >
       <Exercicio
         exercicioData={exercicio}
         dadosRegistrosAtividades={
           dadosRegistrosAtividades[exercicio.id] || null
         }
-        onViewHistorico={() =>
-          exercicio.possuiVariacao
-            ? redirectToListExercicioVariacoes(exercicio)
-            : redirectRegistroAtividadesCompleto(exercicio)
-        }
+        onViewHistorico={() => redirectRegistroAtividadesCompleto(exercicio)}
       />
     </SelectableItem>
   );

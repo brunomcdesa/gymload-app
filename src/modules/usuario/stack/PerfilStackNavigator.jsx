@@ -8,6 +8,7 @@ import EditarPerfilForm from '../screens/EditarPerfilForm';
 import Notificacoes from '../screens/Notificacoes';
 import Perfil from '../screens/Perfil';
 import UsuarioCadastroForm from '../screens/UsuarioCadastroForm';
+import TiposVariacoesStackNavigator from '../../tipovariacao/stack/TiposVariacoesStackNavigator';
 import UsuarioStackNavigator from './UsuarioStackNavigator';
 
 const Stack = createStackNavigator();
@@ -62,6 +63,11 @@ const PerfilStackNavigator = () => {
         options={{ headerTitle: '' }}
         name="GerenciarUsuariosStack"
         component={UsuarioStackNavigator}
+      />
+      <Stack.Screen
+        options={{ headerTitle: '' }}
+        name="TiposVariacoesStack"
+        component={TiposVariacoesStackNavigator}
       />
       <Stack.Screen
         options={{ headerTitle: '' }}

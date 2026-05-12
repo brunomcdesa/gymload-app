@@ -16,13 +16,13 @@ const Exercicio = ({
   dadosRegistrosAtividades,
   onViewHistorico,
 }) => {
-  const { nome, grupoMuscular, tipoExercicio } = exercicioData;
+  const { nome, grupoMuscular, tipoExercicio, possuiVariacao } = exercicioData;
   const { destaque, ultimaCarga, ultimaDistancia } =
     dadosRegistrosAtividades || {};
   const { elementContainer } = ComumStyles;
 
-  const hasRecord = destaque && destaque !== '-';
-  const hasDestaque = dadosRegistrosAtividades != null;
+  const hasRecord = !possuiVariacao && destaque && destaque !== '-';
+  const hasDestaque = !possuiVariacao && dadosRegistrosAtividades != null;
   const showDistancia = ultimaDistancia && !ultimaCarga;
   const iconName = ICONE_TIPO[tipoExercicio] || 'fitness-center';
   const iconBg = hasRecord ? `${colors.secondary}1a` : colors.inputBackground;
@@ -50,22 +50,26 @@ const Exercicio = ({
       </View>
 
       {/* Stats row */}
-      {hasDestaque && (
-        <View style={style.destaquesRow}>
-          <View style={style.destaqueBox}>
-            <Text style={style.destaqueLabel}>RECORDE</Text>
-            <Text style={style.recordeValue}>{destaque || '-'}</Text>
+      {possuiVariacao ? (
+        <Text style={style.possuiVariacoesLabel}>Possui variações</Text>
+      ) : (
+        hasDestaque && (
+          <View style={style.destaquesRow}>
+            <View style={style.destaqueBox}>
+              <Text style={style.destaqueLabel}>RECORDE</Text>
+              <Text style={style.recordeValue}>{destaque || '-'}</Text>
+            </View>
+            <View style={style.statDivider} />
+            <View style={style.destaqueBox}>
+              <Text style={style.destaqueLabel}>
+                {showDistancia ? 'ÚLTIMA DISTÂNCIA' : 'ÚLTIMA CARGA'}
+              </Text>
+              <Text style={style.ultimoDadoValue}>
+                {showDistancia ? ultimaDistancia : ultimaCarga || '-'}
+              </Text>
+            </View>
           </View>
-          <View style={style.statDivider} />
-          <View style={style.destaqueBox}>
-            <Text style={style.destaqueLabel}>
-              {showDistancia ? 'ÚLTIMA DISTÂNCIA' : 'ÚLTIMA CARGA'}
-            </Text>
-            <Text style={style.ultimoDadoValue}>
-              {showDistancia ? ultimaDistancia : ultimaCarga || '-'}
-            </Text>
-          </View>
-        </View>
+        )
       )}
 
       {/* VER HISTÓRICO button */}

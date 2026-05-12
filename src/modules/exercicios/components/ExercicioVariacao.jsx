@@ -5,10 +5,56 @@ import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import style from '../style/style';
 
 const ExercicioVariacao = (props) => {
-  const { exercicioVariacaoData } = props;
-  const { nome, grupoMuscular } = exercicioVariacaoData;
-  const { exercicioHeader, exercicioNome, grupoMuscularText } = style;
+  const { exercicioVariacaoData, tipoExercicio } = props;
+  const { nome, grupoMuscular, ultimaCarga, ultimaDistancia, ultimaSerie } =
+    exercicioVariacaoData;
+  const {
+    exercicioHeader,
+    exercicioNome,
+    grupoMuscularText,
+    destaquesRow,
+    destaqueBox,
+    destaqueLabel,
+    ultimoDadoValue,
+  } = style;
   const { elementContainer } = ComumStyles;
+
+  const renderDestaque = () => {
+    if (tipoExercicio === 'AEROBICO' && ultimaDistancia) {
+      return (
+        <View style={destaquesRow}>
+          <View style={destaqueBox}>
+            <Text style={destaqueLabel}>ÚLTIMA DISTÂNCIA</Text>
+            <Text style={ultimoDadoValue}>{ultimaDistancia}</Text>
+          </View>
+        </View>
+      );
+    }
+
+    if (tipoExercicio === 'CALISTENIA' && ultimaSerie) {
+      return (
+        <View style={destaquesRow}>
+          <View style={destaqueBox}>
+            <Text style={destaqueLabel}>ÚLTIMA SÉRIE</Text>
+            <Text style={ultimoDadoValue}>{ultimaSerie}</Text>
+          </View>
+        </View>
+      );
+    }
+
+    if (ultimaCarga) {
+      return (
+        <View style={destaquesRow}>
+          <View style={destaqueBox}>
+            <Text style={destaqueLabel}>ÚLTIMA CARGA</Text>
+            <Text style={ultimoDadoValue}>{ultimaCarga}</Text>
+          </View>
+        </View>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <View style={elementContainer}>
@@ -18,12 +64,14 @@ const ExercicioVariacao = (props) => {
           <Text style={grupoMuscularText}>{grupoMuscular}</Text>
         )}
       </View>
+      {renderDestaque()}
     </View>
   );
 };
 
 ExercicioVariacao.propTypes = {
   exercicioVariacaoData: PropTypes.object.isRequired,
+  tipoExercicio: PropTypes.string,
 };
 
 export default ExercicioVariacao;

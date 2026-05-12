@@ -247,6 +247,13 @@ const Perfil = (props) => {
       )}
       {isAdmin && (
         <MenuRow
+          icon="tune"
+          label="Tipos de Variações"
+          onPress={() => navigation.navigate('TiposVariacoesStack')}
+        />
+      )}
+      {isAdmin && (
+        <MenuRow
           icon="person-add"
           label="Cadastrar Usuário Admin"
           onPress={() =>

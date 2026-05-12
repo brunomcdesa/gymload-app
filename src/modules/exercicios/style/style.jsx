@@ -216,4 +216,13 @@ export default StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.5,
   },
+  possuiVariacoesLabel: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: colors.terciary,
+    textAlign: 'center',
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+    marginVertical: 8,
+  },
 });

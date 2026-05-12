@@ -13,8 +13,14 @@ export const fetchDestaquesDeExercicios = (params, delay = 0) => {
   return pMinDelay(response, delay);
 };
 
-export const fetchRegistroAtividadeCompleto = ({ exercicioId, delay = 0 }) => {
-  const response = axiosPrivate.get(`${urlBase}/${exercicioId}/completo`);
+export const fetchRegistroAtividadeCompleto = ({
+  exercicioId,
+  variacaoId,
+  delay = 0,
+}) => {
+  const response = axiosPrivate.get(`${urlBase}/${exercicioId}/completo`, {
+    params: variacaoId != null ? { variacaoId } : undefined,
+  });
 
   return pMinDelay(response, delay);
 };

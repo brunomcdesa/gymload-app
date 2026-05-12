@@ -196,16 +196,19 @@ const RegistroAtividadeForm = (props) => {
     scrollContentContainer,
   } = ComumStyles;
   const { route, navigation } = props;
-  const { exercicioData, registroAtividadeData, isEdicao } = route.params;
+  const { exercicioData, registroAtividadeData, isEdicao, variacaoData } =
+    route.params;
   const {
     id,
     nome,
+    possuiVariacao,
     isExercicioMusculacao,
     isExercicioAerobico,
     isExercicioCalistenia,
   } = exercicioData;
   const [formData, setFormData] = useState({
     exercicioId: id,
+    variacaoId: variacaoData?.id ?? null,
     peso: registroAtividadeData.peso?.toString() || '0',
     unidadePeso: registroAtividadeData.unidadePeso || null,
     qtdRepeticoes: registroAtividadeData.qtdRepeticoes?.toString() || '1',
@@ -263,6 +266,11 @@ const RegistroAtividadeForm = (props) => {
   };
 
   const handleSubmit = async () => {
+    if (possuiVariacao && !variacaoData?.id) {
+      throwToastError('Selecione uma variação antes de salvar.');
+      return;
+    }
+
     if (
       (isExercicioMusculacao &&
         (!formData.peso || !formData.unidadePeso || !formData.qtdRepeticoes)) ||
@@ -340,8 +348,14 @@ const RegistroAtividadeForm = (props) => {
   );
 
   const renderHeaderTitle = useCallback(() => {
-    return <HeaderTitle title={nome} isForm={true} />;
-  }, [nome]);
+    return (
+      <HeaderTitle
+        title={nome}
+        subtitle={variacaoData?.nome}
+        isForm={!variacaoData?.nome}
+      />
+    );
+  }, [nome, variacaoData]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -539,6 +553,10 @@ RegistroAtividadeForm.propTypes = {
       exercicioData: PropTypes.object.isRequired,
       registroAtividadeData: PropTypes.object,
       isEdicao: PropTypes.bool.isRequired,
+      variacaoData: PropTypes.shape({
+        id: PropTypes.number,
+        nome: PropTypes.string,
+      }),
     }).isRequired,
   }).isRequired,
   navigation: PropTypes.shape({

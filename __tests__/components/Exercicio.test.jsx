@@ -107,8 +107,23 @@ describe('Exercicio component', () => {
         <Exercicio
           exercicioData={baseExercicioData}
           dadosRegistrosAtividades={emptyHistorico}
+          onViewHistorico={jest.fn()}
         />,
       );
     }).not.toThrow();
+  });
+
+  it('shows "Possui variações" label and hides ultimaCarga when possuiVariacao=true', () => {
+    const instance = ReactTestRenderer.create(
+      <Exercicio
+        exercicioData={{ ...baseExercicioData, possuiVariacao: true }}
+        dadosRegistrosAtividades={withDestaque}
+        onViewHistorico={jest.fn()}
+      />,
+    );
+    const tree = JSON.stringify(instance.toJSON());
+    expect(tree).toContain('Possui variações');
+    expect(tree).not.toContain('ÚLTIMA CARGA');
+    expect(tree).not.toContain('RECORDE');
   });
 });
