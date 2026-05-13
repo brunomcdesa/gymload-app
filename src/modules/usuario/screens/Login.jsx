@@ -23,7 +23,7 @@ const logoIcon = require('../../../../assets/icon.png');
 const Login = (props) => {
   const { navigation } = props;
   const { login } = useContext(AuthContext);
-  const [formData, setFormData] = useState({ username: '', password: '' });
+  const [formData, setFormData] = useState({ login: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
@@ -90,13 +90,14 @@ const Login = (props) => {
         />
         <TextInput
           style={style.loginInputText}
-          placeholder="Digite o username"
+          placeholder="Username ou email"
           placeholderTextColor={colors.placeholderText}
-          value={formData.username}
-          onChangeText={(v) => handleChange('username', v)}
+          value={formData.login}
+          onChangeText={(v) => handleChange('login', v)}
           onFocus={() => setUsernameFocused(true)}
           onBlur={() => setUsernameFocused(false)}
           autoCapitalize="none"
+          keyboardType="email-address"
         />
       </View>
 
@@ -147,6 +148,7 @@ const Login = (props) => {
         <LoadingIndicator />
       ) : (
         <TouchableOpacity
+          testID="login-entrar-button"
           style={style.loginEntrarButton}
           onPress={handleRealizarLogin}
           activeOpacity={0.8}

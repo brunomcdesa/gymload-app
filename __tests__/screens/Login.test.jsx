@@ -45,12 +45,12 @@ describe('Login screen', () => {
     expect(tree).toContain('load');
   });
 
-  it('renders username placeholder text', async () => {
+  it('renders "Username ou email" placeholder text', async () => {
     let instance;
     await ReactTestRenderer.act(() => {
       instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
     });
-    expect(JSON.stringify(instance.toJSON())).toContain('Digite o username');
+    expect(JSON.stringify(instance.toJSON())).toContain('Username ou email');
   });
 
   it('renders password placeholder text', async () => {
@@ -131,5 +131,48 @@ describe('Login screen', () => {
       });
       expect(mockNavigation.navigate).toHaveBeenCalledWith('EsqueciMinhaSenha');
     }
+  });
+
+  it('chama realizarLogin com campo login (nao username) ao submeter', async () => {
+    const Api = require('../../src/modules/usuario/Api');
+    Api.realizarLogin.mockClear();
+
+    let instance;
+    await ReactTestRenderer.act(() => {
+      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+    });
+
+    const entrarBtn = instance.root.findByProps({ testID: 'login-entrar-button' });
+
+    await ReactTestRenderer.act(async () => {
+      entrarBtn.props.onPress();
+    });
+
+    expect(Api.realizarLogin).toHaveBeenCalledWith(
+      expect.objectContaining({ login: expect.any(String) }),
+    );
+    expect(Api.realizarLogin).not.toHaveBeenCalledWith(
+      expect.objectContaining({ username: expect.anything() }),
+    );
+  });
+
+  it('nao envia campo username no body do login', async () => {
+    const Api = require('../../src/modules/usuario/Api');
+    Api.realizarLogin.mockClear();
+
+    let instance;
+    await ReactTestRenderer.act(() => {
+      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+    });
+
+    const entrarBtn = instance.root.findByProps({ testID: 'login-entrar-button' });
+
+    await ReactTestRenderer.act(async () => {
+      entrarBtn.props.onPress();
+    });
+
+    const callArgs = Api.realizarLogin.mock.calls[0][0];
+    expect(callArgs).toHaveProperty('login');
+    expect(callArgs).not.toHaveProperty('username');
   });
 });
