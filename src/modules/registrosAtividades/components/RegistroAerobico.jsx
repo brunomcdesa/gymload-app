@@ -1,44 +1,41 @@
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
-
-import { colors } from '../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import style from '../style/style';
 
 const RegistroAerobico = (props) => {
-  const { registroContainer, dataContainer, divider, dataText } = style;
   const { registroData } = props;
-  const { distancia, duracao, velocidadeMedia } = registroData;
+  const { distancia, duracao, velocidadeMedia, observacao } = registroData;
+  const { elementContainer } = ComumStyles;
+  const {
+    destaquesRow,
+    destaqueBox,
+    destaqueLabel,
+    destaqueValue,
+    statDivider,
+    observacaoText,
+  } = style;
 
   return (
-    <View style={registroContainer}>
-      <View style={dataContainer}>
-        <MaterialCommunityIcons
-          name="clock-outline"
-          size={20}
-          color={colors.secondary}
-        />
-        <Text style={dataText}>{duracao} h</Text>
+    <View style={elementContainer}>
+      <View style={destaquesRow}>
+        <View style={destaqueBox}>
+          <Text style={destaqueLabel}>Duração</Text>
+          <Text style={destaqueValue}>{duracao} h</Text>
+        </View>
+        <View style={statDivider} />
+        <View style={destaqueBox}>
+          <Text style={destaqueLabel}>Distância</Text>
+          <Text style={destaqueValue}>{distancia} km</Text>
+        </View>
+        <View style={statDivider} />
+        <View style={destaqueBox}>
+          <Text style={destaqueLabel}>Vel. Média</Text>
+          <Text style={destaqueValue}>{velocidadeMedia}</Text>
+        </View>
       </View>
-
-      <View style={divider} />
-
-      <View style={dataContainer}>
-        <MaterialCommunityIcons
-          name="map-marker-distance"
-          size={20}
-          color={colors.secondary}
-        />
-        <Text style={dataText}>{`${distancia} km`}</Text>
-      </View>
-
-      <View style={divider} />
-
-      <View style={dataContainer}>
-        <MaterialIcons name="speed" size={20} color={colors.secondary} />
-        <Text style={dataText}>{velocidadeMedia}</Text>
-      </View>
+      {observacao ? <Text style={observacaoText}>{observacao}</Text> : null}
     </View>
   );
 };
@@ -46,4 +43,5 @@ const RegistroAerobico = (props) => {
 RegistroAerobico.propTypes = {
   registroData: PropTypes.object.isRequired,
 };
+
 export default RegistroAerobico;

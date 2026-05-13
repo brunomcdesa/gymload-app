@@ -1,40 +1,45 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { colors } from '../../../components/Styles/ComumStyles';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import style from '../style/style';
 
 const RegistroCalistenia = (props) => {
   const { registroData } = props;
-  const { qtdSeries, carga, qtdRepeticoes } = registroData;
-  const { registroContainer, dataContainer, dataText, divider } = style;
+  const { qtdSeries, carga, qtdRepeticoes, observacao } = registroData;
+  const { elementContainer } = ComumStyles;
+  const {
+    destaquesRow,
+    destaqueBox,
+    destaqueLabel,
+    destaqueValue,
+    statDivider,
+    observacaoText,
+  } = style;
 
   return (
-    <View style={registroContainer}>
-      <View style={dataContainer}>
-        <MaterialIcons name="replay" size={20} color={colors.secondary} />
-        <Text style={dataText}>{qtdSeries}x</Text>
+    <View style={elementContainer}>
+      <View style={destaquesRow}>
+        <View style={destaqueBox}>
+          <Text style={destaqueLabel}>Séries</Text>
+          <Text style={destaqueValue}>{qtdSeries}x</Text>
+        </View>
+        <View style={statDivider} />
+        <View style={destaqueBox}>
+          <Text style={destaqueLabel}>Reps</Text>
+          <Text style={destaqueValue}>{qtdRepeticoes}</Text>
+        </View>
+        {carga && (
+          <>
+            <View style={statDivider} />
+            <View style={destaqueBox}>
+              <Text style={destaqueLabel}>Carga</Text>
+              <Text style={destaqueValue}>{carga}</Text>
+            </View>
+          </>
+        )}
       </View>
-
-      <View style={divider} />
-
-      <View style={dataContainer}>
-        <MaterialIcons name="repeat" size={20} color={colors.secondary} />
-        <Text style={dataText}>{qtdRepeticoes} reps</Text>
-      </View>
-
-      {carga && (
-        <>
-          <View style={divider} />
-
-          <View style={dataContainer}>
-            <FontAwesome5 name="dumbbell" size={16} color={colors.secondary} />
-            <Text style={dataText}>{carga}</Text>
-          </View>
-        </>
-      )}
+      {observacao ? <Text style={observacaoText}>{observacao}</Text> : null}
     </View>
   );
 };

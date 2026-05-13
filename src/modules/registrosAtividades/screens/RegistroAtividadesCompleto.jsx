@@ -1,3 +1,4 @@
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React, {
   useCallback,
   useEffect,
@@ -14,26 +15,53 @@ import {
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import AddButton from '../../../components/Button/AddButton';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
-import * as Api from '../Api';
-
-import HeaderTitle from '../../../components/Header/HeaderTitle';
+import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as ExerciciosApi from '../../exercicios/Api';
 import exerciciosStyle from '../../exercicios/style/style';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
+import * as Api from '../Api';
 import RegistroAerobico from '../components/RegistroAerobico';
 import RegistroCalistenia from '../components/RegistroCalistenia';
 import RegistroMusculacao from '../components/RegistroMusculacao';
 import style from '../style/style';
 
+const MESES = [
+  'JAN',
+  'FEV',
+  'MAR',
+  'ABR',
+  'MAI',
+  'JUN',
+  'JUL',
+  'AGO',
+  'SET',
+  'OUT',
+  'NOV',
+  'DEZ',
+];
+
+const formatarDataSecao = (dateStr) => {
+  const [day, month, year] = dateStr.split('/');
+  return `${parseInt(day)} ${MESES[parseInt(month) - 1]} ${year}`;
+};
+
 const RegistroAtividadesCompleto = (props) => {
-  const { listContent, sectionHeader, sectionHeaderText } = style;
+  const {
+    listContent,
+    sectionHeader,
+    sectionHeaderText,
+    formFooter,
+    backButton,
+    backButtonText,
+    addButton,
+    addButtonText,
+  } = style;
   const { chip, chipAtivo, chipInativo, chipText, chipTextAtivo, chipRow } =
     exerciciosStyle;
-  const { container, fabContainer } = ComumStyles;
+  const { container } = ComumStyles;
   const { navigation, route } = props;
   const {
     exercicio: { id, nome, tipoExercicio, possuiVariacao },
@@ -103,6 +131,8 @@ const RegistroAtividadesCompleto = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
+      headerLeft: () => null,
+      headerBackVisible: false,
     });
   }, [navigation, renderHeaderTitle]);
 
@@ -120,7 +150,7 @@ const RegistroAtividadesCompleto = (props) => {
     });
 
     return Object.keys(grouped).map((date) => ({
-      title: date,
+      title: formatarDataSecao(date),
       data: grouped[date],
     }));
   };
@@ -254,11 +284,43 @@ const RegistroAtividadesCompleto = (props) => {
               <Text style={sectionHeaderText}>{title}</Text>
             </View>
           )}
+          ListEmptyComponent={() => (
+            <View style={{ alignItems: 'center', paddingVertical: 60 }}>
+              <MaterialIcons
+                name="fitness-center"
+                size={48}
+                color={colors.terciary}
+              />
+              <Text
+                style={{
+                  color: colors.terciary,
+                  marginTop: 12,
+                  fontSize: 14,
+                  textAlign: 'center',
+                }}
+              >
+                {'Nenhum registro encontrado.\nAdicione o primeiro!'}
+              </Text>
+            </View>
+          )}
         />
       )}
 
-      <View style={fabContainer}>
-        <AddButton onPress={redirectToRegistroAtividadeForm} />
+      <View style={formFooter}>
+        <TouchableOpacity
+          style={backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={backButtonText}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={addButton}
+          onPress={redirectToRegistroAtividadeForm}
+          activeOpacity={0.8}
+        >
+          <MaterialIcons name="add" size={18} color="#fff" />
+          <Text style={addButtonText}>Adicionar</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -273,6 +335,7 @@ RegistroAtividadesCompleto.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     setOptions: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
 };
 
