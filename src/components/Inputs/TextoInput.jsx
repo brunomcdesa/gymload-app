@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { TextInput } from 'react-native';
 import { colors } from '../Styles/ComumStyles';
 import style from './styles/style';
@@ -8,11 +8,12 @@ const TextoInput = (props) => {
   const { placeholder, value, onChangeText, keyboardType, secureTextEntry } =
     props;
   const { formTextInput } = style;
-  const { placeholderText } = colors;
+  const { placeholderText, secondary } = colors;
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <TextInput
-      style={formTextInput}
+      style={[formTextInput, isFocused && { borderColor: secondary }]}
       placeholder={placeholder}
       keyboardType={keyboardType || 'default'}
       placeholderTextColor={placeholderText}
@@ -21,6 +22,8 @@ const TextoInput = (props) => {
         onChangeText(textValue);
       }}
       secureTextEntry={secureTextEntry}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
     />
   );
 };

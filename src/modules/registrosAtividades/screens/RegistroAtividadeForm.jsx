@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import SaveButton from '../../../components/Button/SaveButton';
+import FormFooter from '../../../components/Button/FormFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
@@ -185,7 +185,6 @@ StepperSmall.propTypes = {
 
 const RegistroAtividadeForm = (props) => {
   const {
-    fabContainer,
     formContainer,
     formLabel,
     formLabelObrigatorio,
@@ -232,9 +231,8 @@ const RegistroAtividadeForm = (props) => {
 
   const convertDecimalHoursToDate = (decimalHours) => {
     const hours = Math.floor(decimalHours);
-    const minutes = Math.floor((decimalHours - hours) * 60);
-    const seconds = Math.floor(((decimalHours - hours) * 60 - minutes) * 60);
-    return new Date(0, 0, 0, hours, minutes, seconds);
+    const minutes = Math.round((decimalHours - hours) * 60);
+    return new Date(0, 0, 0, hours, minutes, 0);
   };
 
   const handleChange = useCallback(
@@ -245,9 +243,8 @@ const RegistroAtividadeForm = (props) => {
   );
 
   const convertDurationToDecimalHours = (date) => {
-    const decimalHours =
-      date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 3600;
-    return parseFloat(decimalHours.toFixed(2));
+    const decimalHours = date.getHours() + date.getMinutes() / 60;
+    return parseFloat(decimalHours.toFixed(6));
   };
 
   const pesoStep = unidadePesoSelected === 'LB' ? 1 : 2.5;
@@ -360,6 +357,9 @@ const RegistroAtividadeForm = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
+      headerTitleAlign: 'center',
+      headerLeft: () => null,
+      gestureEnabled: false,
     });
   }, [navigation, renderHeaderTitle]);
 
@@ -418,10 +418,7 @@ const RegistroAtividadeForm = (props) => {
           />
         </View>
 
-        <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Tipo de pegada</Text>
-          <Text style={asteriscoObrigatorio}>*</Text>
-        </View>
+        <Text style={formLabel}>Tipo de pegada</Text>
         <SelectInput
           open={openTiposPegadasSelect}
           setOpen={setOpenTiposPegadasSelect}
@@ -443,27 +440,31 @@ const RegistroAtividadeForm = (props) => {
   const renderFieldsRegistroAerobico = () => {
     return (
       <View>
-        <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Distância:</Text>
-          <Text style={asteriscoObrigatorio}>*</Text>
+        <View style={stepperStyle.stepperSection}>
+          <Text style={stepperStyle.stepperLabel}>
+            DISTÂNCIA
+            <Text style={stepperStyle.stepperRequired}> *</Text>
+          </Text>
+          <TextoInput
+            placeholder="Digite a distância em km"
+            keyboardType="numeric"
+            value={formData.distancia}
+            onChangeText={(distanciaValue) =>
+              handleChange('distancia', distanciaValue)
+            }
+          />
         </View>
-        <TextoInput
-          placeholder="Digite a distância em km"
-          keyboardType="numeric"
-          value={formData.distancia}
-          onChangeText={(distanciaValue) =>
-            handleChange('distancia', distanciaValue)
-          }
-        />
 
-        <View style={formLabelObrigatorio}>
-          <Text style={formLabel}>Duração:</Text>
-          <Text style={asteriscoObrigatorio}>*</Text>
+        <View style={stepperStyle.stepperSection}>
+          <Text style={stepperStyle.stepperLabel}>
+            DURAÇÃO
+            <Text style={stepperStyle.stepperRequired}> *</Text>
+          </Text>
+          <TimePickerInput
+            time={formData.duracao}
+            setTime={(newTime) => handleChange('duracao', newTime)}
+          />
         </View>
-        <TimePickerInput
-          time={formData.duracao}
-          setTime={(newTime) => handleChange('duracao', newTime)}
-        />
       </View>
     );
   };
@@ -540,9 +541,11 @@ const RegistroAtividadeForm = (props) => {
         />
       </ScrollView>
 
-      <View style={fabContainer}>
-        <SaveButton onPress={handleSubmit} loading={loading} />
-      </View>
+      <FormFooter
+        onBack={() => navigation.goBack()}
+        onSave={handleSubmit}
+        loading={loading}
+      />
     </View>
   );
 };

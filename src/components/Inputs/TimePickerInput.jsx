@@ -1,145 +1,102 @@
+import { Picker } from '@react-native-picker/picker';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import {
-  Keyboard,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import style from './styles/style';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { colors } from '../Styles/ComumStyles';
 
-const timeUnitMap = {
-  hours: {
-    get: (date) => date.getHours(),
-    set: (date, value) => date.setHours(value),
-    max: 23,
+const HOURS = Array.from({ length: 24 }, (_, i) => i);
+const MINUTES = Array.from({ length: 60 }, (_, i) => i);
+
+const pickerStyle = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.inputBackground,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colors.inputBorder,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
   },
-  minutes: {
-    get: (date) => date.getMinutes(),
-    set: (date, value) => date.setMinutes(value),
-    max: 59,
+  column: {
+    flex: 1,
+    alignItems: 'center',
   },
-  seconds: {
-    get: (date) => date.getSeconds(),
-    set: (date, value) => date.setSeconds(value),
-    max: 59,
+  picker: {
+    width: '100%',
+    color: colors.inputText,
   },
-};
+  label: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#888',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+    marginBottom: 4,
+  },
+  separator: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: colors.textLight,
+    marginHorizontal: 4,
+    marginBottom: 8,
+  },
+});
 
-const TimePickerInput = (props) => {
-  const { time, setTime } = props;
-  const {
-    timePickerContainer,
-    timeUnitContainer,
-    timeUnitText,
-    timeSeparator,
-    timeButton,
-    timeInput,
-  } = style;
-  const [editingUnit, setEditingUnit] = useState(null);
-  const [tempValue, setTempValue] = useState('');
+const TimePickerInput = ({ time, setTime }) => {
+  const selectedHours = time.getHours();
+  const selectedMinutes = time.getMinutes();
 
-  const handleTimeChange = (unit, change) => {
-    const newTime = new Date(time);
-    const currentValue = timeUnitMap[unit].get(newTime);
-    const newValue = Math.max(
-      0,
-      Math.min(timeUnitMap[unit].max, currentValue + change),
-    );
-    timeUnitMap[unit].set(newTime, newValue);
-    setTime(newTime);
+  const handleHoursChange = (h) => {
+    setTime(new Date(0, 0, 0, h, selectedMinutes, 0));
   };
 
-  const handleNumberPress = (unit) => {
-    setEditingUnit(unit);
-    setTempValue(timeUnitMap[unit].get(time).toString());
-  };
-
-  const handleInputSubmit = () => {
-    if (tempValue === '') {
-      setEditingUnit(null);
-      return;
-    }
-
-    const numericValue = parseInt(tempValue, 10) || 0;
-    const newTime = new Date(time);
-    const clampedValue = Math.max(
-      0,
-      Math.min(timeUnitMap[editingUnit].max, numericValue),
-    );
-    timeUnitMap[editingUnit].set(newTime, clampedValue);
-    setTime(newTime);
-    setEditingUnit(null);
-    Keyboard.dismiss();
-  };
-
-  const formatTimeUnit = (unit) => {
-    return unit.toString().padStart(2, '0');
-  };
-
-  const renderTimeUnit = (unit) => {
-    if (editingUnit === unit) {
-      return (
-        <TextInput
-          style={[timeUnitText, timeInput]}
-          value={tempValue}
-          onChangeText={(text) =>
-            setTempValue(text.replace(/[^0-9]/g, '').slice(0, 2))
-          }
-          onSubmitEditing={handleInputSubmit}
-          onBlur={handleInputSubmit}
-          keyboardType="number-pad"
-          maxLength={2}
-          autoFocus
-          selectTextOnFocus
-        />
-      );
-    }
-
-    return (
-      <TouchableOpacity onPress={() => handleNumberPress(unit)}>
-        <Text style={timeUnitText}>
-          {formatTimeUnit(timeUnitMap[unit].get(time))}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const renderChangeableTimeUnit = (unit) => {
-    return (
-      <View style={timeUnitContainer}>
-        <TouchableOpacity
-          onPress={() => handleTimeChange(unit, 1)}
-          style={timeButton}
-        >
-          <Ionicons name="chevron-up" size={20} color="#fff" />
-        </TouchableOpacity>
-
-        {renderTimeUnit(unit)}
-
-        <TouchableOpacity
-          onPress={() => handleTimeChange(unit, -1)}
-          style={timeButton}
-        >
-          <Ionicons name="chevron-down" size={20} color="#fff" />
-        </TouchableOpacity>
-      </View>
-    );
+  const handleMinutesChange = (m) => {
+    setTime(new Date(0, 0, 0, selectedHours, m, 0));
   };
 
   return (
-    <View style={timePickerContainer}>
-      {renderChangeableTimeUnit('hours')}
+    <View style={pickerStyle.container}>
+      <View style={pickerStyle.column}>
+        <Text style={pickerStyle.label}>H</Text>
+        <Picker
+          style={pickerStyle.picker}
+          selectedValue={selectedHours}
+          onValueChange={handleHoursChange}
+          dropdownIconColor={colors.terciary}
+        >
+          {HOURS.map((h) => (
+            <Picker.Item
+              key={h}
+              label={h.toString().padStart(2, '0')}
+              value={h}
+              color={colors.inputText}
+            />
+          ))}
+        </Picker>
+      </View>
 
-      <Text style={timeSeparator}>:</Text>
+      <Text style={pickerStyle.separator}>:</Text>
 
-      {renderChangeableTimeUnit('minutes')}
-
-      <Text style={timeSeparator}>:</Text>
-
-      {renderChangeableTimeUnit('seconds')}
+      <View style={pickerStyle.column}>
+        <Text style={pickerStyle.label}>M</Text>
+        <Picker
+          style={pickerStyle.picker}
+          selectedValue={selectedMinutes}
+          onValueChange={handleMinutesChange}
+          dropdownIconColor={colors.terciary}
+        >
+          {MINUTES.map((m) => (
+            <Picker.Item
+              key={m}
+              label={m.toString().padStart(2, '0')}
+              value={m}
+              color={colors.inputText}
+            />
+          ))}
+        </Picker>
+      </View>
     </View>
   );
 };
