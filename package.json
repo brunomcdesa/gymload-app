@@ -66,6 +66,7 @@
     "@react-native/eslint-config": "0.78.0",
     "@react-native/metro-config": "0.78.0",
     "@react-native/typescript-config": "0.78.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/jest": "^29.5.13",
     "@types/react": "~18.3.1",
     "@types/react-test-renderer": "^18.3.1",

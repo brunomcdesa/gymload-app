@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
 import {
-  Image,
   ScrollView,
   Text,
   TextInput,
@@ -11,14 +10,13 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
+import LogoMark from '../../../components/Logo/LogoMark';
 import { colors } from '../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../context/AuthProvider';
 import { handleChangeState } from '../../utils/stateUtils';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from './styles/style';
-
-const logoIcon = require('../../../../assets/icon.png');
 
 const Login = (props) => {
   const { navigation } = props;
@@ -62,15 +60,9 @@ const Login = (props) => {
     >
       {/* Logo section */}
       <View style={style.loginLogoSection}>
-        <View style={style.loginLogoContainer}>
-          <Image
-            source={logoIcon}
-            style={style.loginLogoImage}
-            resizeMode="contain"
-          />
-        </View>
+        <LogoMark width={128} height={64} bg={colors.background} />
         <Text style={style.loginLogoTitle}>
-          Gym<Text style={{ color: '#ff6b3d' }}>load</Text>
+          Gym<Text style={{ color: '#FF5E2C' }}>load</Text>
         </Text>
         <Text style={style.loginLogoSubtitle}>TRACK EVERY REP</Text>
       </View>
