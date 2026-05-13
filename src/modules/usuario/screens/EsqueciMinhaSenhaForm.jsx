@@ -1,40 +1,57 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import SaveButton from '../../../components/Button/SaveButton';
-import ShowPasswordButton from '../../../components/Button/ShowPasswordButton';
-import TextoInput from '../../../components/Inputs/TextoInput';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
-import { handleChangeState } from '../../utils/stateUtils';
+import { colors } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from './styles/style';
 
-const EsqueciMinhaSenhaForm = (props) => {
-  const { title, formLabel, passwordContainer, fabContainer } = ComumStyles;
-  const { loginContainer } = style;
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-  });
-  const { navigation } = props;
+const EsqueciMinhaSenhaForm = ({ navigation }) => {
+  const [formData, setFormData] = useState({ identifier: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [focusedField, setFocusedField] = useState(null);
 
-  const handleChange = (field, value) => {
-    handleChangeState(setFormData, formData, field, value);
-  };
+  useEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+
+  const handleChange = (field, value) =>
+    setFormData((prev) => ({ ...prev, [field]: value }));
+
+  const focus = (field) => () => setFocusedField(field);
+  const blur = () => setFocusedField(null);
+  const inputRow = (field) => [
+    style.loginInputRow,
+    focusedField === field && style.loginInputRowFocused,
+  ];
+  const iconColor = (field) =>
+    focusedField === field ? colors.secondary : '#aaa';
+
+  const pw = formData.password;
+  const strength = pw ? (pw.length >= 10 ? 3 : pw.length >= 6 ? 2 : 1) : 0;
+  const strengthColors = ['', '#dc3545', '#d4a93a', '#28a745'];
+  const strengthLabels = ['', 'FRACA', 'OK', 'FORTE'];
 
   const handleSubmit = async () => {
-    if (!formData.username || !formData.password) {
+    if (!formData.identifier || !formData.password) {
       throwToastError('Todos os campos são obrigatórios!');
       return;
     }
 
     try {
       setLoading(true);
-      await Api.alterarSenha(formData);
+      await Api.alterarSenha({ identifier: formData.identifier, password: formData.password });
       throwToastSuccess('Senha alterada com sucesso!');
       navigation.goBack();
     } catch (error) {
@@ -48,43 +65,145 @@ const EsqueciMinhaSenhaForm = (props) => {
   };
 
   return (
-    <View style={loginContainer}>
-      <Text style={title}>Alterar Senha</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <ScrollView
+        contentContainerStyle={style.esqueciScrollContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/* Ícone */}
+        <View style={style.esqueciIconSection}>
+          <View style={style.esqueciIconWrapper}>
+            <MaterialIcons name="lock-reset" size={36} color={colors.secondary} />
+          </View>
+          <Text style={style.esqueciTitle}>Redefinir Senha</Text>
+          <Text style={style.esqueciSubtitle}>
+            Informe seu username ou email e crie uma nova senha de acesso.
+          </Text>
+        </View>
 
-      <Text style={formLabel}>Username:</Text>
-      <TextoInput
-        placeholder="Digite seu username"
-        value={formData.username}
-        onChangeText={(usernameValue) =>
-          handleChange('username', usernameValue)
-        }
-      />
+        {/* Username ou Email */}
+        <Text style={style.cadastroFieldLabel}>
+          {'Username ou Email '}
+          <Text style={style.cadastroRequired}>*</Text>
+        </Text>
+        <View style={inputRow('identifier')}>
+          <MaterialIcons
+            name="alternate-email"
+            size={20}
+            color={iconColor('identifier')}
+            style={style.loginInputIcon}
+          />
+          <TextInput
+            style={style.loginInputText}
+            placeholder="Digite seu username ou email"
+            placeholderTextColor={colors.placeholderText}
+            value={formData.identifier}
+            onChangeText={(v) => handleChange('identifier', v)}
+            onFocus={focus('identifier')}
+            onBlur={blur}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+        </View>
 
-      <Text style={formLabel}>Nova senha:</Text>
-      <View style={passwordContainer}>
-        <TextoInput
-          placeholder="Digite a senha"
-          value={formData.password}
-          onChangeText={(passwordValue) =>
-            handleChange('password', passwordValue)
-          }
-          secureTextEntry={!showPassword}
-        />
-        <ShowPasswordButton
-          showPassword={showPassword}
-          setShowPassword={setShowPassword}
-        />
-      </View>
+        {/* Nova senha */}
+        <Text style={style.cadastroFieldLabel}>
+          {'Nova senha '}
+          <Text style={style.cadastroRequired}>*</Text>
+        </Text>
+        <View style={inputRow('password')}>
+          <MaterialIcons
+            name="lock"
+            size={20}
+            color={iconColor('password')}
+            style={style.loginInputIcon}
+          />
+          <TextInput
+            style={style.loginInputText}
+            placeholder="Digite a nova senha"
+            placeholderTextColor={colors.placeholderText}
+            value={formData.password}
+            onChangeText={(v) => handleChange('password', v)}
+            onFocus={focus('password')}
+            onBlur={blur}
+            secureTextEntry={!showPassword}
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword((s) => !s)}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <MaterialIcons
+              name={showPassword ? 'visibility-off' : 'visibility'}
+              size={20}
+              color="#aaa"
+            />
+          </TouchableOpacity>
+        </View>
 
-      <View style={fabContainer}>
-        <SaveButton onPress={handleSubmit} loading={loading} />
-      </View>
-    </View>
+        {/* Barra de força da senha */}
+        {!!pw && (
+          <View style={style.cadastroStrengthContainer}>
+            <View style={style.cadastroStrengthRow}>
+              {[1, 2, 3].map((n) => (
+                <View
+                  key={n}
+                  style={[
+                    style.cadastroStrengthSegment,
+                    {
+                      backgroundColor:
+                        n <= strength ? strengthColors[strength] : '#2f2f2f',
+                    },
+                  ]}
+                />
+              ))}
+            </View>
+            <Text
+              style={[
+                style.cadastroStrengthLabel,
+                { color: strengthColors[strength] },
+              ]}
+            >
+              FORÇA: {strengthLabels[strength]}
+            </Text>
+          </View>
+        )}
+
+        {/* Footer */}
+        <View style={style.esqueciFooter}>
+          <TouchableOpacity
+            style={style.esqueciVoltarButton}
+            onPress={() => navigation.goBack()}
+            disabled={loading}
+            activeOpacity={0.8}
+          >
+            <Text style={style.esqueciVoltarButtonText}>Voltar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              style.esqueciAltButton,
+              loading && style.esqueciAltButtonDisabled,
+            ]}
+            onPress={!loading ? handleSubmit : null}
+            disabled={loading}
+            activeOpacity={0.7}
+          >
+            {loading ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <Text style={style.esqueciAltButtonText}>ALTERAR SENHA</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 EsqueciMinhaSenhaForm.propTypes = {
-  navigation: PropTypes.shape().isRequired,
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default EsqueciMinhaSenhaForm;
