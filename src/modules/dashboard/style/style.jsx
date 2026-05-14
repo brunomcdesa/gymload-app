@@ -122,6 +122,14 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  dayDotActive: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    backgroundColor: colors.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   dayLabel: {
     fontSize: 11,
     color: '#aaa',

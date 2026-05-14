@@ -254,4 +254,24 @@ export default StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
   },
+  footerRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  finalizeButton: {
+    flex: 1,
+    backgroundColor: colors.success,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  finalizeButtonDisabled: {
+    backgroundColor: '#555',
+  },
+  finalizeButtonText: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '700',
+  },
 });

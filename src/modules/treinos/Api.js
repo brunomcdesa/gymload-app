@@ -34,3 +34,9 @@ export const ativarTreino = (id, delay = 0) => {
 
   return pMinDelay(response, delay);
 };
+
+export const finalizarTreino = (id, delay = 0) => {
+  const response = axiosPrivate.post(`${treinosUrl}/${id}/finalizar`);
+
+  return pMinDelay(response, delay);
+};

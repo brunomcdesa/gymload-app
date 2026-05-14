@@ -47,8 +47,7 @@ const formatarMesAno = (dataCadastro) => {
   }
 };
 
-const MenuRow = (props) => {
-  const { icon, label, onPress, danger } = props;
+const MenuRow = ({ icon, label, onPress, danger = false }) => {
   const labelStyle = danger ? style.menuRowLabelDanger : style.menuRowLabel;
   const iconColor = danger ? colors.danger : colors.terciary;
 
@@ -74,12 +73,7 @@ MenuRow.propTypes = {
   danger: PropTypes.bool,
 };
 
-MenuRow.defaultProps = {
-  danger: false,
-};
-
-const InfoRow = (props) => {
-  const { icon, label, value, isLast } = props;
+const InfoRow = ({ icon, label, value, isLast = false }) => {
   return (
     <View style={isLast ? style.infoRowReadLast : style.infoRowRead}>
       <MaterialIcons
@@ -99,10 +93,6 @@ InfoRow.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   isLast: PropTypes.bool,
-};
-
-InfoRow.defaultProps = {
-  isLast: false,
 };
 
 const formatSexo = (sexo) => {

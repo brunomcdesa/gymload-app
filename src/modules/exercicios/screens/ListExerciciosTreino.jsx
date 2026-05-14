@@ -1,10 +1,11 @@
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import { throwToastError } from '../../utils/toastUtils';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
+import { finalizarTreino } from '../../treinos/Api';
 import * as Api from '../Api';
 
 import Exercicio from '../components/Exercicio';
@@ -18,6 +19,7 @@ const ListExerciciosTreino = (props) => {
   const [exercicios, setExercicios] = useState([]);
   const [dadosRegistrosAtividades, setDadosRegistrosAtividades] = useState({});
   const [loading, setLoading] = useState(false);
+  const [finalizando, setFinalizando] = useState(false);
 
   const fetchExerciciosDoTreino = useCallback(async () => {
     try {
@@ -45,6 +47,19 @@ const ListExerciciosTreino = (props) => {
       fetchExerciciosDoTreino();
     }, [fetchExerciciosDoTreino]),
   );
+
+  const handleFinalizarTreino = async () => {
+    try {
+      setFinalizando(true);
+      await finalizarTreino(id);
+      throwToastSuccess('Treino finalizado com sucesso!');
+      navigation.goBack();
+    } catch (error) {
+      throwToastError(error.response?.data?.message || 'Erro ao finalizar treino.');
+    } finally {
+      setFinalizando(false);
+    }
+  };
 
   const redirectRegistroAtividadesCompleto = (exercicio) => {
     navigation.navigate('RegistroAtividadesCompleto', { exercicio });
@@ -86,12 +101,27 @@ const ListExerciciosTreino = (props) => {
         />
       )}
       <View style={style.footer}>
-        <TouchableOpacity
-          style={style.footerBackButton}
-          onPress={navigation.goBack}
-        >
-          <Text style={style.footerBackButtonText}>Voltar</Text>
-        </TouchableOpacity>
+        <View style={style.footerRow}>
+          <TouchableOpacity
+            style={style.footerBackButton}
+            onPress={navigation.goBack}
+            disabled={finalizando}
+          >
+            <Text style={style.footerBackButtonText}>Voltar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[style.finalizeButton, finalizando && style.finalizeButtonDisabled]}
+            onPress={!finalizando ? handleFinalizarTreino : null}
+            disabled={finalizando}
+            activeOpacity={0.7}
+          >
+            {finalizando ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <Text style={style.finalizeButtonText}>Finalizar Treino</Text>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

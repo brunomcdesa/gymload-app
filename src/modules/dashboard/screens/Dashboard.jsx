@@ -1,4 +1,5 @@
-import React, { useContext, useMemo } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
@@ -9,6 +10,8 @@ import {
 } from '../../../comum/constants';
 import { AuthContext } from '../../../context/AuthProvider';
 import { useScreenTitle } from '../../../hooks/useScreenTitle';
+import { throwToastError } from '../../utils/toastUtils';
+import * as DashboardApi from '../Api';
 import dashStyle from '../style/style';
 
 const WEEK_DAYS = ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'];
@@ -37,6 +40,27 @@ const Dashboard = () => {
     return `${DIAS_PT[now.getDay()]}, ${now.getDate()} DE ${MESES_PT[now.getMonth()]}`;
   }, []);
 
+  const [stats, setStats] = useState({
+    streak: null,
+    treinosMes: null,
+    diasSemana: Array(7).fill(false),
+  });
+
+  const fetchStats = useCallback(async () => {
+    try {
+      const { data } = await DashboardApi.fetchDashboardStats();
+      setStats(data);
+    } catch {
+      throwToastError('Erro ao carregar estatísticas.');
+    }
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchStats();
+    }, [fetchStats]),
+  );
+
   return (
     <View style={dashStyle.screenWrapper}>
       <ScrollView
@@ -53,14 +77,18 @@ const Dashboard = () => {
           </Text>
         </View>
 
-        {/* Stats row (placeholder) */}
+        {/* Stats row */}
         <View style={dashStyle.statsRow}>
           <View style={dashStyle.statCard}>
-            <Text style={dashStyle.statValueAccent}>—</Text>
+            <Text style={dashStyle.statValueAccent}>
+              {stats.streak != null ? String(stats.streak) : '—'}
+            </Text>
             <Text style={dashStyle.statLabel}>STREAK</Text>
           </View>
           <View style={dashStyle.statCard}>
-            <Text style={dashStyle.statValueNeutral}>—</Text>
+            <Text style={dashStyle.statValueNeutral}>
+              {stats.treinosMes != null ? String(stats.treinosMes) : '—'}
+            </Text>
             <Text style={dashStyle.statLabel}>TREINOS/MÊS</Text>
           </View>
           <View style={dashStyle.statCard}>
@@ -73,12 +101,14 @@ const Dashboard = () => {
         <View style={dashStyle.card}>
           <View style={dashStyle.weekHeader}>
             <Text style={dashStyle.weekTitle}>Esta semana</Text>
-            <Text style={dashStyle.weekSub}>0 / 7 dias</Text>
+            <Text style={dashStyle.weekSub}>
+              {stats.diasSemana.filter(Boolean).length} / 7 dias
+            </Text>
           </View>
           <View style={dashStyle.weekDots}>
             {WEEK_DAYS.map((d, i) => (
               <View key={i} style={dashStyle.dayItem}>
-                <View style={dashStyle.dayDot} />
+                <View style={stats.diasSemana[i] ? dashStyle.dayDotActive : dashStyle.dayDot} />
                 <Text style={dashStyle.dayLabel}>{d}</Text>
               </View>
             ))}
