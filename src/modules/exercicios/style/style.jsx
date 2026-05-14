@@ -225,4 +225,33 @@ export default StyleSheet.create({
     textTransform: 'uppercase',
     marginVertical: 8,
   },
+  screenContainer: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  listContent: {
+    padding: 16,
+    paddingBottom: 8,
+  },
+  footer: {
+    padding: 16,
+    paddingBottom: 24,
+    borderTopWidth: 1,
+    borderTopColor: '#333',
+    backgroundColor: colors.background,
+  },
+  footerBackButton: {
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#3a3a3a',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  footerBackButtonText: {
+    color: '#e8e8e8',
+    fontSize: 15,
+    fontWeight: '600',
+  },
 });

@@ -286,6 +286,14 @@ const RegistroAtividadeForm = (props) => {
         duracao: isExercicioAerobico
           ? convertDurationToDecimalHours(formData.duracao)
           : null,
+        distancia: isExercicioAerobico ? parseFloat(formData.distancia) : null,
+        ...(isExercicioAerobico && {
+          peso: null,
+          unidadePeso: null,
+          qtdRepeticoes: null,
+          qtdSeries: null,
+          tipoPegada: null,
+        }),
       };
 
       if (isEdicao) {
@@ -359,6 +367,7 @@ const RegistroAtividadeForm = (props) => {
       headerTitle: renderHeaderTitle,
       headerTitleAlign: 'center',
       headerLeft: () => null,
+      headerBackVisible: false,
       gestureEnabled: false,
     });
   }, [navigation, renderHeaderTitle]);

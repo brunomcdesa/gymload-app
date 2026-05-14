@@ -1,31 +1,21 @@
-import { Picker } from '@react-native-picker/picker';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../Styles/ComumStyles';
-
-const HOURS = Array.from({ length: 24 }, (_, i) => i);
-const MINUTES = Array.from({ length: 60 }, (_, i) => i);
 
 const pickerStyle = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: colors.inputBackground,
     borderRadius: 14,
     borderWidth: 1,
     borderColor: colors.inputBorder,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
+    padding: 12,
   },
   column: {
     flex: 1,
     alignItems: 'center',
-  },
-  picker: {
-    width: '100%',
-    color: colors.inputText,
   },
   label: {
     fontSize: 10,
@@ -33,69 +23,85 @@ const pickerStyle = StyleSheet.create({
     color: '#888',
     letterSpacing: 1.5,
     textTransform: 'uppercase',
-    marginBottom: 4,
+    marginBottom: 8,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  button: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: '#333',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: '700',
+    lineHeight: 26,
+  },
+  value: {
+    fontSize: 42,
+    fontWeight: '800',
+    color: colors.secondary,
+    letterSpacing: -1,
+    lineHeight: 48,
+    width: 64,
+    textAlign: 'center',
   },
   separator: {
-    fontSize: 24,
-    fontWeight: '700',
+    fontSize: 36,
+    fontWeight: '800',
     color: colors.textLight,
-    marginHorizontal: 4,
-    marginBottom: 8,
+    marginHorizontal: 8,
+    alignSelf: 'flex-end',
+    marginBottom: 4,
   },
 });
 
 const TimePickerInput = ({ time, setTime }) => {
-  const selectedHours = time.getHours();
-  const selectedMinutes = time.getMinutes();
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
 
-  const handleHoursChange = (h) => {
-    setTime(new Date(0, 0, 0, h, selectedMinutes, 0));
+  const changeHours = (delta) => {
+    setTime(new Date(0, 0, 0, Math.min(23, Math.max(0, hours + delta)), minutes, 0));
   };
 
-  const handleMinutesChange = (m) => {
-    setTime(new Date(0, 0, 0, selectedHours, m, 0));
+  const changeMinutes = (delta) => {
+    setTime(new Date(0, 0, 0, hours, Math.min(59, Math.max(0, minutes + delta)), 0));
   };
 
   return (
     <View style={pickerStyle.container}>
       <View style={pickerStyle.column}>
         <Text style={pickerStyle.label}>H</Text>
-        <Picker
-          style={pickerStyle.picker}
-          selectedValue={selectedHours}
-          onValueChange={handleHoursChange}
-          dropdownIconColor={colors.terciary}
-        >
-          {HOURS.map((h) => (
-            <Picker.Item
-              key={h}
-              label={h.toString().padStart(2, '0')}
-              value={h}
-              color={colors.inputText}
-            />
-          ))}
-        </Picker>
+        <View style={pickerStyle.row}>
+          <TouchableOpacity style={pickerStyle.button} onPress={() => changeHours(-1)} activeOpacity={0.7}>
+            <Text style={pickerStyle.buttonText}>−</Text>
+          </TouchableOpacity>
+          <Text style={pickerStyle.value}>{String(hours).padStart(2, '0')}</Text>
+          <TouchableOpacity style={pickerStyle.button} onPress={() => changeHours(1)} activeOpacity={0.7}>
+            <Text style={pickerStyle.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <Text style={pickerStyle.separator}>:</Text>
 
       <View style={pickerStyle.column}>
         <Text style={pickerStyle.label}>M</Text>
-        <Picker
-          style={pickerStyle.picker}
-          selectedValue={selectedMinutes}
-          onValueChange={handleMinutesChange}
-          dropdownIconColor={colors.terciary}
-        >
-          {MINUTES.map((m) => (
-            <Picker.Item
-              key={m}
-              label={m.toString().padStart(2, '0')}
-              value={m}
-              color={colors.inputText}
-            />
-          ))}
-        </Picker>
+        <View style={pickerStyle.row}>
+          <TouchableOpacity style={pickerStyle.button} onPress={() => changeMinutes(-1)} activeOpacity={0.7}>
+            <Text style={pickerStyle.buttonText}>−</Text>
+          </TouchableOpacity>
+          <Text style={pickerStyle.value}>{String(minutes).padStart(2, '0')}</Text>
+          <TouchableOpacity style={pickerStyle.button} onPress={() => changeMinutes(1)} activeOpacity={0.7}>
+            <Text style={pickerStyle.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

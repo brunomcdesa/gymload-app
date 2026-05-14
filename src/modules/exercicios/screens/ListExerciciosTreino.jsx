@@ -1,21 +1,20 @@
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError } from '../../utils/toastUtils';
 import * as Api from '../Api';
 
 import Exercicio from '../components/Exercicio';
+import style from '../style/style';
 import { fetchDestaquesDosExercicios } from '../utils/exerciciosUtils';
 
 const ListExerciciosTreino = (props) => {
   const { navigation, route } = props;
   const { treino } = route.params;
   const { id, nome } = treino;
-  const { container } = ComumStyles;
   const [exercicios, setExercicios] = useState([]);
   const [dadosRegistrosAtividades, setDadosRegistrosAtividades] = useState({});
   const [loading, setLoading] = useState(false);
@@ -47,6 +46,10 @@ const ListExerciciosTreino = (props) => {
     }, [fetchExerciciosDoTreino]),
   );
 
+  const redirectRegistroAtividadesCompleto = (exercicio) => {
+    navigation.navigate('RegistroAtividadesCompleto', { exercicio });
+  };
+
   const renderHeaderTitle = useCallback(() => {
     return <HeaderTitle title={nome} />;
   }, [nome]);
@@ -54,27 +57,42 @@ const ListExerciciosTreino = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
+      headerLeft: () => null,
+      headerBackVisible: false,
+      gestureEnabled: false,
     });
   }, [navigation, renderHeaderTitle]);
 
   return (
-    <View style={container}>
+    <View style={style.screenContainer}>
       {loading ? (
         <LoadingIndicator />
       ) : (
         <FlatList
           data={exercicios}
           keyExtractor={(exercicio) => exercicio.id}
+          contentContainerStyle={style.listContent}
           renderItem={({ item: exercicio }) => (
             <Exercicio
               exercicioData={exercicio}
               dadosRegistrosAtividades={
                 dadosRegistrosAtividades[exercicio.id] || null
               }
+              onViewHistorico={() =>
+                redirectRegistroAtividadesCompleto(exercicio)
+              }
             />
           )}
         />
       )}
+      <View style={style.footer}>
+        <TouchableOpacity
+          style={style.footerBackButton}
+          onPress={navigation.goBack}
+        >
+          <Text style={style.footerBackButtonText}>Voltar</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -87,6 +105,8 @@ ListExerciciosTreino.propTypes = {
   }).isRequired,
   navigation: PropTypes.shape({
     setOptions: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
 };
 

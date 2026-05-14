@@ -4,8 +4,7 @@ import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import style from './style/formFooterStyle';
 
-const FormFooter = (props) => {
-  const { onSave, onBack, loading, saveLabel } = props;
+const FormFooter = ({ onSave, onBack, loading, saveLabel = 'SALVAR' }) => {
 
   return (
     <View style={style.formFooter}>
@@ -45,10 +44,6 @@ FormFooter.propTypes = {
   onBack: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   saveLabel: PropTypes.string,
-};
-
-FormFooter.defaultProps = {
-  saveLabel: 'SALVAR',
 };
 
 export default FormFooter;

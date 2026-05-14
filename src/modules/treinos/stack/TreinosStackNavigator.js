@@ -40,6 +40,11 @@ const TreinosStackNavigator = (props) => {
       <Stack.Screen
         name="RegistroAtividadeForm"
         component={RegistroAtividadeForm}
+        options={{
+          headerLeft: () => null,
+          headerBackVisible: false,
+          gestureEnabled: false,
+        }}
       />
     </Stack.Navigator>
   );
