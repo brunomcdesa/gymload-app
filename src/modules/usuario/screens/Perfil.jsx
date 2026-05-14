@@ -244,6 +244,13 @@ const Perfil = (props) => {
       )}
       {isAdmin && (
         <MenuRow
+          icon="man"
+          label="Grupos Musculares"
+          onPress={() => navigation.navigate('GruposMuscularesStack')}
+        />
+      )}
+      {isAdmin && (
+        <MenuRow
           icon="person-add"
           label="Cadastrar Usuário Admin"
           onPress={() =>

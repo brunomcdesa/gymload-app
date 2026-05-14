@@ -6,19 +6,16 @@ import { colors } from '../components/Styles/ComumStyles';
 import {
   HEADER_SUBTITLE_DASHBOARD,
   HEADER_SUBTITLE_EXERCICIOS,
-  HEADER_SUBTITLE_GRUPOS_MUSCULARES,
   HEADER_SUBTITLE_PERFIL,
   HEADER_SUBTITLE_TREINOS,
   HEADER_TITLE_DASHBOARD,
   HEADER_TITLE_EXERCICIOS,
-  HEADER_TITLE_GRUPOS_MUSCULARES,
   HEADER_TITLE_PERFIL,
   HEADER_TITLE_TREINOS,
 } from '../comum/constants';
 import { useHeaderContext } from '../context/HeaderProvider';
 import DashboardStack from '../modules/dashboard/stack/DashboardStackNavigator';
 import ExerciciosStack from '../modules/exercicios/stack/ExerciciosStackNavigator';
-import GruposMuscularesStack from '../modules/gruposMusculares/stack/GruposMuscularesStackNavigator';
 import TreinosStack from '../modules/treinos/stack/TreinosStackNavigator';
 import PerfilStack from '../modules/usuario/stack/PerfilStackNavigator';
 import { useIsAdmin } from '../modules/utils/userUtils';
@@ -59,17 +56,6 @@ const TabNavigator = () => {
       headerTitle: HEADER_TITLE_PERFIL,
       headerSubtitle: HEADER_SUBTITLE_PERFIL,
     },
-    ...(isAdmin
-      ? [
-          {
-            name: 'Grupos Musculares',
-            component: GruposMuscularesStack,
-            iconName: 'man',
-            headerTitle: HEADER_TITLE_GRUPOS_MUSCULARES,
-            headerSubtitle: HEADER_SUBTITLE_GRUPOS_MUSCULARES,
-          },
-        ]
-      : []),
   ];
 
   const renderTabIcon = (routeName, color, size) => {

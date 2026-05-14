@@ -1,59 +1,98 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import AddButton from '../../../components/Button/AddButton';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
-
+import formFooterStyle from '../../../components/Button/style/formFooterStyle';
+import SearchInput from '../../../components/Inputs/SearchInput';
+import EmptyList from '../../../components/List/EmptyList';
+import SeparatorItem from '../../../components/List/SeparatorItem';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { useScreenTitle } from '../../../hooks/useScreenTitle';
+import { throwToastError } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import GrupoMuscular from '../GrupoMuscular';
 
 const ListGruposMusculares = () => {
-  const { container, fabContainer } = ComumStyles;
+  const { container, listContent } = ComumStyles;
   const [gruposMusculares, setGruposMusculares] = useState([]);
+  const [filteredGruposMusculares, setFilteredGruposMusculares] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
-  const fetchGruposMusculares = async () => {
+  useScreenTitle('Grupos Musculares', 'Gerencie os grupos musculares');
+
+  const fetchGruposMusculares = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await Api.fetchGruposMusculares();
       setGruposMusculares(data);
-    } catch (error) {
-      console.error('Erro ao buscar grupos musculares:', error);
-      return [];
+      setFilteredGruposMusculares(data);
+    } catch {
+      throwToastError('Erro ao buscar grupos musculares.');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
       fetchGruposMusculares();
-    }, []),
+    }, [fetchGruposMusculares]),
   );
+
+  const handleSearchResults = (filteredData) => {
+    setFilteredGruposMusculares(filteredData);
+  };
 
   const redirectGrupoMuscularForm = () => {
     navigation.navigate('GrupoMuscularForm');
   };
 
+  const renderEmptyList = () => <EmptyList value="grupo muscular" />;
+
   return (
     <View style={container}>
+      <SearchInput
+        placeholder="Pesquisar grupos musculares..."
+        onSearch={handleSearchResults}
+        initialData={gruposMusculares}
+        searchKeys={['nome']}
+      />
       {loading ? (
         <LoadingIndicator />
       ) : (
         <FlatList
-          data={gruposMusculares}
-          keyExtractor={(grupoMuscular) => grupoMuscular.id}
-          renderItem={({ item: grupoMuscular }) => (
-            <GrupoMuscular nome={grupoMuscular.nome} />
-          )}
+          data={filteredGruposMusculares}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <GrupoMuscular nome={item.nome} />}
+          ListEmptyComponent={renderEmptyList}
+          contentContainerStyle={listContent}
+          ItemSeparatorComponent={SeparatorItem}
         />
       )}
 
-      <View style={fabContainer}>
-        <AddButton onPress={redirectGrupoMuscularForm} />
+      <View style={formFooterStyle.formFooter}>
+        <TouchableOpacity
+          style={formFooterStyle.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={formFooterStyle.backButtonText}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={formFooterStyle.saveButton}
+          onPress={redirectGrupoMuscularForm}
+          activeOpacity={0.7}
+        >
+          <MaterialIcons
+            name="add"
+            size={18}
+            color="#fff"
+            style={formFooterStyle.saveButtonIcon}
+          />
+          <Text style={formFooterStyle.saveButtonText}>ADICIONAR</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

@@ -8,6 +8,7 @@ import EditarPerfilForm from '../screens/EditarPerfilForm';
 import Notificacoes from '../screens/Notificacoes';
 import Perfil from '../screens/Perfil';
 import UsuarioCadastroForm from '../screens/UsuarioCadastroForm';
+import GruposMuscularesStackNavigator from '../../gruposMusculares/stack/GruposMuscularesStackNavigator';
 import TiposVariacoesStackNavigator from '../../tipovariacao/stack/TiposVariacoesStackNavigator';
 import UsuarioStackNavigator from './UsuarioStackNavigator';
 
@@ -68,6 +69,11 @@ const PerfilStackNavigator = () => {
         options={{ headerTitle: '' }}
         name="TiposVariacoesStack"
         component={TiposVariacoesStackNavigator}
+      />
+      <Stack.Screen
+        options={{ headerTitle: '', headerShown: false }}
+        name="GruposMuscularesStack"
+        component={GruposMuscularesStackNavigator}
       />
       <Stack.Screen
         options={{ headerTitle: '' }}

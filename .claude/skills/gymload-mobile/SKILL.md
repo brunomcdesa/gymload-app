@@ -1,6 +1,7 @@
 ---
 name: gymload-mobile
 description: >
+  Always trigger on any task or change involving the gymload-app project.
   Use this skill for ALL frontend development tasks in the Gymload app. Always
   trigger when the user mentions: tela, screen, componente, component, layout,
   formulário, form, lista, list, modal, botão, button, estilo, style, navegação,
@@ -29,8 +30,9 @@ AuthProvider          ← JWT + estado do usuário (expo-secure-store)
 ```
 
 - **AuthStack**: Login → CadastroUsuario → EsqueciMinhaSenha
-- **AppStack** → DrawerNavigator → TabNavigator (Dashboard / Exercícios / Treinos / Grupos Musculares)
+- **AppStack** → DrawerNavigator → TabNavigator (Dashboard / Exercícios / Treinos / Perfil)
 - Telas admin são gateadas com `useIsAdmin`.
+- Telas admin (Grupos Musculares, Tipos de Variações, Gerenciar Usuários) ficam aninhadas no `PerfilStack`, acessíveis via `MenuRow` na tela de Perfil.
 
 ---
 
@@ -227,10 +229,21 @@ export default ListRecurso;
 
 **Regras obrigatórias para toda tela de formulário (push screen):**
 1. **Footer fixo** — os botões "Voltar" e "Salvar" ficam em uma `View` fora do `ScrollView`, ancorada no fundo da tela naturalmente pelo layout flex. Nunca usar `fabContainer` (FAB absoluto) em formulários com esse padrão.
-2. **Botão nativo de voltar oculto** — use `headerLeft: () => null` e `gestureEnabled: false` em `navigation.setOptions`. A navegação de retorno acontece exclusivamente pelo botão "Voltar" do footer.
+2. **Botão nativo de voltar oculto** — use `headerLeft: () => null`, `headerBackVisible: false` e `gestureEnabled: false` em `navigation.setOptions`. A navegação de retorno acontece exclusivamente pelo botão "Voltar" do footer.
 3. **Título centralizado** — use `headerTitleAlign: 'center'` em `navigation.setOptions`.
 4. **Botão Salvar** — `flex: 1`, `flexDirection: 'row'`, `backgroundColor: '#28a745'`, `borderRadius: 12`, ícone `MaterialIcons name="save"`, texto `"SALVAR"`, mostra `ActivityIndicator` no loading.
 5. **Botão Voltar** — ghost: borda `#3a3a3a`, fundo transparente, `borderRadius: 12`, desabilitado durante loading.
+6. **`headerBackVisible: false`** — obrigatório no `useLayoutEffect` para ocultar o botão de voltar nativo em todas as plataformas.
+7. **Screens em PerfilStack** — quando o stack estiver aninhado dentro do `PerfilStackNavigator`, adicionar `useFocusEffect` para esconder/restaurar o header pai:
+   ```jsx
+   useFocusEffect(
+     useCallback(() => {
+       const parentNav = navigation.getParent();
+       parentNav?.setOptions({ headerShown: false });
+       return () => { parentNav?.setOptions({ headerShown: true }); };
+     }, [navigation])
+   );
+   ```
 
 ```jsx
 import PropTypes from 'prop-types';
@@ -279,6 +292,7 @@ const RecursoForm = ({ navigation, route }) => {
       headerTitle: renderHeaderTitle,
       headerTitleAlign: 'center',
       headerLeft: () => null,
+      headerBackVisible: false,
       gestureEnabled: false,
     });
   }, [navigation, renderHeaderTitle]);

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { ScrollView, Text, View } from 'react-native';
+import FormFooter from '../../../components/Button/FormFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
@@ -11,7 +11,7 @@ import * as Api from '../Api';
 import style from '../style/style';
 
 const GrupoMuscularForm = (props) => {
-  const { asteriscoObrigatorio } = ComumStyles;
+  const { asteriscoObrigatorio, formLabel, formLabelObrigatorio } = ComumStyles;
   const { navigation } = props;
   const [formData, setFormData] = useState({
     nome: null,
@@ -43,7 +43,7 @@ const GrupoMuscularForm = (props) => {
   };
 
   const renderHeaderTitle = useCallback(() => {
-    return <HeaderTitle title={'Adicionar Grupo Muscular'} />;
+    return <HeaderTitle title="Adicionar Grupo Muscular" isForm />;
   }, []);
 
   useLayoutEffect(() => {
@@ -51,6 +51,7 @@ const GrupoMuscularForm = (props) => {
       headerTitle: renderHeaderTitle,
       headerTitleAlign: 'center',
       headerLeft: () => null,
+      headerBackVisible: false,
       gestureEnabled: false,
     });
   }, [navigation, renderHeaderTitle]);
@@ -58,17 +59,11 @@ const GrupoMuscularForm = (props) => {
   return (
     <View style={style.screenContainer}>
       <ScrollView contentContainerStyle={style.scrollContent}>
-        <Text style={style.formDescription}>
-          Cadastre um novo grupo muscular para usar nos exercícios.
-        </Text>
-        <Text style={style.requiredNote}>
-          Campos com <Text style={asteriscoObrigatorio}>*</Text> são obrigatórios
-        </Text>
-
         <View style={style.fieldContainer}>
-          <Text style={style.fieldLabel}>
-            Nome <Text style={asteriscoObrigatorio}>*</Text>
-          </Text>
+          <View style={formLabelObrigatorio}>
+            <Text style={formLabel}>Nome:</Text>
+            <Text style={asteriscoObrigatorio}>*</Text>
+          </View>
           <TextoInput
             placeholder="Digite o nome"
             value={formData.nome}
@@ -77,9 +72,10 @@ const GrupoMuscularForm = (props) => {
         </View>
 
         <View style={style.fieldContainer}>
-          <Text style={style.fieldLabel}>
-            Código <Text style={asteriscoObrigatorio}>*</Text>
-          </Text>
+          <View style={formLabelObrigatorio}>
+            <Text style={formLabel}>Código:</Text>
+            <Text style={asteriscoObrigatorio}>*</Text>
+          </View>
           <TextoInput
             placeholder="Digite o código"
             value={formData.codigo}
@@ -88,30 +84,11 @@ const GrupoMuscularForm = (props) => {
         </View>
       </ScrollView>
 
-      <View style={style.formFooter}>
-        <TouchableOpacity
-          style={style.backButton}
-          onPress={() => navigation.goBack()}
-          disabled={loading}
-        >
-          <Text style={style.backButtonText}>Voltar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[style.saveButton, loading && style.saveButtonDisabled]}
-          onPress={!loading ? handleSubmit : null}
-          disabled={loading}
-          activeOpacity={0.7}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" size="small" />
-          ) : (
-            <>
-              <MaterialIcons name="save" size={18} color="#fff" style={style.saveButtonIcon} />
-              <Text style={style.saveButtonText}>SALVAR</Text>
-            </>
-          )}
-        </TouchableOpacity>
-      </View>
+      <FormFooter
+        onSave={handleSubmit}
+        onBack={() => navigation.goBack()}
+        loading={loading}
+      />
     </View>
   );
 };
