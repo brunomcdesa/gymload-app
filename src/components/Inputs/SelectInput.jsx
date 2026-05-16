@@ -87,9 +87,6 @@ const SelectInput = (props) => {
       labelStyle={dropdownText}
       textStyle={dropdownText}
       selectedItemLabelStyle={selectedItemLabel}
-      scrollViewProps={{
-        nestedScrollEnabled: true,
-      }}
       theme="DARK"
       arrowIconStyle={{
         tintColor: textLight,

@@ -476,7 +476,136 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 ---
 
-## 12. Checklist antes de finalizar
+## 12. Testes Unitários
+
+**Obrigatório:** toda tela criada ou modificada deve ter teste em `__tests__/screens/<NomeTela>.test.jsx`. Componentes globais vão em `__tests__/components/`. Utilitários em `__tests__/utils/`.
+
+### Stack de testes
+- `react-test-renderer` + `ReactTestRenderer.act` — **não** use `@testing-library/react-native`
+- Jest 29 — config em `jest.config.js`
+- `MaterialIcons` já mapeado globalmente para `__mocks__/MaterialIcons.js`
+
+### Mocks padrão
+
+```js
+// API do módulo
+const mockSave = jest.fn().mockResolvedValue({ data: {} });
+jest.mock('../../src/modules/<feature>/Api', () => ({
+  saveItem: (...args) => mockSave(...args),
+}));
+
+// Toast
+const mockThrowToastError = jest.fn();
+const mockThrowToastSuccess = jest.fn();
+jest.mock('../../src/modules/utils/toastUtils', () => ({
+  throwToastError: (...args) => mockThrowToastError(...args),
+  throwToastSuccess: (...args) => mockThrowToastSuccess(...args),
+}));
+
+// HeaderTitle
+jest.mock('../../src/components/Header/HeaderTitle', () => {
+  const { Text } = require('react-native');
+  return ({ title }) => <Text testID="header-title">{title}</Text>;
+});
+
+// MaterialIcons (já no moduleNameMapper, mas pode sobrescrever com testID)
+jest.mock('react-native-vector-icons/MaterialIcons', () => {
+  const { Text } = require('react-native');
+  return ({ name }) => <Text testID={`icon-${name}`}>{name}</Text>;
+});
+
+// Inputs complexos — stub simples com testID
+jest.mock('../../src/components/Inputs/SelectInput', () => {
+  const { View } = require('react-native');
+  return () => <View testID="select-input" />;
+});
+
+// useFocusEffect (quando a tela usa hook de navegação)
+jest.mock('@react-navigation/native', () => ({
+  useFocusEffect: (cb) => {
+    const React = require('react');
+    React.useEffect(() => { const cleanup = cb(); return cleanup; }, []);
+  },
+  useNavigation: () => ({ navigate: jest.fn(), setOptions: jest.fn() }),
+}));
+```
+
+### buildProps e estrutura canônica
+
+```js
+const buildProps = ({ data = {}, isEdicao = false } = {}) => ({
+  navigation: { goBack: jest.fn(), setOptions: jest.fn(), navigate: jest.fn() },
+  route: { params: { data, isEdicao } },
+});
+
+describe('MinhaTelaForm screen', () => {
+  beforeEach(() => {
+    mockSave.mockClear();
+    mockThrowToastError.mockClear();
+    mockThrowToastSuccess.mockClear();
+  });
+
+  it('renderiza sem crash', async () => {
+    await ReactTestRenderer.act(async () => {
+      ReactTestRenderer.create(<MinhaTelaForm {...buildProps()} />);
+    });
+  });
+
+  it('configura header corretamente', async () => {
+    const props = buildProps();
+    await ReactTestRenderer.act(async () => {
+      ReactTestRenderer.create(<MinhaTelaForm {...props} />);
+    });
+    const calls = props.navigation.setOptions.mock.calls;
+    const opts = calls[calls.length - 1][0];
+    expect(opts.headerTitleAlign).toBe('center');
+    expect(opts.headerBackVisible).toBe(false);
+    expect(opts.gestureEnabled).toBe(false);
+  });
+
+  it('valida campos obrigatórios e exibe toast de erro', async () => {
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<MinhaTelaForm {...buildProps()} />);
+    });
+    const btnSalvar = instance.root.findByProps({ testID: 'btn-salvar' });
+    await ReactTestRenderer.act(async () => { await btnSalvar.props.onPress(); });
+    expect(mockThrowToastError).toHaveBeenCalled();
+    expect(mockSave).not.toHaveBeenCalled();
+  });
+
+  it('salva com sucesso e volta', async () => { /* ... */ });
+  it('edita com sucesso', async () => { /* ... */ });
+  it('botão Voltar chama goBack', async () => { /* ... */ });
+});
+```
+
+### Regras obrigatórias para testabilidade
+
+- **Botões do footer** devem ter `testID="btn-salvar"` e `testID="btn-voltar"` — sem eles não é possível simular interação nos testes.
+- `console.log` de erro não deve aparecer em testes — remova-os ou substitua por `throwToastError`.
+- Warnings de `Animated` pós-teardown são pré-existentes no projeto — não são falhas e podem ser ignorados.
+
+### Casos de teste mínimos por tipo de tela
+
+**Formulário:**
+- renderiza sem crash (criar e editar)
+- header: título correto, `headerBackVisible: false`, `headerTitleAlign: 'center'`, `gestureEnabled: false`
+- validação: cada campo obrigatório faltando → toast de erro + API não chamada
+- submit com sucesso (criar) → API correta chamada + toast sucesso + `goBack`
+- submit com sucesso (editar) → API de edição chamada
+- erro da API → toast de erro com mensagem da API
+- botão Voltar → `goBack` chamado
+
+**Listagem:**
+- renderiza sem crash
+- exibe loading indicator enquanto busca
+- exibe EmptyList quando sem dados
+- exibe itens quando API retorna dados
+
+---
+
+## 13. Checklist antes de finalizar
 
 - [ ] Componente importa `colors` e `ComumStyles` de `ComumStyles.jsx` — sem cores hardcoded
 - [ ] `StyleSheet.create()` usado — sem objetos inline em JSX
@@ -491,3 +620,5 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 - [ ] Arquivo no caminho correto do módulo (`screens/`, `components/`, `style/`)
 - [ ] Estilo de módulo em `style/style.jsx` do módulo correspondente
 - [ ] **Formulários (push screens)**: footer com "Voltar"+"Salvar" fora do ScrollView; `headerLeft: () => null`; `gestureEnabled: false`; `headerTitleAlign: 'center'` — ver padrão canônico acima
+- [ ] **Botões do footer têm `testID="btn-salvar"` e `testID="btn-voltar"`** — obrigatório para testes
+- [ ] **Teste criado ou atualizado** em `__tests__/screens/<NomeTela>.test.jsx` cobrindo os casos mínimos da seção 12
