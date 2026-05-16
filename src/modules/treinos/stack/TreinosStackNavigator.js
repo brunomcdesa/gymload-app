@@ -6,6 +6,8 @@ import { colors } from '../../../components/Styles/ComumStyles';
 import ListExerciciosTreino from '../../exercicios/screens/ListExerciciosTreino';
 import RegistroAtividadeForm from '../../registrosAtividades/screens/RegistroAtividadeForm';
 import RegistroAtividadesCompleto from '../../registrosAtividades/screens/RegistroAtividadesCompleto';
+import CompartilharTreino from '../screens/CompartilharTreino';
+import ImportarTreino from '../screens/ImportarTreino';
 import ListTreino from '../screens/ListTreino';
 import TreinoForm from '../screens/TreinoForm';
 
@@ -46,6 +48,8 @@ const TreinosStackNavigator = (props) => {
           gestureEnabled: false,
         }}
       />
+      <Stack.Screen name="CompartilharTreino" component={CompartilharTreino} />
+      <Stack.Screen name="ImportarTreino" component={ImportarTreino} />
     </Stack.Navigator>
   );
 };

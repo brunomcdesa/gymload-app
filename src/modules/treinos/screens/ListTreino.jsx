@@ -14,9 +14,8 @@ import * as Api from '../Api';
 import style from '../style/style';
 
 const ListTreino = () => {
-  const { container, fabContainer } = ComumStyles;
+  const { container } = ComumStyles;
   const {
-    addButton,
     listContent,
     chipRow,
     chip,
@@ -29,7 +28,10 @@ const ListTreino = () => {
     treinoIconContainer,
     treinoInfo,
     treinoNome,
+    treinoNomeRow,
     treinoData,
+    fabRow,
+    importarFabButton,
   } = style;
 
   const [treinos, setTreinos] = useState([]);
@@ -37,11 +39,12 @@ const ListTreino = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const [buscarInativos, setBuscarInativos] = useState(false);
+  const [buscarImportados, setBuscarImportados] = useState(false);
 
   const fetchTreinos = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await Api.fetchTreinos(buscarInativos);
+      const { data } = await Api.fetchTreinos(buscarInativos, buscarImportados);
       setTreinos(data);
       setFilteredTreinos(data);
     } catch (error) {
@@ -51,7 +54,7 @@ const ListTreino = () => {
     } finally {
       setLoading(false);
     }
-  }, [buscarInativos]);
+  }, [buscarInativos, buscarImportados]);
 
   useFocusEffect(
     useCallback(() => {
@@ -101,13 +104,20 @@ const ListTreino = () => {
   };
 
   const getOptions = (treino) => {
-    return [
+    const opcoes = [
       'Ver Exercícios',
       'Editar Treino',
       treino.situacao === 'ATIVO' ? 'Inativar Treino' : 'Ativar Treino',
-      'Cancelar',
     ];
+    if (treino.situacao === 'ATIVO') {
+      opcoes.push('Compartilhar Treino');
+    }
+    opcoes.push('Cancelar');
+    return opcoes;
   };
+
+  const getCancelButtonIndex = (treino) =>
+    treino.situacao === 'ATIVO' ? 4 : 3;
 
   const selectOptionsAction = (selectedIndex, item) => {
     switch (selectedIndex) {
@@ -121,6 +131,13 @@ const ListTreino = () => {
         toggleTreinoSituacao(item);
         break;
       case 3:
+        if (item.situacao === 'ATIVO') {
+          navigation.navigate('CompartilharTreino', {
+            treino: { id: item.id, nome: item.nome },
+          });
+        }
+        break;
+      default:
         break;
     }
   };
@@ -130,7 +147,7 @@ const ListTreino = () => {
     return (
       <SelectableItem
         item={treino}
-        cancelButtonIndex={3}
+        cancelButtonIndex={getCancelButtonIndex(treino)}
         options={getOptions(treino)}
         onActionSelected={selectOptionsAction}
         onLongPress={() => redirectToListExerciciosTreino(treino)}
@@ -150,7 +167,18 @@ const ListTreino = () => {
             />
           </View>
           <View style={treinoInfo}>
-            <Text style={treinoNome}>{treino.nome}</Text>
+            <View style={treinoNomeRow}>
+              <Text style={treinoNome}>{treino.nome}</Text>
+              {treino.importado && (
+                <MaterialIcons
+                  testID="importado-indicator"
+                  name="call-received"
+                  size={14}
+                  color="#666"
+                  style={{ marginLeft: 4 }}
+                />
+              )}
+            </View>
             <Text style={treinoData}>
               Criado em: {treino.dataCadastro.split(' ')[0]}
             </Text>
@@ -172,7 +200,6 @@ const ListTreino = () => {
         searchKeys={['nome']}
       />
 
-      {/* Chip filter: Ativos / Inativos */}
       <View style={chipRow}>
         <TouchableOpacity
           style={[chip, !buscarInativos && chipActive]}
@@ -205,6 +232,23 @@ const ListTreino = () => {
             Inativos
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[chip, buscarImportados && chipActive]}
+          onPress={() => setBuscarImportados((prev) => !prev)}
+          activeOpacity={0.8}
+        >
+          <MaterialIcons
+            name="call-received"
+            size={14}
+            color={buscarImportados ? '#fff' : '#aaa'}
+            style={{ marginRight: 4 }}
+          />
+          <Text style={[chipText, buscarImportados && chipTextActive]}>
+            Importados
+          </Text>
+        </TouchableOpacity>
+
       </View>
 
       {loading ? (
@@ -220,8 +264,15 @@ const ListTreino = () => {
         />
       )}
 
-      <View style={fabContainer}>
-        <AddButton onPress={redirectToTreinoForm} style={addButton} />
+      <View style={fabRow}>
+        <TouchableOpacity
+          style={importarFabButton}
+          onPress={() => navigation.navigate('ImportarTreino')}
+          activeOpacity={0.8}
+        >
+          <MaterialIcons name="qr-code-scanner" size={24} color="#aaa" />
+        </TouchableOpacity>
+        <AddButton onPress={redirectToTreinoForm} />
       </View>
     </View>
   );

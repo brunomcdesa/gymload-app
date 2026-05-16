@@ -3,13 +3,41 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
-import { Button, Modal, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Button,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { throwToastError } from '../../modules/utils/toastUtils';
 import { colors } from '../Styles/ComumStyles';
 import style from './styles/style';
 
+const QR_OVERLAY_STYLES = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  target: {
+    width: 220,
+    height: 220,
+    borderWidth: 2,
+    borderColor: colors.secondary,
+    borderRadius: 12,
+  },
+  hint: {
+    position: 'absolute',
+    bottom: 60,
+    color: '#fff',
+    fontSize: 14,
+  },
+});
+
 const CustomCamera = (props) => {
-  const { visible, onClose, onPictureTaken } = props;
+  const { visible, onClose, onPictureTaken, mode, onQrScanned } = props;
   const {
     permissionContainer,
     permissionText,
@@ -96,6 +124,40 @@ const CustomCamera = (props) => {
     }
   };
 
+  const handleBarcodeScanned = ({ data }) => {
+    if (onQrScanned) {
+      onQrScanned(data);
+      onClose();
+    }
+  };
+
+  if (mode === 'qrcode') {
+    return (
+      <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
+        <View style={[container, { backgroundColor: '#000' }]}>
+          <CameraView
+            style={camera}
+            facing="back"
+            barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+            onBarcodeScanned={handleBarcodeScanned}
+          >
+            <View style={QR_OVERLAY_STYLES.overlay}>
+              <View style={QR_OVERLAY_STYLES.target} />
+              <Text style={QR_OVERLAY_STYLES.hint}>
+                Aponte para o QR code do treino
+              </Text>
+            </View>
+            <View style={topControls}>
+              <TouchableOpacity onPress={onClose} style={button}>
+                <Ionicons name="close" size={28} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          </CameraView>
+        </View>
+      </Modal>
+    );
+  }
+
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
       <View style={container}>
@@ -144,10 +206,18 @@ const CustomCamera = (props) => {
   );
 };
 
+CustomCamera.defaultProps = {
+  mode: 'photo',
+  onQrScanned: null,
+  onPictureTaken: null,
+};
+
 CustomCamera.propTypes = {
   visible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onPictureTaken: PropTypes.func.isRequired,
+  mode: PropTypes.string,
+  onPictureTaken: PropTypes.func,
+  onQrScanned: PropTypes.func,
 };
 
 export default CustomCamera;
