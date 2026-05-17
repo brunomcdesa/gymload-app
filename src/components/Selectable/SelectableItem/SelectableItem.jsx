@@ -1,8 +1,8 @@
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-
+import { View } from 'react-native';
+import AnimatedPressable from '../../Button/AnimatedPressable';
 import { colors } from '../../Styles/ComumStyles';
 import style from '../styles/style';
 
@@ -48,13 +48,9 @@ const SelectableItem = (props) => {
   };
 
   return (
-    <TouchableOpacity
-      onPress={handlePress}
-      activeOpacity={0.7}
-      onLongPress={onLongPress}
-    >
+    <AnimatedPressable onPress={handlePress} onLongPress={onLongPress}>
       <View>{children}</View>
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 };
 

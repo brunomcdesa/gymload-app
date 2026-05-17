@@ -4,6 +4,8 @@ import React from 'react';
 
 import HeaderBackButton from '../../../components/Button/HeaderBackButton';
 import { colors } from '../../../components/Styles/ComumStyles';
+import RegistroAtividadeForm from '../../registrosAtividades/screens/RegistroAtividadeForm';
+import RegistroAtividadesCompleto from '../../registrosAtividades/screens/RegistroAtividadesCompleto';
 import Dashboard from '../screens/Dashboard';
 
 const Stack = createStackNavigator();
@@ -31,6 +33,15 @@ const DashboardStackNavigator = () => (
       options={{ headerShown: false }}
       name="DashboardScreen"
       component={Dashboard}
+    />
+    <Stack.Screen
+      name="RegistroAtividadesCompleto"
+      component={RegistroAtividadesCompleto}
+    />
+    <Stack.Screen
+      name="RegistroAtividadeForm"
+      component={RegistroAtividadeForm}
+      options={{ headerLeft: () => null, gestureEnabled: false }}
     />
   </Stack.Navigator>
 );

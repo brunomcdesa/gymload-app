@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import style from '../style/style';
 
@@ -73,14 +74,10 @@ const Exercicio = ({
       )}
 
       {/* VER HISTÓRICO button */}
-      <TouchableOpacity
-        style={style.viewHistoryButton}
-        onPress={onViewHistorico}
-        activeOpacity={0.75}
-      >
+      <AnimatedPressable style={style.viewHistoryButton} onPress={onViewHistorico}>
         <MaterialIcons name="history" size={16} color="#fff" />
         <Text style={style.viewHistoryText}>VER HISTÓRICO</Text>
-      </TouchableOpacity>
+      </AnimatedPressable>
     </View>
   );
 };

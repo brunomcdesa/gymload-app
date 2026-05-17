@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { BANNER_HEIGHT } from '../../../comum/constants';
 import { colors } from '../../../components/Styles/ComumStyles';
 
 export default StyleSheet.create({
@@ -81,6 +82,9 @@ export default StyleSheet.create({
     borderTopColor: colors.primary,
     backgroundColor: colors.background,
     alignItems: 'center',
+  },
+  formFooterComBanner: {
+    paddingBottom: BANNER_HEIGHT,
   },
   backButton: {
     paddingHorizontal: 18,
@@ -245,11 +249,18 @@ export default StyleSheet.create({
     borderRadius: 14,
     borderWidth: 1,
     borderColor: colors.inputBorder,
-    borderLeftWidth: 3,
-    borderLeftColor: colors.secondary,
+    overflow: 'hidden',
     paddingTop: 10,
     paddingBottom: 4,
     paddingHorizontal: 12,
+  },
+  prCardBordaAccent: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 3,
+    backgroundColor: colors.secondary,
   },
   prCardDestaqueHeader: {
     flexDirection: 'row',
@@ -269,5 +280,8 @@ export default StyleSheet.create({
     fontSize: 10,
     color: colors.terciary,
     fontWeight: '600',
+  },
+  prCardConteudo: {
+    paddingVertical: 4,
   },
 });

@@ -24,3 +24,5 @@ export const BANNER_ID = __DEV__
 export const INTERSTITIAL_ID = __DEV__
   ? TestIds.INTERSTITIAL
   : 'ca-app-pub-3977686093704418/5167509886';
+
+export const BANNER_HEIGHT = 60;

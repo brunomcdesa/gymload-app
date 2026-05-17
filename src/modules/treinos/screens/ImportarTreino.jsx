@@ -5,11 +5,11 @@ import {
   ScrollView,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomCamera from '../../../components/Camera/CustomCamera';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { colors } from '../../../components/Styles/ComumStyles';
@@ -117,7 +117,7 @@ const ImportarTreino = () => {
   return (
     <ScrollView style={qrContainer}>
       <View style={tabRow}>
-        <TouchableOpacity
+        <AnimatedPressable
           testID="tab-scanner"
           style={[tabButton, abaAtiva === 'scanner' && tabButtonActive]}
           onPress={() => setAbaAtiva('scanner')}
@@ -130,9 +130,9 @@ const ImportarTreino = () => {
           >
             Escanear QR
           </Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
 
-        <TouchableOpacity
+        <AnimatedPressable
           testID="tab-manual"
           style={[tabButton, abaAtiva === 'manual' && tabButtonActive]}
           onPress={() => setAbaAtiva('manual')}
@@ -145,12 +145,12 @@ const ImportarTreino = () => {
           >
             Inserir Código
           </Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
 
       {abaAtiva === 'scanner' && (
         <View style={scannerAbaContainer}>
-          <TouchableOpacity style={chip} onPress={abrirScanner}>
+          <AnimatedPressable style={chip} onPress={abrirScanner}>
             <MaterialIcons
               name="qr-code-scanner"
               size={18}
@@ -158,7 +158,7 @@ const ImportarTreino = () => {
               style={chipIcon}
             />
             <Text style={chipText}>Abrir Câmera</Text>
-          </TouchableOpacity>
+          </AnimatedPressable>
         </View>
       )}
 
@@ -174,13 +174,13 @@ const ImportarTreino = () => {
             autoCapitalize="characters"
             maxLength={8}
           />
-          <TouchableOpacity
+          <AnimatedPressable
             testID="btn-buscar"
             style={[importButton, buscarButton]}
             onPress={handleBuscarManual}
           >
             <Text style={importButtonText}>Buscar Treino</Text>
-          </TouchableOpacity>
+          </AnimatedPressable>
         </View>
       )}
 
@@ -205,13 +205,13 @@ const ImportarTreino = () => {
             </Text>
           </View>
 
-          <TouchableOpacity
+          <AnimatedPressable
             testID="btn-importar"
             style={importButton}
             onPress={handleImportar}
           >
             <Text style={importButtonText}>Importar Treino</Text>
-          </TouchableOpacity>
+          </AnimatedPressable>
         </>
       )}
 

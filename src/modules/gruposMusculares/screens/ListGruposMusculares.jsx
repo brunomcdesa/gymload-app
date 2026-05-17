@@ -1,8 +1,9 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
 import SeparatorItem from '../../../components/List/SeparatorItem';
@@ -73,16 +74,15 @@ const ListGruposMusculares = () => {
       )}
 
       <View style={ComumStyles.formFooter}>
-        <TouchableOpacity
+        <AnimatedPressable
           style={ComumStyles.backButton}
           onPress={() => navigation.goBack()}
         >
           <Text style={ComumStyles.backButtonText}>Voltar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </AnimatedPressable>
+        <AnimatedPressable
           style={ComumStyles.saveButton}
           onPress={redirectGrupoMuscularForm}
-          activeOpacity={0.7}
         >
           <MaterialIcons
             name="add"
@@ -91,7 +91,7 @@ const ListGruposMusculares = () => {
             style={ComumStyles.saveButtonIcon}
           />
           <Text style={ComumStyles.saveButtonText}>ADICIONAR</Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
     </View>
   );

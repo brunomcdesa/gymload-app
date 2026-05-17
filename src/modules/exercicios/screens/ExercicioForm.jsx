@@ -4,7 +4,8 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
@@ -162,14 +163,13 @@ const ExercicioForm = (props) => {
           {tiposExercicioItems.map((item) => {
             const isActive = tipoExercicioSelected === item.value;
             return (
-              <TouchableOpacity
+              <AnimatedPressable
                 key={item.value}
                 style={[
                   style.segmentedButton,
                   isActive && style.segmentedButtonActive,
                 ]}
                 onPress={() => handleSelectTipo(item.value)}
-                activeOpacity={0.8}
               >
                 <Text
                   style={[
@@ -179,7 +179,7 @@ const ExercicioForm = (props) => {
                 >
                   {item.label}
                 </Text>
-              </TouchableOpacity>
+              </AnimatedPressable>
             );
           })}
         </View>
@@ -257,20 +257,19 @@ const ExercicioForm = (props) => {
       </View>
 
       <View style={style.formFooter}>
-        <TouchableOpacity
+        <AnimatedPressable
           testID="btn-voltar"
           style={style.formBackButton}
           onPress={() => navigation.goBack()}
           disabled={loading}
         >
           <Text style={style.formBackButtonText}>Voltar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </AnimatedPressable>
+        <AnimatedPressable
           testID="btn-salvar"
           style={[style.saveButton, loading && style.saveButtonDisabled]}
           onPress={!loading ? handleSubmit : null}
           disabled={loading}
-          activeOpacity={0.7}
         >
           {loading ? (
             <ActivityIndicator color="#fff" size="small" />
@@ -280,7 +279,7 @@ const ExercicioForm = (props) => {
               <Text style={style.saveButtonText}>SALVAR</Text>
             </>
           )}
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
     </View>
   );

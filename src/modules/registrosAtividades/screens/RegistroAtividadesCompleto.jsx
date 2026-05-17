@@ -6,19 +6,29 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import Animated, {
+  Easing,
+  FadeInDown,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import {
   ActivityIndicator,
   Modal,
   ScrollView,
   SectionList,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
+import { BANNER_HEIGHT } from '../../../comum/constants';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
@@ -68,6 +78,7 @@ const RegistroAtividadesCompleto = (props) => {
     sectionHeader,
     sectionHeaderText,
     formFooter,
+    formFooterComBanner,
     backButton,
     backButtonText,
     addButton,
@@ -114,6 +125,21 @@ const RegistroAtividadesCompleto = (props) => {
   const [moverModalVisivel, setMoverModalVisivel] = useState(false);
   const [movendo, setMovendo] = useState(false);
   const isAdmin = useIsAdmin();
+
+  const bordaPulse = useSharedValue(1);
+  useEffect(() => {
+    bordaPulse.value = withRepeat(
+      withSequence(
+        withTiming(0.3, { duration: 800, easing: Easing.inOut(Easing.ease) }),
+        withTiming(1, { duration: 800, easing: Easing.inOut(Easing.ease) }),
+      ),
+      -1,
+      false,
+    );
+  }, []);
+  const animatedBordaStyle = useAnimatedStyle(() => ({
+    opacity: bordaPulse.value,
+  }));
 
   const registroPr = useMemo(() => {
     if (!registroAtividadeCompleto.length) return null;
@@ -339,49 +365,54 @@ const RegistroAtividadesCompleto = (props) => {
     </View>
   );
 
-  const renderItem = ({ item: registro }) => {
+  const renderItem = ({ item: registro, index }) => {
+    const enterAnim = FadeInDown.delay(Math.min(index * 60, 400)).duration(350);
+
     if (modoSelecao) {
       const selecionado = registrosSelecionados.includes(registro.id);
       return (
-        <TouchableOpacity
-          onPress={() => toggleSelecao(registro.id)}
-          activeOpacity={0.7}
-        >
-          <View
-            style={[
-              elementContainer,
-              selecionado && registroSelecionadoContainer,
-            ]}
+        <Animated.View entering={enterAnim}>
+          <AnimatedPressable
+            onPress={() => toggleSelecao(registro.id)}
           >
-            <View style={selecaoRow}>
-              <MaterialIcons
-                name={selecionado ? 'check-box' : 'check-box-outline-blank'}
-                size={22}
-                color={selecionado ? '#f0a000' : '#666'}
-              />
-              <View style={selecaoItemContent}>
-                {renderRegistroContent(registro)}
+            <View
+              style={[
+                elementContainer,
+                selecionado && registroSelecionadoContainer,
+              ]}
+            >
+              <View style={selecaoRow}>
+                <MaterialIcons
+                  name={selecionado ? 'check-box' : 'check-box-outline-blank'}
+                  size={22}
+                  color={selecionado ? '#f0a000' : '#666'}
+                />
+                <View style={selecaoItemContent}>
+                  {renderRegistroContent(registro)}
+                </View>
               </View>
             </View>
-          </View>
-        </TouchableOpacity>
+          </AnimatedPressable>
+        </Animated.View>
       );
     }
 
     return (
-      <SelectableItem
-        item={registro}
-        cancelButtonIndex={2}
-        options={getOptions}
-        onActionSelected={selectOptionsAction}
-        onLongPress={() =>
-          variacaoSelecionada?.padrao
-            ? entrarModoSelecao(registro)
-            : redirectToRegistroAtividadeFormEdit(registro)
-        }
-      >
-        {renderRegistroContent(registro)}
-      </SelectableItem>
+      <Animated.View entering={enterAnim}>
+        <SelectableItem
+          item={registro}
+          cancelButtonIndex={2}
+          options={getOptions}
+          onActionSelected={selectOptionsAction}
+          onLongPress={() =>
+            variacaoSelecionada?.padrao
+              ? entrarModoSelecao(registro)
+              : redirectToRegistroAtividadeFormEdit(registro)
+          }
+        >
+          {renderRegistroContent(registro)}
+        </SelectableItem>
+      </Animated.View>
     );
   };
 
@@ -401,7 +432,7 @@ const RegistroAtividadesCompleto = (props) => {
           {variacoes.map((variacao) => {
             const ativo = variacaoSelecionada?.id === variacao.id;
             return (
-              <TouchableOpacity
+              <AnimatedPressable
                 key={variacao.id}
                 testID={`chip-variacao-${variacao.id}`}
                 style={[chip, ativo ? chipAtivo : chipInativo]}
@@ -410,12 +441,12 @@ const RegistroAtividadesCompleto = (props) => {
                 <Text style={ativo ? chipTextAtivo : chipText}>
                   {variacao.nome}
                 </Text>
-              </TouchableOpacity>
+              </AnimatedPressable>
             );
           })}
         </ScrollView>
         {variacaoSelecionada?.padrao && !modoSelecao && (
-          <TouchableOpacity
+          <AnimatedPressable
             testID="btn-selecionar-registros"
             style={selecionarButton}
             onPress={() => setModoSelecao(true)}
@@ -424,16 +455,16 @@ const RegistroAtividadesCompleto = (props) => {
             <Text style={selecionarButtonText}>
               Selecionar registros para mover
             </Text>
-          </TouchableOpacity>
+          </AnimatedPressable>
         )}
         {modoSelecao && (
           <View style={selecaoInfoBar}>
             <Text style={selecaoInfoText}>
               {registrosSelecionados.length} selecionado(s)
             </Text>
-            <TouchableOpacity onPress={cancelarSelecao}>
+            <AnimatedPressable onPress={cancelarSelecao}>
               <Text style={cancelarSelecaoText}>Cancelar</Text>
-            </TouchableOpacity>
+            </AnimatedPressable>
           </View>
         )}
       </View>
@@ -453,30 +484,31 @@ const RegistroAtividadesCompleto = (props) => {
           {variacoes
             .filter((v) => !v.padrao)
             .map((variacao) => (
-              <TouchableOpacity
+              <AnimatedPressable
                 key={variacao.id}
                 style={modalItem}
                 onPress={() => handleMoverRegistros(variacao)}
               >
                 <Text style={modalItemText}>{variacao.nome}</Text>
-              </TouchableOpacity>
+              </AnimatedPressable>
             ))}
-          <TouchableOpacity
+          <AnimatedPressable
             style={modalCancelar}
             onPress={() => setMoverModalVisivel(false)}
           >
             <Text style={modalCancelarText}>Cancelar</Text>
-          </TouchableOpacity>
+          </AnimatedPressable>
         </View>
       </View>
     </Modal>
   );
 
   return (
-    <View style={[container, !isAdmin && { paddingBottom: 50 }]}>
+    <View style={container}>
       {renderVariacoesPicker()}
       {registroPr && !modoSelecao && (
         <View testID="pr-card-destaque" style={style.prCardDestaque}>
+          <Animated.View style={[style.prCardBordaAccent, animatedBordaStyle]} />
           <View style={style.prCardDestaqueHeader}>
             <MaterialIcons name="emoji-events" size={14} color={colors.secondary} />
             <Text style={style.prCardDestaqueTitulo}>RECORDE PESSOAL</Text>
@@ -484,7 +516,17 @@ const RegistroAtividadesCompleto = (props) => {
               {formatarDataSecao(registroPr.dataCadastro.split(' ')[0])}
             </Text>
           </View>
-          {renderRegistroContent(registroPr)}
+          <View>
+            {isExercicioAerobico && (
+              <RegistroAerobico registroData={registroPr} containerStyle={style.prCardConteudo} />
+            )}
+            {isExercicioMusculacao && (
+              <RegistroMusculacao registroData={registroPr} containerStyle={style.prCardConteudo} />
+            )}
+            {isExercicioCalistenia && (
+              <RegistroCalistenia registroData={registroPr} containerStyle={style.prCardConteudo} />
+            )}
+          </View>
         </View>
       )}
       {loading || movendo ? (
@@ -493,7 +535,7 @@ const RegistroAtividadesCompleto = (props) => {
         <SectionList
           sections={groupedRegistros}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={[listContent, !isAdmin && { paddingBottom: 70 }]}
+          contentContainerStyle={[listContent, !isAdmin && { paddingBottom: BANNER_HEIGHT }]}
           renderItem={renderItem}
           renderSectionHeader={({ section: { title } }) => (
             <View style={sectionHeader}>
@@ -504,17 +546,17 @@ const RegistroAtividadesCompleto = (props) => {
         />
       )}
 
-      <View style={formFooter}>
+      <View style={[formFooter, !isAdmin && formFooterComBanner]}>
         {modoSelecao ? (
           <>
-            <TouchableOpacity
+            <AnimatedPressable
               style={cancelarSelecaoButton}
               onPress={cancelarSelecao}
               disabled={movendo}
             >
               <Text style={cancelarSelecaoButtonText}>Cancelar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </AnimatedPressable>
+            <AnimatedPressable
               style={[
                 moverButton,
                 (registrosSelecionados.length === 0 || movendo) &&
@@ -522,7 +564,6 @@ const RegistroAtividadesCompleto = (props) => {
               ]}
               onPress={() => setMoverModalVisivel(true)}
               disabled={registrosSelecionados.length === 0 || movendo}
-              activeOpacity={0.8}
             >
               {movendo ? (
                 <ActivityIndicator color="#fff" size="small" />
@@ -536,24 +577,23 @@ const RegistroAtividadesCompleto = (props) => {
                   </Text>
                 </>
               )}
-            </TouchableOpacity>
+            </AnimatedPressable>
           </>
         ) : (
           <>
-            <TouchableOpacity
+            <AnimatedPressable
               style={backButton}
               onPress={() => navigation.goBack()}
             >
               <Text style={backButtonText}>Voltar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </AnimatedPressable>
+            <AnimatedPressable
               style={addButton}
               onPress={redirectToRegistroAtividadeForm}
-              activeOpacity={0.8}
             >
               <MaterialIcons name="add" size={18} color="#fff" />
               <Text style={addButtonText}>Adicionar</Text>
-            </TouchableOpacity>
+            </AnimatedPressable>
           </>
         )}
       </View>

@@ -5,7 +5,8 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectInput from '../../../components/Inputs/SelectInput';
@@ -162,20 +163,19 @@ const ExercicioVariacaoForm = (props) => {
       </View>
 
       <View style={style.formFooter}>
-        <TouchableOpacity
+        <AnimatedPressable
           testID="btn-voltar"
           style={style.formBackButton}
           onPress={() => navigation.goBack()}
           disabled={loading}
         >
           <Text style={style.formBackButtonText}>Voltar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </AnimatedPressable>
+        <AnimatedPressable
           testID="btn-salvar"
           style={[style.saveButton, loading && style.saveButtonDisabled]}
           onPress={!loading ? handleSubmit : null}
           disabled={loading}
-          activeOpacity={0.7}
         >
           {loading ? (
             <ActivityIndicator color="#fff" size="small" />
@@ -185,7 +185,7 @@ const ExercicioVariacaoForm = (props) => {
               <Text style={style.saveButtonText}>SALVAR</Text>
             </>
           )}
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
     </View>
   );

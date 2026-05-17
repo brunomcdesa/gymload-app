@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, View } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import style from './styles/style';
@@ -38,13 +39,13 @@ const Notificacoes = (props) => {
       </View>
 
       <View style={ComumStyles.formFooter}>
-        <TouchableOpacity
+        <AnimatedPressable
           testID="btn-voltar"
           style={ComumStyles.backButton}
           onPress={() => navigation.goBack()}
         >
           <Text style={ComumStyles.backButtonText}>Voltar</Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
     </View>
   );

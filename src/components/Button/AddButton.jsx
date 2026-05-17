@@ -1,19 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text } from 'react-native';
+import AnimatedPressable from './AnimatedPressable';
 import style from './style/style';
 
 const AddButton = (props) => {
   const { circularAddButton, addIcon } = style;
   const { onPress } = props;
   return (
-    <TouchableOpacity
-      style={circularAddButton}
-      onPress={onPress}
-      activeOpacity={0.8}
-    >
+    <AnimatedPressable style={circularAddButton} onPress={onPress}>
       <Text style={addIcon}>+</Text>
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 };
 

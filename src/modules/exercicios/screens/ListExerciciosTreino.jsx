@@ -5,9 +5,9 @@ import {
   ActivityIndicator,
   FlatList,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { finalizarTreino } from '../../treinos/Api';
@@ -110,28 +110,27 @@ const ListExerciciosTreino = (props) => {
       )}
       <View style={style.footer}>
         <View style={style.footerRow}>
-          <TouchableOpacity
+          <AnimatedPressable
             style={style.footerBackButton}
             onPress={navigation.goBack}
             disabled={finalizando}
           >
             <Text style={style.footerBackButtonText}>Voltar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </AnimatedPressable>
+          <AnimatedPressable
             style={[
               style.finalizeButton,
               finalizando && style.finalizeButtonDisabled,
             ]}
             onPress={!finalizando ? handleFinalizarTreino : null}
             disabled={finalizando}
-            activeOpacity={0.7}
           >
             {finalizando ? (
               <ActivityIndicator color="#fff" size="small" />
             ) : (
               <Text style={style.finalizeButtonText}>Finalizar Treino</Text>
             )}
-          </TouchableOpacity>
+          </AnimatedPressable>
         </View>
       </View>
     </View>

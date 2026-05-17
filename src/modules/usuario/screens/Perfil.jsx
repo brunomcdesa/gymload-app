@@ -1,7 +1,8 @@
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useContext, useState } from 'react';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { colors } from '../../../components/Styles/ComumStyles';
@@ -52,7 +53,7 @@ const MenuRow = ({ icon, label, onPress, danger = false }) => {
   const iconColor = danger ? colors.danger : colors.terciary;
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+    <AnimatedPressable onPress={onPress}>
       <View style={style.menuRow}>
         <MaterialIcons name={icon} size={MENU_ICON_SIZE} color={iconColor} />
         <Text style={labelStyle}>{label}</Text>
@@ -62,7 +63,7 @@ const MenuRow = ({ icon, label, onPress, danger = false }) => {
           color={colors.terciary}
         />
       </View>
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 };
 

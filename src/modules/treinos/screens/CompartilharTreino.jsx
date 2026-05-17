@@ -6,7 +6,8 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Share, Text, View } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import QRCode from 'react-native-qrcode-svg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
@@ -99,7 +100,7 @@ const CompartilharTreino = ({ route, navigation }) => {
       </View>
 
       <View style={actionRow}>
-        <TouchableOpacity
+        <AnimatedPressable
           testID="btn-copiar"
           style={actionButton}
           onPress={copiarCodigo}
@@ -110,9 +111,9 @@ const CompartilharTreino = ({ route, navigation }) => {
             color={colors.textMuted}
           />
           <Text style={actionButtonText}>Copiar</Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
 
-        <TouchableOpacity
+        <AnimatedPressable
           style={[actionButton, actionButtonPrimary]}
           onPress={compartilharNativo}
         >
@@ -120,7 +121,7 @@ const CompartilharTreino = ({ route, navigation }) => {
           <Text style={[actionButtonText, actionButtonTextLight]}>
             Compartilhar
           </Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
     </ScrollView>
   );

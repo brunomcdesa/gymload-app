@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { colors } from '../../../components/Styles/ComumStyles';
@@ -176,29 +177,27 @@ const EsqueciMinhaSenhaForm = ({ navigation }) => {
 
         {/* Footer */}
         <View style={style.esqueciFooter}>
-          <TouchableOpacity
+          <AnimatedPressable
             style={style.esqueciVoltarButton}
             onPress={() => navigation.goBack()}
             disabled={loading}
-            activeOpacity={0.8}
           >
             <Text style={style.esqueciVoltarButtonText}>Voltar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </AnimatedPressable>
+          <AnimatedPressable
             style={[
               style.esqueciAltButton,
               loading && style.esqueciAltButtonDisabled,
             ]}
             onPress={!loading ? handleSubmit : null}
             disabled={loading}
-            activeOpacity={0.7}
           >
             {loading ? (
               <ActivityIndicator color="#fff" size="small" />
             ) : (
               <Text style={style.esqueciAltButtonText}>ALTERAR SENHA</Text>
             )}
-          </TouchableOpacity>
+          </AnimatedPressable>
         </View>
       </ScrollView>
     </SafeAreaView>

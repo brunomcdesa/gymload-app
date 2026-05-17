@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
@@ -130,23 +131,22 @@ const Login = (props) => {
 
       {/* Esqueci minha senha — right-aligned */}
       <View style={style.loginEsqueciRow}>
-        <TouchableOpacity onPress={handleRedirectResetPasswordForm}>
+        <AnimatedPressable onPress={handleRedirectResetPasswordForm}>
           <Text style={style.loginEsqueciText}>Esqueci minha senha</Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
 
       {/* Entrar button */}
       {loading ? (
         <LoadingIndicator />
       ) : (
-        <TouchableOpacity
+        <AnimatedPressable
           testID="login-entrar-button"
           style={style.loginEntrarButton}
           onPress={handleRealizarLogin}
-          activeOpacity={0.8}
         >
           <Text style={style.loginEntrarButtonText}>ENTRAR</Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
       )}
 
       {/* Divider */}
@@ -157,13 +157,12 @@ const Login = (props) => {
       </View>
 
       {/* Cadastrar-se ghost button */}
-      <TouchableOpacity
+      <AnimatedPressable
         style={style.loginCadastrarButton}
         onPress={handleRedirectCadastroUser}
-        activeOpacity={0.8}
       >
         <Text style={style.loginCadastrarButtonText}>Cadastrar-se</Text>
-      </TouchableOpacity>
+      </AnimatedPressable>
     </ScrollView>
   );
 };

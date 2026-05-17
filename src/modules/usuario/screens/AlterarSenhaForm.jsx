@@ -4,9 +4,9 @@ import {
   ActivityIndicator,
   ScrollView,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
@@ -147,18 +147,17 @@ const AlterarSenhaForm = (props) => {
       </ScrollView>
 
       <View style={formFooter}>
-        <TouchableOpacity
+        <AnimatedPressable
           style={backButton}
           onPress={() => navigation.goBack()}
           disabled={loading}
         >
           <Text style={backButtonText}>Voltar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </AnimatedPressable>
+        <AnimatedPressable
           style={[saveButton, loading && saveButtonDisabled]}
           onPress={!loading ? handleSave : null}
           disabled={loading}
-          activeOpacity={0.7}
         >
           {loading ? (
             <ActivityIndicator color="#fff" size="small" />
@@ -168,7 +167,7 @@ const AlterarSenhaForm = (props) => {
               <Text style={saveButtonText}>SALVAR</Text>
             </>
           )}
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
     </View>
   );

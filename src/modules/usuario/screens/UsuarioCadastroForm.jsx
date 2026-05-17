@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectableImage from '../../../components/Selectable/SelectableImage/SelectableImage';
@@ -336,7 +337,7 @@ const UsuarioCadastroForm = (props) => {
           <View style={style.cadastroOptionalField}>
             <Text style={style.cadastroFieldLabel}>Sexo</Text>
             <View style={style.cadastroGenderSelector}>
-              <TouchableOpacity
+              <AnimatedPressable
                 style={[
                   style.genderButton,
                   style.flexOneRadius,
@@ -358,8 +359,8 @@ const UsuarioCadastroForm = (props) => {
                 >
                   M
                 </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+              </AnimatedPressable>
+              <AnimatedPressable
                 style={[
                   style.genderButton,
                   style.flexOneRadius,
@@ -381,7 +382,7 @@ const UsuarioCadastroForm = (props) => {
                 >
                   F
                 </Text>
-              </TouchableOpacity>
+              </AnimatedPressable>
             </View>
           </View>
         </View>
@@ -401,23 +402,21 @@ const UsuarioCadastroForm = (props) => {
 
       {/* Footer fixo — fora do ScrollView */}
       <View style={style.cadastroFooter}>
-        <TouchableOpacity
+        <AnimatedPressable
           testID="btn-voltar"
           style={style.cadastroVoltarButton}
           onPress={() => navigation.goBack()}
-          activeOpacity={0.8}
           disabled={loading}
         >
           <Text style={style.cadastroVoltarButtonText}>Voltar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </AnimatedPressable>
+        <AnimatedPressable
           testID="btn-cadastrar"
           style={[
             style.cadastroCadastrarButton,
             (!isFormValid || loading) && style.cadastroCadastrarDisabled,
           ]}
           onPress={handleSubmit}
-          activeOpacity={0.8}
           disabled={!isFormValid || loading}
         >
           {loading ? (
@@ -425,7 +424,7 @@ const UsuarioCadastroForm = (props) => {
           ) : (
             <Text style={style.cadastroCadastrarButtonText}>CADASTRAR</Text>
           )}
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
     </SafeAreaView>
   );

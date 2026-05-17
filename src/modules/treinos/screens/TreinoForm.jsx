@@ -6,10 +6,10 @@ import {
   FlatList,
   ScrollView,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import EmptyList from '../../../components/List/EmptyList';
@@ -202,10 +202,9 @@ const TreinoForm = ({ navigation, route }) => {
     ({ item }) => {
       const isSelected = selectedExercicios.includes(item.value);
       return (
-        <TouchableOpacity
+        <AnimatedPressable
           style={[style.exerciseItem, isSelected && style.exerciseItemSelected]}
           onPress={() => handleToggleExercicio(item.value)}
-          activeOpacity={0.7}
         >
           <MaterialIcons
             name={isSelected ? 'check-box' : 'check-box-outline-blank'}
@@ -213,7 +212,7 @@ const TreinoForm = ({ navigation, route }) => {
             color={isSelected ? colors.secondary : colors.terciary}
           />
           <Text style={style.exerciseItemText}>{item.label}</Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
       );
     },
     [selectedExercicios, handleToggleExercicio],
@@ -267,18 +266,17 @@ const TreinoForm = ({ navigation, route }) => {
               {chips.map((chip) => {
                 const isActive = chipSelecionado.id === chip.id;
                 return (
-                  <TouchableOpacity
+                  <AnimatedPressable
                     key={chip.id}
                     style={[style.chip, isActive && style.chipActive]}
                     onPress={() => setChipSelecionado(chip)}
-                    activeOpacity={0.8}
                   >
                     <Text
                       style={[style.chipText, isActive && style.chipTextActive]}
                     >
                       {chip.label}
                     </Text>
-                  </TouchableOpacity>
+                  </AnimatedPressable>
                 );
               })}
             </ScrollView>
@@ -301,19 +299,18 @@ const TreinoForm = ({ navigation, route }) => {
       </ScrollView>
 
       <View style={style.formFooter}>
-        <TouchableOpacity
+        <AnimatedPressable
           style={style.backButton}
           onPress={handleGoBack}
           disabled={loading}
         >
           <Text style={style.backButtonText}>Voltar</Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
 
-        <TouchableOpacity
+        <AnimatedPressable
           style={[style.saveButton, loading && style.saveButtonDisabled]}
           onPress={!loading ? (isEdicao ? handleEditar : handleSave) : null}
           disabled={loading}
-          activeOpacity={0.7}
         >
           {loading ? (
             <ActivityIndicator color="#fff" size="small" />
@@ -323,7 +320,7 @@ const TreinoForm = ({ navigation, route }) => {
               <Text style={style.saveButtonText}>SALVAR</Text>
             </>
           )}
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
     </View>
   );

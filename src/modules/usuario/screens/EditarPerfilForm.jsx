@@ -10,9 +10,9 @@ import {
   ActivityIndicator,
   ScrollView,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
@@ -211,7 +211,7 @@ const EditarPerfilForm = (props) => {
         <View style={fieldContainer}>
           <Text style={fieldLabel}>Sexo</Text>
           <View style={genderSelector}>
-            <TouchableOpacity
+            <AnimatedPressable
               style={[
                 genderButton,
                 formData.sexo === 'MASCULINO' && genderButtonSelected,
@@ -226,8 +226,8 @@ const EditarPerfilForm = (props) => {
               >
                 M
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </AnimatedPressable>
+            <AnimatedPressable
               style={[
                 genderButton,
                 formData.sexo === 'FEMININO' && genderButtonSelected,
@@ -242,24 +242,23 @@ const EditarPerfilForm = (props) => {
               >
                 F
               </Text>
-            </TouchableOpacity>
+            </AnimatedPressable>
           </View>
         </View>
       </ScrollView>
 
       <View style={formFooter}>
-        <TouchableOpacity
+        <AnimatedPressable
           style={backButton}
           onPress={() => navigation.goBack()}
           disabled={loading}
         >
           <Text style={backButtonText}>Voltar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </AnimatedPressable>
+        <AnimatedPressable
           style={[saveButton, loading && saveButtonDisabled]}
           onPress={!loading ? handleSave : null}
           disabled={loading}
-          activeOpacity={0.7}
         >
           {loading ? (
             <ActivityIndicator color="#fff" size="small" />
@@ -269,7 +268,7 @@ const EditarPerfilForm = (props) => {
               <Text style={saveButtonText}>SALVAR</Text>
             </>
           )}
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
     </View>
   );

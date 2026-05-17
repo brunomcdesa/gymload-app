@@ -5,7 +5,7 @@ import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import style from '../style/style';
 
 const RegistroAerobico = (props) => {
-  const { registroData } = props;
+  const { registroData, containerStyle } = props;
   const { distancia, duracao, velocidadeMedia, observacao } = registroData;
   const { elementContainer } = ComumStyles;
   const {
@@ -18,7 +18,7 @@ const RegistroAerobico = (props) => {
   } = style;
 
   return (
-    <View style={elementContainer}>
+    <View style={containerStyle ?? elementContainer}>
       <View style={destaquesRow}>
         <View style={destaqueBox}>
           <Text style={destaqueLabel}>Duração</Text>
@@ -48,6 +48,7 @@ const RegistroAerobico = (props) => {
 
 RegistroAerobico.propTypes = {
   registroData: PropTypes.object.isRequired,
+  containerStyle: PropTypes.object,
 };
 
 export default RegistroAerobico;

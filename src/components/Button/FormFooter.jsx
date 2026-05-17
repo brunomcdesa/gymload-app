@@ -1,27 +1,27 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { ComumStyles, colors } from '../Styles/ComumStyles';
+import AnimatedPressable from './AnimatedPressable';
 
 const FormFooter = ({ onSave, onBack, loading, saveLabel = 'SALVAR' }) => {
   return (
     <View style={ComumStyles.formFooter}>
-      <TouchableOpacity
+      <AnimatedPressable
         style={ComumStyles.backButton}
         onPress={onBack}
         disabled={loading}
       >
         <Text style={ComumStyles.backButtonText}>Voltar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      </AnimatedPressable>
+      <AnimatedPressable
         style={[
           ComumStyles.saveButton,
           loading && ComumStyles.saveButtonDisabled,
         ]}
         onPress={!loading ? onSave : null}
         disabled={loading}
-        activeOpacity={0.7}
       >
         {loading ? (
           <ActivityIndicator color={colors.buttonText} size="small" />
@@ -36,7 +36,7 @@ const FormFooter = ({ onSave, onBack, loading, saveLabel = 'SALVAR' }) => {
             <Text style={ComumStyles.saveButtonText}>{saveLabel}</Text>
           </>
         )}
-      </TouchableOpacity>
+      </AnimatedPressable>
     </View>
   );
 };

@@ -1,9 +1,12 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
+import { BANNER_HEIGHT } from '../../../comum/constants';
 import AddButton from '../../../components/Button/AddButton';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
 import SeparatorItem from '../../../components/List/SeparatorItem';
@@ -148,9 +151,10 @@ const ListTreino = () => {
     }
   };
 
-  const renderTreinoItem = ({ item: treino }) => {
+  const renderTreinoItem = ({ item: treino, index }) => {
     const isAtivo = treino.situacao === 'ATIVO';
     return (
+      <Animated.View entering={FadeInDown.delay(Math.min(index * 60, 400)).duration(350)}>
       <SelectableItem
         item={treino}
         cancelButtonIndex={getCancelButtonIndex(treino)}
@@ -196,6 +200,7 @@ const ListTreino = () => {
           />
         </View>
       </SelectableItem>
+      </Animated.View>
     );
   };
 
@@ -211,10 +216,9 @@ const ListTreino = () => {
       />
 
       <View style={chipRow}>
-        <TouchableOpacity
+        <AnimatedPressable
           style={[chip, !buscarInativos && chipActive]}
           onPress={() => setBuscarInativos(false)}
-          activeOpacity={0.8}
         >
           <MaterialIcons
             name="check-circle"
@@ -225,12 +229,11 @@ const ListTreino = () => {
           <Text style={[chipText, !buscarInativos && chipTextActive]}>
             Ativos
           </Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
 
-        <TouchableOpacity
+        <AnimatedPressable
           style={[chip, buscarInativos && chipActive]}
           onPress={() => setBuscarInativos(true)}
-          activeOpacity={0.8}
         >
           <MaterialIcons
             name="archive"
@@ -241,12 +244,11 @@ const ListTreino = () => {
           <Text style={[chipText, buscarInativos && chipTextActive]}>
             Inativos
           </Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
 
-        <TouchableOpacity
+        <AnimatedPressable
           style={[chip, buscarImportados && chipActive]}
           onPress={() => setBuscarImportados((prev) => !prev)}
-          activeOpacity={0.8}
         >
           <MaterialIcons
             name="call-received"
@@ -257,7 +259,7 @@ const ListTreino = () => {
           <Text style={[chipText, buscarImportados && chipTextActive]}>
             Importados
           </Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
 
       {loading ? (
@@ -268,19 +270,18 @@ const ListTreino = () => {
           keyExtractor={(treino) => treino.id.toString()}
           renderItem={renderTreinoItem}
           ListEmptyComponent={renderEmptyList}
-          contentContainerStyle={[listContent, !isAdmin && { paddingBottom: 70 }]}
+          contentContainerStyle={[listContent, !isAdmin && { paddingBottom: BANNER_HEIGHT }]}
           ItemSeparatorComponent={SeparatorItem}
         />
       )}
 
-      <View style={[fabRow, !isAdmin && { bottom: 74 }]}>
-        <TouchableOpacity
+      <View style={[fabRow, !isAdmin && { bottom: BANNER_HEIGHT + 14 }]}>
+        <AnimatedPressable
           style={importarFabButton}
           onPress={() => navigation.navigate('ImportarTreino')}
-          activeOpacity={0.8}
         >
           <MaterialIcons name="qr-code-scanner" size={24} color="#aaa" />
-        </TouchableOpacity>
+        </AnimatedPressable>
         <AddButton onPress={redirectToTreinoForm} />
       </View>
 

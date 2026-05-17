@@ -5,7 +5,7 @@ import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import style from '../style/style';
 
 const RegistroMusculacao = (props) => {
-  const { registroData } = props;
+  const { registroData, containerStyle } = props;
   const { qtdSeries, carga, qtdRepeticoes, observacao } = registroData;
   const { elementContainer } = ComumStyles;
   const {
@@ -18,7 +18,7 @@ const RegistroMusculacao = (props) => {
   } = style;
 
   return (
-    <View style={elementContainer}>
+    <View style={containerStyle ?? elementContainer}>
       <View style={destaquesRow}>
         <View style={destaqueBox}>
           <Text style={destaqueLabel}>Séries</Text>
@@ -42,6 +42,7 @@ const RegistroMusculacao = (props) => {
 
 RegistroMusculacao.propTypes = {
   registroData: PropTypes.object.isRequired,
+  containerStyle: PropTypes.object,
 };
 
 export default RegistroMusculacao;

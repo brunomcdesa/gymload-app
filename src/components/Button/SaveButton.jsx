@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text } from 'react-native';
 import LoadingIndicator from '../Loading/LoadingIndicator';
+import AnimatedPressable from './AnimatedPressable';
 import style from './style/style';
 
 const SaveButton = (props) => {
@@ -9,14 +10,13 @@ const SaveButton = (props) => {
   const { onPress, loading } = props;
 
   return (
-    <TouchableOpacity
+    <AnimatedPressable
       style={[saveButtonStyle, loading && disabled]}
       onPress={!loading ? onPress : null}
       disabled={loading}
-      activeOpacity={0.7}
     >
       {loading ? <LoadingIndicator /> : <Text style={textStyle}>Salvar</Text>}
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 };
 

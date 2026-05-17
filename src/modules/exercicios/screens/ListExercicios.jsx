@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
+import { BANNER_HEIGHT } from '../../../comum/constants';
 import AddButton from '../../../components/Button/AddButton';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
@@ -191,22 +193,24 @@ const ListExercicios = () => {
     return getOptions(item).length - 1;
   };
 
-  const renderExercicioItem = ({ item: exercicio }) => (
-    <SelectableItem
-      item={exercicio}
-      cancelButtonIndex={getCancelButtonIndex(exercicio)}
-      options={getOptions(exercicio)}
-      onActionSelected={selectOptionsAction}
-      onLongPress={() => redirectRegistroAtividadesCompleto(exercicio)}
-    >
-      <Exercicio
-        exercicioData={exercicio}
-        dadosRegistrosAtividades={
-          dadosRegistrosAtividades[exercicio.id] || null
-        }
-        onViewHistorico={() => redirectRegistroAtividadesCompleto(exercicio)}
-      />
-    </SelectableItem>
+  const renderExercicioItem = ({ item: exercicio, index }) => (
+    <Animated.View entering={FadeInDown.delay(Math.min(index * 60, 400)).duration(350)}>
+      <SelectableItem
+        item={exercicio}
+        cancelButtonIndex={getCancelButtonIndex(exercicio)}
+        options={getOptions(exercicio)}
+        onActionSelected={selectOptionsAction}
+        onLongPress={() => redirectRegistroAtividadesCompleto(exercicio)}
+      >
+        <Exercicio
+          exercicioData={exercicio}
+          dadosRegistrosAtividades={
+            dadosRegistrosAtividades[exercicio.id] || null
+          }
+          onViewHistorico={() => redirectRegistroAtividadesCompleto(exercicio)}
+        />
+      </SelectableItem>
+    </Animated.View>
   );
 
   return (
@@ -259,7 +263,7 @@ const ListExercicios = () => {
           keyExtractor={(exercicio) => exercicio.id.toString()}
           renderItem={renderExercicioItem}
           ListEmptyComponent={<EmptyList value="exercício" />}
-          contentContainerStyle={[ComumStyles.listContent, !isAdmin && { paddingBottom: 70 }]}
+          contentContainerStyle={[ComumStyles.listContent, !isAdmin && { paddingBottom: BANNER_HEIGHT }]}
         />
       )}
 
