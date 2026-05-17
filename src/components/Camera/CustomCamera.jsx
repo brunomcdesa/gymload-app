@@ -36,8 +36,7 @@ const QR_OVERLAY_STYLES = StyleSheet.create({
   },
 });
 
-const CustomCamera = (props) => {
-  const { visible, onClose, onPictureTaken, mode, onQrScanned } = props;
+const CustomCamera = ({ visible, onClose, onPictureTaken = null, mode = 'photo', onQrScanned = null }) => {
   const {
     permissionContainer,
     permissionText,
@@ -204,12 +203,6 @@ const CustomCamera = (props) => {
       </View>
     </Modal>
   );
-};
-
-CustomCamera.defaultProps = {
-  mode: 'photo',
-  onQrScanned: null,
-  onPictureTaken: null,
 };
 
 CustomCamera.propTypes = {

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import {
   ActivityIndicator,
   SafeAreaView,
@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectableImage from '../../../components/Selectable/SelectableImage/SelectableImage';
 import { colors } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
@@ -35,9 +36,26 @@ const UsuarioCadastroForm = (props) => {
   const [uriImagemUsuario, setUriImagemUsuario] = useState(null);
   const [focusedField, setFocusedField] = useState(null);
 
-  useEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  }, [navigation]);
+  const renderHeaderTitle = useCallback(
+    () => (
+      <HeaderTitle title="Cadastrar Admin" subtitle="Preencha os dados do novo admin." />
+    ),
+    [],
+  );
+
+  useLayoutEffect(() => {
+    if (isCadastroAdmin) {
+      navigation.setOptions({
+        headerTitle: renderHeaderTitle,
+        headerTitleAlign: 'center',
+        headerLeft: () => null,
+        headerBackVisible: false,
+        gestureEnabled: false,
+      });
+    } else {
+      navigation.setOptions({ headerShown: false });
+    }
+  }, [navigation, isCadastroAdmin, renderHeaderTitle]);
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -94,11 +112,15 @@ const UsuarioCadastroForm = (props) => {
         contentContainerStyle={style.cadastroScrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Title */}
-        <Text style={style.cadastroTitle}>Cadastrar-se</Text>
-        <Text style={style.cadastroSubtitle}>
-          Crie sua conta para começar a registrar seus treinos.
-        </Text>
+        {/* Título e subtítulo só no fluxo público; admin usa header de navegação */}
+        {!isCadastroAdmin && (
+          <>
+            <Text style={style.cadastroTitle}>Cadastrar-se</Text>
+            <Text style={style.cadastroSubtitle}>
+              Crie sua conta para começar a registrar seus treinos.
+            </Text>
+          </>
+        )}
 
         {/* Avatar picker */}
         {!isCadastroAdmin && (
@@ -362,32 +384,6 @@ const UsuarioCadastroForm = (props) => {
           </View>
         </View>
 
-        {/* Footer */}
-        <View style={style.cadastroFooter}>
-          <TouchableOpacity
-            style={style.cadastroVoltarButton}
-            onPress={() => navigation.goBack()}
-            activeOpacity={0.8}
-          >
-            <Text style={style.cadastroVoltarButtonText}>Voltar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              style.cadastroCadastrarButton,
-              (!isFormValid || loading) && style.cadastroCadastrarDisabled,
-            ]}
-            onPress={handleSubmit}
-            activeOpacity={0.8}
-            disabled={!isFormValid || loading}
-          >
-            {loading ? (
-              <ActivityIndicator color="#fff" size="small" />
-            ) : (
-              <Text style={style.cadastroCadastrarButtonText}>CADASTRAR</Text>
-            )}
-          </TouchableOpacity>
-        </View>
-
         {!isCadastroAdmin && (
           <Text style={style.cadastroJaTemConta}>
             Já tem uma conta?{' '}
@@ -400,6 +396,35 @@ const UsuarioCadastroForm = (props) => {
           </Text>
         )}
       </ScrollView>
+
+      {/* Footer fixo — fora do ScrollView */}
+      <View style={style.cadastroFooter}>
+        <TouchableOpacity
+          testID="btn-voltar"
+          style={style.cadastroVoltarButton}
+          onPress={() => navigation.goBack()}
+          activeOpacity={0.8}
+          disabled={loading}
+        >
+          <Text style={style.cadastroVoltarButtonText}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          testID="btn-cadastrar"
+          style={[
+            style.cadastroCadastrarButton,
+            (!isFormValid || loading) && style.cadastroCadastrarDisabled,
+          ]}
+          onPress={handleSubmit}
+          activeOpacity={0.8}
+          disabled={!isFormValid || loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" size="small" />
+          ) : (
+            <Text style={style.cadastroCadastrarButtonText}>CADASTRAR</Text>
+          )}
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };

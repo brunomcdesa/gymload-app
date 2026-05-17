@@ -6,8 +6,14 @@ import style from '../style/style';
 
 const ExercicioVariacao = (props) => {
   const { exercicioVariacaoData, tipoExercicio } = props;
-  const { nome, grupoMuscular, ultimaCarga, ultimaDistancia, ultimaSerie } =
-    exercicioVariacaoData;
+  const {
+    nome,
+    grupoMuscular,
+    ultimaCarga,
+    ultimaDistancia,
+    ultimaSerie,
+    padrao,
+  } = exercicioVariacaoData;
   const {
     exercicioHeader,
     exercicioNome,
@@ -16,6 +22,9 @@ const ExercicioVariacao = (props) => {
     destaqueBox,
     destaqueLabel,
     ultimoDadoValue,
+    nomeBadgeRow,
+    padraoBadge,
+    padraoBadgeText,
   } = style;
   const { elementContainer } = ComumStyles;
 
@@ -59,7 +68,14 @@ const ExercicioVariacao = (props) => {
   return (
     <View style={elementContainer}>
       <View style={exercicioHeader}>
-        <Text style={exercicioNome}>{nome}</Text>
+        <View style={nomeBadgeRow}>
+          <Text style={exercicioNome}>{nome}</Text>
+          {padrao && (
+            <View style={padraoBadge}>
+              <Text style={padraoBadgeText}>PADRÃO</Text>
+            </View>
+          )}
+        </View>
         {grupoMuscular && (
           <Text style={grupoMuscularText}>{grupoMuscular}</Text>
         )}

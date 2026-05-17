@@ -1,7 +1,8 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { FlatList, View } from 'react-native';
-import AddButton from '../../../components/Button/AddButton';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import formFooterStyle from '../../../components/Button/style/formFooterStyle';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
 import SeparatorItem from '../../../components/List/SeparatorItem';
@@ -13,7 +14,7 @@ import * as Api from '../Api';
 import TipoVariacao from '../components/TipoVariacao';
 
 const ListTiposVariacoes = () => {
-  const { container, listContent, fabContainer } = ComumStyles;
+  const { container, listContent } = ComumStyles;
   const [tiposVariacoes, setTiposVariacoes] = useState([]);
   const [filteredTiposVariacoes, setFilteredTiposVariacoes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -76,8 +77,28 @@ const ListTiposVariacoes = () => {
         />
       )}
 
-      <View style={fabContainer}>
-        <AddButton onPress={() => redirectToForm()} />
+      <View style={formFooterStyle.formFooter}>
+        <TouchableOpacity
+          testID="btn-voltar"
+          style={formFooterStyle.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={formFooterStyle.backButtonText}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          testID="btn-adicionar"
+          style={formFooterStyle.saveButton}
+          onPress={() => redirectToForm()}
+          activeOpacity={0.7}
+        >
+          <MaterialIcons
+            name="add"
+            size={18}
+            color="#fff"
+            style={formFooterStyle.saveButtonIcon}
+          />
+          <Text style={formFooterStyle.saveButtonText}>ADICIONAR</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

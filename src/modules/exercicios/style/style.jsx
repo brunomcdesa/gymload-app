@@ -225,6 +225,27 @@ export default StyleSheet.create({
     textTransform: 'uppercase',
     marginVertical: 8,
   },
+  nomeBadgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 2,
+  },
+  padraoBadge: {
+    backgroundColor: 'rgba(240, 192, 64, 0.15)',
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(240, 192, 64, 0.4)',
+  },
+  padraoBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#f0c040',
+    letterSpacing: 0.5,
+  },
   screenContainer: {
     flex: 1,
     backgroundColor: colors.background,

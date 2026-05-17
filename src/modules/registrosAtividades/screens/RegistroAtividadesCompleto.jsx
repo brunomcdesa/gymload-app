@@ -6,6 +6,8 @@ import React, {
   useState,
 } from 'react';
 import {
+  ActivityIndicator,
+  Modal,
   ScrollView,
   SectionList,
   Text,
@@ -58,10 +60,30 @@ const RegistroAtividadesCompleto = (props) => {
     backButtonText,
     addButton,
     addButtonText,
+    selecionarButton,
+    selecionarButtonText,
+    selecaoInfoBar,
+    selecaoInfoText,
+    cancelarSelecaoText,
+    cancelarSelecaoButton,
+    cancelarSelecaoButtonText,
+    moverButton,
+    moverButtonDisabled,
+    moverButtonText,
+    registroSelecionadoContainer,
+    selecaoRow,
+    selecaoItemContent,
+    modalOverlay,
+    modalContainer,
+    modalTitle,
+    modalItem,
+    modalItemText,
+    modalCancelar,
+    modalCancelarText,
   } = style;
   const { chip, chipAtivo, chipInativo, chipText, chipTextAtivo, chipRow } =
     exerciciosStyle;
-  const { container } = ComumStyles;
+  const { container, elementContainer } = ComumStyles;
   const { navigation, route } = props;
   const {
     exercicio: { id, nome, tipoExercicio, possuiVariacao },
@@ -75,6 +97,10 @@ const RegistroAtividadesCompleto = (props) => {
   const [loading, setLoading] = useState(false);
   const [variacoes, setVariacoes] = useState([]);
   const [variacaoSelecionada, setVariacaoSelecionada] = useState(null);
+  const [modoSelecao, setModoSelecao] = useState(false);
+  const [registrosSelecionados, setRegistrosSelecionados] = useState([]);
+  const [moverModalVisivel, setMoverModalVisivel] = useState(false);
+  const [movendo, setMovendo] = useState(false);
 
   const fetchVariacoes = useCallback(async () => {
     try {
@@ -94,6 +120,11 @@ const RegistroAtividadesCompleto = (props) => {
       fetchVariacoes();
     }
   }, [possuiVariacao, fetchVariacoes]);
+
+  useEffect(() => {
+    setModoSelecao(false);
+    setRegistrosSelecionados([]);
+  }, [variacaoSelecionada?.id]);
 
   const fetchCargas = useCallback(async () => {
     if (possuiVariacao && !variacaoSelecionada?.id) {
@@ -202,6 +233,56 @@ const RegistroAtividadesCompleto = (props) => {
     }
   };
 
+  const toggleSelecao = (registroId) => {
+    setRegistrosSelecionados((prev) =>
+      prev.includes(registroId)
+        ? prev.filter((rid) => rid !== registroId)
+        : [...prev, registroId],
+    );
+  };
+
+  const entrarModoSelecao = (registro) => {
+    setModoSelecao(true);
+    setRegistrosSelecionados([registro.id]);
+  };
+
+  const cancelarSelecao = () => {
+    setModoSelecao(false);
+    setRegistrosSelecionados([]);
+  };
+
+  const handleMoverRegistros = async (variacaoDestino) => {
+    setMoverModalVisivel(false);
+    setMovendo(true);
+    try {
+      await Api.moverRegistros({
+        exercicioId: id,
+        registroIds: registrosSelecionados,
+        variacaoDestinoId: variacaoDestino.id,
+      });
+      cancelarSelecao();
+      const { data: novasVariacoes } =
+        await ExerciciosApi.fetchExercicioVariacoes(id);
+      const listaVariacoes = novasVariacoes || [];
+      setVariacoes(listaVariacoes);
+      const padraoExiste = listaVariacoes.some((v) => v.padrao);
+      const novaVariacao = padraoExiste
+        ? variacaoSelecionada
+        : listaVariacoes[0] || null;
+      setVariacaoSelecionada(novaVariacao);
+      const { data: registros } = await Api.fetchRegistroAtividadeCompleto({
+        exercicioId: id,
+        variacaoId: novaVariacao?.id,
+      });
+      setRegistroAtividadeCompleto(registros);
+      throwToastSuccess('Registros movidos com sucesso.');
+    } catch {
+      throwToastError('Erro ao mover registros.');
+    } finally {
+      setMovendo(false);
+    }
+  };
+
   const getOptions = ['Editar Registro', 'Repetir Registro', 'Cancelar'];
 
   const selectOptionsAction = (selectedIndex, item) => {
@@ -217,25 +298,59 @@ const RegistroAtividadesCompleto = (props) => {
     }
   };
 
-  const renderItem = ({ item: registro }) => (
-    <SelectableItem
-      item={registro}
-      cancelButtonIndex={2}
-      options={getOptions}
-      onActionSelected={selectOptionsAction}
-      onLongPress={() => redirectToRegistroAtividadeFormEdit(registro)}
-    >
-      <View>
-        {isExercicioAerobico && <RegistroAerobico registroData={registro} />}
-        {isExercicioMusculacao && (
-          <RegistroMusculacao registroData={registro} />
-        )}
-        {isExercicioCalistenia && (
-          <RegistroCalistenia registroData={registro} />
-        )}
-      </View>
-    </SelectableItem>
+  const renderRegistroContent = (registro) => (
+    <View>
+      {isExercicioAerobico && <RegistroAerobico registroData={registro} />}
+      {isExercicioMusculacao && <RegistroMusculacao registroData={registro} />}
+      {isExercicioCalistenia && <RegistroCalistenia registroData={registro} />}
+    </View>
   );
+
+  const renderItem = ({ item: registro }) => {
+    if (modoSelecao) {
+      const selecionado = registrosSelecionados.includes(registro.id);
+      return (
+        <TouchableOpacity
+          onPress={() => toggleSelecao(registro.id)}
+          activeOpacity={0.7}
+        >
+          <View
+            style={[
+              elementContainer,
+              selecionado && registroSelecionadoContainer,
+            ]}
+          >
+            <View style={selecaoRow}>
+              <MaterialIcons
+                name={selecionado ? 'check-box' : 'check-box-outline-blank'}
+                size={22}
+                color={selecionado ? '#f0a000' : '#666'}
+              />
+              <View style={selecaoItemContent}>
+                {renderRegistroContent(registro)}
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      );
+    }
+
+    return (
+      <SelectableItem
+        item={registro}
+        cancelButtonIndex={2}
+        options={getOptions}
+        onActionSelected={selectOptionsAction}
+        onLongPress={() =>
+          variacaoSelecionada?.padrao
+            ? entrarModoSelecao(registro)
+            : redirectToRegistroAtividadeFormEdit(registro)
+        }
+      >
+        {renderRegistroContent(registro)}
+      </SelectableItem>
+    );
+  };
 
   const renderVariacoesPicker = () => {
     if (!possuiVariacao || variacoes.length === 0) {
@@ -243,35 +358,90 @@ const RegistroAtividadesCompleto = (props) => {
     }
 
     return (
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={chipRow}
-        style={{ flexShrink: 0 }}
-      >
-        {variacoes.map((variacao) => {
-          const ativo = variacaoSelecionada?.id === variacao.id;
-          return (
-            <TouchableOpacity
-              key={variacao.id}
-              testID={`chip-variacao-${variacao.id}`}
-              style={[chip, ativo ? chipAtivo : chipInativo]}
-              onPress={() => setVariacaoSelecionada(variacao)}
-            >
-              <Text style={ativo ? chipTextAtivo : chipText}>
-                {variacao.nome}
-              </Text>
+      <View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={chipRow}
+          style={{ flexShrink: 0 }}
+        >
+          {variacoes.map((variacao) => {
+            const ativo = variacaoSelecionada?.id === variacao.id;
+            return (
+              <TouchableOpacity
+                key={variacao.id}
+                testID={`chip-variacao-${variacao.id}`}
+                style={[chip, ativo ? chipAtivo : chipInativo]}
+                onPress={() => setVariacaoSelecionada(variacao)}
+              >
+                <Text style={ativo ? chipTextAtivo : chipText}>
+                  {variacao.nome}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+        {variacaoSelecionada?.padrao && !modoSelecao && (
+          <TouchableOpacity
+            style={selecionarButton}
+            onPress={() => setModoSelecao(true)}
+          >
+            <MaterialIcons name="checklist" size={14} color="#f0c040" />
+            <Text style={selecionarButtonText}>
+              Selecionar registros para mover
+            </Text>
+          </TouchableOpacity>
+        )}
+        {modoSelecao && (
+          <View style={selecaoInfoBar}>
+            <Text style={selecaoInfoText}>
+              {registrosSelecionados.length} selecionado(s)
+            </Text>
+            <TouchableOpacity onPress={cancelarSelecao}>
+              <Text style={cancelarSelecaoText}>Cancelar</Text>
             </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+          </View>
+        )}
+      </View>
     );
   };
+
+  const renderMoverModal = () => (
+    <Modal
+      visible={moverModalVisivel}
+      transparent
+      animationType="fade"
+      onRequestClose={() => setMoverModalVisivel(false)}
+    >
+      <View style={modalOverlay}>
+        <View style={modalContainer}>
+          <Text style={modalTitle}>Mover para variação</Text>
+          {variacoes
+            .filter((v) => !v.padrao)
+            .map((variacao) => (
+              <TouchableOpacity
+                key={variacao.id}
+                style={modalItem}
+                onPress={() => handleMoverRegistros(variacao)}
+              >
+                <Text style={modalItemText}>{variacao.nome}</Text>
+              </TouchableOpacity>
+            ))}
+          <TouchableOpacity
+            style={modalCancelar}
+            onPress={() => setMoverModalVisivel(false)}
+          >
+            <Text style={modalCancelarText}>Cancelar</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
 
   return (
     <View style={container}>
       {renderVariacoesPicker()}
-      {loading ? (
+      {loading || movendo ? (
         <LoadingIndicator />
       ) : (
         <SectionList
@@ -307,21 +477,60 @@ const RegistroAtividadesCompleto = (props) => {
       )}
 
       <View style={formFooter}>
-        <TouchableOpacity
-          style={backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={backButtonText}>Voltar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={addButton}
-          onPress={redirectToRegistroAtividadeForm}
-          activeOpacity={0.8}
-        >
-          <MaterialIcons name="add" size={18} color="#fff" />
-          <Text style={addButtonText}>Adicionar</Text>
-        </TouchableOpacity>
+        {modoSelecao ? (
+          <>
+            <TouchableOpacity
+              style={cancelarSelecaoButton}
+              onPress={cancelarSelecao}
+              disabled={movendo}
+            >
+              <Text style={cancelarSelecaoButtonText}>Cancelar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                moverButton,
+                (registrosSelecionados.length === 0 || movendo) &&
+                  moverButtonDisabled,
+              ]}
+              onPress={() => setMoverModalVisivel(true)}
+              disabled={registrosSelecionados.length === 0 || movendo}
+              activeOpacity={0.8}
+            >
+              {movendo ? (
+                <ActivityIndicator color="#fff" size="small" />
+              ) : (
+                <>
+                  <MaterialIcons name="swap-horiz" size={18} color="#fff" />
+                  <Text style={moverButtonText}>
+                    {registrosSelecionados.length > 0
+                      ? `Mover (${registrosSelecionados.length})`
+                      : 'Mover para...'}
+                  </Text>
+                </>
+              )}
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={backButton}
+              onPress={() => navigation.goBack()}
+            >
+              <Text style={backButtonText}>Voltar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={addButton}
+              onPress={redirectToRegistroAtividadeForm}
+              activeOpacity={0.8}
+            >
+              <MaterialIcons name="add" size={18} color="#fff" />
+              <Text style={addButtonText}>Adicionar</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
+
+      {renderMoverModal()}
     </View>
   );
 };

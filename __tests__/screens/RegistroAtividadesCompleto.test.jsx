@@ -15,6 +15,7 @@ jest.mock('../../src/modules/registrosAtividades/Api', () => ({
   fetchRegistroAtividadeCompleto: (...args) =>
     mockFetchRegistroAtividadeCompleto(...args),
   repetirRegistro: jest.fn().mockResolvedValue({ data: {} }),
+  moverRegistros: jest.fn().mockResolvedValue({ data: {} }),
 }));
 
 jest.mock('../../src/modules/exercicios/Api', () => ({
@@ -47,6 +48,11 @@ jest.mock('@expo/vector-icons', () => {
   return { MaterialIcons: Icon, MaterialCommunityIcons: Icon, AntDesign: Icon };
 });
 
+jest.mock('@expo/vector-icons/MaterialIcons', () => {
+  const { Text } = require('react-native');
+  return ({ name, testID }) => <Text testID={testID}>{name}</Text>;
+});
+
 jest.mock(
   '../../src/modules/registrosAtividades/components/RegistroAerobico',
   () => {
@@ -75,6 +81,7 @@ const buildProps = (exercicioOverrides = {}) => ({
   navigation: {
     navigate: jest.fn(),
     setOptions: jest.fn(),
+    goBack: jest.fn(),
   },
   route: {
     params: {

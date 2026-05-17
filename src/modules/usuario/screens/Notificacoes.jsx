@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect } from 'react';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import formFooterStyle from '../../../components/Button/style/formFooterStyle';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import style from './styles/style';
 
 const Notificacoes = (props) => {
   const { navigation } = props;
-  const { container } = ComumStyles;
-  const { placeholderCard, placeholderText } = style;
+  const { screenContainer, placeholderContent, placeholderCard, placeholderText } = style;
 
   const renderHeaderTitle = useCallback(
     () => <HeaderTitle title="Notificações" />,
@@ -16,16 +15,31 @@ const Notificacoes = (props) => {
   );
 
   useLayoutEffect(() => {
-    navigation.setOptions({ headerTitle: renderHeaderTitle });
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+      headerLeft: () => null,
+    });
   }, [navigation, renderHeaderTitle]);
 
   return (
-    <View style={container}>
-      <View style={placeholderCard}>
-        <Text style={placeholderText}>
-          Recurso em desenvolvimento. Em breve você poderá gerenciar suas
-          notificações por aqui.
-        </Text>
+    <View style={screenContainer}>
+      <View style={placeholderContent}>
+        <View style={placeholderCard}>
+          <Text style={placeholderText}>
+            Recurso em desenvolvimento. Em breve você poderá gerenciar suas
+            notificações por aqui.
+          </Text>
+        </View>
+      </View>
+
+      <View style={formFooterStyle.formFooter}>
+        <TouchableOpacity
+          testID="btn-voltar"
+          style={formFooterStyle.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={formFooterStyle.backButtonText}>Voltar</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -34,6 +48,7 @@ const Notificacoes = (props) => {
 Notificacoes.propTypes = {
   navigation: PropTypes.shape({
     setOptions: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
 };
 

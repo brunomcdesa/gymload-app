@@ -265,7 +265,7 @@ export default StyleSheet.create({
   cadastroScrollContent: {
     flexGrow: 1,
     padding: 22,
-    paddingBottom: 40,
+    paddingBottom: 16,
     backgroundColor: colors.background,
   },
   cadastroTitle: {
@@ -384,10 +384,11 @@ export default StyleSheet.create({
   cadastroFooter: {
     flexDirection: 'row',
     gap: 10,
-    marginTop: 22,
-    paddingTop: 18,
+    padding: 16,
+    paddingBottom: 24,
     borderTopWidth: 1,
     borderTopColor: '#333',
+    backgroundColor: colors.background,
   },
   cadastroVoltarButton: {
     flex: 1,
@@ -729,6 +730,9 @@ export default StyleSheet.create({
   },
 
   // ── Placeholder card ──────────────────────────────────────────────────────
+  placeholderContent: {
+    flex: 1,
+  },
   placeholderCard: {
     backgroundColor: colors.primary,
     borderRadius: 18,

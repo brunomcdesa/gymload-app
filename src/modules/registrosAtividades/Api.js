@@ -52,3 +52,11 @@ export const repetirRegistro = ({ exercicioId, registroId }, delay = 0) => {
 
   return pMinDelay(response, delay);
 };
+
+export const moverRegistros = (request, delay = 0) => {
+  const response = axiosPrivate.patch(`${urlBase}/mover-variacao`, {
+    ...request,
+  });
+
+  return pMinDelay(response, delay);
+};

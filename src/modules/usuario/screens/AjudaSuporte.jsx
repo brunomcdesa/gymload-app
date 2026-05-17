@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect } from 'react';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import formFooterStyle from '../../../components/Button/style/formFooterStyle';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
 import style from './styles/style';
 
 const AjudaSuporte = (props) => {
   const { navigation } = props;
-  const { container } = ComumStyles;
-  const { placeholderCard, placeholderText } = style;
+  const { screenContainer, placeholderContent, placeholderCard, placeholderText } = style;
 
   const renderHeaderTitle = useCallback(
     () => <HeaderTitle title="Ajuda e Suporte" />,
@@ -16,16 +15,31 @@ const AjudaSuporte = (props) => {
   );
 
   useLayoutEffect(() => {
-    navigation.setOptions({ headerTitle: renderHeaderTitle });
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+      headerLeft: () => null,
+    });
   }, [navigation, renderHeaderTitle]);
 
   return (
-    <View style={container}>
-      <View style={placeholderCard}>
-        <Text style={placeholderText}>
-          Precisa de ajuda? Entre em contato com nosso suporte através do e-mail
-          suporte@gymload.com
-        </Text>
+    <View style={screenContainer}>
+      <View style={placeholderContent}>
+        <View style={placeholderCard}>
+          <Text style={placeholderText}>
+            Precisa de ajuda? Entre em contato com nosso suporte através do e-mail
+            suporte@gymload.com
+          </Text>
+        </View>
+      </View>
+
+      <View style={formFooterStyle.formFooter}>
+        <TouchableOpacity
+          testID="btn-voltar"
+          style={formFooterStyle.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={formFooterStyle.backButtonText}>Voltar</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -34,6 +48,7 @@ const AjudaSuporte = (props) => {
 AjudaSuporte.propTypes = {
   navigation: PropTypes.shape({
     setOptions: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
 };
 

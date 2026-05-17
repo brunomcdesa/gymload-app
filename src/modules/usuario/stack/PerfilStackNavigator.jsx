@@ -66,7 +66,7 @@ const PerfilStackNavigator = () => {
         component={UsuarioStackNavigator}
       />
       <Stack.Screen
-        options={{ headerTitle: '' }}
+        options={{ headerTitle: '', headerShown: false }}
         name="TiposVariacoesStack"
         component={TiposVariacoesStackNavigator}
       />
