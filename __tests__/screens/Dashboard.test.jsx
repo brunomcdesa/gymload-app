@@ -1,27 +1,17 @@
 import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
 
-const mockFetchDashboardStats = jest.fn().mockResolvedValue({
-  data: {
-    streak: 3,
-    treinosMes: 10,
-    diasSemana: [true, false, true, false, false, false, false],
-  },
-});
+const mockFetchDashboardStats = jest.fn();
 
 jest.mock('../../src/modules/dashboard/Api', () => ({
   fetchDashboardStats: (...args) => mockFetchDashboardStats(...args),
 }));
 
-jest.mock('../../src/context/AuthProvider', () => {
-  const { createContext } = require('react');
-  return { AuthContext: createContext({ user: { nome: 'Bruno Silva' } }) };
-});
-
-jest.mock('../../src/hooks/useScreenTitle', () => ({
-  useScreenTitle: jest.fn(),
+jest.mock('../../src/modules/utils/toastUtils', () => ({
+  throwToastError: jest.fn(),
 }));
 
+const mockNavigate = jest.fn();
 jest.mock('@react-navigation/native', () => ({
   useFocusEffect: (cb) => {
     const { useEffect } = require('react');
@@ -29,21 +19,27 @@ jest.mock('@react-navigation/native', () => ({
       cb();
     }, []);
   },
+  useNavigation: () => ({ navigate: mockNavigate }),
 }));
 
-jest.mock('react-native-vector-icons/MaterialIcons', () => {
-  const { Text } = require('react-native');
-  return ({ name }) => <Text>{name}</Text>;
+jest.mock('../../src/context/AuthProvider', () => {
+  const { createContext } = require('react');
+  return { AuthContext: createContext({ user: { nome: 'Bruno' } }) };
 });
+
+jest.mock('../../src/hooks/useScreenTitle', () => ({
+  useScreenTitle: jest.fn(),
+}));
 
 jest.mock('../../src/components/Anuncios/AnuncioBanner', () => {
   const { View } = require('react-native');
   return () => <View testID="anuncio-banner" />;
 });
 
-jest.mock('../../src/modules/utils/toastUtils', () => ({
-  throwToastError: jest.fn(),
-}));
+jest.mock('react-native-vector-icons/MaterialIcons', () => {
+  const { Text } = require('react-native');
+  return ({ name }) => <Text testID={`icon-${name}`}>{name}</Text>;
+});
 
 jest.mock('../../src/comum/constants', () => ({
   HEADER_TITLE_DASHBOARD: 'Dashboard',
@@ -52,9 +48,18 @@ jest.mock('../../src/comum/constants', () => ({
 
 import Dashboard from '../../src/modules/dashboard/screens/Dashboard';
 
+const statsBase = {
+  streak: 5,
+  treinosMes: 12,
+  diasSemana: [true, true, false, true, false, false, false],
+  prsEssaSemana: 0,
+  recordesRecentes: [],
+};
+
 describe('Dashboard screen', () => {
   beforeEach(() => {
-    mockFetchDashboardStats.mockClear();
+    mockFetchDashboardStats.mockResolvedValue({ data: statsBase });
+    mockNavigate.mockClear();
   });
 
   it('renderiza sem erros', async () => {
@@ -73,8 +78,8 @@ describe('Dashboard screen', () => {
     });
 
     const tree = JSON.stringify(instance.toJSON());
-    expect(tree).toContain('"3"');
-    expect(mockFetchDashboardStats).toHaveBeenCalledTimes(1);
+    expect(tree).toContain('"5"');
+    expect(mockFetchDashboardStats).toHaveBeenCalled();
   });
 
   it('exibe treinosMes apos carregar dados', async () => {
@@ -87,7 +92,7 @@ describe('Dashboard screen', () => {
     });
 
     const tree = JSON.stringify(instance.toJSON());
-    expect(tree).toContain('"10"');
+    expect(tree).toContain('"12"');
   });
 
   it('exibe contagem correta de dias ativos na semana', async () => {
@@ -116,5 +121,147 @@ describe('Dashboard screen', () => {
 
     const tree = JSON.stringify(instance.toJSON());
     expect(tree).toContain('—');
+  });
+
+  it('exibe PRs ESSA SEMANA com valor da API', async () => {
+    mockFetchDashboardStats.mockResolvedValue({
+      data: { ...statsBase, prsEssaSemana: 3 },
+    });
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<Dashboard />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+    const texts = instance.root.findAllByType(require('react-native').Text);
+    const prsText = texts.find((t) => t.props.children === '3');
+    expect(prsText).toBeTruthy();
+  });
+
+  it('exibe placeholder quando nao ha recordes recentes', async () => {
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<Dashboard />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+    const placeholderTexts = instance.root.findAllByType(require('react-native').Text);
+    const placeholder = placeholderTexts.find(
+      (t) =>
+        typeof t.props.children === 'string' &&
+        t.props.children.includes('Seus recordes pessoais'),
+    );
+    expect(placeholder).toBeTruthy();
+  });
+
+  it('exibe cards de recordes recentes quando ha dados', async () => {
+    const recordes = [
+      {
+        exercicioId: 1,
+        exercicioNome: 'Supino',
+        tipoExercicio: 'MUSCULACAO',
+        valorPr: '100 (KG)',
+        dataPr: '2026-05-10',
+      },
+      {
+        exercicioId: 2,
+        exercicioNome: 'Corrida',
+        tipoExercicio: 'AEROBICO',
+        valorPr: '10.5 km',
+        dataPr: '2026-05-09',
+      },
+    ];
+    mockFetchDashboardStats.mockResolvedValue({
+      data: { ...statsBase, prsEssaSemana: 2, recordesRecentes: recordes },
+    });
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<Dashboard />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+    const card1 = instance.root.findAll((n) => n.props.testID === 'recorde-card-1');
+    const card2 = instance.root.findAll((n) => n.props.testID === 'recorde-card-2');
+    expect(card1.length).toBeGreaterThan(0);
+    expect(card2.length).toBeGreaterThan(0);
+  });
+
+  it('navega para RegistroAtividadesCompleto ao tocar em recorde', async () => {
+    const recordes = [
+      {
+        exercicioId: 5,
+        exercicioNome: 'Agachamento',
+        tipoExercicio: 'MUSCULACAO',
+        valorPr: '120 (KG)',
+        dataPr: '2026-05-15',
+      },
+    ];
+    mockFetchDashboardStats.mockResolvedValue({
+      data: { ...statsBase, recordesRecentes: recordes },
+    });
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<Dashboard />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+    const card = instance.root.find((n) => n.props.testID === 'recorde-card-5');
+    await ReactTestRenderer.act(async () => {
+      card.props.onPress();
+    });
+    expect(mockNavigate).toHaveBeenCalledWith('RegistroAtividadesCompleto', {
+      exercicio: {
+        id: 5,
+        nome: 'Agachamento',
+        tipoExercicio: 'MUSCULACAO',
+        possuiVariacao: false,
+      },
+    });
+  });
+
+  it('formata data do PR corretamente', async () => {
+    const recordes = [
+      {
+        exercicioId: 7,
+        exercicioNome: 'Rosca',
+        tipoExercicio: 'MUSCULACAO',
+        valorPr: '40 (KG)',
+        dataPr: '2026-01-03',
+      },
+    ];
+    mockFetchDashboardStats.mockResolvedValue({
+      data: { ...statsBase, recordesRecentes: recordes },
+    });
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<Dashboard />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+    const tree = JSON.stringify(instance.toJSON());
+    expect(tree).toContain('3 JAN');
+  });
+
+  it('exibe empty state quando API não retorna recordesRecentes', async () => {
+    // Simulates old backend response without the new fields
+    mockFetchDashboardStats.mockResolvedValue({
+      data: { streak: 3, treinosMes: 10, diasSemana: [false, false, false, false, false, false, false] },
+    });
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<Dashboard />);
+    });
+    const texts = instance.root.findAllByType(require('react-native').Text);
+    const placeholder = texts.find(
+      (t) =>
+        typeof t.props.children === 'string' &&
+        t.props.children.includes('Seus recordes pessoais')
+    );
+    expect(placeholder).toBeTruthy();
   });
 });

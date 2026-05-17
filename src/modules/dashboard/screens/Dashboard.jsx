@@ -1,6 +1,6 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
 import { colors } from '../../../components/Styles/ComumStyles';
@@ -40,6 +40,13 @@ const MESES_PT = [
   'DEZEMBRO',
 ];
 
+const MESES_ABREV = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+
+const formatarDataPr = (dateStr) => {
+  const [, month, day] = dateStr.split('-');
+  return `${parseInt(day, 10)} ${MESES_ABREV[parseInt(month, 10) - 1]}`;
+};
+
 const getGreeting = () => {
   const h = new Date().getHours();
   if (h < 12) return 'Bom dia';
@@ -50,6 +57,7 @@ const getGreeting = () => {
 const Dashboard = () => {
   useScreenTitle(HEADER_TITLE_DASHBOARD, HEADER_SUBTITLE_DASHBOARD);
   const { user } = useContext(AuthContext);
+  const navigation = useNavigation();
 
   const firstName = user?.nome?.split(' ')[0] ?? 'Atleta';
 
@@ -62,12 +70,14 @@ const Dashboard = () => {
     streak: null,
     treinosMes: null,
     diasSemana: Array(7).fill(false),
+    prsEssaSemana: null,
+    recordesRecentes: [],
   });
 
   const fetchStats = useCallback(async () => {
     try {
       const { data } = await DashboardApi.fetchDashboardStats();
-      setStats(data);
+      setStats((prev) => ({ ...prev, ...data }));
     } catch {
       throwToastError('Erro ao carregar estatísticas.');
     }
@@ -112,7 +122,9 @@ const Dashboard = () => {
             <Text style={dashStyle.statLabel}>TREINOS/MÊS</Text>
           </View>
           <View style={dashStyle.statCard}>
-            <Text style={dashStyle.statValueNeutral}>—</Text>
+            <Text style={dashStyle.statValueNeutral}>
+              {stats.prsEssaSemana != null ? String(stats.prsEssaSemana) : '—'}
+            </Text>
             <Text style={dashStyle.statLabel}>{'PRs ESSA\nSEMANA'}</Text>
           </View>
         </View>
@@ -141,20 +153,48 @@ const Dashboard = () => {
           </View>
         </View>
 
-        {/* Recent PRs — empty state */}
+        {/* Recent PRs */}
         <Text style={dashStyle.sectionLabel}>RECORDES RECENTES</Text>
-        <View style={dashStyle.prCard}>
-          <View style={dashStyle.prIconWrap}>
-            <MaterialIcons
-              name="emoji-events"
-              size={26}
-              color={colors.secondary}
-            />
+        {stats.recordesRecentes.length === 0 ? (
+          <View style={dashStyle.prCard}>
+            <View style={dashStyle.prIconWrap}>
+              <MaterialIcons name="emoji-events" size={26} color={colors.secondary} />
+            </View>
+            <Text style={dashStyle.prEmptyText}>
+              Seus recordes pessoais aparecerão aqui em breve.
+            </Text>
           </View>
-          <Text style={dashStyle.prEmptyText}>
-            Seus recordes pessoais aparecerão aqui em breve.
-          </Text>
-        </View>
+        ) : (
+          stats.recordesRecentes.map((recorde) => (
+            <TouchableOpacity
+              key={recorde.exercicioId}
+              style={dashStyle.recordeCard}
+              testID={`recorde-card-${recorde.exercicioId}`}
+              onPress={() =>
+                navigation.navigate('RegistroAtividadesCompleto', {
+                  exercicio: {
+                    id: recorde.exercicioId,
+                    nome: recorde.exercicioNome,
+                    tipoExercicio: recorde.tipoExercicio,
+                    possuiVariacao: false,
+                  },
+                })
+              }
+              activeOpacity={0.75}
+            >
+              <MaterialIcons name="emoji-events" size={16} color={colors.secondary} />
+              <View style={dashStyle.recordeCardContent}>
+                <Text style={dashStyle.recordeCardNome} numberOfLines={1}>
+                  {recorde.exercicioNome}
+                </Text>
+                <Text style={dashStyle.recordeCardValor}>{recorde.valorPr}</Text>
+              </View>
+              <Text style={dashStyle.recordeCardData}>
+                {formatarDataPr(recorde.dataPr)}
+              </Text>
+            </TouchableOpacity>
+          ))
+        )}
       </ScrollView>
 
       {/* Sticky ad banner — outside ScrollView, anchors to bottom of screen */}

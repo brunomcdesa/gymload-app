@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useState,
 } from 'react';
 import {
@@ -113,6 +114,26 @@ const RegistroAtividadesCompleto = (props) => {
   const [moverModalVisivel, setMoverModalVisivel] = useState(false);
   const [movendo, setMovendo] = useState(false);
   const isAdmin = useIsAdmin();
+
+  const registroPr = useMemo(() => {
+    if (!registroAtividadeCompleto.length) return null;
+    if (isExercicioMusculacao) {
+      return registroAtividadeCompleto.reduce((max, r) =>
+        (r.peso ?? 0) > (max.peso ?? 0) ? r : max,
+      );
+    }
+    if (isExercicioCalistenia) {
+      return registroAtividadeCompleto.reduce((max, r) =>
+        (r.qtdRepeticoes ?? 0) > (max.qtdRepeticoes ?? 0) ? r : max,
+      );
+    }
+    if (isExercicioAerobico) {
+      return registroAtividadeCompleto.reduce((max, r) =>
+        (r.distancia ?? 0) > (max.distancia ?? 0) ? r : max,
+      );
+    }
+    return null;
+  }, [registroAtividadeCompleto, isExercicioMusculacao, isExercicioCalistenia, isExercicioAerobico]);
 
   const fetchVariacoes = useCallback(async () => {
     try {
@@ -395,6 +416,7 @@ const RegistroAtividadesCompleto = (props) => {
         </ScrollView>
         {variacaoSelecionada?.padrao && !modoSelecao && (
           <TouchableOpacity
+            testID="btn-selecionar-registros"
             style={selecionarButton}
             onPress={() => setModoSelecao(true)}
           >
@@ -453,6 +475,18 @@ const RegistroAtividadesCompleto = (props) => {
   return (
     <View style={[container, !isAdmin && { paddingBottom: 50 }]}>
       {renderVariacoesPicker()}
+      {registroPr && !modoSelecao && (
+        <View testID="pr-card-destaque" style={style.prCardDestaque}>
+          <View style={style.prCardDestaqueHeader}>
+            <MaterialIcons name="emoji-events" size={14} color={colors.secondary} />
+            <Text style={style.prCardDestaqueTitulo}>RECORDE PESSOAL</Text>
+            <Text style={style.prCardDestaqueData}>
+              {formatarDataSecao(registroPr.dataCadastro.split(' ')[0])}
+            </Text>
+          </View>
+          {renderRegistroContent(registroPr)}
+        </View>
+      )}
       {loading || movendo ? (
         <LoadingIndicator />
       ) : (

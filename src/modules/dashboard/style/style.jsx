@@ -173,4 +173,38 @@ export default StyleSheet.create({
     color: colors.textHint,
     lineHeight: 20,
   },
+
+  // Recorde cards
+  recordeCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: colors.inputBackground,
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: colors.inputBorder,
+    borderLeftWidth: 3,
+    borderLeftColor: colors.secondary,
+  },
+  recordeCardContent: {
+    flex: 1,
+  },
+  recordeCardNome: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: colors.textLight,
+    marginBottom: 2,
+  },
+  recordeCardValor: {
+    fontSize: 12,
+    color: colors.secondary,
+    fontWeight: '600',
+  },
+  recordeCardData: {
+    fontSize: 11,
+    color: colors.terciary,
+    fontWeight: '600',
+  },
 });
