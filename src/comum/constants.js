@@ -20,3 +20,7 @@ export const apiUrl = __DEV__
 export const BANNER_ID = __DEV__
   ? TestIds.BANNER
   : 'ca-app-pub-3977686093704418/1046387115';
+
+export const INTERSTITIAL_ID = __DEV__
+  ? TestIds.INTERSTITIAL
+  : 'ca-app-pub-3977686093704418/5167509886';

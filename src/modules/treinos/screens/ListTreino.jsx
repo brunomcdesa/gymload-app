@@ -2,6 +2,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
 import AddButton from '../../../components/Button/AddButton';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
@@ -10,6 +11,7 @@ import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
 import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
+import { useIsAdmin } from '../../utils/userUtils';
 import * as Api from '../Api';
 import style from '../style/style';
 
@@ -43,6 +45,7 @@ const ListTreino = () => {
   const navigation = useNavigation();
   const [buscarInativos, setBuscarInativos] = useState(false);
   const [buscarImportados, setBuscarImportados] = useState(false);
+  const isAdmin = useIsAdmin();
 
   const fetchTreinos = useCallback(async () => {
     try {
@@ -265,12 +268,12 @@ const ListTreino = () => {
           keyExtractor={(treino) => treino.id.toString()}
           renderItem={renderTreinoItem}
           ListEmptyComponent={renderEmptyList}
-          contentContainerStyle={listContent}
+          contentContainerStyle={[listContent, !isAdmin && { paddingBottom: 70 }]}
           ItemSeparatorComponent={SeparatorItem}
         />
       )}
 
-      <View style={fabRow}>
+      <View style={[fabRow, !isAdmin && { bottom: 74 }]}>
         <TouchableOpacity
           style={importarFabButton}
           onPress={() => navigation.navigate('ImportarTreino')}
@@ -280,6 +283,8 @@ const ListTreino = () => {
         </TouchableOpacity>
         <AddButton onPress={redirectToTreinoForm} />
       </View>
+
+      <AnuncioBanner />
     </View>
   );
 };

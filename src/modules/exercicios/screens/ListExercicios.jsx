@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
 import AddButton from '../../../components/Button/AddButton';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
@@ -258,7 +259,7 @@ const ListExercicios = () => {
           keyExtractor={(exercicio) => exercicio.id.toString()}
           renderItem={renderExercicioItem}
           ListEmptyComponent={<EmptyList value="exercício" />}
-          contentContainerStyle={ComumStyles.listContent}
+          contentContainerStyle={[ComumStyles.listContent, !isAdmin && { paddingBottom: 70 }]}
         />
       )}
 
@@ -267,6 +268,8 @@ const ListExercicios = () => {
           <AddButton onPress={redirectExercicioForm} />
         </View>
       )}
+
+      <AnuncioBanner />
     </View>
   );
 };

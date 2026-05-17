@@ -40,6 +40,15 @@ jest.mock('../../src/modules/utils/toastUtils', () => ({
   throwToastSuccess: jest.fn(),
 }));
 
+jest.mock('../../src/modules/utils/userUtils', () => ({
+  useIsAdmin: () => false,
+}));
+
+jest.mock('../../src/components/Anuncios/AnuncioBanner', () => {
+  const { View } = require('react-native');
+  return () => <View testID="anuncio-banner" />;
+});
+
 jest.mock('../../src/components/Inputs/SearchInput', () => {
   const { View } = require('react-native');
   return () => <View testID="search-input" />;

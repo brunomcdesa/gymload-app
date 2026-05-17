@@ -1,4 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
+import useAnuncioInterstitial from '../../../components/Anuncios/useAnuncioInterstitial';
 import {
   ScrollView,
   StyleSheet,
@@ -257,6 +258,7 @@ const RegistroAtividadeForm = (props) => {
     registroAtividadeData.unidadePeso,
   );
   const [tipoPegadaSelected, setTipoPegadaSelected] = useState(null);
+  const { mostrar: mostrarInterstitial } = useAnuncioInterstitial();
 
   const convertDecimalHoursToDate = (decimalHours) => {
     const hours = Math.floor(decimalHours);
@@ -332,6 +334,7 @@ const RegistroAtividadeForm = (props) => {
       }
 
       throwToastSuccess('Registro salvo com sucesso!');
+      mostrarInterstitial();
       navigation.goBack();
     } catch (error) {
       console.log(error?.data[0]?.message);

@@ -20,6 +20,11 @@ jest.mock('../../src/modules/utils/toastUtils', () => ({
   throwToastSuccess: (...args) => mockThrowToastSuccess(...args),
 }));
 
+jest.mock('../../src/components/Anuncios/useAnuncioInterstitial', () => ({
+  __esModule: true,
+  default: () => ({ mostrar: jest.fn() }),
+}));
+
 jest.mock('../../src/comum/EnumApi', () => ({
   fetchUnidadesPesosSelect: jest.fn().mockResolvedValue({ data: [] }),
   fetchTiposPegadasSelect: jest.fn().mockResolvedValue({ data: [] }),

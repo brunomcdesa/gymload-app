@@ -2,10 +2,14 @@ import React from 'react';
 import { View } from 'react-native';
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { BANNER_ID } from '../../comum/constants';
+import { useIsAdmin } from '../../modules/utils/userUtils';
 import style from './styles/style';
 
 const AnuncioBanner = () => {
+  const isAdmin = useIsAdmin();
   const { container, bottom } = style;
+
+  if (isAdmin) return null;
 
   return (
     <View style={[container, bottom]}>

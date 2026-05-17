@@ -17,6 +17,7 @@ import {
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
+import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
@@ -24,6 +25,7 @@ import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import * as ExerciciosApi from '../../exercicios/Api';
 import exerciciosStyle from '../../exercicios/style/style';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
+import { useIsAdmin } from '../../utils/userUtils';
 import * as Api from '../Api';
 import RegistroAerobico from '../components/RegistroAerobico';
 import RegistroCalistenia from '../components/RegistroCalistenia';
@@ -110,6 +112,7 @@ const RegistroAtividadesCompleto = (props) => {
   const [registrosSelecionados, setRegistrosSelecionados] = useState([]);
   const [moverModalVisivel, setMoverModalVisivel] = useState(false);
   const [movendo, setMovendo] = useState(false);
+  const isAdmin = useIsAdmin();
 
   const fetchVariacoes = useCallback(async () => {
     try {
@@ -448,7 +451,7 @@ const RegistroAtividadesCompleto = (props) => {
   );
 
   return (
-    <View style={container}>
+    <View style={[container, !isAdmin && { paddingBottom: 50 }]}>
       {renderVariacoesPicker()}
       {loading || movendo ? (
         <LoadingIndicator />
@@ -456,7 +459,7 @@ const RegistroAtividadesCompleto = (props) => {
         <SectionList
           sections={groupedRegistros}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={listContent}
+          contentContainerStyle={[listContent, !isAdmin && { paddingBottom: 70 }]}
           renderItem={renderItem}
           renderSectionHeader={({ section: { title } }) => (
             <View style={sectionHeader}>
@@ -522,6 +525,7 @@ const RegistroAtividadesCompleto = (props) => {
       </View>
 
       {renderMoverModal()}
+      <AnuncioBanner />
     </View>
   );
 };

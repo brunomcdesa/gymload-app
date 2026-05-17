@@ -27,6 +27,15 @@ jest.mock('../../src/modules/utils/toastUtils', () => ({
   throwToastSuccess: jest.fn(),
 }));
 
+jest.mock('../../src/modules/utils/userUtils', () => ({
+  useIsAdmin: () => false,
+}));
+
+jest.mock('../../src/components/Anuncios/AnuncioBanner', () => {
+  const { View } = require('react-native');
+  return () => <View testID="anuncio-banner" />;
+});
+
 jest.mock('@react-navigation/native', () => ({
   useFocusEffect: (cb) => {
     const React = require('react');
