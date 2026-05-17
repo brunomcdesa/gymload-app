@@ -11,7 +11,7 @@ export default StyleSheet.create({
     paddingHorizontal: 22,
     paddingBottom: 18,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: colors.primary,
   },
   titleStyle: {
     fontSize: 22,

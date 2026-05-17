@@ -39,7 +39,10 @@ jest.mock('react-native/Libraries/Share/Share', () => ({
 }));
 
 import CompartilharTreino from '../../src/modules/treinos/screens/CompartilharTreino';
-import { throwToastError, throwToastSuccess } from '../../src/modules/utils/toastUtils';
+import {
+  throwToastError,
+  throwToastSuccess,
+} from '../../src/modules/utils/toastUtils';
 
 const buildProps = (treinoOverrides = {}) => ({
   navigation: { setOptions: jest.fn() },
@@ -70,7 +73,9 @@ describe('CompartilharTreino screen', () => {
   it('exibe_codigoEDataExpiracao_aposCarregar', async () => {
     let instance;
     await ReactTestRenderer.act(async () => {
-      instance = ReactTestRenderer.create(<CompartilharTreino {...buildProps()} />);
+      instance = ReactTestRenderer.create(
+        <CompartilharTreino {...buildProps()} />,
+      );
     });
     await ReactTestRenderer.act(async () => {
       await Promise.resolve();
@@ -82,7 +87,9 @@ describe('CompartilharTreino screen', () => {
 
   it('chama_compartilharTreino_comIdCorreto', async () => {
     await ReactTestRenderer.act(async () => {
-      ReactTestRenderer.create(<CompartilharTreino {...buildProps({ id: 42 })} />);
+      ReactTestRenderer.create(
+        <CompartilharTreino {...buildProps({ id: 42 })} />,
+      );
     });
     await ReactTestRenderer.act(async () => {
       await Promise.resolve();
@@ -94,7 +101,9 @@ describe('CompartilharTreino screen', () => {
   it('chama_setStringAsync_aoCopiarCodigo', async () => {
     let instance;
     await ReactTestRenderer.act(async () => {
-      instance = ReactTestRenderer.create(<CompartilharTreino {...buildProps()} />);
+      instance = ReactTestRenderer.create(
+        <CompartilharTreino {...buildProps()} />,
+      );
     });
     await ReactTestRenderer.act(async () => {
       await Promise.resolve();

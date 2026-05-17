@@ -22,26 +22,26 @@ export default StyleSheet.create({
     padding: 20,
     marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
     borderLeftWidth: 4,
     borderLeftColor: colors.secondary,
   },
   greetingDate: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#aaa',
+    color: colors.placeholderText,
     letterSpacing: 2,
     marginBottom: 4,
   },
   greetingTitle: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#fff',
+    color: colors.textLight,
     marginBottom: 4,
   },
   greetingSubtitle: {
     fontSize: 13,
-    color: '#aaa',
+    color: colors.placeholderText,
     lineHeight: 18,
   },
 
@@ -53,12 +53,12 @@ export default StyleSheet.create({
   },
   statCard: {
     flex: 1,
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderRadius: 14,
     padding: 12,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
   },
   statValueAccent: {
     fontSize: 22,
@@ -69,25 +69,25 @@ export default StyleSheet.create({
   statValueNeutral: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#fff',
+    color: colors.textLight,
     marginBottom: 2,
   },
   statLabel: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#aaa',
+    color: colors.placeholderText,
     letterSpacing: 1,
     textAlign: 'center',
   },
 
   // Generic card
   card: {
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
   },
 
   // Week section
@@ -100,11 +100,11 @@ export default StyleSheet.create({
   weekTitle: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#fff',
+    color: colors.textLight,
   },
   weekSub: {
     fontSize: 12,
-    color: '#aaa',
+    color: colors.placeholderText,
   },
   weekDots: {
     flexDirection: 'row',
@@ -118,7 +118,7 @@ export default StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 10,
-    backgroundColor: '#333',
+    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -132,7 +132,7 @@ export default StyleSheet.create({
   },
   dayLabel: {
     fontSize: 11,
-    color: '#aaa',
+    color: colors.placeholderText,
     fontWeight: '600',
     marginTop: 6,
   },
@@ -147,12 +147,12 @@ export default StyleSheet.create({
     paddingLeft: 4,
   },
   prCard: {
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
     borderLeftWidth: 4,
     borderLeftColor: colors.secondary,
     flexDirection: 'row',
@@ -170,7 +170,7 @@ export default StyleSheet.create({
   prEmptyText: {
     flex: 1,
     fontSize: 13,
-    color: '#666',
+    color: colors.textHint,
     lineHeight: 20,
   },
 });

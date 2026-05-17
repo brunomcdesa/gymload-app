@@ -18,13 +18,11 @@ import DashboardStack from '../modules/dashboard/stack/DashboardStackNavigator';
 import ExerciciosStack from '../modules/exercicios/stack/ExerciciosStackNavigator';
 import TreinosStack from '../modules/treinos/stack/TreinosStackNavigator';
 import PerfilStack from '../modules/usuario/stack/PerfilStackNavigator';
-import { useIsAdmin } from '../modules/utils/userUtils';
 import ScreenWrapper from './ScreenWrapper';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  const isAdmin = useIsAdmin();
   const { setActiveTabOptions } = useHeaderContext();
 
   const rotasConfig = [

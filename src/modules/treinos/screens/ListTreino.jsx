@@ -8,7 +8,7 @@ import EmptyList from '../../../components/List/EmptyList';
 import SeparatorItem from '../../../components/List/SeparatorItem';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from '../style/style';
@@ -23,8 +23,11 @@ const ListTreino = () => {
     chipText,
     chipTextActive,
     treinoCard,
+    treinoAccentBar,
     treinoAccentBarAtivo,
     treinoAccentBarInativo,
+    chipIconLeft,
+    chipIconRight,
     treinoIconContainer,
     treinoInfo,
     treinoNome,
@@ -155,7 +158,7 @@ const ListTreino = () => {
         <View style={treinoCard}>
           <View
             style={[
-              { width: 4, alignSelf: 'stretch', borderRadius: 4 },
+              treinoAccentBar,
               isAtivo ? treinoAccentBarAtivo : treinoAccentBarInativo,
             ]}
           />
@@ -163,7 +166,7 @@ const ListTreino = () => {
             <MaterialIcons
               name="fitness-center"
               size={22}
-              color={isAtivo ? '#28a745' : '#dc3545'}
+              color={isAtivo ? colors.success : colors.danger}
             />
           </View>
           <View style={treinoInfo}>
@@ -174,8 +177,8 @@ const ListTreino = () => {
                   testID="importado-indicator"
                   name="call-received"
                   size={14}
-                  color="#666"
-                  style={{ marginLeft: 4 }}
+                  color={colors.textHint}
+                  style={chipIconLeft}
                 />
               )}
             </View>
@@ -183,7 +186,11 @@ const ListTreino = () => {
               Criado em: {treino.dataCadastro.split(' ')[0]}
             </Text>
           </View>
-          <MaterialIcons name="chevron-right" size={24} color="#666" />
+          <MaterialIcons
+            name="chevron-right"
+            size={24}
+            color={colors.textHint}
+          />
         </View>
       </SelectableItem>
     );
@@ -209,8 +216,8 @@ const ListTreino = () => {
           <MaterialIcons
             name="check-circle"
             size={14}
-            color={!buscarInativos ? '#fff' : '#aaa'}
-            style={{ marginRight: 4 }}
+            color={!buscarInativos ? colors.textLight : colors.placeholderText}
+            style={chipIconRight}
           />
           <Text style={[chipText, !buscarInativos && chipTextActive]}>
             Ativos
@@ -225,8 +232,8 @@ const ListTreino = () => {
           <MaterialIcons
             name="archive"
             size={14}
-            color={buscarInativos ? '#fff' : '#aaa'}
-            style={{ marginRight: 4 }}
+            color={buscarInativos ? colors.textLight : colors.placeholderText}
+            style={chipIconRight}
           />
           <Text style={[chipText, buscarInativos && chipTextActive]}>
             Inativos
@@ -241,14 +248,13 @@ const ListTreino = () => {
           <MaterialIcons
             name="call-received"
             size={14}
-            color={buscarImportados ? '#fff' : '#aaa'}
-            style={{ marginRight: 4 }}
+            color={buscarImportados ? colors.textLight : colors.placeholderText}
+            style={chipIconRight}
           />
           <Text style={[chipText, buscarImportados && chipTextActive]}>
             Importados
           </Text>
         </TouchableOpacity>
-
       </View>
 
       {loading ? (

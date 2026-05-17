@@ -36,7 +36,7 @@ const SelectableItem = (props) => {
         titleTextStyle: actionSheetTitle,
         messageTextStyle: actionSheetMessage,
         separatorStyle: {
-          backgroundColor: '#383838',
+          backgroundColor: colors.inputBorder,
         },
       },
       (selectedIndex) => {

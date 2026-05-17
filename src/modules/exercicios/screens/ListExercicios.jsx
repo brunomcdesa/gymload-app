@@ -223,7 +223,7 @@ const ListExercicios = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={style.chipRow}
-          style={{ flexShrink: 0 }}
+          style={ComumStyles.flexShrinkZero}
         >
           {chips.map((chip) => (
             <TouchableOpacity

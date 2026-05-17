@@ -1,4 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
+import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import AddButton from '../../../components/Button/AddButton';
@@ -15,7 +16,7 @@ import ExercicioVariacao from '../components/ExercicioVariacao';
 import style from '../style/style';
 
 const ListExercicioVariacoes = (props) => {
-  const { container, fabContainer } = ComumStyles;
+  const { container, fabContainer, flexGrowOne } = ComumStyles;
   const { listHeader } = style;
   const { navigation, route } = props;
   const { exercicioBase } = route.params;
@@ -139,7 +140,7 @@ const ListExercicioVariacoes = (props) => {
           keyExtractor={(exercicio) => exercicio.id.toString()}
           renderItem={renderExercicioItem}
           ListEmptyComponent={renderEmptyList}
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={flexGrowOne}
         />
       )}
     </>
@@ -156,6 +157,23 @@ const ListExercicioVariacoes = (props) => {
       )}
     </View>
   );
+};
+
+ListExercicioVariacoes.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
+  }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      exercicioBase: PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+          .isRequired,
+        nome: PropTypes.string.isRequired,
+        tipoExercicio: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default ListExercicioVariacoes;

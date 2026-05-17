@@ -12,7 +12,10 @@ describe('handleChangeState', () => {
     const setState = jest.fn();
     const state = { nome: 'Bruno' };
     handleChangeState(setState, state, 'email', 'bruno@test.com');
-    expect(setState).toHaveBeenCalledWith({ nome: 'Bruno', email: 'bruno@test.com' });
+    expect(setState).toHaveBeenCalledWith({
+      nome: 'Bruno',
+      email: 'bruno@test.com',
+    });
   });
 
   it('calls setState exactly once', () => {

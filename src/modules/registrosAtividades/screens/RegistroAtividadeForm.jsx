@@ -1,5 +1,11 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -21,7 +27,7 @@ const stepperStyle = StyleSheet.create({
   stepperLabel: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#888',
+    color: colors.terciary,
     letterSpacing: 1.5,
     textTransform: 'uppercase',
     marginBottom: 8,
@@ -33,17 +39,17 @@ const stepperStyle = StyleSheet.create({
   stepperRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
     padding: 12,
   },
   stepperMinus: {
     width: 44,
     height: 44,
     borderRadius: 12,
-    backgroundColor: '#333',
+    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -56,7 +62,7 @@ const stepperStyle = StyleSheet.create({
     justifyContent: 'center',
   },
   stepperButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 22,
     fontWeight: '700',
     lineHeight: 26,
@@ -74,24 +80,24 @@ const stepperStyle = StyleSheet.create({
   },
   stepperUnit: {
     fontSize: 14,
-    color: '#888',
+    color: colors.terciary,
     fontWeight: '600',
     marginTop: 2,
   },
   smallStepperRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
     padding: 10,
   },
   smallStepperMinus: {
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: '#333',
+    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -99,12 +105,12 @@ const stepperStyle = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: '#333',
+    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
   smallStepperButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 18,
     fontWeight: '700',
     lineHeight: 22,
@@ -113,7 +119,7 @@ const stepperStyle = StyleSheet.create({
     flex: 1,
     fontSize: 28,
     fontWeight: '800',
-    color: '#fff',
+    color: colors.textLight,
     textAlign: 'center',
     letterSpacing: -0.5,
   },
@@ -127,21 +133,36 @@ const stepperStyle = StyleSheet.create({
   },
 });
 
-const StepperLarge = ({ label, value, unit, onDecrement, onIncrement, required }) => (
+const StepperLarge = ({
+  label,
+  value,
+  unit,
+  onDecrement,
+  onIncrement,
+  required,
+}) => (
   <View style={stepperStyle.stepperSection}>
     <Text style={stepperStyle.stepperLabel}>
       {label}
       {required && <Text style={stepperStyle.stepperRequired}> *</Text>}
     </Text>
     <View style={stepperStyle.stepperRow}>
-      <TouchableOpacity style={stepperStyle.stepperMinus} onPress={onDecrement} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={stepperStyle.stepperMinus}
+        onPress={onDecrement}
+        activeOpacity={0.7}
+      >
         <Text style={stepperStyle.stepperButtonText}>−</Text>
       </TouchableOpacity>
       <View style={stepperStyle.stepperValueContainer}>
         <Text style={stepperStyle.stepperValue}>{value || '0'}</Text>
         {unit ? <Text style={stepperStyle.stepperUnit}>{unit}</Text> : null}
       </View>
-      <TouchableOpacity style={stepperStyle.stepperPlus} onPress={onIncrement} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={stepperStyle.stepperPlus}
+        onPress={onIncrement}
+        activeOpacity={0.7}
+      >
         <Text style={stepperStyle.stepperButtonText}>+</Text>
       </TouchableOpacity>
     </View>
@@ -164,11 +185,19 @@ const StepperSmall = ({ label, value, onDecrement, onIncrement, required }) => (
       {required && <Text style={stepperStyle.stepperRequired}> *</Text>}
     </Text>
     <View style={stepperStyle.smallStepperRow}>
-      <TouchableOpacity style={stepperStyle.smallStepperMinus} onPress={onDecrement} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={stepperStyle.smallStepperMinus}
+        onPress={onDecrement}
+        activeOpacity={0.7}
+      >
         <Text style={stepperStyle.smallStepperButtonText}>−</Text>
       </TouchableOpacity>
       <Text style={stepperStyle.smallStepperValue}>{value || '0'}</Text>
-      <TouchableOpacity style={stepperStyle.smallStepperPlus} onPress={onIncrement} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={stepperStyle.smallStepperPlus}
+        onPress={onIncrement}
+        activeOpacity={0.7}
+      >
         <Text style={stepperStyle.smallStepperButtonText}>+</Text>
       </TouchableOpacity>
     </View>
@@ -257,7 +286,7 @@ const RegistroAtividadeForm = (props) => {
   };
 
   const adjustInt = (field, delta, min = 1) => {
-    const current = parseInt(formData[field]) || min;
+    const current = parseInt(formData[field], 10) || min;
     const next = Math.max(min, current + delta);
     handleChange(field, String(next));
   };

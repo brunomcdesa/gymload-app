@@ -4,12 +4,7 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import {
-  ActivityIndicator,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { ComumStyles } from '../../../components/Styles/ComumStyles';

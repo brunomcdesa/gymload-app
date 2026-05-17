@@ -37,8 +37,7 @@ jest.mock('../../src/modules/utils/toastUtils', () => ({
 
 jest.mock('../../src/components/Camera/CustomCamera', () => {
   const { View } = require('react-native');
-  return ({ visible }) =>
-    visible ? <View testID="custom-camera" /> : null;
+  return ({ visible }) => (visible ? <View testID="custom-camera" /> : null);
 });
 
 jest.mock('../../src/components/Loading/LoadingIndicator', () => {
@@ -47,14 +46,19 @@ jest.mock('../../src/components/Loading/LoadingIndicator', () => {
 });
 
 import ImportarTreino from '../../src/modules/treinos/screens/ImportarTreino';
-import { throwToastError, throwToastSuccess } from '../../src/modules/utils/toastUtils';
+import {
+  throwToastError,
+  throwToastSuccess,
+} from '../../src/modules/utils/toastUtils';
 
 const abrirAbaManualEBuscar = async (instance, codigo) => {
   await ReactTestRenderer.act(async () => {
     instance.root.findByProps({ testID: 'tab-manual' }).props.onPress();
   });
   await ReactTestRenderer.act(async () => {
-    instance.root.findByProps({ testID: 'input-codigo' }).props.onChangeText(codigo);
+    instance.root
+      .findByProps({ testID: 'input-codigo' })
+      .props.onChangeText(codigo);
   });
   await ReactTestRenderer.act(async () => {
     instance.root.findByProps({ testID: 'btn-buscar' }).props.onPress();
@@ -157,7 +161,9 @@ describe('ImportarTreino screen', () => {
       await Promise.resolve();
     });
 
-    expect(throwToastSuccess).toHaveBeenCalledWith('Treino importado com sucesso!');
+    expect(throwToastSuccess).toHaveBeenCalledWith(
+      'Treino importado com sucesso!',
+    );
     expect(mockNavigate).toHaveBeenCalledWith('ListTreino');
   });
 
@@ -173,7 +179,9 @@ describe('ImportarTreino screen', () => {
       instance.root.findByProps({ testID: 'tab-manual' }).props.onPress();
     });
     await ReactTestRenderer.act(async () => {
-      instance.root.findByProps({ testID: 'input-codigo' }).props.onChangeText('INVALIDO');
+      instance.root
+        .findByProps({ testID: 'input-codigo' })
+        .props.onChangeText('INVALIDO');
     });
     await ReactTestRenderer.act(async () => {
       instance.root.findByProps({ testID: 'btn-buscar' }).props.onPress();
@@ -182,6 +190,8 @@ describe('ImportarTreino screen', () => {
       await Promise.resolve();
     });
 
-    expect(throwToastError).toHaveBeenCalledWith('Código inválido ou expirado.');
+    expect(throwToastError).toHaveBeenCalledWith(
+      'Código inválido ou expirado.',
+    );
   });
 });

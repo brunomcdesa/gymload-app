@@ -21,10 +21,13 @@ jest.mock('../../src/components/Header/HeaderTitle', () => {
   return ({ title }) => <Text testID="header-title">{title}</Text>;
 });
 
-jest.mock('../../src/components/Selectable/SelectableImage/SelectableImage', () => {
-  const { View } = require('react-native');
-  return () => <View testID="selectable-image" />;
-});
+jest.mock(
+  '../../src/components/Selectable/SelectableImage/SelectableImage',
+  () => {
+    const { View } = require('react-native');
+    return () => <View testID="selectable-image" />;
+  },
+);
 
 jest.mock('@react-navigation/native', () => ({
   useFocusEffect: (cb) => {
@@ -67,7 +70,9 @@ describe('UsuarioCadastroForm', () => {
 
   it('renderiza sem crash — modo admin', async () => {
     await ReactTestRenderer.act(async () => {
-      ReactTestRenderer.create(<UsuarioCadastroForm {...buildProps({ isCadastroAdmin: true })} />);
+      ReactTestRenderer.create(
+        <UsuarioCadastroForm {...buildProps({ isCadastroAdmin: true })} />,
+      );
     });
   });
 
@@ -96,7 +101,9 @@ describe('UsuarioCadastroForm', () => {
   it('exibe toast de erro ao submeter com campos vazios', async () => {
     let instance;
     await ReactTestRenderer.act(async () => {
-      instance = ReactTestRenderer.create(<UsuarioCadastroForm {...buildProps({ isCadastroAdmin: true })} />);
+      instance = ReactTestRenderer.create(
+        <UsuarioCadastroForm {...buildProps({ isCadastroAdmin: true })} />,
+      );
     });
     const btnCadastrar = instance.root.findByProps({ testID: 'btn-cadastrar' });
     await ReactTestRenderer.act(async () => {
@@ -109,7 +116,9 @@ describe('UsuarioCadastroForm', () => {
   it('botão Voltar chama goBack', async () => {
     let instance;
     await ReactTestRenderer.act(async () => {
-      instance = ReactTestRenderer.create(<UsuarioCadastroForm {...buildProps()} />);
+      instance = ReactTestRenderer.create(
+        <UsuarioCadastroForm {...buildProps()} />,
+      );
     });
     const btnVoltar = instance.root.findByProps({ testID: 'btn-voltar' });
     await ReactTestRenderer.act(async () => {

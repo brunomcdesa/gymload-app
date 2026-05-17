@@ -16,10 +16,28 @@ import dashStyle from '../style/style';
 
 const WEEK_DAYS = ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'];
 
-const DIAS_PT = ['DOMINGO', 'SEGUNDA', 'TERÇA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÁBADO'];
+const DIAS_PT = [
+  'DOMINGO',
+  'SEGUNDA',
+  'TERÇA',
+  'QUARTA',
+  'QUINTA',
+  'SEXTA',
+  'SÁBADO',
+];
 const MESES_PT = [
-  'JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO',
-  'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO',
+  'JANEIRO',
+  'FEVEREIRO',
+  'MARÇO',
+  'ABRIL',
+  'MAIO',
+  'JUNHO',
+  'JULHO',
+  'AGOSTO',
+  'SETEMBRO',
+  'OUTUBRO',
+  'NOVEMBRO',
+  'DEZEMBRO',
 ];
 
 const getGreeting = () => {
@@ -71,7 +89,9 @@ const Dashboard = () => {
         {/* Hero greeting */}
         <View style={dashStyle.greetingCard}>
           <Text style={dashStyle.greetingDate}>{formattedDate}</Text>
-          <Text style={dashStyle.greetingTitle}>{getGreeting()}, {firstName} 👋</Text>
+          <Text style={dashStyle.greetingTitle}>
+            {getGreeting()}, {firstName} 👋
+          </Text>
           <Text style={dashStyle.greetingSubtitle}>
             Registre seus exercícios e acompanhe sua evolução.
           </Text>
@@ -108,7 +128,13 @@ const Dashboard = () => {
           <View style={dashStyle.weekDots}>
             {WEEK_DAYS.map((d, i) => (
               <View key={i} style={dashStyle.dayItem}>
-                <View style={stats.diasSemana[i] ? dashStyle.dayDotActive : dashStyle.dayDot} />
+                <View
+                  style={
+                    stats.diasSemana[i]
+                      ? dashStyle.dayDotActive
+                      : dashStyle.dayDot
+                  }
+                />
                 <Text style={dashStyle.dayLabel}>{d}</Text>
               </View>
             ))}
@@ -119,7 +145,11 @@ const Dashboard = () => {
         <Text style={dashStyle.sectionLabel}>RECORDES RECENTES</Text>
         <View style={dashStyle.prCard}>
           <View style={dashStyle.prIconWrap}>
-            <MaterialIcons name="emoji-events" size={26} color={colors.secondary} />
+            <MaterialIcons
+              name="emoji-events"
+              size={26}
+              color={colors.secondary}
+            />
           </View>
           <Text style={dashStyle.prEmptyText}>
             Seus recordes pessoais aparecerão aqui em breve.

@@ -5,8 +5,18 @@ export default StyleSheet.create({
   listContent: {
     paddingBottom: 20,
   },
+  emptyContainer: {
+    alignItems: 'center',
+    paddingVertical: 60,
+  },
+  emptyText: {
+    color: colors.terciary,
+    marginTop: 12,
+    fontSize: 14,
+    textAlign: 'center',
+  },
   sectionHeader: {
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     paddingVertical: 6,
     paddingHorizontal: 16,
     borderRadius: 999,
@@ -14,7 +24,7 @@ export default StyleSheet.create({
     marginBottom: 8,
     alignSelf: 'center',
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
   },
   sectionHeaderText: {
     color: colors.textLight,
@@ -46,14 +56,14 @@ export default StyleSheet.create({
   destaqueValue: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#fff',
+    color: colors.textLight,
     textAlign: 'center',
     letterSpacing: -0.5,
   },
   statDivider: {
     width: 1,
     height: 36,
-    backgroundColor: '#383838',
+    backgroundColor: colors.inputBorder,
   },
   observacaoText: {
     fontSize: 12,
@@ -68,8 +78,8 @@ export default StyleSheet.create({
     padding: 16,
     paddingBottom: 24,
     borderTopWidth: 1,
-    borderTopColor: '#333',
-    backgroundColor: '#222',
+    borderTopColor: colors.primary,
+    backgroundColor: colors.background,
     alignItems: 'center',
   },
   backButton: {
@@ -77,12 +87,12 @@ export default StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#3a3a3a',
+    borderColor: colors.borderSubtle,
     justifyContent: 'center',
     alignItems: 'center',
   },
   backButtonText: {
-    color: '#e8e8e8',
+    color: colors.textMuted,
     fontSize: 15,
     fontWeight: '600',
   },
@@ -97,7 +107,7 @@ export default StyleSheet.create({
     gap: 6,
   },
   addButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 15,
     fontWeight: '700',
   },
@@ -140,7 +150,7 @@ export default StyleSheet.create({
   },
   cancelarSelecaoText: {
     fontSize: 13,
-    color: '#aaa',
+    color: colors.placeholderText,
     fontWeight: '600',
   },
   cancelarSelecaoButton: {
@@ -148,12 +158,12 @@ export default StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#3a3a3a',
+    borderColor: colors.borderSubtle,
     justifyContent: 'center',
     alignItems: 'center',
   },
   cancelarSelecaoButtonText: {
-    color: '#e8e8e8',
+    color: colors.textMuted,
     fontSize: 15,
     fontWeight: '600',
   },
@@ -168,10 +178,10 @@ export default StyleSheet.create({
     gap: 6,
   },
   moverButtonDisabled: {
-    backgroundColor: '#555',
+    backgroundColor: colors.disabled,
   },
   moverButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 15,
     fontWeight: '700',
   },
@@ -193,7 +203,7 @@ export default StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContainer: {
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 20,
@@ -203,18 +213,18 @@ export default StyleSheet.create({
   modalTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#fff',
+    color: colors.textLight,
     marginBottom: 16,
     textAlign: 'center',
   },
   modalItem: {
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#383838',
+    borderBottomColor: colors.inputBorder,
   },
   modalItemText: {
     fontSize: 15,
-    color: '#e8e8e8',
+    color: colors.textMuted,
     fontWeight: '600',
   },
   modalCancelar: {
@@ -224,7 +234,7 @@ export default StyleSheet.create({
   },
   modalCancelarText: {
     fontSize: 15,
-    color: '#aaa',
+    color: colors.placeholderText,
     fontWeight: '600',
   },
 });

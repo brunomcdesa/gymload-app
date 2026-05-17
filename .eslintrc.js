@@ -21,6 +21,8 @@ module.exports = {
       },
     ],
     'import/namespace': 'off',
+    'import/no-named-as-default': 'off',
+    'import/no-named-as-default-member': 'off',
   },
   settings: {
     'import/resolver': {
@@ -29,4 +31,22 @@ module.exports = {
       },
     },
   },
+  overrides: [
+    {
+      files: [
+        '**/__tests__/**',
+        '**/*.test.{js,jsx,ts,tsx}',
+        '**/__mocks__/**',
+      ],
+      env: {
+        jest: true,
+      },
+      rules: {
+        'react/prop-types': 'off',
+        'react/display-name': 'off',
+        'react-hooks/exhaustive-deps': 'off',
+        'no-shadow': 'off',
+      },
+    },
+  ],
 };

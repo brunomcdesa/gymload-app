@@ -1,31 +1,24 @@
+import PropTypes from 'prop-types';
 import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
   useState,
 } from 'react';
-import { Text, View } from 'react-native';
-import SaveButton from '../../../components/Button/SaveButton';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
-
-import PropTypes from 'prop-types';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
+import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { fetchTiposVariacoesSelect } from '../../tipovariacao/Api';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
-import { fetchTiposVariacoesSelect } from '../../tipovariacao/Api';
+import style from '../style/style';
 
 const ExercicioVariacaoForm = (props) => {
-  const {
-    fabContainer,
-    formContainer,
-    formLabel,
-    formLabelObrigatorio,
-    asteriscoObrigatorio,
-    inlineContainer,
-    inputGroup,
-  } = ComumStyles;
+  const { asteriscoObrigatorio, formLabelObrigatorio, inlineContainer } =
+    ComumStyles;
   const { navigation, route } = props;
   const { exercicioData } = route.params;
   const { id, nome, tipoExercicio } = exercicioData;
@@ -74,7 +67,6 @@ const ExercicioVariacaoForm = (props) => {
         error?.response?.data?.message ||
         `Erro ao salvar Variação para ${nome}.`;
       throwToastError(errorMessage);
-      console.log('Erro ao salvar nova Variação.', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -85,8 +77,8 @@ const ExercicioVariacaoForm = (props) => {
       setTipoVariacaoLoading(true);
       const { data } = await fetchTiposVariacoesSelect();
       setTipoVariacaoItems(data);
-    } catch (error) {
-      console.log('Erro ao buscar tipos de variação.', error);
+    } catch {
+      throwToastError('Erro ao buscar tipos de variação.');
     } finally {
       setTipoVariacaoLoading(false);
     }
@@ -107,6 +99,10 @@ const ExercicioVariacaoForm = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
+      headerTitleAlign: 'center',
+      headerLeft: () => null,
+      headerBackVisible: false,
+      gestureEnabled: false,
     });
   }, [navigation, renderHeaderTitle]);
 
@@ -114,9 +110,9 @@ const ExercicioVariacaoForm = (props) => {
     return (
       isExercicioCalistenia && (
         <View style={inlineContainer}>
-          <View style={inputGroup}>
+          <View style={style.inputGroup}>
             <View style={formLabelObrigatorio}>
-              <Text style={formLabel}>Nome:</Text>
+              <Text style={style.fieldLabel}>Nome:</Text>
               <Text style={asteriscoObrigatorio}>*</Text>
             </View>
             <TextoInput
@@ -134,9 +130,9 @@ const ExercicioVariacaoForm = (props) => {
     return (
       isExercicioMusculacao && (
         <View style={inlineContainer}>
-          <View style={inputGroup}>
+          <View style={style.inputGroup}>
             <View style={formLabelObrigatorio}>
-              <Text style={formLabel}>Tipo de Variação:</Text>
+              <Text style={style.fieldLabel}>Tipo de Variação:</Text>
               <Text style={asteriscoObrigatorio}>*</Text>
             </View>
             <SelectInput
@@ -159,12 +155,37 @@ const ExercicioVariacaoForm = (props) => {
   };
 
   return (
-    <View style={formContainer}>
-      {renderExerciciosMusculacaoFields()}
-      {renderExerciciosCalisteniaFields()}
+    <View style={style.screenContainer}>
+      <View style={style.formContent}>
+        {renderExerciciosMusculacaoFields()}
+        {renderExerciciosCalisteniaFields()}
+      </View>
 
-      <View style={fabContainer}>
-        <SaveButton onPress={handleSubmit} loading={loading} />
+      <View style={style.formFooter}>
+        <TouchableOpacity
+          testID="btn-voltar"
+          style={style.formBackButton}
+          onPress={() => navigation.goBack()}
+          disabled={loading}
+        >
+          <Text style={style.formBackButtonText}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          testID="btn-salvar"
+          style={[style.saveButton, loading && style.saveButtonDisabled]}
+          onPress={!loading ? handleSubmit : null}
+          disabled={loading}
+          activeOpacity={0.7}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" size="small" />
+          ) : (
+            <>
+              <MaterialIcons name="save" size={18} color="#fff" />
+              <Text style={style.saveButtonText}>SALVAR</Text>
+            </>
+          )}
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -172,6 +193,7 @@ const ExercicioVariacaoForm = (props) => {
 
 ExercicioVariacaoForm.propTypes = {
   navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
     setOptions: PropTypes.func.isRequired,
   }).isRequired,

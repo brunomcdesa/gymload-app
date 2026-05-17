@@ -1,5 +1,6 @@
 module.exports = {
-  preset: 'react-native',
+  preset: 'jest-expo',
+  setupFiles: ['./node_modules/react-native-gesture-handler/jestSetup.js'],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
   },

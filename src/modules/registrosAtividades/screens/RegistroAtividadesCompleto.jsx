@@ -47,8 +47,17 @@ const MESES = [
 
 const formatarDataSecao = (dateStr) => {
   const [day, month, year] = dateStr.split('/');
-  return `${parseInt(day)} ${MESES[parseInt(month) - 1]} ${year}`;
+  return `${parseInt(day, 10)} ${MESES[parseInt(month, 10) - 1]} ${year}`;
 };
+
+const EmptyRegistros = () => (
+  <View style={style.emptyContainer}>
+    <MaterialIcons name="fitness-center" size={48} color={colors.terciary} />
+    <Text style={style.emptyText}>
+      {'Nenhum registro encontrado.\nAdicione o primeiro!'}
+    </Text>
+  </View>
+);
 
 const RegistroAtividadesCompleto = (props) => {
   const {
@@ -83,7 +92,7 @@ const RegistroAtividadesCompleto = (props) => {
   } = style;
   const { chip, chipAtivo, chipInativo, chipText, chipTextAtivo, chipRow } =
     exerciciosStyle;
-  const { container, elementContainer } = ComumStyles;
+  const { container, elementContainer, flexShrinkZero } = ComumStyles;
   const { navigation, route } = props;
   const {
     exercicio: { id, nome, tipoExercicio, possuiVariacao },
@@ -363,7 +372,7 @@ const RegistroAtividadesCompleto = (props) => {
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={chipRow}
-          style={{ flexShrink: 0 }}
+          style={flexShrinkZero}
         >
           {variacoes.map((variacao) => {
             const ativo = variacaoSelecionada?.id === variacao.id;
@@ -454,25 +463,7 @@ const RegistroAtividadesCompleto = (props) => {
               <Text style={sectionHeaderText}>{title}</Text>
             </View>
           )}
-          ListEmptyComponent={() => (
-            <View style={{ alignItems: 'center', paddingVertical: 60 }}>
-              <MaterialIcons
-                name="fitness-center"
-                size={48}
-                color={colors.terciary}
-              />
-              <Text
-                style={{
-                  color: colors.terciary,
-                  marginTop: 12,
-                  fontSize: 14,
-                  textAlign: 'center',
-                }}
-              >
-                {'Nenhum registro encontrado.\nAdicione o primeiro!'}
-              </Text>
-            </View>
-          )}
+          ListEmptyComponent={EmptyRegistros}
         />
       )}
 

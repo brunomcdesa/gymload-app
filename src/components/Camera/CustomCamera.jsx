@@ -31,18 +31,25 @@ const QR_OVERLAY_STYLES = StyleSheet.create({
   hint: {
     position: 'absolute',
     bottom: 60,
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 14,
   },
 });
 
-const CustomCamera = ({ visible, onClose, onPictureTaken = null, mode = 'photo', onQrScanned = null }) => {
+const CustomCamera = ({
+  visible,
+  onClose,
+  onPictureTaken = null,
+  mode = 'photo',
+  onQrScanned = null,
+}) => {
   const {
     permissionContainer,
     permissionText,
     closeButton,
     closeButtonText,
     container,
+    containerQrCode,
     captureButton,
     camera,
     button,
@@ -133,7 +140,7 @@ const CustomCamera = ({ visible, onClose, onPictureTaken = null, mode = 'photo',
   if (mode === 'qrcode') {
     return (
       <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
-        <View style={[container, { backgroundColor: '#000' }]}>
+        <View style={containerQrCode}>
           <CameraView
             style={camera}
             facing="back"

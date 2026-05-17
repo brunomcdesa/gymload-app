@@ -13,7 +13,7 @@ export default StyleSheet.create({
     letterSpacing: -0.5,
   },
   subtitleStyle: {
-    color: '#aaa',
+    color: colors.placeholderText,
     fontSize: 13,
   },
 });

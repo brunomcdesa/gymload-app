@@ -5,13 +5,14 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
+import { ComumStyles } from './components/Styles/ComumStyles';
 import { toastConfig } from './config/toastConfig';
 import { AuthProvider } from './context/AuthProvider';
 import { HeaderProvider } from './context/HeaderProvider';
 import MainNavigator from './routes/MainNavigator';
 
 const App = () => (
-  <GestureHandlerRootView style={{ flex: 1 }}>
+  <GestureHandlerRootView style={ComumStyles.flexOne}>
     <StatusBar
       translucent={true}
       backgroundColor="transparent"

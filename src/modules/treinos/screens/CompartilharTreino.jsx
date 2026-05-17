@@ -1,11 +1,17 @@
 import * as Clipboard from 'expo-clipboard';
 import PropTypes from 'prop-types';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import HeaderTitle from '../../../components/Header/HeaderTitle';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
+import { colors } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from '../style/style';
@@ -23,14 +29,22 @@ const CompartilharTreino = ({ route, navigation }) => {
     actionButton,
     actionButtonPrimary,
     actionButtonText,
+    actionButtonTextLight,
   } = style;
 
   const [loading, setLoading] = useState(true);
   const [dados, setDados] = useState(null);
 
+  const renderHeaderTitle = useCallback(
+    () => <HeaderTitle title={treino.nome} />,
+    [treino.nome],
+  );
+
   useLayoutEffect(() => {
-    navigation.setOptions({ headerTitle: () => <HeaderTitle title={treino.nome} /> });
-  }, [navigation, treino.nome]);
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+    });
+  }, [navigation, renderHeaderTitle]);
 
   useEffect(() => {
     const compartilhar = async () => {
@@ -73,8 +87,8 @@ const CompartilharTreino = ({ route, navigation }) => {
         <QRCode
           value={dados.codigo}
           size={200}
-          backgroundColor="#2a2a2a"
-          color="#fff"
+          backgroundColor={colors.inputBackground}
+          color={colors.textLight}
         />
 
         <View style={tokenDisplay}>
@@ -85,8 +99,16 @@ const CompartilharTreino = ({ route, navigation }) => {
       </View>
 
       <View style={actionRow}>
-        <TouchableOpacity testID="btn-copiar" style={actionButton} onPress={copiarCodigo}>
-          <MaterialIcons name="content-copy" size={18} color="#e8e8e8" />
+        <TouchableOpacity
+          testID="btn-copiar"
+          style={actionButton}
+          onPress={copiarCodigo}
+        >
+          <MaterialIcons
+            name="content-copy"
+            size={18}
+            color={colors.textMuted}
+          />
           <Text style={actionButtonText}>Copiar</Text>
         </TouchableOpacity>
 
@@ -94,8 +116,8 @@ const CompartilharTreino = ({ route, navigation }) => {
           style={[actionButton, actionButtonPrimary]}
           onPress={compartilharNativo}
         >
-          <MaterialIcons name="share" size={18} color="#fff" />
-          <Text style={[actionButtonText, { color: '#fff' }]}>
+          <MaterialIcons name="share" size={18} color={colors.textLight} />
+          <Text style={[actionButtonText, actionButtonTextLight]}>
             Compartilhar
           </Text>
         </TouchableOpacity>
@@ -105,7 +127,8 @@ const CompartilharTreino = ({ route, navigation }) => {
 };
 
 CompartilharTreino.propTypes = {
-  navigation: PropTypes.shape({ setOptions: PropTypes.func.isRequired }).isRequired,
+  navigation: PropTypes.shape({ setOptions: PropTypes.func.isRequired })
+    .isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({
       treino: PropTypes.shape({

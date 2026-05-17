@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useCameraPermissions } from 'expo-camera';
-import React, { useLayoutEffect, useState } from 'react';
-import HeaderTitle from '../../../components/Header/HeaderTitle';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import {
   ScrollView,
   Text,
@@ -11,7 +10,9 @@ import {
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomCamera from '../../../components/Camera/CustomCamera';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
+import { colors } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from '../style/style';
@@ -36,6 +37,12 @@ const ImportarTreino = () => {
     importButtonText,
     chip,
     chipText,
+    scannerAbaContainer,
+    chipIcon,
+    manualAbaContainer,
+    buscarButton,
+    previewTitleSpaced,
+    previewExpiraText,
   } = style;
 
   const [abaAtiva, setAbaAtiva] = useState('scanner');
@@ -46,9 +53,16 @@ const ImportarTreino = () => {
   const [codigoAtual, setCodigoAtual] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const renderHeaderTitle = useCallback(
+    () => <HeaderTitle title="Importar Treino" />,
+    [],
+  );
+
   useLayoutEffect(() => {
-    navigation.setOptions({ headerTitle: () => <HeaderTitle title="Importar Treino" /> });
-  }, [navigation]);
+    navigation.setOptions({
+      headerTitle: renderHeaderTitle,
+    });
+  }, [navigation, renderHeaderTitle]);
 
   const buscarPreview = async (codigo) => {
     try {
@@ -135,13 +149,13 @@ const ImportarTreino = () => {
       </View>
 
       {abaAtiva === 'scanner' && (
-        <View style={{ alignItems: 'center', padding: 24 }}>
+        <View style={scannerAbaContainer}>
           <TouchableOpacity style={chip} onPress={abrirScanner}>
             <MaterialIcons
               name="qr-code-scanner"
               size={18}
-              color="#aaa"
-              style={{ marginRight: 6 }}
+              color={colors.placeholderText}
+              style={chipIcon}
             />
             <Text style={chipText}>Abrir Câmera</Text>
           </TouchableOpacity>
@@ -149,12 +163,12 @@ const ImportarTreino = () => {
       )}
 
       {abaAtiva === 'manual' && (
-        <View style={{ padding: 20 }}>
+        <View style={manualAbaContainer}>
           <TextInput
             testID="input-codigo"
             style={previewNomeInput}
             placeholder="Cole ou digite o código (ex: A3K9XZ72)"
-            placeholderTextColor="#666"
+            placeholderTextColor={colors.textHint}
             value={codigoManual}
             onChangeText={setCodigoManual}
             autoCapitalize="characters"
@@ -162,7 +176,7 @@ const ImportarTreino = () => {
           />
           <TouchableOpacity
             testID="btn-buscar"
-            style={[importButton, { marginHorizontal: 0, marginTop: 12 }]}
+            style={[importButton, buscarButton]}
             onPress={handleBuscarManual}
           >
             <Text style={importButtonText}>Buscar Treino</Text>
@@ -178,15 +192,15 @@ const ImportarTreino = () => {
               style={previewNomeInput}
               value={nomeCustom}
               onChangeText={setNomeCustom}
-              placeholderTextColor="#666"
+              placeholderTextColor={colors.textHint}
             />
-            <Text style={[previewTitle, { marginTop: 8 }]}>Exercícios</Text>
+            <Text style={[previewTitle, previewTitleSpaced]}>Exercícios</Text>
             {preview.exercicios.map((ex) => (
               <View key={ex.id} style={previewExerciseItem}>
                 <Text style={previewExerciseText}>{ex.nome}</Text>
               </View>
             ))}
-            <Text style={{ color: '#666', fontSize: 12, marginTop: 8 }}>
+            <Text style={previewExpiraText}>
               Válido até {preview.dataExpiracao}
             </Text>
           </View>

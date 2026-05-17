@@ -6,12 +6,6 @@ jest.mock('../../src/components/Header/HeaderTitle', () => {
   return ({ title }) => <Text testID="header-title">{title}</Text>;
 });
 
-jest.mock('../../src/components/Button/style/formFooterStyle', () => ({
-  formFooter: {},
-  backButton: {},
-  backButtonText: {},
-}));
-
 const buildProps = () => ({
   navigation: {
     setOptions: jest.fn(),
@@ -19,7 +13,8 @@ const buildProps = () => ({
   },
 });
 
-const Notificacoes = require('../../src/modules/usuario/screens/Notificacoes').default;
+const Notificacoes =
+  require('../../src/modules/usuario/screens/Notificacoes').default;
 
 describe('Notificacoes screen', () => {
   it('renderiza sem crash', async () => {

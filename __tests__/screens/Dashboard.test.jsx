@@ -2,7 +2,11 @@ import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
 
 const mockFetchDashboardStats = jest.fn().mockResolvedValue({
-  data: { streak: 3, treinosMes: 10, diasSemana: [true, false, true, false, false, false, false] },
+  data: {
+    streak: 3,
+    treinosMes: 10,
+    diasSemana: [true, false, true, false, false, false, false],
+  },
 });
 
 jest.mock('../../src/modules/dashboard/Api', () => ({

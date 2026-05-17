@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../../components/Styles/ComumStyles';
 
 export default StyleSheet.create({
   cardContainer: {
@@ -9,7 +10,7 @@ export default StyleSheet.create({
     marginVertical: 6,
     padding: 14,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: colors.primary,
     overflow: 'hidden',
     position: 'relative',
   },
@@ -19,7 +20,7 @@ export default StyleSheet.create({
     top: 0,
     bottom: 0,
     width: 4,
-    backgroundColor: '#ff5555',
+    backgroundColor: colors.secondary,
   },
   iconContainer: {
     width: 44,
@@ -34,7 +35,7 @@ export default StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontWeight: '700',
-    color: '#fff',
+    color: colors.textLight,
     paddingLeft: 12,
   },
   fieldContainer: {
@@ -42,7 +43,7 @@ export default StyleSheet.create({
   },
   screenContainer: {
     flex: 1,
-    backgroundColor: '#222',
+    backgroundColor: colors.background,
   },
   scrollContent: {
     padding: 20,

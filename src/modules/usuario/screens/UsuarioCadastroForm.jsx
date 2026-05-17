@@ -38,7 +38,10 @@ const UsuarioCadastroForm = (props) => {
 
   const renderHeaderTitle = useCallback(
     () => (
-      <HeaderTitle title="Cadastrar Admin" subtitle="Preencha os dados do novo admin." />
+      <HeaderTitle
+        title="Cadastrar Admin"
+        subtitle="Preencha os dados do novo admin."
+      />
     ),
     [],
   );
@@ -107,7 +110,7 @@ const UsuarioCadastroForm = (props) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+    <SafeAreaView style={style.safeAreaBackground}>
       <ScrollView
         contentContainerStyle={style.cadastroScrollContent}
         keyboardShouldPersistTaps="handled"
@@ -125,7 +128,7 @@ const UsuarioCadastroForm = (props) => {
         {/* Avatar picker */}
         {!isCadastroAdmin && (
           <View style={style.cadastroAvatarSection}>
-            <View style={{ position: 'relative' }}>
+            <View style={style.positionRelative}>
               <View style={style.cadastroAvatarWrapper}>
                 <SelectableImage
                   uriImagemUsuario={uriImagemUsuario}
@@ -261,10 +264,9 @@ const UsuarioCadastroForm = (props) => {
                   key={n}
                   style={[
                     style.cadastroStrengthSegment,
-                    {
-                      backgroundColor:
-                        n <= strength ? strengthColors[strength] : '#2f2f2f',
-                    },
+                    n <= strength
+                      ? { backgroundColor: strengthColors[strength] }
+                      : style.strengthSegmentEmpty,
                   ]}
                 />
               ))}
@@ -337,7 +339,7 @@ const UsuarioCadastroForm = (props) => {
               <TouchableOpacity
                 style={[
                   style.genderButton,
-                  { flex: 1, borderRadius: 14 },
+                  style.flexOneRadius,
                   formData.sexo === 'MASCULINO' && style.genderButtonSelected,
                 ]}
                 onPress={() =>
@@ -360,7 +362,7 @@ const UsuarioCadastroForm = (props) => {
               <TouchableOpacity
                 style={[
                   style.genderButton,
-                  { flex: 1, borderRadius: 14 },
+                  style.flexOneRadius,
                   formData.sexo === 'FEMININO' && style.genderButtonSelected,
                 ]}
                 onPress={() =>

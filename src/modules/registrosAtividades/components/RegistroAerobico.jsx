@@ -22,17 +22,23 @@ const RegistroAerobico = (props) => {
       <View style={destaquesRow}>
         <View style={destaqueBox}>
           <Text style={destaqueLabel}>Duração</Text>
-          <Text style={destaqueValue} numberOfLines={1} adjustsFontSizeToFit>{duracao} h</Text>
+          <Text style={destaqueValue} numberOfLines={1} adjustsFontSizeToFit>
+            {duracao} h
+          </Text>
         </View>
         <View style={statDivider} />
         <View style={destaqueBox}>
           <Text style={destaqueLabel}>Distância</Text>
-          <Text style={destaqueValue} numberOfLines={1} adjustsFontSizeToFit>{distancia} km</Text>
+          <Text style={destaqueValue} numberOfLines={1} adjustsFontSizeToFit>
+            {distancia} km
+          </Text>
         </View>
         <View style={statDivider} />
         <View style={destaqueBox}>
           <Text style={destaqueLabel}>Vel. Média</Text>
-          <Text style={destaqueValue} numberOfLines={1} adjustsFontSizeToFit>{velocidadeMedia}</Text>
+          <Text style={destaqueValue} numberOfLines={1} adjustsFontSizeToFit>
+            {velocidadeMedia}
+          </Text>
         </View>
       </View>
       {observacao ? <Text style={observacaoText}>{observacao}</Text> : null}

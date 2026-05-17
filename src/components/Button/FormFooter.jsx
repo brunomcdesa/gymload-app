@@ -2,36 +2,38 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import style from './style/formFooterStyle';
+import { ComumStyles, colors } from '../Styles/ComumStyles';
 
 const FormFooter = ({ onSave, onBack, loading, saveLabel = 'SALVAR' }) => {
-
   return (
-    <View style={style.formFooter}>
+    <View style={ComumStyles.formFooter}>
       <TouchableOpacity
-        style={style.backButton}
+        style={ComumStyles.backButton}
         onPress={onBack}
         disabled={loading}
       >
-        <Text style={style.backButtonText}>Voltar</Text>
+        <Text style={ComumStyles.backButtonText}>Voltar</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[style.saveButton, loading && style.saveButtonDisabled]}
+        style={[
+          ComumStyles.saveButton,
+          loading && ComumStyles.saveButtonDisabled,
+        ]}
         onPress={!loading ? onSave : null}
         disabled={loading}
         activeOpacity={0.7}
       >
         {loading ? (
-          <ActivityIndicator color="#fff" size="small" />
+          <ActivityIndicator color={colors.buttonText} size="small" />
         ) : (
           <>
             <MaterialIcons
               name="save"
               size={18}
-              color="#fff"
-              style={style.saveButtonIcon}
+              color={colors.buttonText}
+              style={ComumStyles.saveButtonIcon}
             />
-            <Text style={style.saveButtonText}>{saveLabel}</Text>
+            <Text style={ComumStyles.saveButtonText}>{saveLabel}</Text>
           </>
         )}
       </TouchableOpacity>

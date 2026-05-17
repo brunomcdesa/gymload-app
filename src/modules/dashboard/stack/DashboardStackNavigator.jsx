@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
@@ -7,34 +8,31 @@ import Dashboard from '../screens/Dashboard';
 
 const Stack = createStackNavigator();
 
-const DashboardStackNavigator = () => {
-  const navigateToDashboardScreen = (navigation) => {
-    navigation.navigate('DashboardScreen');
-  };
-
+const HeaderLeftToDashboard = () => {
+  const navigation = useNavigation();
   return (
-    <Stack.Navigator
-      screenOptions={({ navigation }) => ({
-        headerShown: true,
-        headerStyle: {
-          backgroundColor: colors.background,
-          height: 40,
-        },
-        headerShadowVisible: false,
-        headerLeft: () => (
-          <HeaderBackButton
-            onPress={() => navigateToDashboardScreen(navigation)}
-          />
-        ),
-      })}
-    >
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="DashboardScreen"
-        component={Dashboard}
-      />
-    </Stack.Navigator>
+    <HeaderBackButton onPress={() => navigation.navigate('DashboardScreen')} />
   );
 };
+
+const screenOptions = {
+  headerShown: true,
+  headerStyle: {
+    backgroundColor: colors.background,
+    height: 40,
+  },
+  headerShadowVisible: false,
+  headerLeft: HeaderLeftToDashboard,
+};
+
+const DashboardStackNavigator = () => (
+  <Stack.Navigator screenOptions={screenOptions}>
+    <Stack.Screen
+      options={{ headerShown: false }}
+      name="DashboardScreen"
+      component={Dashboard}
+    />
+  </Stack.Navigator>
+);
 
 export default DashboardStackNavigator;

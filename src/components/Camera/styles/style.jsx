@@ -15,6 +15,10 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: background,
   },
+  containerQrCode: {
+    flex: 1,
+    backgroundColor: colors.black,
+  },
   camera: {
     flex: 1,
     justifyContent: 'space-between',
@@ -92,8 +96,5 @@ export default StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 3,
-  },
-  buttonSpacer: {
-    width: 32,
   },
 });

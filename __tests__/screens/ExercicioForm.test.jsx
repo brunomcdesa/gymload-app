@@ -207,7 +207,11 @@ describe('ExercicioForm screen', () => {
       instance = ReactTestRenderer.create(
         <ExercicioForm
           {...buildProps({
-            exercicioData: { nome: 'Supino', tipoExercicio: 'MUSCULACAO', grupoMuscularId: null },
+            exercicioData: {
+              nome: 'Supino',
+              tipoExercicio: 'MUSCULACAO',
+              grupoMuscularId: null,
+            },
           })}
         />,
       );
@@ -243,9 +247,15 @@ describe('ExercicioForm screen', () => {
     });
 
     expect(mockSaveExercicio).toHaveBeenCalledWith(
-      expect.objectContaining({ nome: 'Supino Reto', tipoExercicio: 'MUSCULACAO', grupoMuscularId: 1 }),
+      expect.objectContaining({
+        nome: 'Supino Reto',
+        tipoExercicio: 'MUSCULACAO',
+        grupoMuscularId: 1,
+      }),
     );
-    expect(mockThrowToastSuccess).toHaveBeenCalledWith('Exercicio salvo com sucesso!');
+    expect(mockThrowToastSuccess).toHaveBeenCalledWith(
+      'Exercicio salvo com sucesso!',
+    );
     expect(props.navigation.goBack).toHaveBeenCalled();
   });
 
@@ -287,9 +297,14 @@ describe('ExercicioForm screen', () => {
       await btnSalvar.props.onPress();
     });
 
-    expect(mockEditarExercicio).toHaveBeenCalledWith(5, expect.objectContaining({ nome: 'Leg Press' }));
+    expect(mockEditarExercicio).toHaveBeenCalledWith(
+      5,
+      expect.objectContaining({ nome: 'Leg Press' }),
+    );
     expect(mockSaveExercicio).not.toHaveBeenCalled();
-    expect(mockThrowToastSuccess).toHaveBeenCalledWith('Exercicio salvo com sucesso!');
+    expect(mockThrowToastSuccess).toHaveBeenCalledWith(
+      'Exercicio salvo com sucesso!',
+    );
     expect(props.navigation.goBack).toHaveBeenCalled();
   });
 
@@ -303,8 +318,12 @@ describe('ExercicioForm screen', () => {
       );
     });
 
-    expect(instance.root.findByProps({ testID: 'select-grupo-muscular' })).toBeTruthy();
-    expect(instance.root.findByProps({ testID: 'checkbox-possui-variacao' })).toBeTruthy();
+    expect(
+      instance.root.findByProps({ testID: 'select-grupo-muscular' }),
+    ).toBeTruthy();
+    expect(
+      instance.root.findByProps({ testID: 'checkbox-possui-variacao' }),
+    ).toBeTruthy();
   });
 
   it('exibe campos condicionais para tipo CALISTENIA', async () => {
@@ -317,8 +336,12 @@ describe('ExercicioForm screen', () => {
       );
     });
 
-    expect(instance.root.findByProps({ testID: 'select-grupo-muscular' })).toBeTruthy();
-    expect(instance.root.findByProps({ testID: 'checkbox-possui-variacao' })).toBeTruthy();
+    expect(
+      instance.root.findByProps({ testID: 'select-grupo-muscular' }),
+    ).toBeTruthy();
+    expect(
+      instance.root.findByProps({ testID: 'checkbox-possui-variacao' }),
+    ).toBeTruthy();
   });
 
   it('oculta campos condicionais para tipo AEROBICO', async () => {

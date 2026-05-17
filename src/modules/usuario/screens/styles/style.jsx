@@ -2,11 +2,6 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../../../components/Styles/ComumStyles';
 
 export default StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: colors.background,
-    paddingTop: 24,
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -15,48 +10,8 @@ export default StyleSheet.create({
     marginBottom: 30,
     minHeight: 80,
   },
-  headerViewContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-  },
-  headerEditContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-    flex: 1,
-  },
-  userNameText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  inputNome: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    borderBottomWidth: 2,
-    borderBottomColor: '#E53935',
-    flex: 1,
-    paddingBottom: 4,
-  },
-  editButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 8,
-    gap: 6,
-  },
-  editButtonText: {
-    color: '#E53935',
-    fontSize: 16,
-    fontWeight: '600',
-  },
   cancelButton: {
     padding: 8,
-  },
-  cancelButtonText: {
-    color: '#B0B0B0',
-    fontSize: 16,
   },
   card: {
     backgroundColor: '#2C2C2E',
@@ -65,22 +20,10 @@ export default StyleSheet.create({
     marginBottom: 20,
     padding: 16,
   },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 16,
-  },
   separator: {
     height: 1,
     backgroundColor: '#48484A',
     marginVertical: 12,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gap: 16,
   },
   genderSelector: {
     flexDirection: 'row',
@@ -105,17 +48,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   genderButtonTextSelected: {
-    color: '#FFFFFF',
-  },
-  actionButtonContainer: {
-    paddingHorizontal: 16,
-    marginTop: 20,
-  },
-  loginContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: colors.background,
+    color: colors.textLight,
   },
   loginScrollContent: {
     flexGrow: 1,
@@ -131,7 +64,7 @@ export default StyleSheet.create({
   loginLogoTitle: {
     fontSize: 32,
     fontWeight: '800',
-    color: '#fff',
+    color: colors.textLight,
     letterSpacing: -0.5,
     marginTop: 12,
     marginBottom: 4,
@@ -146,9 +79,9 @@ export default StyleSheet.create({
   loginInputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderWidth: 1.5,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
     borderRadius: 14,
     height: 52,
     paddingHorizontal: 14,
@@ -162,7 +95,7 @@ export default StyleSheet.create({
   },
   loginInputText: {
     flex: 1,
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 16,
   },
   loginEsqueciRow: {
@@ -192,7 +125,7 @@ export default StyleSheet.create({
     elevation: 5,
   },
   loginEntrarButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 16,
     fontWeight: '700',
     letterSpacing: 0.5,
@@ -205,7 +138,7 @@ export default StyleSheet.create({
   loginLine: {
     flex: 1,
     height: 1,
-    backgroundColor: '#383838',
+    backgroundColor: colors.inputBorder,
     marginHorizontal: 10,
   },
   loginSeparatorText: {
@@ -215,7 +148,7 @@ export default StyleSheet.create({
   },
   loginCadastrarButton: {
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
     borderRadius: 12,
     height: 52,
     alignItems: 'center',
@@ -223,39 +156,9 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.06)',
   },
   loginCadastrarButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 15,
     fontWeight: '700',
-  },
-  loginCadastroButton: {
-    backgroundColor: colors.secondary,
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  loginCadastroButtonText: {
-    color: colors.buttonText,
-    fontWeight: 'bold',
-  },
-  loginContainerEsqueciSenha: {
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  loginBotoesContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
-  },
-  cadastroFormAdminContainer: {
-    marginTop: '10%',
-  },
-  cadastroFormImagePickerContainer: {
-    alignItems: 'center',
-  },
-  cadastroFormiImageDescription: {
-    marginTop: 5,
-    color: '#666',
   },
   fieldContainer: {
     marginBottom: 16,
@@ -271,13 +174,13 @@ export default StyleSheet.create({
   cadastroTitle: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#fff',
+    color: colors.textLight,
     letterSpacing: -0.5,
     marginTop: 8,
   },
   cadastroSubtitle: {
     fontSize: 13,
-    color: '#aaa',
+    color: colors.placeholderText,
     marginTop: 6,
     marginBottom: 22,
     lineHeight: 18,
@@ -293,7 +196,7 @@ export default StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: '#2f2f2f',
     borderWidth: 2,
-    borderColor: '#3a3a3a',
+    borderColor: colors.borderSubtle,
     borderStyle: 'dashed',
   },
   cadastroAvatarEditBadge: {
@@ -311,13 +214,13 @@ export default StyleSheet.create({
   },
   cadastroAvatarLabel: {
     fontSize: 12,
-    color: '#aaa',
+    color: colors.placeholderText,
     marginTop: 10,
   },
   cadastroFieldLabel: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#e8e8e8',
+    color: colors.textMuted,
     marginBottom: 8,
   },
   cadastroRequired: {
@@ -325,7 +228,7 @@ export default StyleSheet.create({
   },
   cadastroHint: {
     fontSize: 12,
-    color: '#aaa',
+    color: colors.placeholderText,
     marginTop: -8,
     marginBottom: 14,
     paddingLeft: 4,
@@ -359,9 +262,9 @@ export default StyleSheet.create({
   cadastroCompactInputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderWidth: 1.5,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
     borderRadius: 14,
     height: 50,
     paddingHorizontal: 12,
@@ -372,7 +275,7 @@ export default StyleSheet.create({
   },
   cadastroCompactInputText: {
     flex: 1,
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 14,
   },
   cadastroGenderSelector: {
@@ -387,7 +290,7 @@ export default StyleSheet.create({
     padding: 16,
     paddingBottom: 24,
     borderTopWidth: 1,
-    borderTopColor: '#333',
+    borderTopColor: colors.primary,
     backgroundColor: colors.background,
   },
   cadastroVoltarButton: {
@@ -395,13 +298,13 @@ export default StyleSheet.create({
     height: 48,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#3a3a3a',
+    borderColor: colors.borderSubtle,
     backgroundColor: 'rgba(255,255,255,0.06)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   cadastroVoltarButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 15,
     fontWeight: '700',
   },
@@ -419,13 +322,13 @@ export default StyleSheet.create({
     elevation: 5,
   },
   cadastroCadastrarButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 15,
     fontWeight: '700',
     letterSpacing: 0.5,
   },
   cadastroCadastrarDisabled: {
-    backgroundColor: '#555',
+    backgroundColor: colors.disabled,
     shadowOpacity: 0,
     elevation: 0,
   },
@@ -433,7 +336,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     fontSize: 13,
-    color: '#aaa',
+    color: colors.placeholderText,
   },
   cadastroEntrarLink: {
     color: colors.secondary,
@@ -449,11 +352,11 @@ export default StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: colors.primary,
     padding: 22,
     marginBottom: 14,
     alignItems: 'center',
-    shadowColor: '#ff5555',
+    shadowColor: colors.secondary,
     shadowOpacity: 0.22,
     shadowOffset: { width: 0, height: 8 },
     shadowRadius: 22,
@@ -470,14 +373,14 @@ export default StyleSheet.create({
     height: 96,
     borderRadius: 48,
     marginBottom: 14,
-    backgroundColor: '#ff5555',
+    backgroundColor: colors.secondary,
     alignItems: 'center',
     justifyContent: 'center',
   },
   avatarInitials: {
     fontSize: 36,
     fontWeight: '800',
-    color: '#fff',
+    color: colors.textLight,
   },
   nomeText: {
     fontSize: 22,
@@ -493,7 +396,7 @@ export default StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: colors.primary,
     padding: 16,
     marginBottom: 14,
   },
@@ -508,7 +411,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#2a2a2a',
+    borderBottomColor: colors.inputBackground,
   },
   infoRowReadLast: {
     flexDirection: 'row',
@@ -539,7 +442,7 @@ export default StyleSheet.create({
     borderRadius: 14,
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: colors.primary,
   },
   menuRowLabel: {
     flex: 1,
@@ -565,7 +468,7 @@ export default StyleSheet.create({
   },
   formDescription: {
     fontSize: 13,
-    color: '#aaa',
+    color: colors.placeholderText,
     marginBottom: 12,
     lineHeight: 20,
   },
@@ -577,7 +480,7 @@ export default StyleSheet.create({
   fieldLabel: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#e8e8e8',
+    color: colors.textMuted,
     marginBottom: 6,
   },
   formFooter: {
@@ -586,7 +489,7 @@ export default StyleSheet.create({
     padding: 16,
     paddingBottom: 24,
     borderTopWidth: 1,
-    borderTopColor: '#333',
+    borderTopColor: colors.primary,
     backgroundColor: colors.background,
     alignItems: 'center',
   },
@@ -595,12 +498,12 @@ export default StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#3a3a3a',
+    borderColor: colors.borderSubtle,
     justifyContent: 'center',
     alignItems: 'center',
   },
   backButtonText: {
-    color: '#e8e8e8',
+    color: colors.textMuted,
     fontSize: 15,
     fontWeight: '600',
   },
@@ -615,10 +518,10 @@ export default StyleSheet.create({
     gap: 8,
   },
   saveButtonDisabled: {
-    backgroundColor: '#555',
+    backgroundColor: colors.disabled,
   },
   saveButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 15,
     fontWeight: '700',
   },
@@ -635,10 +538,27 @@ export default StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: '#2f2f2f',
     borderWidth: 2,
-    borderColor: '#3a3a3a',
+    borderColor: colors.borderSubtle,
     borderStyle: 'dashed',
   },
 
+  safeAreaBackground: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  loginLogoTitleAccent: {
+    color: '#FF5E2C',
+  },
+  positionRelative: {
+    position: 'relative',
+  },
+  flexOneRadius: {
+    flex: 1,
+    borderRadius: 14,
+  },
+  strengthSegmentEmpty: {
+    backgroundColor: '#2f2f2f',
+  },
   // ── EsqueciMinhaSenha redesign ────────────────────────────────────────────
   esqueciScrollContent: {
     flexGrow: 1,
@@ -658,7 +578,7 @@ export default StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#1a1a1a',
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: colors.secondary,
@@ -671,12 +591,12 @@ export default StyleSheet.create({
   esqueciTitle: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#fff',
+    color: colors.textLight,
     letterSpacing: -0.5,
   },
   esqueciSubtitle: {
     fontSize: 13,
-    color: '#aaa',
+    color: colors.placeholderText,
     marginTop: 6,
     marginBottom: 22,
     lineHeight: 18,
@@ -687,20 +607,20 @@ export default StyleSheet.create({
     marginTop: 22,
     paddingTop: 18,
     borderTopWidth: 1,
-    borderTopColor: '#333',
+    borderTopColor: colors.primary,
   },
   esqueciVoltarButton: {
     flex: 1,
     height: 48,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#3a3a3a',
+    borderColor: colors.borderSubtle,
     backgroundColor: 'rgba(255,255,255,0.06)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   esqueciVoltarButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 15,
     fontWeight: '700',
   },
@@ -718,12 +638,12 @@ export default StyleSheet.create({
     elevation: 5,
   },
   esqueciAltButtonDisabled: {
-    backgroundColor: '#555',
+    backgroundColor: colors.disabled,
     shadowOpacity: 0,
     elevation: 0,
   },
   esqueciAltButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 15,
     fontWeight: '700',
     letterSpacing: 0.5,
@@ -737,7 +657,7 @@ export default StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: colors.primary,
     padding: 22,
     margin: 16,
     alignItems: 'center',

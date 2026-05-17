@@ -40,10 +40,10 @@ jest.mock('react-native-vector-icons/MaterialIcons', () => {
   return ({ name }) => <Text testID={`icon-${name}`}>{name}</Text>;
 });
 
-jest.mock('../../src/components/Button/SaveButton', () => {
+jest.mock('../../src/components/Button/FormFooter', () => {
   const { TouchableOpacity, Text } = require('react-native');
-  return ({ onPress }) => (
-    <TouchableOpacity testID="save-button" onPress={onPress}>
+  return ({ onSave }) => (
+    <TouchableOpacity testID="save-button" onPress={onSave}>
       <Text>Salvar</Text>
     </TouchableOpacity>
   );
@@ -95,9 +95,7 @@ describe('RegistroAtividadeForm screen', () => {
 
   it('renders without crashing when exercicio sem variação', async () => {
     await ReactTestRenderer.act(() => {
-      ReactTestRenderer.create(
-        <RegistroAtividadeForm {...buildProps()} />,
-      );
+      ReactTestRenderer.create(<RegistroAtividadeForm {...buildProps()} />);
     });
   });
 
@@ -123,9 +121,7 @@ describe('RegistroAtividadeForm screen', () => {
       variacaoData: null,
     });
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(
-        <RegistroAtividadeForm {...props} />,
-      );
+      instance = ReactTestRenderer.create(<RegistroAtividadeForm {...props} />);
     });
 
     const saveBtn = instance.root.findByProps({ testID: 'save-button' });
@@ -152,9 +148,7 @@ describe('RegistroAtividadeForm screen', () => {
       },
     });
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(
-        <RegistroAtividadeForm {...props} />,
-      );
+      instance = ReactTestRenderer.create(<RegistroAtividadeForm {...props} />);
     });
 
     const saveBtn = instance.root.findByProps({ testID: 'save-button' });

@@ -1,11 +1,17 @@
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import { finalizarTreino } from '../../treinos/Api';
+import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 
 import Exercicio from '../components/Exercicio';
@@ -55,7 +61,9 @@ const ListExerciciosTreino = (props) => {
       throwToastSuccess('Treino finalizado com sucesso!');
       navigation.goBack();
     } catch (error) {
-      throwToastError(error.response?.data?.message || 'Erro ao finalizar treino.');
+      throwToastError(
+        error.response?.data?.message || 'Erro ao finalizar treino.',
+      );
     } finally {
       setFinalizando(false);
     }
@@ -110,7 +118,10 @@ const ListExerciciosTreino = (props) => {
             <Text style={style.footerBackButtonText}>Voltar</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[style.finalizeButton, finalizando && style.finalizeButtonDisabled]}
+            style={[
+              style.finalizeButton,
+              finalizando && style.finalizeButtonDisabled,
+            ]}
             onPress={!finalizando ? handleFinalizarTreino : null}
             disabled={finalizando}
             activeOpacity={0.7}

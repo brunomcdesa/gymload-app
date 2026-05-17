@@ -10,15 +10,10 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   actionSheetMessage: {
-    color: '#aaa',
+    color: colors.placeholderText,
     fontSize: 14,
     textAlign: 'center',
     marginBottom: 15,
-  },
-  actionSheetButton: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#383838',
   },
   actionSheetButtonText: {
     color: colors.textLight,
@@ -26,29 +21,13 @@ export default StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 12,
   },
-  actionSheetCancelButton: {
-    padding: 15,
-    marginTop: 10,
-    backgroundColor: '#2a2a2a',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#383838',
-  },
-  actionSheetCancelButtonText: {
-    color: colors.secondary,
-    fontWeight: '600',
-  },
   actionSheetContainer: {
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#383838',
-  },
-  actionSheetDestructiveButtonText: {
-    color: colors.danger,
-    fontWeight: '600',
+    borderColor: colors.inputBorder,
   },
   modalOverlay: {
     flex: 1,

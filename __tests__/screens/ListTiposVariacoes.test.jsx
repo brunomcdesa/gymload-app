@@ -56,7 +56,9 @@ jest.mock('../../src/components/List/SeparatorItem', () => {
 
 jest.mock('../../src/modules/tipovariacao/components/TipoVariacao', () => {
   const { Text } = require('react-native');
-  return ({ item }) => <Text testID={`tipo-variacao-${item.id}`}>{item.nome}</Text>;
+  return ({ item }) => (
+    <Text testID={`tipo-variacao-${item.id}`}>{item.nome}</Text>
+  );
 });
 
 import ListTiposVariacoes from '../../src/modules/tipovariacao/screens/ListTiposVariacoes';

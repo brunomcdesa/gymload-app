@@ -163,9 +163,9 @@ describe('RegistroAtividadesCompleto screen', () => {
       });
     }
 
-    expect(mockFetchRegistroAtividadeCompleto.mock.calls.length).toBeGreaterThan(
-      callsAntes,
-    );
+    expect(
+      mockFetchRegistroAtividadeCompleto.mock.calls.length,
+    ).toBeGreaterThan(callsAntes);
     const ultimaChamada =
       mockFetchRegistroAtividadeCompleto.mock.calls.slice(-1)[0][0];
     expect(ultimaChamada.variacaoId).toBe(22);

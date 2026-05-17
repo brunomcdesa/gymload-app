@@ -20,7 +20,7 @@ const pickerStyle = StyleSheet.create({
   label: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#888',
+    color: colors.terciary,
     letterSpacing: 1.5,
     textTransform: 'uppercase',
     marginBottom: 8,
@@ -33,12 +33,12 @@ const pickerStyle = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 12,
-    backgroundColor: '#333',
+    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 22,
     fontWeight: '700',
     lineHeight: 26,
@@ -67,11 +67,15 @@ const TimePickerInput = ({ time, setTime }) => {
   const minutes = time.getMinutes();
 
   const changeHours = (delta) => {
-    setTime(new Date(0, 0, 0, Math.min(23, Math.max(0, hours + delta)), minutes, 0));
+    setTime(
+      new Date(0, 0, 0, Math.min(23, Math.max(0, hours + delta)), minutes, 0),
+    );
   };
 
   const changeMinutes = (delta) => {
-    setTime(new Date(0, 0, 0, hours, Math.min(59, Math.max(0, minutes + delta)), 0));
+    setTime(
+      new Date(0, 0, 0, hours, Math.min(59, Math.max(0, minutes + delta)), 0),
+    );
   };
 
   return (
@@ -79,11 +83,21 @@ const TimePickerInput = ({ time, setTime }) => {
       <View style={pickerStyle.column}>
         <Text style={pickerStyle.label}>H</Text>
         <View style={pickerStyle.row}>
-          <TouchableOpacity style={pickerStyle.button} onPress={() => changeHours(-1)} activeOpacity={0.7}>
+          <TouchableOpacity
+            style={pickerStyle.button}
+            onPress={() => changeHours(-1)}
+            activeOpacity={0.7}
+          >
             <Text style={pickerStyle.buttonText}>−</Text>
           </TouchableOpacity>
-          <Text style={pickerStyle.value}>{String(hours).padStart(2, '0')}</Text>
-          <TouchableOpacity style={pickerStyle.button} onPress={() => changeHours(1)} activeOpacity={0.7}>
+          <Text style={pickerStyle.value}>
+            {String(hours).padStart(2, '0')}
+          </Text>
+          <TouchableOpacity
+            style={pickerStyle.button}
+            onPress={() => changeHours(1)}
+            activeOpacity={0.7}
+          >
             <Text style={pickerStyle.buttonText}>+</Text>
           </TouchableOpacity>
         </View>
@@ -94,11 +108,21 @@ const TimePickerInput = ({ time, setTime }) => {
       <View style={pickerStyle.column}>
         <Text style={pickerStyle.label}>M</Text>
         <View style={pickerStyle.row}>
-          <TouchableOpacity style={pickerStyle.button} onPress={() => changeMinutes(-1)} activeOpacity={0.7}>
+          <TouchableOpacity
+            style={pickerStyle.button}
+            onPress={() => changeMinutes(-1)}
+            activeOpacity={0.7}
+          >
             <Text style={pickerStyle.buttonText}>−</Text>
           </TouchableOpacity>
-          <Text style={pickerStyle.value}>{String(minutes).padStart(2, '0')}</Text>
-          <TouchableOpacity style={pickerStyle.button} onPress={() => changeMinutes(1)} activeOpacity={0.7}>
+          <Text style={pickerStyle.value}>
+            {String(minutes).padStart(2, '0')}
+          </Text>
+          <TouchableOpacity
+            style={pickerStyle.button}
+            onPress={() => changeMinutes(1)}
+            activeOpacity={0.7}
+          >
             <Text style={pickerStyle.buttonText}>+</Text>
           </TouchableOpacity>
         </View>

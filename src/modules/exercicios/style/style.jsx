@@ -5,18 +5,10 @@ export default StyleSheet.create({
   exercicioHeader: {
     marginBottom: 12,
   },
-  exercicioTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 4,
-  },
   exercicioNome: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#fff',
+    color: colors.textLight,
     letterSpacing: -0.3,
     marginBottom: 2,
   },
@@ -32,7 +24,7 @@ export default StyleSheet.create({
   recordeBadgeText: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#fff',
+    color: colors.textLight,
     letterSpacing: 1,
   },
   grupoMuscularText: {
@@ -41,16 +33,6 @@ export default StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1.2,
     fontWeight: '700',
-  },
-  descricaoText: {
-    fontSize: 14,
-    color: '#ccc',
-    lineHeight: 20,
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  historicoSection: {
-    marginBottom: 16,
   },
   destaquesRow: {
     flexDirection: 'row',
@@ -74,7 +56,7 @@ export default StyleSheet.create({
   statDivider: {
     width: 1,
     height: 36,
-    backgroundColor: '#383838',
+    backgroundColor: colors.inputBorder,
   },
   recordeValue: {
     fontSize: 22,
@@ -86,19 +68,9 @@ export default StyleSheet.create({
   ultimoDadoValue: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#fff',
+    color: colors.textLight,
     textAlign: 'center',
     letterSpacing: -0.5,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#383838',
-    marginVertical: 10,
-  },
-  gridScreen: {
-    flex: 1,
-    backgroundColor: colors.background,
-    paddingHorizontal: 8,
   },
   title: {
     fontSize: 24,
@@ -106,33 +78,6 @@ export default StyleSheet.create({
     color: colors.textLight,
     textAlign: 'center',
     marginVertical: 24,
-  },
-  gridButton: {
-    flex: 1,
-    margin: 8,
-    aspectRatio: 1,
-    backgroundColor: colors.inputBackground,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: colors.inputBorder,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
-    elevation: 8,
-  },
-  gridButtonInner: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 8,
-  },
-  gridButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: colors.textLight,
-    textAlign: 'center',
-    marginTop: 8,
   },
   listHeader: {
     paddingHorizontal: 16,
@@ -180,7 +125,7 @@ export default StyleSheet.create({
   chipTextAtivo: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#fff',
+    color: colors.textLight,
   },
   // New card layout
   cardRow: {
@@ -211,7 +156,7 @@ export default StyleSheet.create({
     marginTop: 12,
   },
   viewHistoryText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 13,
     fontWeight: '700',
     letterSpacing: 0.5,
@@ -270,17 +215,17 @@ export default StyleSheet.create({
   fieldLabel: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#e8e8e8',
+    color: colors.textMuted,
     marginBottom: 6,
   },
   segmentedRow: {
     flexDirection: 'row',
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderRadius: 14,
     padding: 4,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
   },
   segmentedButton: {
     flex: 1,
@@ -295,10 +240,10 @@ export default StyleSheet.create({
   segmentedButtonText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#aaa',
+    color: colors.placeholderText,
   },
   segmentedButtonTextActive: {
-    color: '#fff',
+    color: colors.textLight,
   },
   inputGroup: {
     flex: 1,
@@ -309,7 +254,7 @@ export default StyleSheet.create({
     padding: 16,
     paddingBottom: 24,
     borderTopWidth: 1,
-    borderTopColor: '#333',
+    borderTopColor: colors.primary,
     backgroundColor: colors.background,
     alignItems: 'center',
   },
@@ -318,12 +263,12 @@ export default StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#3a3a3a',
+    borderColor: colors.borderSubtle,
     justifyContent: 'center',
     alignItems: 'center',
   },
   formBackButtonText: {
-    color: '#e8e8e8',
+    color: colors.textMuted,
     fontSize: 15,
     fontWeight: '600',
   },
@@ -338,10 +283,10 @@ export default StyleSheet.create({
     gap: 8,
   },
   saveButtonDisabled: {
-    backgroundColor: '#555',
+    backgroundColor: colors.disabled,
   },
   saveButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 15,
     fontWeight: '700',
   },
@@ -353,7 +298,7 @@ export default StyleSheet.create({
     padding: 16,
     paddingBottom: 24,
     borderTopWidth: 1,
-    borderTopColor: '#333',
+    borderTopColor: colors.primary,
     backgroundColor: colors.background,
   },
   footerBackButton: {
@@ -361,12 +306,12 @@ export default StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#3a3a3a',
+    borderColor: colors.borderSubtle,
     alignItems: 'center',
     justifyContent: 'center',
   },
   footerBackButtonText: {
-    color: '#e8e8e8',
+    color: colors.textMuted,
     fontSize: 15,
     fontWeight: '600',
   },
@@ -383,10 +328,10 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   finalizeButtonDisabled: {
-    backgroundColor: '#555',
+    backgroundColor: colors.disabled,
   },
   finalizeButtonText: {
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 15,
     fontWeight: '700',
   },

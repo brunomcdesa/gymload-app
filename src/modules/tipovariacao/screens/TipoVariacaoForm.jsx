@@ -1,15 +1,11 @@
 import { useFocusEffect } from '@react-navigation/native';
-import React, {
-  useCallback,
-  useLayoutEffect,
-  useState,
-} from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import FormFooter from '../../../components/Button/FormFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { ComumStyles, colors } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 
@@ -53,7 +49,9 @@ const TipoVariacaoForm = (props) => {
   };
 
   const renderHeaderTitle = useCallback(() => {
-    const title = isEdicao ? 'Editar Tipo de Variação' : 'Novo Tipo de Variação';
+    const title = isEdicao
+      ? 'Editar Tipo de Variação'
+      : 'Novo Tipo de Variação';
     return <HeaderTitle title={title} isForm />;
   }, [isEdicao]);
 
@@ -64,7 +62,7 @@ const TipoVariacaoForm = (props) => {
       return () => {
         parentNav?.setOptions({ headerShown: true });
       };
-    }, [navigation])
+    }, [navigation]),
   );
 
   useLayoutEffect(() => {
@@ -105,7 +103,7 @@ const TipoVariacaoForm = (props) => {
 const style = StyleSheet.create({
   screenContainer: {
     flex: 1,
-    backgroundColor: '#222',
+    backgroundColor: colors.background,
   },
   scrollContent: {
     padding: 20,
@@ -120,6 +118,7 @@ TipoVariacaoForm.propTypes = {
   navigation: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
     setOptions: PropTypes.func.isRequired,
+    getParent: PropTypes.func,
   }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({

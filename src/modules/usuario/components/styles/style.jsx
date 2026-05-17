@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../../../components/Styles/ComumStyles';
 
 export default StyleSheet.create({
   elementContainer: {
     padding: 15,
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderRadius: 16,
     marginVertical: 8,
     shadowColor: 'rgba(255, 85, 85, 0.2)',
@@ -12,7 +13,7 @@ export default StyleSheet.create({
     shadowRadius: 6,
     elevation: 8,
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
   },
   userInfoContainer: {
     flexDirection: 'row',
@@ -21,7 +22,7 @@ export default StyleSheet.create({
   },
   userInfoName: {
     paddingLeft: 15,
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -29,14 +30,14 @@ export default StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#333',
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#ff5555',
+    borderColor: colors.secondary,
   },
   avatarLetter: {
-    color: '#ff5555',
+    color: colors.secondary,
     fontSize: 22,
     fontWeight: 'bold',
   },
@@ -47,7 +48,7 @@ export default StyleSheet.create({
   },
   userEmail: {
     paddingLeft: 15,
-    color: '#aaa',
+    color: colors.placeholderText,
     fontSize: 14,
     marginTop: 4,
   },
@@ -59,7 +60,7 @@ export default StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderRadius: 20,
     padding: 25,
     width: '90%',
@@ -67,7 +68,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: '#444',
 
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -83,7 +84,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff',
+    color: colors.textLight,
     // 'margin: 0' não é necessário para componentes Text
   },
   detailRow: {
@@ -93,20 +94,20 @@ export default StyleSheet.create({
     marginBottom: 12,
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#383838',
+    borderBottomColor: colors.inputBorder,
   },
   detailLabel: {
     fontSize: 16,
-    color: '#aaa',
+    color: colors.placeholderText,
     fontWeight: 'bold',
   },
   detailValue: {
     fontSize: 16,
-    color: '#fff',
+    color: colors.textLight,
     textAlign: 'right',
   },
   closeButton: {
-    backgroundColor: '#ff5555',
+    backgroundColor: colors.secondary,
     borderRadius: 10,
     padding: 12,
     marginTop: 15,

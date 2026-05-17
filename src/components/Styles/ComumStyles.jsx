@@ -14,6 +14,11 @@ const colors = {
   textLight: '#FFF',
   textDark: '#333',
   buttonText: '#fff',
+  borderSubtle: '#3a3a3a',
+  textMuted: '#e8e8e8',
+  textHint: '#666',
+  disabled: '#555',
+  black: '#000',
 };
 
 const ComumStyles = StyleSheet.create({
@@ -80,16 +85,16 @@ const ComumStyles = StyleSheet.create({
   elementContainer: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#2a2a2a',
+    backgroundColor: colors.inputBackground,
     borderRadius: 16,
     margin: 10,
-    shadowColor: '#ff5555',
+    shadowColor: colors.secondary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 3,
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: colors.inputBorder,
   },
   passwordContainer: {
     position: 'relative',
@@ -114,7 +119,7 @@ const ComumStyles = StyleSheet.create({
   },
   userInfoName: {
     paddingLeft: 15,
-    color: '#fff',
+    color: colors.textLight,
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -125,6 +130,62 @@ const ComumStyles = StyleSheet.create({
     position: 'absolute',
     right: 24,
     bottom: 24,
+  },
+  // Layout helpers
+  flexOne: {
+    flex: 1,
+  },
+  flexShrinkZero: {
+    flexShrink: 0,
+  },
+  flexGrowOne: {
+    flexGrow: 1,
+  },
+  // Form footer (botão de Voltar + Salvar/Adicionar no rodapé)
+  formFooter: {
+    flexDirection: 'row',
+    gap: 10,
+    padding: 16,
+    paddingBottom: 24,
+    borderTopWidth: 1,
+    borderTopColor: colors.primary,
+    backgroundColor: colors.background,
+    alignItems: 'center',
+  },
+  backButton: {
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  backButtonText: {
+    color: colors.textMuted,
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  saveButton: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: colors.success,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  saveButtonDisabled: {
+    backgroundColor: colors.disabled,
+  },
+  saveButtonIcon: {
+    lineHeight: 18,
+  },
+  saveButtonText: {
+    color: colors.buttonText,
+    fontSize: 15,
+    fontWeight: '700',
   },
 });
 

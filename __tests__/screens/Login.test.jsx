@@ -38,7 +38,9 @@ describe('Login screen', () => {
   it('renders the Gymload title parts', async () => {
     let instance;
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+      instance = ReactTestRenderer.create(
+        <Login navigation={mockNavigation} />,
+      );
     });
     const tree = JSON.stringify(instance.toJSON());
     expect(tree).toContain('Gym');
@@ -48,7 +50,9 @@ describe('Login screen', () => {
   it('renders "Username ou email" placeholder text', async () => {
     let instance;
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+      instance = ReactTestRenderer.create(
+        <Login navigation={mockNavigation} />,
+      );
     });
     expect(JSON.stringify(instance.toJSON())).toContain('Username ou email');
   });
@@ -56,7 +60,9 @@ describe('Login screen', () => {
   it('renders password placeholder text', async () => {
     let instance;
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+      instance = ReactTestRenderer.create(
+        <Login navigation={mockNavigation} />,
+      );
     });
     expect(JSON.stringify(instance.toJSON())).toContain('Digite sua senha');
   });
@@ -64,7 +70,9 @@ describe('Login screen', () => {
   it('renders ENTRAR button text', async () => {
     let instance;
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+      instance = ReactTestRenderer.create(
+        <Login navigation={mockNavigation} />,
+      );
     });
     expect(JSON.stringify(instance.toJSON())).toContain('ENTRAR');
   });
@@ -72,7 +80,9 @@ describe('Login screen', () => {
   it('renders Cadastrar-se button text', async () => {
     let instance;
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+      instance = ReactTestRenderer.create(
+        <Login navigation={mockNavigation} />,
+      );
     });
     expect(JSON.stringify(instance.toJSON())).toContain('Cadastrar-se');
   });
@@ -80,7 +90,9 @@ describe('Login screen', () => {
   it('renders Esqueci minha senha link', async () => {
     let instance;
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+      instance = ReactTestRenderer.create(
+        <Login navigation={mockNavigation} />,
+      );
     });
     expect(JSON.stringify(instance.toJSON())).toContain('Esqueci minha senha');
   });
@@ -88,7 +100,9 @@ describe('Login screen', () => {
   it('renders OU divider', async () => {
     let instance;
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+      instance = ReactTestRenderer.create(
+        <Login navigation={mockNavigation} />,
+      );
     });
     expect(JSON.stringify(instance.toJSON())).toContain('OU');
   });
@@ -96,7 +110,9 @@ describe('Login screen', () => {
   it('navigates to CadastroUsuario when Cadastrar-se is pressed', async () => {
     let instance;
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+      instance = ReactTestRenderer.create(
+        <Login navigation={mockNavigation} />,
+      );
     });
 
     const touchables = instance.root.findAllByType('TouchableOpacity');
@@ -117,7 +133,9 @@ describe('Login screen', () => {
   it('navigates to EsqueciMinhaSenha when link is pressed', async () => {
     let instance;
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+      instance = ReactTestRenderer.create(
+        <Login navigation={mockNavigation} />,
+      );
     });
 
     const touchables = instance.root.findAllByType('TouchableOpacity');
@@ -139,10 +157,14 @@ describe('Login screen', () => {
 
     let instance;
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+      instance = ReactTestRenderer.create(
+        <Login navigation={mockNavigation} />,
+      );
     });
 
-    const entrarBtn = instance.root.findByProps({ testID: 'login-entrar-button' });
+    const entrarBtn = instance.root.findByProps({
+      testID: 'login-entrar-button',
+    });
 
     await ReactTestRenderer.act(async () => {
       entrarBtn.props.onPress();
@@ -162,10 +184,14 @@ describe('Login screen', () => {
 
     let instance;
     await ReactTestRenderer.act(() => {
-      instance = ReactTestRenderer.create(<Login navigation={mockNavigation} />);
+      instance = ReactTestRenderer.create(
+        <Login navigation={mockNavigation} />,
+      );
     });
 
-    const entrarBtn = instance.root.findByProps({ testID: 'login-entrar-button' });
+    const entrarBtn = instance.root.findByProps({
+      testID: 'login-entrar-button',
+    });
 
     await ReactTestRenderer.act(async () => {
       entrarBtn.props.onPress();

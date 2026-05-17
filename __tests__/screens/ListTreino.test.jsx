@@ -65,19 +65,24 @@ jest.mock('../../src/components/Button/AddButton', () => {
   return () => <View testID="add-button" />;
 });
 
-jest.mock('../../src/components/Selectable/SelectableItem/SelectableItem', () => {
-  const { TouchableOpacity, View } = require('react-native');
-  const MockSelectable = ({ children, options, onActionSelected }) => (
-    <TouchableOpacity
-      testID="selectable-item"
-      onPress={() => onActionSelected && onActionSelected(0, {})}
-      onLongPress={() => {}}
-    >
-      <View testID={`options-${options ? options.join(',') : ''}`}>{children}</View>
-    </TouchableOpacity>
-  );
-  return MockSelectable;
-});
+jest.mock(
+  '../../src/components/Selectable/SelectableItem/SelectableItem',
+  () => {
+    const { TouchableOpacity, View } = require('react-native');
+    const MockSelectable = ({ children, options, onActionSelected }) => (
+      <TouchableOpacity
+        testID="selectable-item"
+        onPress={() => onActionSelected && onActionSelected(0, {})}
+        onLongPress={() => {}}
+      >
+        <View testID={`options-${options ? options.join(',') : ''}`}>
+          {children}
+        </View>
+      </TouchableOpacity>
+    );
+    return MockSelectable;
+  },
+);
 
 import ListTreino from '../../src/modules/treinos/screens/ListTreino';
 

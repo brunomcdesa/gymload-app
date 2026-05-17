@@ -51,7 +51,10 @@ const EsqueciMinhaSenhaForm = ({ navigation }) => {
 
     try {
       setLoading(true);
-      await Api.alterarSenha({ identifier: formData.identifier, password: formData.password });
+      await Api.alterarSenha({
+        identifier: formData.identifier,
+        password: formData.password,
+      });
       throwToastSuccess('Senha alterada com sucesso!');
       navigation.goBack();
     } catch (error) {
@@ -65,7 +68,7 @@ const EsqueciMinhaSenhaForm = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+    <SafeAreaView style={style.safeAreaBackground}>
       <ScrollView
         contentContainerStyle={style.esqueciScrollContent}
         keyboardShouldPersistTaps="handled"
@@ -73,7 +76,11 @@ const EsqueciMinhaSenhaForm = ({ navigation }) => {
         {/* Ícone */}
         <View style={style.esqueciIconSection}>
           <View style={style.esqueciIconWrapper}>
-            <MaterialIcons name="lock-reset" size={36} color={colors.secondary} />
+            <MaterialIcons
+              name="lock-reset"
+              size={36}
+              color={colors.secondary}
+            />
           </View>
           <Text style={style.esqueciTitle}>Redefinir Senha</Text>
           <Text style={style.esqueciSubtitle}>
@@ -149,10 +156,9 @@ const EsqueciMinhaSenhaForm = ({ navigation }) => {
                   key={n}
                   style={[
                     style.cadastroStrengthSegment,
-                    {
-                      backgroundColor:
-                        n <= strength ? strengthColors[strength] : '#2f2f2f',
-                    },
+                    n <= strength
+                      ? { backgroundColor: strengthColors[strength] }
+                      : style.strengthSegmentEmpty,
                   ]}
                 />
               ))}

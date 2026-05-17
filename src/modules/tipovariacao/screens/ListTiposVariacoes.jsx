@@ -2,12 +2,11 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import formFooterStyle from '../../../components/Button/style/formFooterStyle';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
 import SeparatorItem from '../../../components/List/SeparatorItem';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { ComumStyles, colors } from '../../../components/Styles/ComumStyles';
 import { useScreenTitle } from '../../../hooks/useScreenTitle';
 import { throwToastError } from '../../utils/toastUtils';
 import * as Api from '../Api';
@@ -77,27 +76,27 @@ const ListTiposVariacoes = () => {
         />
       )}
 
-      <View style={formFooterStyle.formFooter}>
+      <View style={ComumStyles.formFooter}>
         <TouchableOpacity
           testID="btn-voltar"
-          style={formFooterStyle.backButton}
+          style={ComumStyles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={formFooterStyle.backButtonText}>Voltar</Text>
+          <Text style={ComumStyles.backButtonText}>Voltar</Text>
         </TouchableOpacity>
         <TouchableOpacity
           testID="btn-adicionar"
-          style={formFooterStyle.saveButton}
+          style={ComumStyles.saveButton}
           onPress={() => redirectToForm()}
           activeOpacity={0.7}
         >
           <MaterialIcons
             name="add"
             size={18}
-            color="#fff"
-            style={formFooterStyle.saveButtonIcon}
+            color={colors.buttonText}
+            style={ComumStyles.saveButtonIcon}
           />
-          <Text style={formFooterStyle.saveButtonText}>ADICIONAR</Text>
+          <Text style={ComumStyles.saveButtonText}>ADICIONAR</Text>
         </TouchableOpacity>
       </View>
     </View>

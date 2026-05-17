@@ -62,7 +62,7 @@ const Login = (props) => {
       <View style={style.loginLogoSection}>
         <LogoMark width={128} height={64} bg={colors.background} />
         <Text style={style.loginLogoTitle}>
-          Gym<Text style={{ color: '#FF5E2C' }}>load</Text>
+          Gym<Text style={style.loginLogoTitleAccent}>load</Text>
         </Text>
         <Text style={style.loginLogoSubtitle}>TRACK EVERY REP</Text>
       </View>
