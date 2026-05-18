@@ -107,6 +107,7 @@ const RegistroAtividadesCompleto = (props) => {
   const { navigation, route } = props;
   const {
     exercicio: { id, nome, tipoExercicio, possuiVariacao },
+    variacaoInicial,
   } = route.params;
   const isExercicioMusculacao = tipoExercicio === 'MUSCULACAO';
   const isExercicioCalistenia = tipoExercicio === 'CALISTENIA';
@@ -168,13 +169,16 @@ const RegistroAtividadesCompleto = (props) => {
       const { data } = await ExerciciosApi.fetchExercicioVariacoes(id);
       setVariacoes(data || []);
       if (data && data.length > 0) {
-        setVariacaoSelecionada(data[0]);
+        const match = variacaoInicial?.id
+          ? (data.find((v) => v.id === variacaoInicial.id) ?? data[0])
+          : data[0];
+        setVariacaoSelecionada(match);
       }
     } catch (error) {
       console.error('Erro ao buscar variações do exercício:', error);
       throwToastError('Erro ao buscar variações do exercício.');
     }
-  }, [id]);
+  }, [id, variacaoInicial]);
 
   useEffect(() => {
     if (possuiVariacao) {
@@ -223,6 +227,7 @@ const RegistroAtividadesCompleto = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
+      headerTitleAlign: 'center',
       headerLeft: () => null,
       headerBackVisible: false,
     });
@@ -603,7 +608,7 @@ const RegistroAtividadesCompleto = (props) => {
           loading={false}
           saveLabel="ADICIONAR"
           saveIcon="add"
-          containerStyle={!isAdmin && formFooterComBanner}
+          containerStyle={!isAdmin ? formFooterComBanner : undefined}
         />
       )}
 

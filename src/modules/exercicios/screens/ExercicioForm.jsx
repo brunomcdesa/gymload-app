@@ -165,6 +165,7 @@ const ExercicioForm = (props) => {
             return (
               <AnimatedPressable
                 key={item.value}
+                wrapperStyle={style.segmentedButtonWrapper}
                 style={[
                   style.segmentedButton,
                   isActive && style.segmentedButtonActive,

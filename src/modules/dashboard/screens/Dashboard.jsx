@@ -210,8 +210,11 @@ const Dashboard = () => {
                       id: recorde.exercicioId,
                       nome: recorde.exercicioNome,
                       tipoExercicio: recorde.tipoExercicio,
-                      possuiVariacao: false,
+                      possuiVariacao: recorde.possuiVariacao,
                     },
+                    variacaoInicial: recorde.variacaoId
+                      ? { id: recorde.variacaoId, nome: recorde.variacaoNome }
+                      : null,
                   })
                 }
               >

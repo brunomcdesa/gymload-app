@@ -238,8 +238,10 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.inputBorder,
   },
-  segmentedButton: {
+  segmentedButtonWrapper: {
     flex: 1,
+  },
+  segmentedButton: {
     paddingVertical: 10,
     borderRadius: 10,
     alignItems: 'center',
