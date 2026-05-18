@@ -3,8 +3,13 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { colors } from '../../components/Styles/ComumStyles';
 
-const IconeAdutor = ({ size = 24, isSexoFeminino, ...props }) => {
-  const { secondary, terciary } = colors;
+const IconeAdutor = ({
+  size = 24,
+  isSexoFeminino,
+  color = colors.secondary,
+  ...props
+}) => {
+  const { terciary } = colors;
 
   const renderIconeMasculino = () => (
     <Svg
@@ -15,7 +20,7 @@ const IconeAdutor = ({ size = 24, isSexoFeminino, ...props }) => {
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -690,7 +695,7 @@ M258.025391,1209.496582
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -923,7 +928,7 @@ z"
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2800,7 +2805,7 @@ M340.502014,314.622162
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3071,6 +3076,7 @@ z"
 IconeAdutor.propTypes = {
   size: PropTypes.number,
   isSexoFeminino: PropTypes.bool.isRequired,
+  color: PropTypes.string,
 };
 
 export default IconeAdutor;

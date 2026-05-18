@@ -13,6 +13,7 @@ export default StyleSheet.create({
   chip: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 6,
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 999,
@@ -267,6 +268,9 @@ export default StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 20,
   },
+  actionButtonWrapper: {
+    flex: 1,
+  },
   actionButton: {
     flex: 1,
     flexDirection: 'row',
@@ -291,14 +295,20 @@ export default StyleSheet.create({
   actionButtonTextLight: {
     color: colors.textLight,
   },
+  qrScreenContainer: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
   tabRow: {
     flexDirection: 'row',
     marginHorizontal: 20,
     marginTop: 16,
     gap: 4,
   },
-  tabButton: {
+  tabButtonWrapper: {
     flex: 1,
+  },
+  tabButton: {
     paddingVertical: 10,
     borderRadius: 10,
     alignItems: 'center',

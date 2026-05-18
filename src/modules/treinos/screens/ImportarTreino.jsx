@@ -1,15 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { useCameraPermissions } from 'expo-camera';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import {
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { ScrollView, Text, TextInput, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import CustomCamera from '../../../components/Camera/CustomCamera';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
+import FormFooter from '../../../components/Button/FormFooter';
+import CustomCamera from '../../../components/Camera/CustomCamera';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { colors } from '../../../components/Styles/ComumStyles';
@@ -23,8 +19,10 @@ const ImportarTreino = () => {
 
   const {
     qrContainer,
+    qrScreenContainer,
     tabRow,
     tabButton,
+    tabButtonWrapper,
     tabButtonActive,
     tabButtonText,
     tabButtonTextActive,
@@ -52,6 +50,7 @@ const ImportarTreino = () => {
   const [nomeCustom, setNomeCustom] = useState('');
   const [codigoAtual, setCodigoAtual] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingImportar, setLoadingImportar] = useState(false);
 
   const renderHeaderTitle = useCallback(
     () => <HeaderTitle title="Importar Treino" />,
@@ -61,6 +60,9 @@ const ImportarTreino = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
+      headerLeft: () => null,
+      headerBackVisible: false,
+      gestureEnabled: false,
     });
   }, [navigation, renderHeaderTitle]);
 
@@ -71,9 +73,8 @@ const ImportarTreino = () => {
       setPreview(data);
       setNomeCustom(data.nomeTreino);
       setCodigoAtual(codigo);
-    } catch (error) {
+    } catch {
       throwToastError('Código inválido ou expirado.');
-      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -90,16 +91,16 @@ const ImportarTreino = () => {
   };
 
   const handleImportar = async () => {
+    if (!preview) return;
     try {
-      setLoading(true);
+      setLoadingImportar(true);
       await Api.importarTreino({ codigo: codigoAtual, nome: nomeCustom });
       throwToastSuccess('Treino importado com sucesso!');
       navigation.navigate('ListTreino');
-    } catch (error) {
+    } catch {
       throwToastError('Não foi possível importar o treino.');
-      console.error(error);
     } finally {
-      setLoading(false);
+      setLoadingImportar(false);
     }
   };
 
@@ -110,82 +111,82 @@ const ImportarTreino = () => {
     setCameraVisivel(true);
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
-
   return (
-    <ScrollView style={qrContainer}>
-      <View style={tabRow}>
-        <AnimatedPressable
-          testID="tab-scanner"
-          style={[tabButton, abaAtiva === 'scanner' && tabButtonActive]}
-          onPress={() => setAbaAtiva('scanner')}
-        >
-          <Text
-            style={[
-              tabButtonText,
-              abaAtiva === 'scanner' && tabButtonTextActive,
-            ]}
-          >
-            Escanear QR
-          </Text>
-        </AnimatedPressable>
-
-        <AnimatedPressable
-          testID="tab-manual"
-          style={[tabButton, abaAtiva === 'manual' && tabButtonActive]}
-          onPress={() => setAbaAtiva('manual')}
-        >
-          <Text
-            style={[
-              tabButtonText,
-              abaAtiva === 'manual' && tabButtonTextActive,
-            ]}
-          >
-            Inserir Código
-          </Text>
-        </AnimatedPressable>
-      </View>
-
-      {abaAtiva === 'scanner' && (
-        <View style={scannerAbaContainer}>
-          <AnimatedPressable style={chip} onPress={abrirScanner}>
-            <MaterialIcons
-              name="qr-code-scanner"
-              size={18}
-              color={colors.placeholderText}
-              style={chipIcon}
-            />
-            <Text style={chipText}>Abrir Câmera</Text>
-          </AnimatedPressable>
-        </View>
-      )}
-
-      {abaAtiva === 'manual' && (
-        <View style={manualAbaContainer}>
-          <TextInput
-            testID="input-codigo"
-            style={previewNomeInput}
-            placeholder="Cole ou digite o código (ex: A3K9XZ72)"
-            placeholderTextColor={colors.textHint}
-            value={codigoManual}
-            onChangeText={setCodigoManual}
-            autoCapitalize="characters"
-            maxLength={8}
-          />
+    <View style={qrScreenContainer}>
+      <ScrollView style={qrContainer}>
+        <View style={tabRow}>
           <AnimatedPressable
-            testID="btn-buscar"
-            style={[importButton, buscarButton]}
-            onPress={handleBuscarManual}
+            testID="tab-scanner"
+            wrapperStyle={tabButtonWrapper}
+            style={[tabButton, abaAtiva === 'scanner' && tabButtonActive]}
+            onPress={() => setAbaAtiva('scanner')}
           >
-            <Text style={importButtonText}>Buscar Treino</Text>
+            <Text
+              style={[
+                tabButtonText,
+                abaAtiva === 'scanner' && tabButtonTextActive,
+              ]}
+            >
+              Escanear QR
+            </Text>
+          </AnimatedPressable>
+
+          <AnimatedPressable
+            testID="tab-manual"
+            wrapperStyle={tabButtonWrapper}
+            style={[tabButton, abaAtiva === 'manual' && tabButtonActive]}
+            onPress={() => setAbaAtiva('manual')}
+          >
+            <Text
+              style={[
+                tabButtonText,
+                abaAtiva === 'manual' && tabButtonTextActive,
+              ]}
+            >
+              Inserir Código
+            </Text>
           </AnimatedPressable>
         </View>
-      )}
 
-      {preview && (
-        <>
+        {loading && <LoadingIndicator />}
+
+        {!loading && abaAtiva === 'scanner' && (
+          <View style={scannerAbaContainer}>
+            <AnimatedPressable style={chip} onPress={abrirScanner}>
+              <MaterialIcons
+                name="qr-code-scanner"
+                size={18}
+                color={colors.placeholderText}
+                style={chipIcon}
+              />
+              <Text style={chipText}>Abrir Câmera</Text>
+            </AnimatedPressable>
+          </View>
+        )}
+
+        {!loading && abaAtiva === 'manual' && (
+          <View style={manualAbaContainer}>
+            <TextInput
+              testID="input-codigo"
+              style={previewNomeInput}
+              placeholder="Cole ou digite o código (ex: A3K9XZ72)"
+              placeholderTextColor={colors.textHint}
+              value={codigoManual}
+              onChangeText={setCodigoManual}
+              autoCapitalize="characters"
+              maxLength={8}
+            />
+            <AnimatedPressable
+              testID="btn-buscar"
+              style={[importButton, buscarButton]}
+              onPress={handleBuscarManual}
+            >
+              <Text style={importButtonText}>Buscar Treino</Text>
+            </AnimatedPressable>
+          </View>
+        )}
+
+        {!loading && preview && (
           <View style={previewCard}>
             <Text style={previewTitle}>Nome do treino</Text>
             <TextInput
@@ -204,24 +205,24 @@ const ImportarTreino = () => {
               Válido até {preview.dataExpiracao}
             </Text>
           </View>
+        )}
 
-          <AnimatedPressable
-            testID="btn-importar"
-            style={importButton}
-            onPress={handleImportar}
-          >
-            <Text style={importButtonText}>Importar Treino</Text>
-          </AnimatedPressable>
-        </>
-      )}
+        <CustomCamera
+          visible={cameraVisivel}
+          onClose={() => setCameraVisivel(false)}
+          mode="qrcode"
+          onQrScanned={handleQrScanned}
+        />
+      </ScrollView>
 
-      <CustomCamera
-        visible={cameraVisivel}
-        onClose={() => setCameraVisivel(false)}
-        mode="qrcode"
-        onQrScanned={handleQrScanned}
+      <FormFooter
+        onBack={() => navigation.goBack()}
+        onSave={preview ? handleImportar : undefined}
+        saveLabel="IMPORTAR"
+        saveIcon="download"
+        loading={loadingImportar}
       />
-    </ScrollView>
+    </View>
   );
 };
 

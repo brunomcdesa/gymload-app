@@ -3,8 +3,13 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { colors } from '../../components/Styles/ComumStyles';
 
-const IconeBiceps = ({ size = 24, isSexoFeminino, ...props }) => {
-  const { inputBackground, secondary, terciary } = colors;
+const IconeBiceps = ({
+  size = 24,
+  isSexoFeminino,
+  color = colors.secondary,
+  ...props
+}) => {
+  const { inputBackground, terciary } = colors;
 
   const renderIconeMasculino = () => (
     <Svg
@@ -15,7 +20,7 @@ const IconeBiceps = ({ size = 24, isSexoFeminino, ...props }) => {
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -260,7 +265,7 @@ M566.043213,629.569275
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -280,7 +285,7 @@ M520.737061,125.434227
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -297,7 +302,7 @@ M518.512634,200.654297
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -313,7 +318,7 @@ M573.605042,170.702942
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         d="
 M72.468658,1025.000000 
 	C75.282410,1016.567749 76.265121,1007.635681 77.621368,998.794312 
@@ -335,7 +340,7 @@ M72.468658,1025.000000
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -352,7 +357,7 @@ M125.468658,1025.000000
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -372,7 +377,7 @@ z"
 	z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -399,7 +404,7 @@ z"
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         d="
 M202.468658,1025.000000 
 	C204.885971,1016.159485 205.815659,1006.874512 208.411880,997.925537 
@@ -585,7 +590,7 @@ M259.947021,748.214111
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         d="
 M815.355713,430.717560 
 	C828.378296,455.455231 838.092407,481.085266 841.863892,508.422150 
@@ -658,6 +663,7 @@ z"
 IconeBiceps.propTypes = {
   size: PropTypes.number,
   isSexoFeminino: PropTypes.bool.isRequired,
+  color: PropTypes.string,
 };
 
 export default IconeBiceps;

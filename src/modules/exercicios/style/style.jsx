@@ -95,13 +95,24 @@ export default StyleSheet.create({
     fontWeight: '700',
   },
   // Chip row (filter bar)
+  chipScroll: {
+    flexGrow: 0,
+    flexShrink: 0,
+  },
   chipRow: {
     paddingHorizontal: 16,
-    paddingBottom: 10,
-    paddingTop: 4,
+    paddingBottom: 4,
+    paddingTop: 0,
+    alignItems: 'center',
+  },
+  loadingContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
   },
   chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
     paddingHorizontal: 14,
     paddingVertical: 7,
     borderRadius: 999,

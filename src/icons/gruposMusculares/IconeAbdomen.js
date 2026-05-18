@@ -3,8 +3,13 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { colors } from '../../components/Styles/ComumStyles';
 
-const IconeAbdomen = ({ size = 24, isSexoFeminino, ...props }) => {
-  const { secondary, terciary } = colors;
+const IconeAbdomen = ({
+  size = 24,
+  isSexoFeminino,
+  color = colors.secondary,
+  ...props
+}) => {
+  const { terciary } = colors;
 
   const renderIconeMasculino = () => (
     <Svg
@@ -15,7 +20,7 @@ const IconeAbdomen = ({ size = 24, isSexoFeminino, ...props }) => {
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -440,7 +445,7 @@ M286.740936,177.806015
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -654,7 +659,7 @@ z"
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -1204,7 +1209,7 @@ M439.821167,506.123718
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -1225,7 +1230,7 @@ M459.228271,260.720673
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -1363,6 +1368,7 @@ z"
 IconeAbdomen.propTypes = {
   size: PropTypes.number,
   isSexoFeminino: PropTypes.bool.isRequired,
+  color: PropTypes.string,
 };
 
 export default IconeAbdomen;

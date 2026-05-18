@@ -3,9 +3,12 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { colors } from '../../components/Styles/ComumStyles';
 
-const IconeCalistenia = ({ size = 24, isSexoFeminino, ...props }) => {
-  const { secondary } = colors;
-
+const IconeCalistenia = ({
+  size = 24,
+  isSexoFeminino,
+  color = colors.secondary,
+  ...props
+}) => {
   const renderIconeMasculino = () => (
     <Svg
       width={size}
@@ -15,7 +18,7 @@ const IconeCalistenia = ({ size = 24, isSexoFeminino, ...props }) => {
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -240,7 +243,7 @@ z"
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -456,6 +459,7 @@ z"
 IconeCalistenia.propTypes = {
   size: PropTypes.number,
   isSexoFeminino: PropTypes.bool.isRequired,
+  color: PropTypes.string,
 };
 
 export default IconeCalistenia;

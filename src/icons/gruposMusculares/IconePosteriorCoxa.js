@@ -3,8 +3,13 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { colors } from '../../components/Styles/ComumStyles';
 
-const IconePosteriorCoxa = ({ size = 24, isSexoFeminino, ...props }) => {
-  const { secondary, terciary } = colors;
+const IconePosteriorCoxa = ({
+  size = 24,
+  isSexoFeminino,
+  color = colors.secondary,
+  ...props
+}) => {
+  const { terciary } = colors;
 
   const renderIconeMasculino = () => (
     <Svg
@@ -15,7 +20,7 @@ const IconePosteriorCoxa = ({ size = 24, isSexoFeminino, ...props }) => {
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -847,7 +852,7 @@ M833.968079,526.876038
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -916,7 +921,7 @@ M189.677490,526.364624
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -927,7 +932,7 @@ M833.155640,530.156006
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -949,7 +954,7 @@ z"
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -1757,7 +1762,7 @@ M193.287201,879.987305
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2131,7 +2136,7 @@ M173.053055,671.783569
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2148,7 +2153,7 @@ M829.657104,938.328979
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2170,6 +2175,7 @@ z"
 IconePosteriorCoxa.propTypes = {
   size: PropTypes.number,
   isSexoFeminino: PropTypes.bool.isRequired,
+  color: PropTypes.string,
 };
 
 export default IconePosteriorCoxa;

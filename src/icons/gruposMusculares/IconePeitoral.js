@@ -3,8 +3,13 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { colors } from '../../components/Styles/ComumStyles';
 
-const IconePeitoral = ({ size = 24, isSexoFeminino, ...props }) => {
-  const { secondary, terciary } = colors;
+const IconePeitoral = ({
+  size = 24,
+  isSexoFeminino,
+  color = colors.secondary,
+  ...props
+}) => {
+  const { terciary } = colors;
 
   const renderIconeMasculino = () => (
     <Svg
@@ -15,7 +20,7 @@ const IconePeitoral = ({ size = 24, isSexoFeminino, ...props }) => {
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -495,7 +500,7 @@ z"
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -1167,7 +1172,7 @@ M275.209869,198.359818
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -1370,7 +1375,7 @@ M406.014252,275.110657
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -1430,7 +1435,7 @@ M694.564575,434.010986
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2353,7 +2358,7 @@ M906.059265,187.381622
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2375,7 +2380,7 @@ M835.065979,801.018738
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2459,7 +2464,7 @@ M987.007324,461.016663
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2491,7 +2496,7 @@ M310.989868,289.324219
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2625,7 +2630,7 @@ M711.656860,130.381104
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2812,7 +2817,7 @@ M948.884705,220.472504
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2892,7 +2897,7 @@ M57.854931,246.155762
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2913,7 +2918,7 @@ M836.159790,762.556458
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -2963,7 +2968,7 @@ M203.449066,985.015015
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3056,7 +3061,7 @@ M307.631165,294.999084
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3086,7 +3091,7 @@ M661.598633,102.958321
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3137,7 +3142,7 @@ M338.419739,124.123909
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3219,7 +3224,7 @@ M833.315735,752.521362
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3441,7 +3446,7 @@ M412.967163,481.865356
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3693,7 +3698,7 @@ M67.462433,231.431854
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3803,7 +3808,7 @@ M939.873047,211.365280
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3865,7 +3870,7 @@ M456.977448,538.313599
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3875,7 +3880,7 @@ M633.808716,510.110474
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3918,7 +3923,7 @@ M425.786102,496.705139
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3928,7 +3933,7 @@ M663.788574,473.124695
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3968,7 +3973,7 @@ M520.111084,446.912933
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3978,7 +3983,7 @@ M692.752380,436.104462
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -3988,7 +3993,7 @@ M693.638184,435.069946
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -4282,6 +4287,7 @@ z"
 IconePeitoral.propTypes = {
   size: PropTypes.number,
   isSexoFeminino: PropTypes.bool.isRequired,
+  color: PropTypes.string,
 };
 
 export default IconePeitoral;

@@ -45,7 +45,7 @@ import {
 } from '../../src/modules/utils/toastUtils';
 
 const buildProps = (treinoOverrides = {}) => ({
-  navigation: { setOptions: jest.fn() },
+  navigation: { setOptions: jest.fn(), goBack: jest.fn() },
   route: {
     params: {
       treino: { id: 1, nome: 'TREINO PEITO', ...treinoOverrides },
@@ -118,6 +118,58 @@ describe('CompartilharTreino screen', () => {
 
     expect(mockSetStringAsync).toHaveBeenCalledWith('A3K9XZ72');
     expect(throwToastSuccess).toHaveBeenCalledWith('Código copiado!');
+  });
+
+  it('configura_header_comOpcoesDePushScreen', async () => {
+    const props = buildProps();
+    await ReactTestRenderer.act(async () => {
+      ReactTestRenderer.create(<CompartilharTreino {...props} />);
+    });
+    const calls = props.navigation.setOptions.mock.calls;
+    const opts = calls[calls.length - 1][0];
+    expect(opts.headerTitleAlign).toBe('center');
+    expect(opts.headerBackVisible).toBe(false);
+    expect(opts.gestureEnabled).toBe(false);
+    expect(opts.headerLeft()).toBeNull();
+  });
+
+  it('botaoVoltar_chamaGoBack', async () => {
+    const props = buildProps();
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<CompartilharTreino {...props} />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+
+    await ReactTestRenderer.act(async () => {
+      instance.root.findByProps({ testID: 'btn-voltar' }).props.onPress();
+    });
+
+    expect(props.navigation.goBack).toHaveBeenCalled();
+  });
+
+  it('botaoCompartilhar_chamaNativeShare', async () => {
+    const { Share } = require('react-native');
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(
+        <CompartilharTreino {...buildProps()} />,
+      );
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+
+    await ReactTestRenderer.act(async () => {
+      instance.root.findByProps({ testID: 'btn-compartilhar' }).props.onPress();
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+
+    expect(Share.share).toHaveBeenCalled();
   });
 
   it('exibe_toastErro_seCompartilharFalhar', async () => {

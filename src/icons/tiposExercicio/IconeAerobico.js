@@ -3,9 +3,12 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { colors } from '../../components/Styles/ComumStyles';
 
-const IconeAerobico = ({ size = 24, isSexoFeminino, ...props }) => {
-  const { secondary } = colors;
-
+const IconeAerobico = ({
+  size = 24,
+  isSexoFeminino,
+  color = colors.secondary,
+  ...props
+}) => {
   const renderIconeMasculino = () => (
     <Svg
       width={size}
@@ -15,7 +18,7 @@ const IconeAerobico = ({ size = 24, isSexoFeminino, ...props }) => {
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -524,7 +527,7 @@ const IconeAerobico = ({ size = 24, isSexoFeminino, ...props }) => {
       543.855225,438.485535 545.521790,433.440887 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -546,7 +549,7 @@ z"
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -1042,7 +1045,7 @@ z"
   z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -1064,6 +1067,7 @@ z"
 IconeAerobico.propTypes = {
   size: PropTypes.number,
   isSexoFeminino: PropTypes.bool.isRequired,
+  color: PropTypes.string,
 };
 
 export default IconeAerobico;

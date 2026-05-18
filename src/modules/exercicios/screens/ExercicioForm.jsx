@@ -4,9 +4,9 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FormFooter from '../../../components/Button/FormFooter';
 
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 
@@ -256,31 +256,11 @@ const ExercicioForm = (props) => {
           renderCamposCondicionais()}
       </View>
 
-      <View style={style.formFooter}>
-        <AnimatedPressable
-          testID="btn-voltar"
-          style={style.formBackButton}
-          onPress={() => navigation.goBack()}
-          disabled={loading}
-        >
-          <Text style={style.formBackButtonText}>Voltar</Text>
-        </AnimatedPressable>
-        <AnimatedPressable
-          testID="btn-salvar"
-          style={[style.saveButton, loading && style.saveButtonDisabled]}
-          onPress={!loading ? handleSubmit : null}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" size="small" />
-          ) : (
-            <>
-              <MaterialIcons name="save" size={18} color="#fff" />
-              <Text style={style.saveButtonText}>SALVAR</Text>
-            </>
-          )}
-        </AnimatedPressable>
-      </View>
+      <FormFooter
+        onBack={() => navigation.goBack()}
+        onSave={handleSubmit}
+        loading={loading}
+      />
     </View>
   );
 };

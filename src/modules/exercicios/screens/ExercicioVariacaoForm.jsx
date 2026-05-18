@@ -5,9 +5,8 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
-import AnimatedPressable from '../../../components/Button/AnimatedPressable';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Text, View } from 'react-native';
+import FormFooter from '../../../components/Button/FormFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
@@ -162,31 +161,11 @@ const ExercicioVariacaoForm = (props) => {
         {renderExerciciosCalisteniaFields()}
       </View>
 
-      <View style={style.formFooter}>
-        <AnimatedPressable
-          testID="btn-voltar"
-          style={style.formBackButton}
-          onPress={() => navigation.goBack()}
-          disabled={loading}
-        >
-          <Text style={style.formBackButtonText}>Voltar</Text>
-        </AnimatedPressable>
-        <AnimatedPressable
-          testID="btn-salvar"
-          style={[style.saveButton, loading && style.saveButtonDisabled]}
-          onPress={!loading ? handleSubmit : null}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" size="small" />
-          ) : (
-            <>
-              <MaterialIcons name="save" size={18} color="#fff" />
-              <Text style={style.saveButtonText}>SALVAR</Text>
-            </>
-          )}
-        </AnimatedPressable>
-      </View>
+      <FormFooter
+        onBack={() => navigation.goBack()}
+        onSave={handleSubmit}
+        loading={loading}
+      />
     </View>
   );
 };

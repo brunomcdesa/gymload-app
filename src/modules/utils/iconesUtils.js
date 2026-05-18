@@ -18,103 +18,62 @@ import IconeAerobico from '../../icons/tiposExercicio/IconeAerobico';
 import IconeCalistenia from '../../icons/tiposExercicio/IconeCalistenia';
 import IconeMusculacao from '../../icons/tiposExercicio/IconeMusculacao';
 
-const iconesTipoExercicio = (isSexoFeminino) => [
-  {
-    tipo: 'MUSCULACAO',
-    icone: <IconeMusculacao size={100} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    tipo: 'CALISTENIA',
-    icone: <IconeCalistenia size={100} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    tipo: 'AEROBICO',
-    icone: <IconeAerobico size={100} isSexoFeminino={isSexoFeminino} />,
-  },
+const iconesTipoExercicio = [
+  { tipo: 'MUSCULACAO', Componente: IconeMusculacao },
+  { tipo: 'CALISTENIA', Componente: IconeCalistenia },
+  { tipo: 'AEROBICO', Componente: IconeAerobico },
 ];
 
-const iconesGruposMusculares = (isSexoFeminino) => [
-  {
-    grupoMuscular: 'Peitoral',
-    icone: <IconePeitoral size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Costas',
-    icone: <IconeCostas size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Quadríceps',
-    icone: <IconeQuadriceps size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Posterior de Coxa',
-    icone: <IconePosteriorCoxa size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Bíceps',
-    icone: <IconeBiceps size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Tríceps',
-    icone: <IconeTriceps size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Ombro',
-    icone: <IconeOmbro size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Abdomen',
-    icone: <IconeAbdomen size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Antebraço',
-    icone: <IconeAntebraco size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Panturrilha',
-    icone: <IconePanturrilha size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Glúteo',
-    icone: <IconeGluteo size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Adutor',
-    icone: <IconeAdutor size={85} isSexoFeminino={isSexoFeminino} />,
-  },
-  {
-    grupoMuscular: 'Trapézio',
-    icone: <IconeTrapezio size={85} isSexoFeminino={isSexoFeminino} />,
-  },
+const iconesGruposMusculares = [
+  { grupoMuscular: 'Peitoral', Componente: IconePeitoral },
+  { grupoMuscular: 'Costas', Componente: IconeCostas },
+  { grupoMuscular: 'Quadríceps', Componente: IconeQuadriceps },
+  { grupoMuscular: 'Posterior de Coxa', Componente: IconePosteriorCoxa },
+  { grupoMuscular: 'Bíceps', Componente: IconeBiceps },
+  { grupoMuscular: 'Tríceps', Componente: IconeTriceps },
+  { grupoMuscular: 'Ombro', Componente: IconeOmbro },
+  { grupoMuscular: 'Abdomen', Componente: IconeAbdomen },
+  { grupoMuscular: 'Antebraço', Componente: IconeAntebraco },
+  { grupoMuscular: 'Panturrilha', Componente: IconePanturrilha },
+  { grupoMuscular: 'Glúteo', Componente: IconeGluteo },
+  { grupoMuscular: 'Adutor', Componente: IconeAdutor },
+  { grupoMuscular: 'Trapézio', Componente: IconeTrapezio },
 ];
 
-export const renderIconeTipoExercicio = (tipo, isSexoFeminino) => {
-  const icone = iconesTipoExercicio(isSexoFeminino).find(
-    (index) => index.tipo === tipo,
-  );
-  return icone ? (
-    icone.icone
-  ) : (
-    <MaterialIcons
-      name={'fitness-center'}
-      size={100}
-      color={colors.secondary}
+export const renderIconeTipoExercicio = (
+  tipo,
+  isSexoFeminino,
+  size = 100,
+  color = colors.secondary,
+) => {
+  const found = iconesTipoExercicio.find((i) => i.tipo === tipo);
+  return found ? (
+    <found.Componente
+      size={size}
+      isSexoFeminino={isSexoFeminino}
+      color={color}
     />
+  ) : (
+    <MaterialIcons name="fitness-center" size={size} color={color} />
   );
 };
 
-export const renderIconeGrupoMuscular = (grupoMuscular, isSexoFeminino) => {
-  const icone = iconesGruposMusculares(isSexoFeminino).find(
-    (index) => index.grupoMuscular === grupoMuscular,
+export const renderIconeGrupoMuscular = (
+  grupoMuscular,
+  isSexoFeminino,
+  size = 85,
+  color = colors.secondary,
+) => {
+  const found = iconesGruposMusculares.find(
+    (i) => i.grupoMuscular === grupoMuscular,
   );
-
-  return icone ? (
-    icone.icone
-  ) : (
-    <MaterialIcons
-      name={'fitness-center'}
-      size={100}
-      color={colors.secondary}
+  return found ? (
+    <found.Componente
+      size={size}
+      isSexoFeminino={isSexoFeminino}
+      color={color}
     />
+  ) : (
+    <MaterialIcons name="fitness-center" size={size} color={color} />
   );
 };

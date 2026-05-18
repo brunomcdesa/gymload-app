@@ -1,5 +1,4 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import useAnuncioInterstitial from '../../../components/Anuncios/useAnuncioInterstitial';
 import {
   ScrollView,
   StyleSheet,
@@ -7,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import useAnuncioInterstitial from '../../../components/Anuncios/useAnuncioInterstitial';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';

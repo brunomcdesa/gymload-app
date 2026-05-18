@@ -6,6 +6,14 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import {
+  ActivityIndicator,
+  Modal,
+  ScrollView,
+  SectionList,
+  Text,
+  View,
+} from 'react-native';
 import Animated, {
   Easing,
   FadeInDown,
@@ -15,24 +23,17 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import {
-  ActivityIndicator,
-  Modal,
-  ScrollView,
-  SectionList,
-  Text,
-  View,
-} from 'react-native';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
+import FormFooter from '../../../components/Button/FormFooter';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
-import { BANNER_HEIGHT } from '../../../comum/constants';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
 import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
+import { BANNER_HEIGHT } from '../../../comum/constants';
 import * as ExerciciosApi from '../../exercicios/Api';
 import exerciciosStyle from '../../exercicios/style/style';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
@@ -79,10 +80,6 @@ const RegistroAtividadesCompleto = (props) => {
     sectionHeaderText,
     formFooter,
     formFooterComBanner,
-    backButton,
-    backButtonText,
-    addButton,
-    addButtonText,
     selecionarButton,
     selecionarButtonText,
     selecaoInfoBar,
@@ -159,7 +156,12 @@ const RegistroAtividadesCompleto = (props) => {
       );
     }
     return null;
-  }, [registroAtividadeCompleto, isExercicioMusculacao, isExercicioCalistenia, isExercicioAerobico]);
+  }, [
+    registroAtividadeCompleto,
+    isExercicioMusculacao,
+    isExercicioCalistenia,
+    isExercicioAerobico,
+  ]);
 
   const fetchVariacoes = useCallback(async () => {
     try {
@@ -372,9 +374,7 @@ const RegistroAtividadesCompleto = (props) => {
       const selecionado = registrosSelecionados.includes(registro.id);
       return (
         <Animated.View entering={enterAnim}>
-          <AnimatedPressable
-            onPress={() => toggleSelecao(registro.id)}
-          >
+          <AnimatedPressable onPress={() => toggleSelecao(registro.id)}>
             <View
               style={[
                 elementContainer,
@@ -508,9 +508,15 @@ const RegistroAtividadesCompleto = (props) => {
       {renderVariacoesPicker()}
       {registroPr && !modoSelecao && (
         <View testID="pr-card-destaque" style={style.prCardDestaque}>
-          <Animated.View style={[style.prCardBordaAccent, animatedBordaStyle]} />
+          <Animated.View
+            style={[style.prCardBordaAccent, animatedBordaStyle]}
+          />
           <View style={style.prCardDestaqueHeader}>
-            <MaterialIcons name="emoji-events" size={14} color={colors.secondary} />
+            <MaterialIcons
+              name="emoji-events"
+              size={14}
+              color={colors.secondary}
+            />
             <Text style={style.prCardDestaqueTitulo}>RECORDE PESSOAL</Text>
             <Text style={style.prCardDestaqueData}>
               {formatarDataSecao(registroPr.dataCadastro.split(' ')[0])}
@@ -518,13 +524,22 @@ const RegistroAtividadesCompleto = (props) => {
           </View>
           <View>
             {isExercicioAerobico && (
-              <RegistroAerobico registroData={registroPr} containerStyle={style.prCardConteudo} />
+              <RegistroAerobico
+                registroData={registroPr}
+                containerStyle={style.prCardConteudo}
+              />
             )}
             {isExercicioMusculacao && (
-              <RegistroMusculacao registroData={registroPr} containerStyle={style.prCardConteudo} />
+              <RegistroMusculacao
+                registroData={registroPr}
+                containerStyle={style.prCardConteudo}
+              />
             )}
             {isExercicioCalistenia && (
-              <RegistroCalistenia registroData={registroPr} containerStyle={style.prCardConteudo} />
+              <RegistroCalistenia
+                registroData={registroPr}
+                containerStyle={style.prCardConteudo}
+              />
             )}
           </View>
         </View>
@@ -535,7 +550,10 @@ const RegistroAtividadesCompleto = (props) => {
         <SectionList
           sections={groupedRegistros}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={[listContent, !isAdmin && { paddingBottom: BANNER_HEIGHT }]}
+          contentContainerStyle={[
+            listContent,
+            !isAdmin && { paddingBottom: BANNER_HEIGHT },
+          ]}
           renderItem={renderItem}
           renderSectionHeader={({ section: { title } }) => (
             <View style={sectionHeader}>
@@ -546,57 +564,48 @@ const RegistroAtividadesCompleto = (props) => {
         />
       )}
 
-      <View style={[formFooter, !isAdmin && formFooterComBanner]}>
-        {modoSelecao ? (
-          <>
-            <AnimatedPressable
-              style={cancelarSelecaoButton}
-              onPress={cancelarSelecao}
-              disabled={movendo}
-            >
-              <Text style={cancelarSelecaoButtonText}>Cancelar</Text>
-            </AnimatedPressable>
-            <AnimatedPressable
-              style={[
-                moverButton,
-                (registrosSelecionados.length === 0 || movendo) &&
-                  moverButtonDisabled,
-              ]}
-              onPress={() => setMoverModalVisivel(true)}
-              disabled={registrosSelecionados.length === 0 || movendo}
-            >
-              {movendo ? (
-                <ActivityIndicator color="#fff" size="small" />
-              ) : (
-                <>
-                  <MaterialIcons name="swap-horiz" size={18} color="#fff" />
-                  <Text style={moverButtonText}>
-                    {registrosSelecionados.length > 0
-                      ? `Mover (${registrosSelecionados.length})`
-                      : 'Mover para...'}
-                  </Text>
-                </>
-              )}
-            </AnimatedPressable>
-          </>
-        ) : (
-          <>
-            <AnimatedPressable
-              style={backButton}
-              onPress={() => navigation.goBack()}
-            >
-              <Text style={backButtonText}>Voltar</Text>
-            </AnimatedPressable>
-            <AnimatedPressable
-              style={addButton}
-              onPress={redirectToRegistroAtividadeForm}
-            >
-              <MaterialIcons name="add" size={18} color="#fff" />
-              <Text style={addButtonText}>Adicionar</Text>
-            </AnimatedPressable>
-          </>
-        )}
-      </View>
+      {modoSelecao ? (
+        <View style={[formFooter, !isAdmin && formFooterComBanner]}>
+          <AnimatedPressable
+            style={cancelarSelecaoButton}
+            onPress={cancelarSelecao}
+            disabled={movendo}
+          >
+            <Text style={cancelarSelecaoButtonText}>Cancelar</Text>
+          </AnimatedPressable>
+          <AnimatedPressable
+            style={[
+              moverButton,
+              (registrosSelecionados.length === 0 || movendo) &&
+                moverButtonDisabled,
+            ]}
+            onPress={() => setMoverModalVisivel(true)}
+            disabled={registrosSelecionados.length === 0 || movendo}
+          >
+            {movendo ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <>
+                <MaterialIcons name="swap-horiz" size={18} color="#fff" />
+                <Text style={moverButtonText}>
+                  {registrosSelecionados.length > 0
+                    ? `Mover (${registrosSelecionados.length})`
+                    : 'Mover para...'}
+                </Text>
+              </>
+            )}
+          </AnimatedPressable>
+        </View>
+      ) : (
+        <FormFooter
+          onBack={() => navigation.goBack()}
+          onSave={redirectToRegistroAtividadeForm}
+          loading={false}
+          saveLabel="ADICIONAR"
+          saveIcon="add"
+          containerStyle={!isAdmin && formFooterComBanner}
+        />
+      )}
 
       {renderMoverModal()}
       <AnuncioBanner />

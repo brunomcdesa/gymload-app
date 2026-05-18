@@ -1,13 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
-import AnimatedPressable from '../../../components/Button/AnimatedPressable';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { ScrollView, Text, View } from 'react-native';
+import FormFooter from '../../../components/Button/FormFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
@@ -27,12 +21,6 @@ const AlterarSenhaForm = (props) => {
     requiredNote,
     fieldContainer,
     fieldLabel,
-    formFooter,
-    backButton,
-    backButtonText,
-    saveButton,
-    saveButtonDisabled,
-    saveButtonText,
   } = style;
 
   const [formData, setFormData] = useState({
@@ -146,29 +134,11 @@ const AlterarSenhaForm = (props) => {
         </View>
       </ScrollView>
 
-      <View style={formFooter}>
-        <AnimatedPressable
-          style={backButton}
-          onPress={() => navigation.goBack()}
-          disabled={loading}
-        >
-          <Text style={backButtonText}>Voltar</Text>
-        </AnimatedPressable>
-        <AnimatedPressable
-          style={[saveButton, loading && saveButtonDisabled]}
-          onPress={!loading ? handleSave : null}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" size="small" />
-          ) : (
-            <>
-              <MaterialIcons name="save" size={18} color="#fff" />
-              <Text style={saveButtonText}>SALVAR</Text>
-            </>
-          )}
-        </AnimatedPressable>
-      </View>
+      <FormFooter
+        onBack={() => navigation.goBack()}
+        onSave={handleSave}
+        loading={loading}
+      />
     </View>
   );
 };

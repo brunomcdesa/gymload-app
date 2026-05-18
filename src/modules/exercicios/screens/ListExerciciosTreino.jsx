@@ -1,13 +1,8 @@
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  View,
-} from 'react-native';
-import AnimatedPressable from '../../../components/Button/AnimatedPressable';
+import { FlatList, View } from 'react-native';
+import FormFooter from '../../../components/Button/FormFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { finalizarTreino } from '../../treinos/Api';
@@ -108,31 +103,13 @@ const ListExerciciosTreino = (props) => {
           )}
         />
       )}
-      <View style={style.footer}>
-        <View style={style.footerRow}>
-          <AnimatedPressable
-            style={style.footerBackButton}
-            onPress={navigation.goBack}
-            disabled={finalizando}
-          >
-            <Text style={style.footerBackButtonText}>Voltar</Text>
-          </AnimatedPressable>
-          <AnimatedPressable
-            style={[
-              style.finalizeButton,
-              finalizando && style.finalizeButtonDisabled,
-            ]}
-            onPress={!finalizando ? handleFinalizarTreino : null}
-            disabled={finalizando}
-          >
-            {finalizando ? (
-              <ActivityIndicator color="#fff" size="small" />
-            ) : (
-              <Text style={style.finalizeButtonText}>Finalizar Treino</Text>
-            )}
-          </AnimatedPressable>
-        </View>
-      </View>
+      <FormFooter
+        onBack={() => navigation.goBack()}
+        onSave={handleFinalizarTreino}
+        loading={finalizando}
+        saveLabel="FINALIZAR TREINO"
+        saveIcon={null}
+      />
     </View>
   );
 };

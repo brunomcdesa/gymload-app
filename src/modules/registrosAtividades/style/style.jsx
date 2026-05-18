@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { BANNER_HEIGHT } from '../../../comum/constants';
 import { colors } from '../../../components/Styles/ComumStyles';
+import { BANNER_HEIGHT } from '../../../comum/constants';
 
 export default StyleSheet.create({
   listContent: {

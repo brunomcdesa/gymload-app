@@ -7,9 +7,10 @@ import React, {
   useState,
 } from 'react';
 import { ScrollView, Share, Text, View } from 'react-native';
-import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import QRCode from 'react-native-qrcode-svg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
+import FormFooter from '../../../components/Button/FormFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { colors } from '../../../components/Styles/ComumStyles';
@@ -20,13 +21,13 @@ import style from '../style/style';
 const CompartilharTreino = ({ route, navigation }) => {
   const { treino } = route.params;
   const {
-    qrContainer,
+    screenContainer,
     qrBox,
     qrLabel,
     tokenDisplay,
     tokenText,
     expiracaoText,
-    actionRow,
+    actionButtonWrapper,
     actionButton,
     actionButtonPrimary,
     actionButtonText,
@@ -44,6 +45,10 @@ const CompartilharTreino = ({ route, navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
+      headerTitleAlign: 'center',
+      headerLeft: () => null,
+      headerBackVisible: false,
+      gestureEnabled: false,
     });
   }, [navigation, renderHeaderTitle]);
 
@@ -82,26 +87,29 @@ const CompartilharTreino = ({ route, navigation }) => {
   }
 
   return (
-    <ScrollView style={qrContainer}>
-      <View style={qrBox}>
-        <Text style={qrLabel}>QR Code do treino</Text>
-        <QRCode
-          value={dados.codigo}
-          size={200}
-          backgroundColor={colors.inputBackground}
-          color={colors.textLight}
-        />
+    <View style={screenContainer}>
+      <ScrollView>
+        <View style={qrBox}>
+          <Text style={qrLabel}>QR Code do treino</Text>
+          <QRCode
+            value={dados.codigo}
+            size={200}
+            backgroundColor={colors.inputBackground}
+            color={colors.textLight}
+          />
 
-        <View style={tokenDisplay}>
-          <Text style={tokenText}>{dados.codigo}</Text>
+          <View style={tokenDisplay}>
+            <Text style={tokenText}>{dados.codigo}</Text>
+          </View>
+
+          <Text style={expiracaoText}>Válido até {dados.dataExpiracao}</Text>
         </View>
+      </ScrollView>
 
-        <Text style={expiracaoText}>Válido até {dados.dataExpiracao}</Text>
-      </View>
-
-      <View style={actionRow}>
+      <FormFooter onBack={() => navigation.goBack()} loading={false}>
         <AnimatedPressable
           testID="btn-copiar"
+          wrapperStyle={actionButtonWrapper}
           style={actionButton}
           onPress={copiarCodigo}
         >
@@ -114,6 +122,8 @@ const CompartilharTreino = ({ route, navigation }) => {
         </AnimatedPressable>
 
         <AnimatedPressable
+          testID="btn-compartilhar"
+          wrapperStyle={actionButtonWrapper}
           style={[actionButton, actionButtonPrimary]}
           onPress={compartilharNativo}
         >
@@ -122,14 +132,16 @@ const CompartilharTreino = ({ route, navigation }) => {
             Compartilhar
           </Text>
         </AnimatedPressable>
-      </View>
-    </ScrollView>
+      </FormFooter>
+    </View>
   );
 };
 
 CompartilharTreino.propTypes = {
-  navigation: PropTypes.shape({ setOptions: PropTypes.func.isRequired })
-    .isRequired,
+  navigation: PropTypes.shape({
+    setOptions: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({
       treino: PropTypes.shape({

@@ -1,8 +1,5 @@
 import { useEffect, useRef } from 'react';
-import {
-  AdEventType,
-  InterstitialAd,
-} from 'react-native-google-mobile-ads';
+import { AdEventType, InterstitialAd } from 'react-native-google-mobile-ads';
 import { INTERSTITIAL_ID } from '../../comum/constants';
 import { useIsAdmin } from '../../modules/utils/userUtils';
 

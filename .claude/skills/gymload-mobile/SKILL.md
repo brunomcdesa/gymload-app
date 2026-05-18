@@ -412,6 +412,29 @@ Sempre verifique se já existe um componente antes de criar um novo:
 | `InfoBlock` | `components/Infos/InfoBlock` | Bloco de informação |
 | `AnuncioBanner` | `components/Anuncios/AnuncioBanner` | Banner de anúncio AdMob |
 
+### AnimatedPressable — armadilha de layout
+
+`AnimatedPressable` renderiza um `Animated.View` (wrapper) envolvendo um `Pressable`. O `style` vai pro `Pressable` interno; o `wrapperStyle` vai pro `Animated.View` externo.
+
+**Problema:** colocar `flex: 1` só no `style` não faz o botão expandir numa linha — o `Animated.View` não tem dimensão definida e comprime o conteúdo.
+
+**Regra:** sempre que `AnimatedPressable` precisar expandir em `flexDirection: 'row'`, passe `flex: 1` via **`wrapperStyle`**:
+
+```jsx
+// ✗ errado — Animated.View não expande, botão fica comprimido
+<AnimatedPressable style={[{ flex: 1, height: 50 }]} ...>
+
+// ✓ correto — wrapperStyle expande o Animated.View; style define aparência do Pressable
+<AnimatedPressable wrapperStyle={{ flex: 1 }} style={{ height: 50, ... }} ...>
+```
+
+No `StyleSheet`, defina os dois separados:
+
+```js
+genderButtonWrapper: { flex: 1 },
+genderButton: { height: 50, borderWidth: 1, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
+```
+
 ---
 
 ## 7. Notificações Toast

@@ -3,8 +3,8 @@ import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import { colors } from '../../../components/Styles/ComumStyles';
 import {
   BANNER_HEIGHT,
@@ -44,7 +44,20 @@ const MESES_PT = [
   'DEZEMBRO',
 ];
 
-const MESES_ABREV = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+const MESES_ABREV = [
+  'JAN',
+  'FEV',
+  'MAR',
+  'ABR',
+  'MAI',
+  'JUN',
+  'JUL',
+  'AGO',
+  'SET',
+  'OUT',
+  'NOV',
+  'DEZ',
+];
 
 const formatarDataPr = (dateStr) => {
   const [, month, day] = dateStr.split('-');
@@ -98,7 +111,10 @@ const Dashboard = () => {
     <View style={dashStyle.screenWrapper}>
       <ScrollView
         style={dashStyle.container}
-        contentContainerStyle={[dashStyle.scrollContent, !isAdmin && { paddingBottom: BANNER_HEIGHT }]}
+        contentContainerStyle={[
+          dashStyle.scrollContent,
+          !isAdmin && { paddingBottom: BANNER_HEIGHT },
+        ]}
         showsVerticalScrollIndicator={false}
       >
         {/* Hero greeting */}
@@ -131,7 +147,9 @@ const Dashboard = () => {
             </View>
             <View style={dashStyle.statCard}>
               <Text style={dashStyle.statValueNeutral}>
-                {stats.prsEssaSemana != null ? String(stats.prsEssaSemana) : '—'}
+                {stats.prsEssaSemana != null
+                  ? String(stats.prsEssaSemana)
+                  : '—'}
               </Text>
               <Text style={dashStyle.statLabel}>{'PRs ESSA\nSEMANA'}</Text>
             </View>
@@ -170,7 +188,11 @@ const Dashboard = () => {
           {stats.recordesRecentes.length === 0 ? (
             <View style={dashStyle.prCard}>
               <View style={dashStyle.prIconWrap}>
-                <MaterialIcons name="emoji-events" size={26} color={colors.secondary} />
+                <MaterialIcons
+                  name="emoji-events"
+                  size={26}
+                  color={colors.secondary}
+                />
               </View>
               <Text style={dashStyle.prEmptyText}>
                 Seus recordes pessoais aparecerão aqui em breve.
@@ -193,12 +215,18 @@ const Dashboard = () => {
                   })
                 }
               >
-                <MaterialIcons name="emoji-events" size={16} color={colors.secondary} />
+                <MaterialIcons
+                  name="emoji-events"
+                  size={16}
+                  color={colors.secondary}
+                />
                 <View style={dashStyle.recordeCardContent}>
                   <Text style={dashStyle.recordeCardNome} numberOfLines={1}>
                     {recorde.exercicioNome}
                   </Text>
-                  <Text style={dashStyle.recordeCardValor}>{recorde.valorPr}</Text>
+                  <Text style={dashStyle.recordeCardValor}>
+                    {recorde.valorPr}
+                  </Text>
                 </View>
                 <Text style={dashStyle.recordeCardData}>
                   {formatarDataPr(recorde.dataPr)}

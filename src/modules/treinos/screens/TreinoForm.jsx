@@ -1,23 +1,29 @@
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import React, {
+  useCallback,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { FlatList, ScrollView, Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
+import FormFooter from '../../../components/Button/FormFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import EmptyList from '../../../components/List/EmptyList';
 import SeparatorItem from '../../../components/List/SeparatorItem';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles, colors } from '../../../components/Styles/ComumStyles';
+import { AuthContext } from '../../../context/AuthProvider';
 import * as ExercicioApi from '../../exercicios/Api';
 import * as GrupoMuscularApi from '../../gruposMusculares/Api';
+import {
+  renderIconeGrupoMuscular,
+  renderIconeTipoExercicio,
+} from '../../utils/iconesUtils';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from '../style/style';
@@ -27,6 +33,8 @@ const CHIP_TODOS = { id: 'todos', label: 'Todos', tipo: 'todos', value: null };
 const TreinoForm = ({ navigation, route }) => {
   const { asteriscoObrigatorio } = ComumStyles;
   const { treinoData, isEdicao } = route.params;
+  const { user } = useContext(AuthContext);
+  const isSexoFeminino = user?.sexo === 'FEMININO';
   const { id, nome, exerciciosIds } = treinoData;
 
   const [formData, setFormData] = useState({
@@ -198,6 +206,15 @@ const TreinoForm = ({ navigation, route }) => {
     }
   };
 
+  const renderChipIcon = (chip, isActive) => {
+    const color = isActive ? colors.textLight : colors.placeholderText;
+    if (chip.tipo === 'grupo')
+      return renderIconeGrupoMuscular(chip.label, isSexoFeminino, 18);
+    if (chip.tipo === 'tipo')
+      return renderIconeTipoExercicio(chip.value, isSexoFeminino, 18);
+    return <MaterialIcons name="apps" size={18} color={color} />;
+  };
+
   const renderExercicioItem = useCallback(
     ({ item }) => {
       const isSelected = selectedExercicios.includes(item.value);
@@ -271,6 +288,7 @@ const TreinoForm = ({ navigation, route }) => {
                     style={[style.chip, isActive && style.chipActive]}
                     onPress={() => setChipSelecionado(chip)}
                   >
+                    {renderChipIcon(chip, isActive)}
                     <Text
                       style={[style.chipText, isActive && style.chipTextActive]}
                     >
@@ -298,30 +316,11 @@ const TreinoForm = ({ navigation, route }) => {
         </View>
       </ScrollView>
 
-      <View style={style.formFooter}>
-        <AnimatedPressable
-          style={style.backButton}
-          onPress={handleGoBack}
-          disabled={loading}
-        >
-          <Text style={style.backButtonText}>Voltar</Text>
-        </AnimatedPressable>
-
-        <AnimatedPressable
-          style={[style.saveButton, loading && style.saveButtonDisabled]}
-          onPress={!loading ? (isEdicao ? handleEditar : handleSave) : null}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" size="small" />
-          ) : (
-            <>
-              <MaterialIcons name="save" size={18} color="#fff" />
-              <Text style={style.saveButtonText}>SALVAR</Text>
-            </>
-          )}
-        </AnimatedPressable>
-      </View>
+      <FormFooter
+        onBack={handleGoBack}
+        onSave={isEdicao ? handleEditar : handleSave}
+        loading={loading}
+      />
     </View>
   );
 };

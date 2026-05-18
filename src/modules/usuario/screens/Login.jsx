@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import LogoMark from '../../../components/Logo/LogoMark';

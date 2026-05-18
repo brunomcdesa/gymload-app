@@ -3,8 +3,13 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { colors } from '../../components/Styles/ComumStyles';
 
-const IconeTrapezio = ({ size = 24, isSexoFeminino, ...props }) => {
-  const { inputBackground, secondary, terciary } = colors;
+const IconeTrapezio = ({
+  size = 24,
+  isSexoFeminino,
+  color = colors.secondary,
+  ...props
+}) => {
+  const { inputBackground, terciary } = colors;
 
   const renderIconeMasculino = () => (
     <Svg
@@ -15,7 +20,7 @@ const IconeTrapezio = ({ size = 24, isSexoFeminino, ...props }) => {
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         d="
 	M1.000000,487.468658 
 		C12.607386,488.628113 24.270010,487.798065 35.880733,487.383209 
@@ -58,7 +63,7 @@ const IconeTrapezio = ({ size = 24, isSexoFeminino, ...props }) => {
 	z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         d="
 M642.468628,673.000000 
 	C646.189453,666.009521 650.396118,659.029297 654.565308,652.026794 
@@ -140,7 +145,7 @@ z"
       />
 
       <Path
-        fill={secondary}
+        fill={color}
         d="
 M1.000000,222.468658 
 	C13.793876,224.055786 26.599487,226.051041 39.170204,229.276291 
@@ -167,7 +172,7 @@ M1.000000,222.468658
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         d="
 M690.531372,1.000003 
 	C690.456482,5.778815 689.618164,10.545327 689.418213,15.338470 
@@ -192,7 +197,7 @@ M690.531372,1.000003
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         d="
 M1.000000,295.468658 
 	C14.270271,293.794067 27.555851,292.579651 40.742413,295.623444 
@@ -205,7 +210,7 @@ M1.000000,295.468658
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         d="
 M503.468689,673.000000 
 	C503.984650,661.423462 504.947449,649.845093 505.960571,638.271057 
@@ -224,7 +229,7 @@ M503.468689,673.000000
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         d="
 M1025.000000,368.531342 
 	C1010.320801,365.969788 995.431946,364.618622 980.530090,363.278473 
@@ -301,7 +306,7 @@ z"
       {...props}
     >
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -343,7 +348,7 @@ M1.000000,537.468628
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -384,7 +389,7 @@ M650.468628,673.000000
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -410,7 +415,7 @@ M1.000000,227.468658
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -437,7 +442,7 @@ M682.531372,1.000000
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -454,7 +459,7 @@ M1.000000,310.468658
 z"
       />
       <Path
-        fill={secondary}
+        fill={color}
         opacity="1.000000"
         stroke="none"
         d="
@@ -515,6 +520,7 @@ z"
 IconeTrapezio.propTypes = {
   size: PropTypes.number,
   isSexoFeminino: PropTypes.bool.isRequired,
+  color: PropTypes.string,
 };
 
 export default IconeTrapezio;

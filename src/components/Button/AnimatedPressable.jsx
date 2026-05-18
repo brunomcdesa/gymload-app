@@ -9,7 +9,15 @@ import Animated, {
 
 const SPRING_CONFIG = { damping: 15, stiffness: 400 };
 
-const AnimatedPressable = ({ onPress, onLongPress, style, children, disabled, testID }) => {
+const AnimatedPressable = ({
+  onPress,
+  onLongPress,
+  style,
+  wrapperStyle,
+  children,
+  disabled,
+  testID,
+}) => {
   const scale = useSharedValue(1);
 
   const animStyle = useAnimatedStyle(() => ({
@@ -25,7 +33,7 @@ const AnimatedPressable = ({ onPress, onLongPress, style, children, disabled, te
   };
 
   return (
-    <Animated.View style={animStyle}>
+    <Animated.View style={[animStyle, wrapperStyle]}>
       <Pressable
         style={style}
         onPress={onPress}
@@ -45,6 +53,7 @@ AnimatedPressable.propTypes = {
   onPress: PropTypes.func,
   onLongPress: PropTypes.func,
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  wrapperStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   children: PropTypes.node.isRequired,
   disabled: PropTypes.bool,
   testID: PropTypes.string,

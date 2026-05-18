@@ -4,7 +4,6 @@ import { FlatList, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
-import { BANNER_HEIGHT } from '../../../comum/constants';
 import AddButton from '../../../components/Button/AddButton';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import SearchInput from '../../../components/Inputs/SearchInput';
@@ -13,6 +12,7 @@ import SeparatorItem from '../../../components/List/SeparatorItem';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
 import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
+import { BANNER_HEIGHT } from '../../../comum/constants';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import { useIsAdmin } from '../../utils/userUtils';
 import * as Api from '../Api';
@@ -154,52 +154,54 @@ const ListTreino = () => {
   const renderTreinoItem = ({ item: treino, index }) => {
     const isAtivo = treino.situacao === 'ATIVO';
     return (
-      <Animated.View entering={FadeInDown.delay(Math.min(index * 60, 400)).duration(350)}>
-      <SelectableItem
-        item={treino}
-        cancelButtonIndex={getCancelButtonIndex(treino)}
-        options={getOptions(treino)}
-        onActionSelected={selectOptionsAction}
-        onLongPress={() => redirectToListExerciciosTreino(treino)}
+      <Animated.View
+        entering={FadeInDown.delay(Math.min(index * 60, 400)).duration(350)}
       >
-        <View style={treinoCard}>
-          <View
-            style={[
-              treinoAccentBar,
-              isAtivo ? treinoAccentBarAtivo : treinoAccentBarInativo,
-            ]}
-          />
-          <View style={treinoIconContainer}>
+        <SelectableItem
+          item={treino}
+          cancelButtonIndex={getCancelButtonIndex(treino)}
+          options={getOptions(treino)}
+          onActionSelected={selectOptionsAction}
+          onLongPress={() => redirectToListExerciciosTreino(treino)}
+        >
+          <View style={treinoCard}>
+            <View
+              style={[
+                treinoAccentBar,
+                isAtivo ? treinoAccentBarAtivo : treinoAccentBarInativo,
+              ]}
+            />
+            <View style={treinoIconContainer}>
+              <MaterialIcons
+                name="fitness-center"
+                size={22}
+                color={isAtivo ? colors.success : colors.danger}
+              />
+            </View>
+            <View style={treinoInfo}>
+              <View style={treinoNomeRow}>
+                <Text style={treinoNome}>{treino.nome}</Text>
+                {treino.importado && (
+                  <MaterialIcons
+                    testID="importado-indicator"
+                    name="call-received"
+                    size={14}
+                    color={colors.textHint}
+                    style={chipIconLeft}
+                  />
+                )}
+              </View>
+              <Text style={treinoData}>
+                Criado em: {treino.dataCadastro.split(' ')[0]}
+              </Text>
+            </View>
             <MaterialIcons
-              name="fitness-center"
-              size={22}
-              color={isAtivo ? colors.success : colors.danger}
+              name="chevron-right"
+              size={24}
+              color={colors.textHint}
             />
           </View>
-          <View style={treinoInfo}>
-            <View style={treinoNomeRow}>
-              <Text style={treinoNome}>{treino.nome}</Text>
-              {treino.importado && (
-                <MaterialIcons
-                  testID="importado-indicator"
-                  name="call-received"
-                  size={14}
-                  color={colors.textHint}
-                  style={chipIconLeft}
-                />
-              )}
-            </View>
-            <Text style={treinoData}>
-              Criado em: {treino.dataCadastro.split(' ')[0]}
-            </Text>
-          </View>
-          <MaterialIcons
-            name="chevron-right"
-            size={24}
-            color={colors.textHint}
-          />
-        </View>
-      </SelectableItem>
+        </SelectableItem>
       </Animated.View>
     );
   };
@@ -270,7 +272,10 @@ const ListTreino = () => {
           keyExtractor={(treino) => treino.id.toString()}
           renderItem={renderTreinoItem}
           ListEmptyComponent={renderEmptyList}
-          contentContainerStyle={[listContent, !isAdmin && { paddingBottom: BANNER_HEIGHT }]}
+          contentContainerStyle={[
+            listContent,
+            !isAdmin && { paddingBottom: BANNER_HEIGHT },
+          ]}
           ItemSeparatorComponent={SeparatorItem}
         />
       )}

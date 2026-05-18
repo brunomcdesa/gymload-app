@@ -1,23 +1,24 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
-import {
-  FlatList,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, { useCallback, useContext, useState } from 'react';
+import { FlatList, ScrollView, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnuncioBanner from '../../../components/Anuncios/AnuncioBanner';
-import { BANNER_HEIGHT } from '../../../comum/constants';
 import AddButton from '../../../components/Button/AddButton';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { ComumStyles, colors } from '../../../components/Styles/ComumStyles';
+import { BANNER_HEIGHT } from '../../../comum/constants';
+import { AuthContext } from '../../../context/AuthProvider';
 import * as GrupoMuscularApi from '../../gruposMusculares/Api';
 import * as RegistroAtividadeApi from '../../registrosAtividades/Api';
+import {
+  renderIconeGrupoMuscular,
+  renderIconeTipoExercicio,
+} from '../../utils/iconesUtils';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import { useIsAdmin } from '../../utils/userUtils';
 import * as Api from '../Api';
@@ -41,14 +42,24 @@ const ListExercicios = () => {
   const [filteredExercicios, setFilteredExercicios] = useState([]);
   const [dadosRegistrosAtividades, setDadosRegistrosAtividades] = useState({});
   const [loading, setLoading] = useState(false);
-  const [chipsLoading, setChipsLoading] = useState(false);
 
   const navigation = useNavigation();
   const isAdmin = useIsAdmin();
+  const { user } = useContext(AuthContext);
+  const isSexoFeminino = user?.sexo === 'FEMININO';
+
+  const renderChipIcon = (chip) => {
+    const color =
+      chipSelecionado.id === chip.id ? colors.textLight : colors.secondary;
+    if (chip.tipo === 'grupo')
+      return renderIconeGrupoMuscular(chip.label, isSexoFeminino, 18, color);
+    if (chip.tipo === 'tipo')
+      return renderIconeTipoExercicio(chip.value, isSexoFeminino, 18, color);
+    return <MaterialIcons name="apps" size={18} color={color} />;
+  };
 
   const fetchChips = useCallback(async () => {
     try {
-      setChipsLoading(true);
       const { data } = await GrupoMuscularApi.fetchGruposMuscularesSelect();
       const grupoChips = data.map((g) => ({
         id: `grupo_${g.value}`,
@@ -63,8 +74,6 @@ const ListExercicios = () => {
       ]);
     } catch {
       throwToastError('Erro ao carregar filtros.');
-    } finally {
-      setChipsLoading(false);
     }
   }, []);
 
@@ -93,8 +102,13 @@ const ListExercicios = () => {
   useFocusEffect(
     useCallback(() => {
       fetchChips();
+    }, [fetchChips]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
       fetchExercicios();
-    }, [fetchChips, fetchExercicios]),
+    }, [fetchExercicios]),
   );
 
   const handleChipPress = (chip) => {
@@ -194,7 +208,9 @@ const ListExercicios = () => {
   };
 
   const renderExercicioItem = ({ item: exercicio, index }) => (
-    <Animated.View entering={FadeInDown.delay(Math.min(index * 60, 400)).duration(350)}>
+    <Animated.View
+      entering={FadeInDown.delay(Math.min(index * 60, 400)).duration(350)}
+    >
       <SelectableItem
         item={exercicio}
         cancelButtonIndex={getCancelButtonIndex(exercicio)}
@@ -223,47 +239,52 @@ const ListExercicios = () => {
         searchKeys={['nome']}
       />
 
-      {!chipsLoading && (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={style.chipRow}
-          style={ComumStyles.flexShrinkZero}
-        >
-          {chips.map((chip) => (
-            <TouchableOpacity
-              key={chip.id}
-              style={[
-                style.chip,
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={style.chipRow}
+        style={style.chipScroll}
+      >
+        {chips.map((chip) => (
+          <AnimatedPressable
+            key={chip.id}
+            style={[
+              style.chip,
+              chipSelecionado.id === chip.id
+                ? style.chipAtivo
+                : style.chipInativo,
+            ]}
+            onPress={() => handleChipPress(chip)}
+          >
+            {renderChipIcon(chip)}
+            <Text
+              style={
                 chipSelecionado.id === chip.id
-                  ? style.chipAtivo
-                  : style.chipInativo,
-              ]}
-              onPress={() => handleChipPress(chip)}
+                  ? style.chipTextAtivo
+                  : style.chipText
+              }
             >
-              <Text
-                style={
-                  chipSelecionado.id === chip.id
-                    ? style.chipTextAtivo
-                    : style.chipText
-                }
-              >
-                {chip.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
+              {chip.label}
+            </Text>
+          </AnimatedPressable>
+        ))}
+      </ScrollView>
 
       {loading ? (
-        <LoadingIndicator />
+        <View style={[ComumStyles.flexOne, style.loadingContainer]}>
+          <LoadingIndicator />
+        </View>
       ) : (
         <FlatList
+          style={ComumStyles.flexOne}
           data={filteredExercicios}
           keyExtractor={(exercicio) => exercicio.id.toString()}
           renderItem={renderExercicioItem}
           ListEmptyComponent={<EmptyList value="exercício" />}
-          contentContainerStyle={[ComumStyles.listContent, !isAdmin && { paddingBottom: BANNER_HEIGHT }]}
+          contentContainerStyle={[
+            ComumStyles.listContent,
+            !isAdmin && { paddingBottom: BANNER_HEIGHT },
+          ]}
         />
       )}
 

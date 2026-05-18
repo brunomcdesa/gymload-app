@@ -261,7 +261,9 @@ describe('RegistroAtividadesCompleto screen', () => {
     });
     await flushPromises();
 
-    expect(countByTestID(instance, 'pr-card-destaque')).toBeGreaterThanOrEqual(1);
+    expect(countByTestID(instance, 'pr-card-destaque')).toBeGreaterThanOrEqual(
+      1,
+    );
 
     // The PR card should contain a registro-musculacao component
     const prCard = instance.root.findAll(
@@ -304,7 +306,9 @@ describe('RegistroAtividadesCompleto screen', () => {
     });
     await flushPromises();
 
-    expect(countByTestID(instance, 'pr-card-destaque')).toBeGreaterThanOrEqual(1);
+    expect(countByTestID(instance, 'pr-card-destaque')).toBeGreaterThanOrEqual(
+      1,
+    );
 
     const prCard = instance.root.findAll(
       (node) => node.props.testID === 'pr-card-destaque',
@@ -344,7 +348,9 @@ describe('RegistroAtividadesCompleto screen', () => {
     });
     await flushPromises();
 
-    expect(countByTestID(instance, 'pr-card-destaque')).toBeGreaterThanOrEqual(1);
+    expect(countByTestID(instance, 'pr-card-destaque')).toBeGreaterThanOrEqual(
+      1,
+    );
 
     const prCard = instance.root.findAll(
       (node) => node.props.testID === 'pr-card-destaque',
@@ -382,7 +388,9 @@ describe('RegistroAtividadesCompleto screen', () => {
     await flushPromises();
 
     // PR card should be visible before entering selection mode
-    expect(countByTestID(instance, 'pr-card-destaque')).toBeGreaterThanOrEqual(1);
+    expect(countByTestID(instance, 'pr-card-destaque')).toBeGreaterThanOrEqual(
+      1,
+    );
 
     // Enter selection mode by pressing the "Selecionar registros para mover" button
     await ReactTestRenderer.act(async () => {

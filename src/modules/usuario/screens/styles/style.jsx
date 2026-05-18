@@ -29,26 +29,32 @@ export default StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     marginTop: 4,
+    marginBottom: 4,
+  },
+  genderButtonWrapper: {
+    flex: 1,
   },
   genderButton: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#48484A',
+    borderColor: colors.inputBorder,
     borderRadius: 8,
-    paddingVertical: 8,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
   },
   genderButtonSelected: {
-    backgroundColor: '#E53935',
-    borderColor: '#E53935',
+    backgroundColor: colors.secondary,
+    borderColor: colors.secondary,
   },
   genderButtonText: {
-    color: '#B0B0B0',
-    fontWeight: 'bold',
+    color: colors.terciary,
+    fontSize: 14,
+    fontWeight: '600',
   },
   genderButtonTextSelected: {
     color: colors.textLight,
+    fontWeight: '700',
   },
   loginScrollContent: {
     flexGrow: 1,

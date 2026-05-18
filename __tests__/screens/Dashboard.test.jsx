@@ -147,7 +147,9 @@ describe('Dashboard screen', () => {
     await ReactTestRenderer.act(async () => {
       await Promise.resolve();
     });
-    const placeholderTexts = instance.root.findAllByType(require('react-native').Text);
+    const placeholderTexts = instance.root.findAllByType(
+      require('react-native').Text,
+    );
     const placeholder = placeholderTexts.find(
       (t) =>
         typeof t.props.children === 'string' &&
@@ -183,8 +185,12 @@ describe('Dashboard screen', () => {
     await ReactTestRenderer.act(async () => {
       await Promise.resolve();
     });
-    const card1 = instance.root.findAll((n) => n.props.testID === 'recorde-card-1');
-    const card2 = instance.root.findAll((n) => n.props.testID === 'recorde-card-2');
+    const card1 = instance.root.findAll(
+      (n) => n.props.testID === 'recorde-card-1',
+    );
+    const card2 = instance.root.findAll(
+      (n) => n.props.testID === 'recorde-card-2',
+    );
     expect(card1.length).toBeGreaterThan(0);
     expect(card2.length).toBeGreaterThan(0);
   });
@@ -250,7 +256,11 @@ describe('Dashboard screen', () => {
   it('exibe empty state quando API não retorna recordesRecentes', async () => {
     // Simulates old backend response without the new fields
     mockFetchDashboardStats.mockResolvedValue({
-      data: { streak: 3, treinosMes: 10, diasSemana: [false, false, false, false, false, false, false] },
+      data: {
+        streak: 3,
+        treinosMes: 10,
+        diasSemana: [false, false, false, false, false, false, false],
+      },
     });
     let instance;
     await ReactTestRenderer.act(async () => {
@@ -260,7 +270,7 @@ describe('Dashboard screen', () => {
     const placeholder = texts.find(
       (t) =>
         typeof t.props.children === 'string' &&
-        t.props.children.includes('Seus recordes pessoais')
+        t.props.children.includes('Seus recordes pessoais'),
     );
     expect(placeholder).toBeTruthy();
   });

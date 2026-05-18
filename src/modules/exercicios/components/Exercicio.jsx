@@ -1,45 +1,51 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
+import { AuthContext } from '../../../context/AuthProvider';
+import {
+  renderIconeGrupoMuscular,
+  renderIconeTipoExercicio,
+} from '../../utils/iconesUtils';
 import style from '../style/style';
-
-const ICONE_TIPO = {
-  MUSCULACAO: 'fitness-center',
-  CALISTENIA: 'sports-gymnastics',
-  AEROBICO: 'directions-run',
-};
 
 const Exercicio = ({
   exercicioData,
   dadosRegistrosAtividades,
   onViewHistorico,
 }) => {
-  const { nome, grupoMuscular, tipoExercicio, possuiVariacao } = exercicioData;
+  const { nome, grupoMuscularNome, tipoExercicio, possuiVariacao } =
+    exercicioData;
   const { destaque, ultimaCarga, ultimaDistancia } =
     dadosRegistrosAtividades || {};
   const { elementContainer } = ComumStyles;
+  const { user } = useContext(AuthContext);
+  const isSexoFeminino = user?.sexo === 'FEMININO';
 
   const hasRecord = !possuiVariacao && destaque && destaque !== '-';
   const hasDestaque = !possuiVariacao && dadosRegistrosAtividades != null;
   const showDistancia = ultimaDistancia && !ultimaCarga;
-  const iconName = ICONE_TIPO[tipoExercicio] || 'fitness-center';
   const iconBg = hasRecord ? `${colors.secondary}1a` : colors.inputBackground;
-  const iconColor = hasRecord ? colors.secondary : colors.terciary;
+
+  const renderIcone = () => {
+    if (grupoMuscularNome)
+      return renderIconeGrupoMuscular(grupoMuscularNome, isSexoFeminino, 36);
+    return renderIconeTipoExercicio(tipoExercicio, isSexoFeminino, 36);
+  };
 
   return (
     <View style={elementContainer}>
       {/* Header row: icon + name/group + PR badge */}
       <View style={style.cardRow}>
         <View style={[style.iconBox, { backgroundColor: iconBg }]}>
-          <MaterialIcons name={iconName} size={24} color={iconColor} />
+          {renderIcone()}
         </View>
         <View style={style.exercicioInfo}>
           <Text style={style.exercicioNome}>{nome}</Text>
-          {grupoMuscular && (
-            <Text style={style.grupoMuscularText}>{grupoMuscular}</Text>
+          {grupoMuscularNome && (
+            <Text style={style.grupoMuscularText}>{grupoMuscularNome}</Text>
           )}
         </View>
         {hasRecord && (
@@ -74,7 +80,10 @@ const Exercicio = ({
       )}
 
       {/* VER HISTÓRICO button */}
-      <AnimatedPressable style={style.viewHistoryButton} onPress={onViewHistorico}>
+      <AnimatedPressable
+        style={style.viewHistoryButton}
+        onPress={onViewHistorico}
+      >
         <MaterialIcons name="history" size={16} color="#fff" />
         <Text style={style.viewHistoryText}>VER HISTÓRICO</Text>
       </AnimatedPressable>

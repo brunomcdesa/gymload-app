@@ -9,8 +9,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectableImage from '../../../components/Selectable/SelectableImage/SelectableImage';
 import { colors } from '../../../components/Styles/ComumStyles';
