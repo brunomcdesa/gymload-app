@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
-import UsuarioCadastroForm from '../../src/modules/usuario/screens/UsuarioCadastroForm';
+import UsuarioCadastroAdminForm from '../../src/modules/usuario/screens/UsuarioCadastroAdminForm';
 
-const mockCadastrarUsuario = jest.fn().mockResolvedValue({ data: {} });
+const mockCadastrarAdmin = jest.fn().mockResolvedValue({ data: {} });
 jest.mock('../../src/modules/usuario/Api', () => ({
-  cadastrarUsuario: (...args) => mockCadastrarUsuario(...args),
+  cadastrarUsuarioAdmin: (...args) => mockCadastrarAdmin(...args),
 }));
 
 const mockThrowToastError = jest.fn();
@@ -14,20 +14,9 @@ jest.mock('../../src/modules/utils/toastUtils', () => ({
   throwToastSuccess: (...args) => mockThrowToastSuccess(...args),
 }));
 
-jest.mock(
-  '../../src/components/Selectable/SelectableImage/SelectableImage',
-  () => {
-    const { View } = require('react-native');
-    return () => <View testID="selectable-image" />;
-  },
-);
-
-jest.mock('react-native-safe-area-context', () => {
-  const { View } = require('react-native');
-  return {
-    SafeAreaView: ({ children, ...rest }) => <View {...rest}>{children}</View>,
-    useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
-  };
+jest.mock('../../src/components/Header/HeaderTitle', () => {
+  const { Text } = require('react-native');
+  return ({ title }) => <Text testID="header-title">{title}</Text>;
 });
 
 jest.mock('@react-navigation/native', () => ({
@@ -50,9 +39,9 @@ const buildProps = () => ({
   },
 });
 
-describe('UsuarioCadastroForm', () => {
+describe('UsuarioCadastroAdminForm', () => {
   beforeEach(() => {
-    mockCadastrarUsuario.mockClear();
+    mockCadastrarAdmin.mockClear();
     mockThrowToastError.mockClear();
     mockThrowToastSuccess.mockClear();
     mockGoBack.mockClear();
@@ -61,15 +50,28 @@ describe('UsuarioCadastroForm', () => {
 
   it('renderiza sem crash', async () => {
     await ReactTestRenderer.act(async () => {
-      ReactTestRenderer.create(<UsuarioCadastroForm {...buildProps()} />);
+      ReactTestRenderer.create(<UsuarioCadastroAdminForm {...buildProps()} />);
     });
+  });
+
+  it('configura header canônico', async () => {
+    const props = buildProps();
+    await ReactTestRenderer.act(async () => {
+      ReactTestRenderer.create(<UsuarioCadastroAdminForm {...props} />);
+    });
+    const calls = props.navigation.setOptions.mock.calls;
+    const opts = calls.find((c) => c[0].headerTitleAlign === 'center')?.[0];
+    expect(opts).toBeDefined();
+    expect(opts.headerBackVisible).toBe(false);
+    expect(opts.gestureEnabled).toBe(false);
+    expect(opts.headerLeft()).toBeNull();
   });
 
   it('exibe toast de erro ao submeter com campos vazios', async () => {
     let instance;
     await ReactTestRenderer.act(async () => {
       instance = ReactTestRenderer.create(
-        <UsuarioCadastroForm {...buildProps()} />,
+        <UsuarioCadastroAdminForm {...buildProps()} />,
       );
     });
     const btnSalvar = instance.root.findByProps({ testID: 'btn-salvar' });
@@ -77,14 +79,14 @@ describe('UsuarioCadastroForm', () => {
       await btnSalvar.props.onPress();
     });
     expect(mockThrowToastError).toHaveBeenCalled();
-    expect(mockCadastrarUsuario).not.toHaveBeenCalled();
+    expect(mockCadastrarAdmin).not.toHaveBeenCalled();
   });
 
   it('botão Voltar chama goBack', async () => {
     let instance;
     await ReactTestRenderer.act(async () => {
       instance = ReactTestRenderer.create(
-        <UsuarioCadastroForm {...buildProps()} />,
+        <UsuarioCadastroAdminForm {...buildProps()} />,
       );
     });
     const btnVoltar = instance.root.findByProps({ testID: 'btn-voltar' });

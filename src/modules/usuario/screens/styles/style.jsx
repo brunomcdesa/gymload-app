@@ -171,8 +171,10 @@ export default StyleSheet.create({
   },
 
   // ── Cadastro redesign ─────────────────────────────────────────────────────
+  cadastroScrollView: {
+    flex: 1,
+  },
   cadastroScrollContent: {
-    flexGrow: 1,
     padding: 22,
     paddingBottom: 16,
     backgroundColor: colors.background,
@@ -196,14 +198,10 @@ export default StyleSheet.create({
     marginBottom: 22,
   },
   cadastroAvatarWrapper: {
-    width: 108,
-    height: 108,
-    borderRadius: 54,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     overflow: 'hidden',
-    backgroundColor: '#2f2f2f',
-    borderWidth: 2,
-    borderColor: colors.borderSubtle,
-    borderStyle: 'dashed',
   },
   cadastroAvatarEditBadge: {
     position: 'absolute',
@@ -290,53 +288,13 @@ export default StyleSheet.create({
     height: 50,
     marginBottom: 14,
   },
-  cadastroFooter: {
-    flexDirection: 'row',
-    gap: 10,
-    padding: 16,
-    paddingBottom: 24,
-    borderTopWidth: 1,
-    borderTopColor: colors.primary,
-    backgroundColor: colors.background,
+  cadastroTitleWrapper: {
+    paddingHorizontal: 22,
+    paddingTop: 8,
   },
-  cadastroVoltarButton: {
+  backButtonWrapper: {},
+  saveButtonWrapper: {
     flex: 1,
-    height: 48,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    backgroundColor: 'rgba(255,255,255,0.06)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cadastroVoltarButtonText: {
-    color: colors.textLight,
-    fontSize: 15,
-    fontWeight: '700',
-  },
-  cadastroCadastrarButton: {
-    flex: 2,
-    height: 48,
-    borderRadius: 12,
-    backgroundColor: colors.secondary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: colors.secondary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.35,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  cadastroCadastrarButtonText: {
-    color: colors.textLight,
-    fontSize: 15,
-    fontWeight: '700',
-    letterSpacing: 0.5,
-  },
-  cadastroCadastrarDisabled: {
-    backgroundColor: colors.disabled,
-    shadowOpacity: 0,
-    elevation: 0,
   },
   cadastroJaTemConta: {
     textAlign: 'center',
@@ -558,6 +516,9 @@ export default StyleSheet.create({
   positionRelative: {
     position: 'relative',
   },
+  flexOne: {
+    flex: 1,
+  },
   flexOneRadius: {
     flex: 1,
     borderRadius: 14,
@@ -607,54 +568,6 @@ export default StyleSheet.create({
     marginBottom: 22,
     lineHeight: 18,
   },
-  esqueciFooter: {
-    flexDirection: 'row',
-    gap: 10,
-    marginTop: 22,
-    paddingTop: 18,
-    borderTopWidth: 1,
-    borderTopColor: colors.primary,
-  },
-  esqueciVoltarButton: {
-    flex: 1,
-    height: 48,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    backgroundColor: 'rgba(255,255,255,0.06)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  esqueciVoltarButtonText: {
-    color: colors.textLight,
-    fontSize: 15,
-    fontWeight: '700',
-  },
-  esqueciAltButton: {
-    flex: 2,
-    height: 48,
-    borderRadius: 12,
-    backgroundColor: colors.secondary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: colors.secondary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.35,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  esqueciAltButtonDisabled: {
-    backgroundColor: colors.disabled,
-    shadowOpacity: 0,
-    elevation: 0,
-  },
-  esqueciAltButtonText: {
-    color: colors.textLight,
-    fontSize: 15,
-    fontWeight: '700',
-    letterSpacing: 0.5,
-  },
-
   // ── Placeholder card ──────────────────────────────────────────────────────
   placeholderContent: {
     flex: 1,

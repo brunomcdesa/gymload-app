@@ -1,16 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  SafeAreaView,
   ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AnimatedPressable from '../../../components/Button/AnimatedPressable';
+import FormFooter from '../../../components/Button/FormFooter';
 
 import { colors } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
@@ -69,7 +68,7 @@ const EsqueciMinhaSenhaForm = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={style.safeAreaBackground}>
+    <SafeAreaView style={style.safeAreaBackground} edges={['top', 'bottom']}>
       <ScrollView
         contentContainerStyle={style.esqueciScrollContent}
         keyboardShouldPersistTaps="handled"
@@ -175,31 +174,14 @@ const EsqueciMinhaSenhaForm = ({ navigation }) => {
           </View>
         )}
 
-        {/* Footer */}
-        <View style={style.esqueciFooter}>
-          <AnimatedPressable
-            style={style.esqueciVoltarButton}
-            onPress={() => navigation.goBack()}
-            disabled={loading}
-          >
-            <Text style={style.esqueciVoltarButtonText}>Voltar</Text>
-          </AnimatedPressable>
-          <AnimatedPressable
-            style={[
-              style.esqueciAltButton,
-              loading && style.esqueciAltButtonDisabled,
-            ]}
-            onPress={!loading ? handleSubmit : null}
-            disabled={loading}
-          >
-            {loading ? (
-              <ActivityIndicator color="#fff" size="small" />
-            ) : (
-              <Text style={style.esqueciAltButtonText}>ALTERAR SENHA</Text>
-            )}
-          </AnimatedPressable>
-        </View>
       </ScrollView>
+      <FormFooter
+        onBack={() => navigation.goBack()}
+        onSave={handleSubmit}
+        loading={loading}
+        saveLabel="ALTERAR SENHA"
+        saveIcon={null}
+      />
     </SafeAreaView>
   );
 };

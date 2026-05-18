@@ -10,7 +10,7 @@ import AlterarSenhaForm from '../screens/AlterarSenhaForm';
 import EditarPerfilForm from '../screens/EditarPerfilForm';
 import Notificacoes from '../screens/Notificacoes';
 import Perfil from '../screens/Perfil';
-import UsuarioCadastroForm from '../screens/UsuarioCadastroForm';
+import UsuarioCadastroAdminForm from '../screens/UsuarioCadastroAdminForm';
 import UsuarioStackNavigator from './UsuarioStackNavigator';
 
 const Stack = createStackNavigator();
@@ -76,8 +76,8 @@ const PerfilStackNavigator = () => (
     />
     <Stack.Screen
       options={{ headerTitle: '' }}
-      name="UsuarioCadastroForm"
-      component={UsuarioCadastroForm}
+      name="CadastroAdmin"
+      component={UsuarioCadastroAdminForm}
     />
   </Stack.Navigator>
 );

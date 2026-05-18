@@ -65,15 +65,15 @@ AuthProvider          ← JWT token + user state (SecureStore)
 ```
 
 - **AuthStack** (unauthenticated): Login → CadastroUsuario → EsqueciMinhaSenha  
-- **AppStack** → **DrawerNavigator** → **TabNavigator** (Dashboard / Exercícios / Treinos / Grupos Musculares)  
-- Admin-only screens are gated with `useIsAdmin` hook.
+- **AppStack** → **TabNavigator** (Dashboard / Exercícios / Treinos / Perfil)  
+- Admin-only screens (GruposMusculares, TiposVariacoes, GerenciarUsuarios) are nested inside **PerfilStack**, not top-level tabs. Gated with `useIsAdmin` hook.
 
 ### State management
 
 Context API only — no Redux/Zustand.
 
-- `AuthContext` (`src/context/AuthProvider.js`) — token, user (`nome`, `roles`, `uuid`, `username`, `imagemPerfilUrl`), `login`, `logout`, `isValidToken`.
-- `HeaderContext` (`src/components/Header/HeaderProvider.jsx`) — header title/subtitle updated on tab focus.
+- `AuthContext` (`src/context/AuthProvider.js`) — token, user (`nome`, `roles`, `uuid`, `username`, `imagemPerfilUrl`, `sexo`), `login`, `logout`, `isValidToken`.
+- `HeaderContext` (`src/context/HeaderProvider.js`) — header title/subtitle updated on tab focus.
 
 ### API layer
 
@@ -81,7 +81,7 @@ Two Axios instances in `src/config/axios.js`:
 - `axiosPublic` — no auth (login, password reset).
 - `axiosPrivate` — auto-injects `Authorization: Bearer <token>` from SecureStore.
 
-Base URL: `https://gymload-api.onrender.com`
+Base URL: defined in `src/comum/constants.js` via `__DEV__` — DEV: `https://gymload-api-dev.onrender.com`, PROD: `https://gymload-api.onrender.com`.
 
 Each feature module owns its own `Api.js` (e.g. `src/modules/treinos/Api.js`). All API calls are wrapped with `pMinDelay` from `src/modules/utils/promisse.js` to enforce a minimum loading time.
 
@@ -94,10 +94,11 @@ src/modules/treinos/
 ├── Api.js            # All axios calls for this feature
 ├── screens/          # Screen components (List, Form, Detail)
 ├── components/       # Feature-specific components
+├── stack/            # Stack navigator for this feature
 └── style/            # Feature-specific StyleSheets
 ```
 
-Modules: `dashboard`, `exercicios`, `gruposMusculares`, `treinos`, `usuario`, `utils`.
+Modules: `dashboard`, `exercicios`, `gruposMusculares`, `tipovariacao`, `treinos`, `registrosAtividades`, `usuario`, `utils`.
 
 ### Common patterns
 
@@ -124,7 +125,9 @@ throwToastSuccess('Salvo com sucesso!');
 throwToastError('Erro ao salvar.');
 ```
 
-**Form state** — `handleChangeState` utility updates a single field in a state object.
+**Form state** — `handleChangeState` utility from `src/modules/utils/stateUtils.js` updates a single field in a state object.
+
+**Header title** — `useScreenTitle(title, subtitle)` from `src/hooks/useScreenTitle.js` sets the tab header on focus via `useFocusEffect`.
 
 ### Styling
 

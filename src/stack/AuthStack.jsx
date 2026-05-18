@@ -24,7 +24,11 @@ const AuthStack = () => (
       name="Login"
       component={Login}
     />
-    <Stack.Screen name="CadastroUsuario" component={UsuarioCadastroForm} />
+    <Stack.Screen
+      options={{ headerShown: false }}
+      name="CadastroUsuario"
+      component={UsuarioCadastroForm}
+    />
     <Stack.Screen
       options={{ headerTitle: '' }}
       name="EsqueciMinhaSenha"

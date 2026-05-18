@@ -1,22 +1,21 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Platform, StatusBar, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import style from './style/appHeaderStyle';
 
 const AppHeader = (props) => {
   const { title, subtitle } = props;
   const { container, titleStyle, subtitleStyle } = style;
+  const { top } = useSafeAreaInsets();
 
   return (
-    <View style={container}>
+    <View style={[container, { paddingTop: top + 14 }]}>
       <Text style={titleStyle}>{title || 'APP'}</Text>
       {subtitle ? <Text style={subtitleStyle}>{subtitle}</Text> : null}
     </View>
   );
 };
-
-AppHeader.statusBarHeight =
-  Platform.OS === 'android' ? StatusBar.currentHeight || 24 : 0;
 
 AppHeader.propTypes = {
   title: PropTypes.string,

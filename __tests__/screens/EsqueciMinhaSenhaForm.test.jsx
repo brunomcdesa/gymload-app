@@ -94,17 +94,11 @@ describe('EsqueciMinhaSenhaForm screen', () => {
       );
     });
 
-    const touchables = instance.root.findAllByType('TouchableOpacity');
-    const voltarBtn = touchables.find((t) =>
-      JSON.stringify(t.toJSON()).includes('Voltar'),
-    );
-
-    if (voltarBtn) {
-      await ReactTestRenderer.act(() => {
-        voltarBtn.props.onPress();
-      });
-      expect(mockNavigation.goBack).toHaveBeenCalled();
-    }
+    const voltarBtn = instance.root.findByProps({ testID: 'btn-voltar' });
+    await ReactTestRenderer.act(() => {
+      voltarBtn.props.onPress();
+    });
+    expect(mockNavigation.goBack).toHaveBeenCalled();
   });
 
   it('shows error toast when identifier is empty', async () => {
@@ -115,20 +109,14 @@ describe('EsqueciMinhaSenhaForm screen', () => {
       );
     });
 
-    const touchables = instance.root.findAllByType('TouchableOpacity');
-    const alterarBtn = touchables.find((t) =>
-      JSON.stringify(t.toJSON()).includes('ALTERAR SENHA'),
+    const alterarBtn = instance.root.findByProps({ testID: 'btn-salvar' });
+    await ReactTestRenderer.act(async () => {
+      await alterarBtn.props.onPress();
+    });
+    expect(throwToastError).toHaveBeenCalledWith(
+      'Todos os campos são obrigatórios!',
     );
-
-    if (alterarBtn) {
-      await ReactTestRenderer.act(async () => {
-        await alterarBtn.props.onPress();
-      });
-      expect(throwToastError).toHaveBeenCalledWith(
-        'Todos os campos são obrigatórios!',
-      );
-      expect(Api.alterarSenha).not.toHaveBeenCalled();
-    }
+    expect(Api.alterarSenha).not.toHaveBeenCalled();
   });
 
   it('calls alterarSenha API when form is valid', async () => {
@@ -145,19 +133,13 @@ describe('EsqueciMinhaSenhaForm screen', () => {
       inputs[1].props.onChangeText('novasenha123');
     });
 
-    const touchables = instance.root.findAllByType('TouchableOpacity');
-    const alterarBtn = touchables.find((t) =>
-      JSON.stringify(t.toJSON()).includes('ALTERAR SENHA'),
-    );
-
-    if (alterarBtn) {
-      await ReactTestRenderer.act(async () => {
-        await alterarBtn.props.onPress();
-      });
-      expect(Api.alterarSenha).toHaveBeenCalledWith({
-        identifier: 'meuusername',
-        password: 'novasenha123',
-      });
-    }
+    const alterarBtn = instance.root.findByProps({ testID: 'btn-salvar' });
+    await ReactTestRenderer.act(async () => {
+      await alterarBtn.props.onPress();
+    });
+    expect(Api.alterarSenha).toHaveBeenCalledWith({
+      identifier: 'meuusername',
+      password: 'novasenha123',
+    });
   });
 });

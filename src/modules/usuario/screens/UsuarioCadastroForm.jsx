@@ -1,27 +1,25 @@
 import PropTypes from 'prop-types';
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  ActivityIndicator,
-  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
-import HeaderTitle from '../../../components/Header/HeaderTitle';
+import FormFooter from '../../../components/Button/FormFooter';
 import SelectableImage from '../../../components/Selectable/SelectableImage/SelectableImage';
 import { colors } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from './styles/style';
 
-const UsuarioCadastroForm = (props) => {
-  const { navigation, route } = props;
-  const { isCadastroAdmin } = route.params;
-
+const UsuarioCadastroForm = ({ navigation }) => {
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -36,30 +34,6 @@ const UsuarioCadastroForm = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [uriImagemUsuario, setUriImagemUsuario] = useState(null);
   const [focusedField, setFocusedField] = useState(null);
-
-  const renderHeaderTitle = useCallback(
-    () => (
-      <HeaderTitle
-        title="Cadastrar Admin"
-        subtitle="Preencha os dados do novo admin."
-      />
-    ),
-    [],
-  );
-
-  useLayoutEffect(() => {
-    if (isCadastroAdmin) {
-      navigation.setOptions({
-        headerTitle: renderHeaderTitle,
-        headerTitleAlign: 'center',
-        headerLeft: () => null,
-        headerBackVisible: false,
-        gestureEnabled: false,
-      });
-    } else {
-      navigation.setOptions({ headerShown: false });
-    }
-  }, [navigation, isCadastroAdmin, renderHeaderTitle]);
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -95,11 +69,7 @@ const UsuarioCadastroForm = (props) => {
 
     try {
       setLoading(true);
-      if (isCadastroAdmin) {
-        await Api.cadastrarUsuarioAdmin(formData);
-      } else {
-        await Api.cadastrarUsuario(formData, uriImagemUsuario);
-      }
+      await Api.cadastrarUsuario(formData, uriImagemUsuario);
       throwToastSuccess('Usuário cadastrado com sucesso!');
       navigation.goBack();
     } catch (error) {
@@ -111,23 +81,24 @@ const UsuarioCadastroForm = (props) => {
   };
 
   return (
-    <SafeAreaView style={style.safeAreaBackground}>
-      <ScrollView
-        contentContainerStyle={style.cadastroScrollContent}
-        keyboardShouldPersistTaps="handled"
-      >
-        {/* Título e subtítulo só no fluxo público; admin usa header de navegação */}
-        {!isCadastroAdmin && (
-          <>
-            <Text style={style.cadastroTitle}>Cadastrar-se</Text>
-            <Text style={style.cadastroSubtitle}>
-              Crie sua conta para começar a registrar seus treinos.
-            </Text>
-          </>
-        )}
+    <SafeAreaView style={style.safeAreaBackground} edges={['top', 'bottom']}>
+      <View style={style.cadastroTitleWrapper}>
+        <Text style={style.cadastroTitle}>Cadastrar-se</Text>
+        <Text style={style.cadastroSubtitle}>
+          Crie sua conta para começar a registrar seus treinos.
+        </Text>
+      </View>
 
-        {/* Avatar picker */}
-        {!isCadastroAdmin && (
+      <KeyboardAvoidingView
+        style={style.flexOne}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <ScrollView
+          style={style.cadastroScrollView}
+          contentContainerStyle={style.cadastroScrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Avatar picker */}
           <View style={style.cadastroAvatarSection}>
             <View style={style.positionRelative}>
               <View style={style.cadastroAvatarWrapper}>
@@ -144,250 +115,250 @@ const UsuarioCadastroForm = (props) => {
               Toque para adicionar foto
             </Text>
           </View>
-        )}
 
-        {/* Nome */}
-        <Text style={style.cadastroFieldLabel}>
-          {'Nome '}
-          <Text style={style.cadastroRequired}>*</Text>
-        </Text>
-        <View style={inputRow('nome')}>
-          <MaterialIcons
-            name="person"
-            size={20}
-            color={iconColor('nome')}
-            style={style.loginInputIcon}
-          />
-          <TextInput
-            style={style.loginInputText}
-            placeholder="Digite seu nome completo"
-            placeholderTextColor={colors.placeholderText}
-            value={formData.nome}
-            onChangeText={(v) => handleChange('nome', v)}
-            onFocus={focus('nome')}
-            onBlur={blur}
-            autoCapitalize="words"
-          />
-        </View>
-
-        {/* Email */}
-        <Text style={style.cadastroFieldLabel}>
-          {'Email '}
-          <Text style={style.cadastroRequired}>*</Text>
-        </Text>
-        <View style={inputRow('email')}>
-          <MaterialIcons
-            name="email"
-            size={20}
-            color={iconColor('email')}
-            style={style.loginInputIcon}
-          />
-          <TextInput
-            style={style.loginInputText}
-            placeholder="Digite seu email"
-            placeholderTextColor={colors.placeholderText}
-            value={formData.email}
-            onChangeText={(v) => handleChange('email', v)}
-            onFocus={focus('email')}
-            onBlur={blur}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-        </View>
-
-        {/* Username */}
-        <Text style={style.cadastroFieldLabel}>
-          {'Username '}
-          <Text style={style.cadastroRequired}>*</Text>
-        </Text>
-        <View style={inputRow('username')}>
-          <MaterialIcons
-            name="alternate-email"
-            size={20}
-            color={iconColor('username')}
-            style={style.loginInputIcon}
-          />
-          <TextInput
-            style={style.loginInputText}
-            placeholder="Digite seu username"
-            placeholderTextColor={colors.placeholderText}
-            value={formData.username}
-            onChangeText={(v) => handleChange('username', v)}
-            onFocus={focus('username')}
-            onBlur={blur}
-            autoCapitalize="none"
-          />
-        </View>
-        <Text style={style.cadastroHint}>
-          Será utilizado para realizar o login.
-        </Text>
-
-        {/* Senha */}
-        <Text style={style.cadastroFieldLabel}>
-          {'Senha '}
-          <Text style={style.cadastroRequired}>*</Text>
-        </Text>
-        <View style={inputRow('password')}>
-          <MaterialIcons
-            name="lock"
-            size={20}
-            color={iconColor('password')}
-            style={style.loginInputIcon}
-          />
-          <TextInput
-            style={style.loginInputText}
-            placeholder="Digite sua senha"
-            placeholderTextColor={colors.placeholderText}
-            value={formData.password}
-            onChangeText={(v) => handleChange('password', v)}
-            onFocus={focus('password')}
-            onBlur={blur}
-            secureTextEntry={!showPassword}
-          />
-          <TouchableOpacity
-            onPress={() => setShowPassword((s) => !s)}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
+          {/* Nome */}
+          <Text style={style.cadastroFieldLabel}>
+            {'Nome '}
+            <Text style={style.cadastroRequired}>*</Text>
+          </Text>
+          <View style={inputRow('nome')}>
             <MaterialIcons
-              name={showPassword ? 'visibility-off' : 'visibility'}
+              name="person"
               size={20}
-              color="#aaa"
+              color={iconColor('nome')}
+              style={style.loginInputIcon}
             />
-          </TouchableOpacity>
-        </View>
+            <TextInput
+              style={style.loginInputText}
+              placeholder="Digite seu nome completo"
+              placeholderTextColor={colors.placeholderText}
+              value={formData.nome}
+              onChangeText={(v) => handleChange('nome', v)}
+              onFocus={focus('nome')}
+              onBlur={blur}
+              autoCapitalize="words"
+            />
+          </View>
 
-        {/* Password strength bar */}
-        {!!pw && (
-          <View style={style.cadastroStrengthContainer}>
-            <View style={style.cadastroStrengthRow}>
-              {[1, 2, 3].map((n) => (
-                <View
-                  key={n}
-                  style={[
-                    style.cadastroStrengthSegment,
-                    n <= strength
-                      ? { backgroundColor: strengthColors[strength] }
-                      : style.strengthSegmentEmpty,
-                  ]}
-                />
-              ))}
-            </View>
-            <Text
-              style={[
-                style.cadastroStrengthLabel,
-                { color: strengthColors[strength] },
-              ]}
+          {/* Email */}
+          <Text style={style.cadastroFieldLabel}>
+            {'Email '}
+            <Text style={style.cadastroRequired}>*</Text>
+          </Text>
+          <View style={inputRow('email')}>
+            <MaterialIcons
+              name="email"
+              size={20}
+              color={iconColor('email')}
+              style={style.loginInputIcon}
+            />
+            <TextInput
+              style={style.loginInputText}
+              placeholder="Digite seu email"
+              placeholderTextColor={colors.placeholderText}
+              value={formData.email}
+              onChangeText={(v) => handleChange('email', v)}
+              onFocus={focus('email')}
+              onBlur={blur}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          </View>
+
+          {/* Username */}
+          <Text style={style.cadastroFieldLabel}>
+            {'Username '}
+            <Text style={style.cadastroRequired}>*</Text>
+          </Text>
+          <View style={inputRow('username')}>
+            <MaterialIcons
+              name="alternate-email"
+              size={20}
+              color={iconColor('username')}
+              style={style.loginInputIcon}
+            />
+            <TextInput
+              style={style.loginInputText}
+              placeholder="Digite seu username"
+              placeholderTextColor={colors.placeholderText}
+              value={formData.username}
+              onChangeText={(v) => handleChange('username', v)}
+              onFocus={focus('username')}
+              onBlur={blur}
+              autoCapitalize="none"
+            />
+          </View>
+          <Text style={style.cadastroHint}>
+            Será utilizado para realizar o login.
+          </Text>
+
+          {/* Senha */}
+          <Text style={style.cadastroFieldLabel}>
+            {'Senha '}
+            <Text style={style.cadastroRequired}>*</Text>
+          </Text>
+          <View style={inputRow('password')}>
+            <MaterialIcons
+              name="lock"
+              size={20}
+              color={iconColor('password')}
+              style={style.loginInputIcon}
+            />
+            <TextInput
+              style={style.loginInputText}
+              placeholder="Digite sua senha"
+              placeholderTextColor={colors.placeholderText}
+              value={formData.password}
+              onChangeText={(v) => handleChange('password', v)}
+              onFocus={focus('password')}
+              onBlur={blur}
+              secureTextEntry={!showPassword}
+            />
+            <TouchableOpacity
+              onPress={() => setShowPassword((s) => !s)}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
-              FORÇA: {strengthLabels[strength]}
-            </Text>
+              <MaterialIcons
+                name={showPassword ? 'visibility-off' : 'visibility'}
+                size={20}
+                color="#aaa"
+              />
+            </TouchableOpacity>
           </View>
-        )}
 
-        {/* Optional: Idade + Peso */}
-        <View style={style.cadastroOptionalRow}>
-          <View style={style.cadastroOptionalField}>
-            <Text style={style.cadastroFieldLabel}>Idade</Text>
-            <View style={compactRow('idade')}>
-              <TextInput
-                style={style.cadastroCompactInputText}
-                placeholder="Ex: 25"
-                placeholderTextColor={colors.placeholderText}
-                value={formData.idade?.toString() || ''}
-                onChangeText={(v) => handleChange('idade', v)}
-                onFocus={focus('idade')}
-                onBlur={blur}
-                keyboardType="numeric"
-              />
-            </View>
-          </View>
-          <View style={style.cadastroOptionalField}>
-            <Text style={style.cadastroFieldLabel}>Peso (kg)</Text>
-            <View style={compactRow('pesoCorporal')}>
-              <TextInput
-                style={style.cadastroCompactInputText}
-                placeholder="Ex: 75.5"
-                placeholderTextColor={colors.placeholderText}
-                value={formData.pesoCorporal?.toString() || ''}
-                onChangeText={(v) => handleChange('pesoCorporal', v)}
-                onFocus={focus('pesoCorporal')}
-                onBlur={blur}
-                keyboardType="decimal-pad"
-              />
-            </View>
-          </View>
-        </View>
-
-        {/* Optional: Altura + Sexo */}
-        <View style={style.cadastroOptionalRow}>
-          <View style={style.cadastroOptionalField}>
-            <Text style={style.cadastroFieldLabel}>Altura (m)</Text>
-            <View style={compactRow('altura')}>
-              <TextInput
-                style={style.cadastroCompactInputText}
-                placeholder="Ex: 1.75"
-                placeholderTextColor={colors.placeholderText}
-                value={formData.altura?.toString() || ''}
-                onChangeText={(v) => handleChange('altura', v)}
-                onFocus={focus('altura')}
-                onBlur={blur}
-                keyboardType="decimal-pad"
-              />
-            </View>
-          </View>
-          <View style={style.cadastroOptionalField}>
-            <Text style={style.cadastroFieldLabel}>Sexo</Text>
-            <View style={style.cadastroGenderSelector}>
-              <AnimatedPressable
+          {/* Password strength bar */}
+          {!!pw && (
+            <View style={style.cadastroStrengthContainer}>
+              <View style={style.cadastroStrengthRow}>
+                {[1, 2, 3].map((n) => (
+                  <View
+                    key={n}
+                    style={[
+                      style.cadastroStrengthSegment,
+                      n <= strength
+                        ? { backgroundColor: strengthColors[strength] }
+                        : style.strengthSegmentEmpty,
+                    ]}
+                  />
+                ))}
+              </View>
+              <Text
                 style={[
-                  style.genderButton,
-                  style.flexOneRadius,
-                  formData.sexo === 'MASCULINO' && style.genderButtonSelected,
+                  style.cadastroStrengthLabel,
+                  { color: strengthColors[strength] },
                 ]}
-                onPress={() =>
-                  handleChange(
-                    'sexo',
-                    formData.sexo === 'MASCULINO' ? null : 'MASCULINO',
-                  )
-                }
               >
-                <Text
-                  style={[
-                    style.genderButtonText,
-                    formData.sexo === 'MASCULINO' &&
-                      style.genderButtonTextSelected,
-                  ]}
-                >
-                  M
-                </Text>
-              </AnimatedPressable>
-              <AnimatedPressable
-                style={[
-                  style.genderButton,
-                  style.flexOneRadius,
-                  formData.sexo === 'FEMININO' && style.genderButtonSelected,
-                ]}
-                onPress={() =>
-                  handleChange(
-                    'sexo',
-                    formData.sexo === 'FEMININO' ? null : 'FEMININO',
-                  )
-                }
-              >
-                <Text
-                  style={[
-                    style.genderButtonText,
-                    formData.sexo === 'FEMININO' &&
-                      style.genderButtonTextSelected,
-                  ]}
-                >
-                  F
-                </Text>
-              </AnimatedPressable>
+                FORÇA: {strengthLabels[strength]}
+              </Text>
+            </View>
+          )}
+
+          {/* Optional: Idade + Peso */}
+          <View style={style.cadastroOptionalRow}>
+            <View style={style.cadastroOptionalField}>
+              <Text style={style.cadastroFieldLabel}>Idade</Text>
+              <View style={compactRow('idade')}>
+                <TextInput
+                  style={style.cadastroCompactInputText}
+                  placeholder="Ex: 25"
+                  placeholderTextColor={colors.placeholderText}
+                  value={formData.idade?.toString() || ''}
+                  onChangeText={(v) => handleChange('idade', v)}
+                  onFocus={focus('idade')}
+                  onBlur={blur}
+                  keyboardType="numeric"
+                />
+              </View>
+            </View>
+            <View style={style.cadastroOptionalField}>
+              <Text style={style.cadastroFieldLabel}>Peso (kg)</Text>
+              <View style={compactRow('pesoCorporal')}>
+                <TextInput
+                  style={style.cadastroCompactInputText}
+                  placeholder="Ex: 75.5"
+                  placeholderTextColor={colors.placeholderText}
+                  value={formData.pesoCorporal?.toString() || ''}
+                  onChangeText={(v) => handleChange('pesoCorporal', v)}
+                  onFocus={focus('pesoCorporal')}
+                  onBlur={blur}
+                  keyboardType="decimal-pad"
+                />
+              </View>
             </View>
           </View>
-        </View>
 
-        {!isCadastroAdmin && (
+          {/* Optional: Altura + Sexo */}
+          <View style={style.cadastroOptionalRow}>
+            <View style={style.cadastroOptionalField}>
+              <Text style={style.cadastroFieldLabel}>Altura (m)</Text>
+              <View style={compactRow('altura')}>
+                <TextInput
+                  style={style.cadastroCompactInputText}
+                  placeholder="Ex: 1.75"
+                  placeholderTextColor={colors.placeholderText}
+                  value={formData.altura?.toString() || ''}
+                  onChangeText={(v) => handleChange('altura', v)}
+                  onFocus={focus('altura')}
+                  onBlur={blur}
+                  keyboardType="decimal-pad"
+                />
+              </View>
+            </View>
+            <View style={style.cadastroOptionalField}>
+              <Text style={style.cadastroFieldLabel}>Sexo</Text>
+              <View style={style.cadastroGenderSelector}>
+                <AnimatedPressable
+                  wrapperStyle={style.genderButtonWrapper}
+                  style={[
+                    style.genderButton,
+                    style.flexOneRadius,
+                    formData.sexo === 'MASCULINO' && style.genderButtonSelected,
+                  ]}
+                  onPress={() =>
+                    handleChange(
+                      'sexo',
+                      formData.sexo === 'MASCULINO' ? null : 'MASCULINO',
+                    )
+                  }
+                >
+                  <Text
+                    style={[
+                      style.genderButtonText,
+                      formData.sexo === 'MASCULINO' &&
+                        style.genderButtonTextSelected,
+                    ]}
+                  >
+                    M
+                  </Text>
+                </AnimatedPressable>
+                <AnimatedPressable
+                  wrapperStyle={style.genderButtonWrapper}
+                  style={[
+                    style.genderButton,
+                    style.flexOneRadius,
+                    formData.sexo === 'FEMININO' && style.genderButtonSelected,
+                  ]}
+                  onPress={() =>
+                    handleChange(
+                      'sexo',
+                      formData.sexo === 'FEMININO' ? null : 'FEMININO',
+                    )
+                  }
+                >
+                  <Text
+                    style={[
+                      style.genderButtonText,
+                      formData.sexo === 'FEMININO' &&
+                        style.genderButtonTextSelected,
+                    ]}
+                  >
+                    F
+                  </Text>
+                </AnimatedPressable>
+              </View>
+            </View>
+          </View>
+
           <Text style={style.cadastroJaTemConta}>
             Já tem uma conta?{' '}
             <Text
@@ -397,35 +368,16 @@ const UsuarioCadastroForm = (props) => {
               Entrar
             </Text>
           </Text>
-        )}
-      </ScrollView>
+        </ScrollView>
 
-      {/* Footer fixo — fora do ScrollView */}
-      <View style={style.cadastroFooter}>
-        <AnimatedPressable
-          testID="btn-voltar"
-          style={style.cadastroVoltarButton}
-          onPress={() => navigation.goBack()}
-          disabled={loading}
-        >
-          <Text style={style.cadastroVoltarButtonText}>Voltar</Text>
-        </AnimatedPressable>
-        <AnimatedPressable
-          testID="btn-cadastrar"
-          style={[
-            style.cadastroCadastrarButton,
-            (!isFormValid || loading) && style.cadastroCadastrarDisabled,
-          ]}
-          onPress={handleSubmit}
-          disabled={!isFormValid || loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" size="small" />
-          ) : (
-            <Text style={style.cadastroCadastrarButtonText}>CADASTRAR</Text>
-          )}
-        </AnimatedPressable>
-      </View>
+        <FormFooter
+          onBack={() => navigation.goBack()}
+          onSave={handleSubmit}
+          loading={loading}
+          saveLabel="CADASTRAR"
+          saveIcon="person-add"
+        />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -434,11 +386,6 @@ UsuarioCadastroForm.propTypes = {
   navigation: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
     setOptions: PropTypes.func.isRequired,
-  }).isRequired,
-  route: PropTypes.shape({
-    params: PropTypes.shape({
-      isCadastroAdmin: PropTypes.bool.isRequired,
-    }).isRequired,
   }).isRequired,
 };
 

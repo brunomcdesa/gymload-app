@@ -51,7 +51,7 @@ src/modules/<feature>/
 └── utils/            # Helpers específicos (quando necessário)
 ```
 
-Módulos existentes: `dashboard`, `exercicios`, `gruposMusculares`, `treinos`, `registrosAtividades`, `usuario`, `utils`.
+Módulos existentes: `dashboard`, `exercicios`, `gruposMusculares`, `tipovariacao`, `treinos`, `registrosAtividades`, `usuario`, `utils`.
 
 Componentes reutilizáveis globais ficam em `src/components/<NomeComponente>/`.
 
@@ -114,6 +114,10 @@ const { nomeDoEstilo } = style;
 ### Dois clientes Axios (`src/config/axios.js`)
 - `axiosPublic` — sem auth (login, cadastro, reset de senha)
 - `axiosPrivate` — injeta `Authorization: Bearer <token>` automaticamente
+
+Base URL vem de `src/comum/constants.js` com condicional `__DEV__`:
+- DEV: `https://gymload-api-dev.onrender.com`
+- PROD: `https://gymload-api.onrender.com`
 
 ### Padrão de `Api.js`
 
@@ -250,6 +254,7 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
@@ -319,18 +324,21 @@ const RecursoForm = ({ navigation, route }) => {
 
       {/* Footer fixo — fora do ScrollView */}
       <View style={style.formFooter}>
-        <TouchableOpacity
+        <AnimatedPressable
+          testID="btn-voltar"
+          wrapperStyle={style.backButtonWrapper}
           style={style.backButton}
           onPress={() => navigation.goBack()}
           disabled={loading}
         >
           <Text style={style.backButtonText}>Voltar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </AnimatedPressable>
+        <AnimatedPressable
+          testID="btn-salvar"
+          wrapperStyle={style.saveButtonWrapper}
           style={[style.saveButton, loading && style.saveButtonDisabled]}
           onPress={!loading ? handleSave : null}
           disabled={loading}
-          activeOpacity={0.7}
         >
           {loading ? (
             <ActivityIndicator color="#fff" size="small" />
@@ -340,7 +348,7 @@ const RecursoForm = ({ navigation, route }) => {
               <Text style={style.saveButtonText}>SALVAR</Text>
             </>
           )}
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
     </View>
   );
@@ -376,13 +384,15 @@ formFooter: {
   flexDirection: 'row', gap: 10, padding: 16, paddingBottom: 24,
   borderTopWidth: 1, borderTopColor: '#333', backgroundColor: '#222', alignItems: 'center',
 },
+backButtonWrapper: {},
 backButton: {
   paddingHorizontal: 18, paddingVertical: 14, borderRadius: 12,
   borderWidth: 1, borderColor: '#3a3a3a', justifyContent: 'center', alignItems: 'center',
 },
 backButtonText: { color: '#e8e8e8', fontSize: 15, fontWeight: '600' },
+saveButtonWrapper: { flex: 1 },
 saveButton: {
-  flex: 1, flexDirection: 'row', backgroundColor: '#28a745',
+  flexDirection: 'row', backgroundColor: '#28a745',
   paddingVertical: 14, borderRadius: 12, alignItems: 'center', justifyContent: 'center', gap: 8,
 },
 saveButtonDisabled: { backgroundColor: '#555' },
@@ -411,6 +421,7 @@ Sempre verifique se já existe um componente antes de criar um novo:
 | `HeaderTitle` | `components/Header/HeaderTitle` | Título no header da navegação |
 | `InfoBlock` | `components/Infos/InfoBlock` | Bloco de informação |
 | `AnuncioBanner` | `components/Anuncios/AnuncioBanner` | Banner de anúncio AdMob |
+| `FormFooter` | `components/Button/FormFooter` | Rodapé de formulário com Voltar+Salvar |
 
 ### AnimatedPressable — armadilha de layout
 
@@ -460,11 +471,31 @@ const { user, token, login, logout } = useContext(AuthContext);
 // user: { nome, roles, uuid, username, imagemPerfilUrl, sexo }
 ```
 
-Para checar admin: use o hook `useIsAdmin` (já existente no projeto).
+Hooks em `src/modules/utils/userUtils.js`:
+- `useIsAdmin()` — `true` se `user.roles` contém `ROLE_ADMIN`
+- `useUserSexo()` — retorna `user.sexo || 'MASCULINO'`
+
+`HeaderContext` fica em `src/context/HeaderProvider.js` — use `useHeaderContext()` para acessar `setActiveTabOptions`.
 
 ---
 
-## 9. Navegação
+## 9. Hook `useScreenTitle`
+
+Para atualizar título/subtítulo do header ao entrar em uma tela dentro do `TabNavigator`:
+
+```js
+import { useScreenTitle } from '../../../hooks/useScreenTitle';
+
+// Dentro do componente de tela:
+useScreenTitle('Título da Aba', 'Subtítulo opcional');
+// Internamente usa useFocusEffect + setActiveTabOptions
+```
+
+Arquivo: `src/hooks/useScreenTitle.js`. Alternativa manual: chamar `setActiveTabOptions` via `useHeaderContext()` diretamente.
+
+---
+
+## 10. Navegação
 
 - Use `useNavigation()` para navegar dentro de componentes.
 - Screens recebem `navigation` e `route` como props (ver PropTypes no padrão de formulário).
@@ -473,7 +504,7 @@ Para checar admin: use o hook `useIsAdmin` (já existente no projeto).
 
 ---
 
-## 10. Estado de Lista com Filtro Ativo/Inativo
+## 11. Estado de Lista com Filtro Ativo/Inativo
 
 Quando a tela suporta filtro de inativos (padrão usado em Treinos e Exercícios):
 
@@ -486,7 +517,7 @@ Use `Checkbox` do `react-native-paper` com `color={colors.secondary}`.
 
 ---
 
-## 11. Icons
+## 12. Icons
 
 Use `react-native-vector-icons` (MaterialIcons já presente no projeto):
 
@@ -499,7 +530,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 ---
 
-## 12. Testes Unitários
+## 13. Testes Unitários
 
 **Obrigatório:** toda tela criada ou modificada deve ter teste em `__tests__/screens/<NomeTela>.test.jsx`. Componentes globais vão em `__tests__/components/`. Utilitários em `__tests__/utils/`.
 
@@ -628,7 +659,7 @@ describe('MinhaTelaForm screen', () => {
 
 ---
 
-## 13. Checklist antes de finalizar
+## 14. Checklist antes de finalizar
 
 - [ ] Componente importa `colors` e `ComumStyles` de `ComumStyles.jsx` — sem cores hardcoded
 - [ ] `StyleSheet.create()` usado — sem objetos inline em JSX

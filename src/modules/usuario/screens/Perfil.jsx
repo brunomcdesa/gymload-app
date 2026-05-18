@@ -254,11 +254,7 @@ const Perfil = (props) => {
         <MenuRow
           icon="person-add"
           label="Cadastrar Usuário Admin"
-          onPress={() =>
-            navigation.navigate('UsuarioCadastroForm', {
-              isCadastroAdmin: true,
-            })
-          }
+          onPress={() => navigation.navigate('CadastroAdmin')}
         />
       )}
       <MenuRow icon="logout" label="Sair" onPress={handleLogout} danger />

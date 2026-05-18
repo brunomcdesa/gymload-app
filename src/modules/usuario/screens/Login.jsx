@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 
@@ -55,6 +56,7 @@ const Login = (props) => {
   };
 
   return (
+    <SafeAreaView style={style.safeAreaBackground} edges={['top', 'bottom']}>
     <ScrollView
       contentContainerStyle={style.loginScrollContent}
       keyboardShouldPersistTaps="handled"
@@ -164,6 +166,7 @@ const Login = (props) => {
         <Text style={style.loginCadastrarButtonText}>Cadastrar-se</Text>
       </AnimatedPressable>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 
