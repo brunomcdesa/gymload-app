@@ -15,34 +15,70 @@ export default StyleSheet.create({
     paddingBottom: 60,
   },
 
-  // Greeting card
+  // Greeting card (welcome + iniciar treino)
   greetingCard: {
-    backgroundColor: '#2a1a1a',
-    borderRadius: 16,
+    borderRadius: 18,
     padding: 20,
     marginBottom: 14,
     borderWidth: 1,
     borderColor: colors.inputBorder,
-    borderLeftWidth: 4,
-    borderLeftColor: colors.secondary,
+    overflow: 'hidden',
+    shadowColor: colors.secondary,
+    shadowOpacity: 0.22,
+    shadowRadius: 22,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
   },
   greetingDate: {
     fontSize: 12,
     fontWeight: '700',
     color: colors.placeholderText,
-    letterSpacing: 2,
-    marginBottom: 4,
+    letterSpacing: 1.7,
   },
   greetingTitle: {
     fontSize: 22,
     fontWeight: '800',
     color: colors.textLight,
-    marginBottom: 4,
+    letterSpacing: -0.4,
+    marginTop: 4,
   },
   greetingSubtitle: {
     fontSize: 13,
     color: colors.placeholderText,
     lineHeight: 18,
+    marginTop: 4,
+  },
+  greetingSubtitleAccent: {
+    color: colors.secondary,
+    fontWeight: '700',
+  },
+  greetingConcluidoText: {
+    fontWeight: '700',
+    color: colors.success,
+  },
+
+  // Iniciar treino CTA (inside greeting card)
+  iniciarBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: colors.secondary,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    marginTop: 14,
+    shadowColor: colors.secondary,
+    shadowOpacity: 0.28,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 6,
+  },
+  iniciarBtnText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.textLight,
+    letterSpacing: 0.2,
   },
 
   // Stats row

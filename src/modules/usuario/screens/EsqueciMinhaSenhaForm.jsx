@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 
 import { colors } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
@@ -175,7 +175,7 @@ const EsqueciMinhaSenhaForm = ({ navigation }) => {
         )}
 
       </ScrollView>
-      <FormFooter
+      <ScreenFooter
         onBack={() => navigation.goBack()}
         onSave={handleSubmit}
         loading={loading}

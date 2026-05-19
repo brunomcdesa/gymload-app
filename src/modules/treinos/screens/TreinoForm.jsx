@@ -10,7 +10,7 @@ import React, {
 import { FlatList, ScrollView, Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import EmptyList from '../../../components/List/EmptyList';
@@ -316,7 +316,7 @@ const TreinoForm = ({ navigation, route }) => {
         </View>
       </ScrollView>
 
-      <FormFooter
+      <ScreenFooter
         onBack={handleGoBack}
         onSave={isEdicao ? handleEditar : handleSave}
         loading={loading}

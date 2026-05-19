@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { Text, View } from 'react-native';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
@@ -161,7 +161,7 @@ const ExercicioVariacaoForm = (props) => {
         {renderExerciciosCalisteniaFields()}
       </View>
 
-      <FormFooter
+      <ScreenFooter
         onBack={() => navigation.goBack()}
         onSave={handleSubmit}
         loading={loading}

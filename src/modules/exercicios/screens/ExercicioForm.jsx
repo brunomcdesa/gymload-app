@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { Text, View } from 'react-native';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 
 import { ComumStyles } from '../../../components/Styles/ComumStyles';
 
@@ -257,7 +257,7 @@ const ExercicioForm = (props) => {
           renderCamposCondicionais()}
       </View>
 
-      <FormFooter
+      <ScreenFooter
         onBack={() => navigation.goBack()}
         onSave={handleSubmit}
         loading={loading}

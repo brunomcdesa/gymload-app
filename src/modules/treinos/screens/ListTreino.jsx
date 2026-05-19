@@ -282,6 +282,13 @@ const ListTreino = () => {
 
       <View style={[fabRow, !isAdmin && { bottom: BANNER_HEIGHT + 14 }]}>
         <AnimatedPressable
+          testID="fab-grade-semanal"
+          style={importarFabButton}
+          onPress={() => navigation.navigate('GradeSemanal')}
+        >
+          <MaterialIcons name="calendar-today" size={22} color="#aaa" />
+        </AnimatedPressable>
+        <AnimatedPressable
           style={importarFabButton}
           onPress={() => navigation.navigate('ImportarTreino')}
         >

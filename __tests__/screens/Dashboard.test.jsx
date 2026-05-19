@@ -2,9 +2,14 @@ import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
 
 const mockFetchDashboardStats = jest.fn();
+const mockFetchTreinoHoje = jest.fn();
 
 jest.mock('../../src/modules/dashboard/Api', () => ({
   fetchDashboardStats: (...args) => mockFetchDashboardStats(...args),
+}));
+
+jest.mock('../../src/modules/gradeSemanal/Api', () => ({
+  fetchTreinoHoje: (...args) => mockFetchTreinoHoje(...args),
 }));
 
 jest.mock('../../src/modules/utils/toastUtils', () => ({
@@ -59,6 +64,7 @@ const statsBase = {
 describe('Dashboard screen', () => {
   beforeEach(() => {
     mockFetchDashboardStats.mockResolvedValue({ data: statsBase });
+    mockFetchTreinoHoje.mockResolvedValue({ status: 204, data: null });
     mockNavigate.mockClear();
   });
 
@@ -224,8 +230,9 @@ describe('Dashboard screen', () => {
         id: 5,
         nome: 'Agachamento',
         tipoExercicio: 'MUSCULACAO',
-        possuiVariacao: false,
+        possuiVariacao: undefined,
       },
+      variacaoInicial: null,
     });
   });
 
@@ -251,6 +258,90 @@ describe('Dashboard screen', () => {
     });
     const tree = JSON.stringify(instance.toJSON());
     expect(tree).toContain('3 JAN');
+  });
+
+  it('exibe card "Dia de descanso" quando treino do dia retorna 204', async () => {
+    mockFetchTreinoHoje.mockResolvedValue({ status: 204, data: null });
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<Dashboard />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+    const tree = JSON.stringify(instance.toJSON());
+    expect(tree).toContain('descanso');
+  });
+
+  it('exibe card com nome do treino e botão INICIAR quando treino atribuído e não concluído', async () => {
+    mockFetchTreinoHoje.mockResolvedValue({
+      status: 200,
+      data: { treinoId: 7, treinoNome: 'Treino A', concluidoHoje: false },
+    });
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<Dashboard />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+    const tree = JSON.stringify(instance.toJSON());
+    expect(tree).toContain('Treino A');
+    expect(tree).toContain('Iniciar treino de hoje');
+  });
+
+  it('exibe card de concluído quando concluidoHoje for true', async () => {
+    mockFetchTreinoHoje.mockResolvedValue({
+      status: 200,
+      data: { treinoId: 8, treinoNome: 'Treino B', concluidoHoje: true },
+    });
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<Dashboard />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+    const tree = JSON.stringify(instance.toJSON());
+    expect(tree).toContain('Treino B');
+    expect(tree).toContain('Concluído ✓');
+    expect(tree).not.toContain('Iniciar treino de hoje');
+  });
+
+  it('navega para ListExerciciosTreino ao tocar INICIAR', async () => {
+    mockFetchTreinoHoje.mockResolvedValue({
+      status: 200,
+      data: { treinoId: 9, treinoNome: 'Treino C', concluidoHoje: false },
+    });
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<Dashboard />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+    const btn = instance.root.find(
+      (n) => n.props.testID === 'btn-iniciar-treino-hoje',
+    );
+    await ReactTestRenderer.act(async () => {
+      btn.props.onPress();
+    });
+    expect(mockNavigate).toHaveBeenCalledWith('ListExerciciosTreino', {
+      treino: { id: 9, nome: 'Treino C' },
+    });
+  });
+
+  it('exibe descanso quando fetchTreinoHoje rejeita', async () => {
+    mockFetchTreinoHoje.mockRejectedValueOnce(new Error('boom'));
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<Dashboard />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+    const tree = JSON.stringify(instance.toJSON());
+    expect(tree).toContain('descanso');
   });
 
   it('exibe empty state quando API não retorna recordesRecentes', async () => {

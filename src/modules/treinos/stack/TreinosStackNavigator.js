@@ -4,6 +4,7 @@ import React from 'react';
 import HeaderLeftBack from '../../../components/Button/HeaderLeftBack';
 import { colors } from '../../../components/Styles/ComumStyles';
 import ListExerciciosTreino from '../../exercicios/screens/ListExerciciosTreino';
+import GradeSemanal from '../../gradeSemanal/screens/GradeSemanal';
 import RegistroAtividadeForm from '../../registrosAtividades/screens/RegistroAtividadeForm';
 import RegistroAtividadesCompleto from '../../registrosAtividades/screens/RegistroAtividadesCompleto';
 import CompartilharTreino from '../screens/CompartilharTreino';
@@ -51,6 +52,7 @@ const TreinosStackNavigator = () => (
     />
     <Stack.Screen name="CompartilharTreino" component={CompartilharTreino} />
     <Stack.Screen name="ImportarTreino" component={ImportarTreino} />
+    <Stack.Screen name="GradeSemanal" component={GradeSemanal} />
   </Stack.Navigator>
 );
 

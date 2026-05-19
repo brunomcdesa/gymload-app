@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 import SelectableImage from '../../../components/Selectable/SelectableImage/SelectableImage';
 import { colors } from '../../../components/Styles/ComumStyles';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
@@ -370,7 +370,7 @@ const UsuarioCadastroForm = ({ navigation }) => {
           </Text>
         </ScrollView>
 
-        <FormFooter
+        <ScreenFooter
           onBack={() => navigation.goBack()}
           onSave={handleSubmit}
           loading={loading}

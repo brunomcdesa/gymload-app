@@ -2,7 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { finalizarTreino } from '../../treinos/Api';
@@ -103,7 +103,7 @@ const ListExerciciosTreino = (props) => {
           )}
         />
       )}
-      <FormFooter
+      <ScreenFooter
         onBack={() => navigation.goBack()}
         onSave={handleFinalizarTreino}
         loading={finalizando}

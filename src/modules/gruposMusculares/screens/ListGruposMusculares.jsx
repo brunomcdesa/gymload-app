@@ -73,7 +73,7 @@ const ListGruposMusculares = () => {
         />
       )}
 
-      <View style={ComumStyles.formFooter}>
+      <View style={ComumStyles.screenFooter}>
         <AnimatedPressable
           style={ComumStyles.backButton}
           onPress={() => navigation.goBack()}

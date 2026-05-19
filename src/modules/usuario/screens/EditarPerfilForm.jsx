@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
@@ -239,7 +239,7 @@ const EditarPerfilForm = (props) => {
         </View>
       </ScrollView>
 
-      <FormFooter
+      <ScreenFooter
         onBack={() => navigation.goBack()}
         onSave={handleSave}
         loading={loading}

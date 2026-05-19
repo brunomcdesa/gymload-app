@@ -5,7 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { ComumStyles, colors } from '../Styles/ComumStyles';
 import AnimatedPressable from './AnimatedPressable';
 
-const FormFooter = ({
+const ScreenFooter = ({
   onSave,
   onBack,
   loading,
@@ -15,7 +15,7 @@ const FormFooter = ({
   children,
 }) => {
   return (
-    <View style={[ComumStyles.formFooter, containerStyle]}>
+    <View style={[ComumStyles.screenFooter, containerStyle]}>
       <AnimatedPressable
         testID="btn-voltar"
         style={ComumStyles.backButton}
@@ -57,7 +57,7 @@ const FormFooter = ({
   );
 };
 
-FormFooter.propTypes = {
+ScreenFooter.propTypes = {
   onSave: PropTypes.func,
   onBack: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
@@ -67,4 +67,4 @@ FormFooter.propTypes = {
   children: PropTypes.node,
 };
 
-export default FormFooter;
+export default ScreenFooter;

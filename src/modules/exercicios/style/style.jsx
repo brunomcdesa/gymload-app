@@ -261,7 +261,7 @@ export default StyleSheet.create({
   inputGroup: {
     flex: 1,
   },
-  formFooter: {
+  screenFooter: {
     flexDirection: 'row',
     gap: 10,
     padding: 16,

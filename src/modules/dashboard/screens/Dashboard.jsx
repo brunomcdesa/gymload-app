@@ -1,4 +1,5 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -13,6 +14,7 @@ import {
 } from '../../../comum/constants';
 import { AuthContext } from '../../../context/AuthProvider';
 import { useScreenTitle } from '../../../hooks/useScreenTitle';
+import * as GradeSemanalApi from '../../gradeSemanal/Api';
 import { throwToastError } from '../../utils/toastUtils';
 import { useIsAdmin } from '../../utils/userUtils';
 import * as DashboardApi from '../Api';
@@ -91,6 +93,7 @@ const Dashboard = () => {
     prsEssaSemana: null,
     recordesRecentes: [],
   });
+  const [treinoHoje, setTreinoHoje] = useState(undefined);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -101,11 +104,88 @@ const Dashboard = () => {
     }
   }, []);
 
+  const fetchTreinoHoje = useCallback(async () => {
+    try {
+      const { data, status } = await GradeSemanalApi.fetchTreinoHoje();
+      if (status === 204 || !data) {
+        setTreinoHoje(null);
+        return;
+      }
+      setTreinoHoje(data);
+    } catch {
+      setTreinoHoje(null);
+    }
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
       fetchStats();
-    }, [fetchStats]),
+      fetchTreinoHoje();
+    }, [fetchStats, fetchTreinoHoje]),
   );
+
+  const renderGreetingSubtitle = () => {
+    if (treinoHoje === undefined) {
+      return (
+        <Text style={dashStyle.greetingSubtitle}>
+          Registre seus exercícios e acompanhe sua evolução.
+        </Text>
+      );
+    }
+    if (treinoHoje === null) {
+      return (
+        <Text style={dashStyle.greetingSubtitle}>
+          Hoje é dia de{' '}
+          <Text style={dashStyle.greetingSubtitleAccent}>descanso</Text>.
+        </Text>
+      );
+    }
+    if (treinoHoje.concluidoHoje) {
+      return (
+        <Text style={dashStyle.greetingSubtitle}>
+          Hoje é dia de{' '}
+          <Text style={dashStyle.greetingSubtitleAccent}>
+            {treinoHoje.treinoNome}
+          </Text>
+          . <Text style={dashStyle.greetingConcluidoText}>Concluído ✓</Text>
+        </Text>
+      );
+    }
+    return (
+      <Text style={dashStyle.greetingSubtitle}>
+        Hoje é dia de{' '}
+        <Text style={dashStyle.greetingSubtitleAccent}>
+          {treinoHoje.treinoNome}
+        </Text>
+        . Vamos lá?
+      </Text>
+    );
+  };
+
+  const podeIniciarTreino = treinoHoje && !treinoHoje.concluidoHoje;
+
+  const renderIniciarTreinoButton = () => {
+    if (!podeIniciarTreino) {
+      return null;
+    }
+    return (
+      <AnimatedPressable
+        testID="btn-iniciar-treino-hoje"
+        style={dashStyle.iniciarBtn}
+        onPress={() =>
+          navigation.navigate('ListExerciciosTreino', {
+            treino: {
+              id: treinoHoje.treinoId,
+              nome: treinoHoje.treinoNome,
+            },
+          })
+        }
+      >
+        <MaterialIcons name="play-arrow" size={18} color={colors.textLight} />
+        <Text style={dashStyle.iniciarBtnText}>Iniciar treino de hoje</Text>
+      </AnimatedPressable>
+    );
+  };
 
   return (
     <View style={dashStyle.screenWrapper}>
@@ -117,17 +197,22 @@ const Dashboard = () => {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero greeting */}
+        {/* Hero greeting + iniciar treino */}
         <Animated.View entering={FadeInDown.delay(0).duration(400)}>
-          <View style={dashStyle.greetingCard}>
+          <LinearGradient
+            colors={['#2a1a1a', colors.inputBackground]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            locations={[0, 0.6]}
+            style={dashStyle.greetingCard}
+          >
             <Text style={dashStyle.greetingDate}>{formattedDate}</Text>
             <Text style={dashStyle.greetingTitle}>
               {getGreeting()}, {firstName} 👋
             </Text>
-            <Text style={dashStyle.greetingSubtitle}>
-              Registre seus exercícios e acompanhe sua evolução.
-            </Text>
-          </View>
+            {renderGreetingSubtitle()}
+            {renderIniciarTreinoButton()}
+          </LinearGradient>
         </Animated.View>
 
         {/* Stats row */}
@@ -201,7 +286,7 @@ const Dashboard = () => {
           ) : (
             stats.recordesRecentes.map((recorde) => (
               <AnimatedPressable
-                key={recorde.exercicioId}
+                key={`${recorde.exercicioId}-${recorde.variacaoId ?? 'sem'}`}
                 style={dashStyle.recordeCard}
                 testID={`recorde-card-${recorde.exercicioId}`}
                 onPress={() =>

@@ -2,7 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import { ComumStyles, colors } from '../../../components/Styles/ComumStyles';
@@ -91,7 +91,7 @@ const TipoVariacaoForm = (props) => {
         </View>
       </ScrollView>
 
-      <FormFooter
+      <ScreenFooter
         onSave={handleSubmit}
         onBack={() => navigation.goBack()}
         loading={loading}

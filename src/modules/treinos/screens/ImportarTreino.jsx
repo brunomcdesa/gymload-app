@@ -4,7 +4,7 @@ import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { ScrollView, Text, TextInput, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 import CustomCamera from '../../../components/Camera/CustomCamera';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
@@ -215,7 +215,7 @@ const ImportarTreino = () => {
         />
       </ScrollView>
 
-      <FormFooter
+      <ScreenFooter
         onBack={() => navigation.goBack()}
         onSave={preview ? handleImportar : undefined}
         saveLabel="IMPORTAR"

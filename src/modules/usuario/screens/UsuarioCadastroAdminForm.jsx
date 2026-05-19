@@ -200,7 +200,7 @@ const UsuarioCadastroAdminForm = ({ navigation }) => {
       </ScrollView>
 
       {/* Footer fixo — fora do ScrollView */}
-      <View style={style.formFooter}>
+      <View style={style.screenFooter}>
         <AnimatedPressable
           testID="btn-voltar"
           wrapperStyle={style.backButtonWrapper}

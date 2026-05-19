@@ -77,7 +77,7 @@ const ListTiposVariacoes = () => {
         />
       )}
 
-      <View style={ComumStyles.formFooter}>
+      <View style={ComumStyles.screenFooter}>
         <AnimatedPressable
           testID="btn-voltar"
           style={ComumStyles.backButton}

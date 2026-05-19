@@ -45,7 +45,7 @@ jest.mock('react-native-vector-icons/MaterialIcons', () => {
   return ({ name }) => <Text testID={`icon-${name}`}>{name}</Text>;
 });
 
-jest.mock('../../src/components/Button/FormFooter', () => {
+jest.mock('../../src/components/Button/ScreenFooter', () => {
   const { TouchableOpacity, Text } = require('react-native');
   return ({ onSave }) => (
     <TouchableOpacity testID="save-button" onPress={onSave}>

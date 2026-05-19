@@ -40,6 +40,7 @@
     "expo-dev-client": "~5.0.20",
     "expo-font": "~13.0.4",
     "expo-image-picker": "~16.0.6",
+    "expo-linear-gradient": "~14.0.2",
     "expo-secure-store": "~14.0.1",
     "expo-status-bar": "~2.0.1",
     "jwt-decode": "^4.0.0",

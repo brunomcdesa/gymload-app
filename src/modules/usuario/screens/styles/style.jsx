@@ -447,7 +447,7 @@ export default StyleSheet.create({
     color: colors.textMuted,
     marginBottom: 6,
   },
-  formFooter: {
+  screenFooter: {
     flexDirection: 'row',
     gap: 10,
     padding: 16,

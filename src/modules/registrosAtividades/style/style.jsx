@@ -73,7 +73,7 @@ export default StyleSheet.create({
     marginTop: 12,
     textAlign: 'center',
   },
-  formFooter: {
+  screenFooter: {
     flexDirection: 'row',
     gap: 10,
     padding: 16,
@@ -83,7 +83,7 @@ export default StyleSheet.create({
     backgroundColor: colors.background,
     alignItems: 'center',
   },
-  formFooterComBanner: {
+  screenFooterComBanner: {
     paddingBottom: BANNER_HEIGHT,
   },
   backButton: {

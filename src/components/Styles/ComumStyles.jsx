@@ -142,7 +142,7 @@ const ComumStyles = StyleSheet.create({
     flexGrow: 1,
   },
   // Form footer (botão de Voltar + Salvar/Adicionar no rodapé)
-  formFooter: {
+  screenFooter: {
     flexDirection: 'row',
     gap: 10,
     padding: 16,

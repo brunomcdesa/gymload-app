@@ -10,7 +10,7 @@ import useAnuncioInterstitial from '../../../components/Anuncios/useAnuncioInter
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SelectInput from '../../../components/Inputs/SelectInput';
 import TextoInput from '../../../components/Inputs/TextoInput';
@@ -582,7 +582,7 @@ const RegistroAtividadeForm = (props) => {
         />
       </ScrollView>
 
-      <FormFooter
+      <ScreenFooter
         onBack={() => navigation.goBack()}
         onSave={handleSubmit}
         loading={loading}

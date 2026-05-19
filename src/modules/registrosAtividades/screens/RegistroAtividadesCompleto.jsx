@@ -24,7 +24,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -78,8 +78,8 @@ const RegistroAtividadesCompleto = (props) => {
     listContent,
     sectionHeader,
     sectionHeaderText,
-    formFooter,
-    formFooterComBanner,
+    screenFooter,
+    screenFooterComBanner,
     selecionarButton,
     selecionarButtonText,
     selecaoInfoBar,
@@ -570,7 +570,7 @@ const RegistroAtividadesCompleto = (props) => {
       )}
 
       {modoSelecao ? (
-        <View style={[formFooter, !isAdmin && formFooterComBanner]}>
+        <View style={[screenFooter, !isAdmin && screenFooterComBanner]}>
           <AnimatedPressable
             style={cancelarSelecaoButton}
             onPress={cancelarSelecao}
@@ -602,13 +602,13 @@ const RegistroAtividadesCompleto = (props) => {
           </AnimatedPressable>
         </View>
       ) : (
-        <FormFooter
+        <ScreenFooter
           onBack={() => navigation.goBack()}
           onSave={redirectToRegistroAtividadeForm}
           loading={false}
           saveLabel="ADICIONAR"
           saveIcon="add"
-          containerStyle={!isAdmin ? formFooterComBanner : undefined}
+          containerStyle={!isAdmin ? screenFooterComBanner : undefined}
         />
       )}
 

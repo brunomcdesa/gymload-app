@@ -10,7 +10,7 @@ import { ScrollView, Share, Text, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
-import FormFooter from '../../../components/Button/FormFooter';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { colors } from '../../../components/Styles/ComumStyles';
@@ -106,7 +106,7 @@ const CompartilharTreino = ({ route, navigation }) => {
         </View>
       </ScrollView>
 
-      <FormFooter onBack={() => navigation.goBack()} loading={false}>
+      <ScreenFooter onBack={() => navigation.goBack()} loading={false}>
         <AnimatedPressable
           testID="btn-copiar"
           wrapperStyle={actionButtonWrapper}
@@ -132,7 +132,7 @@ const CompartilharTreino = ({ route, navigation }) => {
             Compartilhar
           </Text>
         </AnimatedPressable>
-      </FormFooter>
+      </ScreenFooter>
     </View>
   );
 };
