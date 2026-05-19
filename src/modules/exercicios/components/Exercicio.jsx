@@ -18,15 +18,23 @@ const Exercicio = ({
 }) => {
   const { nome, grupoMuscularNome, tipoExercicio, possuiVariacao } =
     exercicioData;
-  const { destaque, ultimaCarga, ultimaDistancia } =
-    dadosRegistrosAtividades || {};
+  const {
+    destaque,
+    ultimaCarga,
+    ultimaDistancia,
+    nomeVariacaoDestaque,
+    nomeVariacaoUltima,
+    qtdVariacoes,
+  } = dadosRegistrosAtividades || {};
   const { elementContainer } = ComumStyles;
   const { user } = useContext(AuthContext);
   const isSexoFeminino = user?.sexo === 'FEMININO';
 
-  const hasRecord = !possuiVariacao && destaque && destaque !== '-';
-  const hasDestaque = !possuiVariacao && dadosRegistrosAtividades != null;
+  const temRegistros = destaque && destaque !== '-';
+  const hasRecord = temRegistros;
+  const hasDestaque = temRegistros && dadosRegistrosAtividades != null;
   const showDistancia = ultimaDistancia && !ultimaCarga;
+  const semRegistrosComVariacao = possuiVariacao && !temRegistros;
   const iconBg = hasRecord ? `${colors.secondary}1a` : colors.inputBackground;
 
   const renderIcone = () => {
@@ -47,6 +55,14 @@ const Exercicio = ({
           {grupoMuscularNome && (
             <Text style={style.grupoMuscularText}>{grupoMuscularNome}</Text>
           )}
+          {possuiVariacao && qtdVariacoes > 0 && (
+            <View style={style.variacoesChip}>
+              <MaterialIcons name="layers" size={11} color={colors.secondary} />
+              <Text style={style.variacoesChipText}>
+                {`${qtdVariacoes} ${qtdVariacoes === 1 ? 'variação' : 'variações'}`}
+              </Text>
+            </View>
+          )}
         </View>
         {hasRecord && (
           <View style={style.recordeBadge}>
@@ -57,14 +73,19 @@ const Exercicio = ({
       </View>
 
       {/* Stats row */}
-      {possuiVariacao ? (
-        <Text style={style.possuiVariacoesLabel}>Possui variações</Text>
+      {semRegistrosComVariacao ? (
+        <Text style={style.semRegistrosLabel}>Sem registros ainda</Text>
       ) : (
         hasDestaque && (
           <View style={style.destaquesRow}>
             <View style={style.destaqueBox}>
               <Text style={style.destaqueLabel}>RECORDE</Text>
               <Text style={style.recordeValue}>{destaque || '-'}</Text>
+              {nomeVariacaoDestaque && (
+                <Text style={style.variacaoAtribuicaoText} numberOfLines={1}>
+                  {nomeVariacaoDestaque}
+                </Text>
+              )}
             </View>
             <View style={style.statDivider} />
             <View style={style.destaqueBox}>
@@ -74,6 +95,11 @@ const Exercicio = ({
               <Text style={style.ultimoDadoValue}>
                 {showDistancia ? ultimaDistancia : ultimaCarga || '-'}
               </Text>
+              {nomeVariacaoUltima && (
+                <Text style={style.variacaoAtribuicaoText} numberOfLines={1}>
+                  {nomeVariacaoUltima}
+                </Text>
+              )}
             </View>
           </View>
         )

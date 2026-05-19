@@ -326,8 +326,9 @@ describe('Dashboard screen', () => {
     await ReactTestRenderer.act(async () => {
       btn.props.onPress();
     });
-    expect(mockNavigate).toHaveBeenCalledWith('ListExerciciosTreino', {
-      treino: { id: 9, nome: 'Treino C' },
+    expect(mockNavigate).toHaveBeenCalledWith('Treinos', {
+      screen: 'ListExerciciosTreino',
+      params: { treino: { id: 9, nome: 'Treino C' } },
     });
   });
 

@@ -66,6 +66,18 @@ const formatarDataPr = (dateStr) => {
   return `${parseInt(day, 10)} ${MESES_ABREV[parseInt(month, 10) - 1]}`;
 };
 
+const relativeDate = (dateStr) => {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const target = new Date(y, m - 1, d);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const days = Math.round((today - target) / 86400000);
+  if (days === 0) return 'Hoje';
+  if (days === 1) return 'Ontem';
+  if (days > 1 && days < 30) return `Há ${days} dias`;
+  return formatarDataPr(dateStr);
+};
+
 const getGreeting = () => {
   const h = new Date().getHours();
   if (h < 12) return 'Bom dia';
@@ -173,10 +185,13 @@ const Dashboard = () => {
         testID="btn-iniciar-treino-hoje"
         style={dashStyle.iniciarBtn}
         onPress={() =>
-          navigation.navigate('ListExerciciosTreino', {
-            treino: {
-              id: treinoHoje.treinoId,
-              nome: treinoHoje.treinoNome,
+          navigation.navigate('Treinos', {
+            screen: 'ListExerciciosTreino',
+            params: {
+              treino: {
+                id: treinoHoje.treinoId,
+                nome: treinoHoje.treinoNome,
+              },
             },
           })
         }
@@ -251,18 +266,25 @@ const Dashboard = () => {
               </Text>
             </View>
             <View style={dashStyle.weekDots}>
-              {WEEK_DAYS.map((d, i) => (
-                <View key={i} style={dashStyle.dayItem}>
-                  <View
-                    style={
-                      stats.diasSemana[i]
-                        ? dashStyle.dayDotActive
-                        : dashStyle.dayDot
-                    }
-                  />
-                  <Text style={dashStyle.dayLabel}>{d}</Text>
-                </View>
-              ))}
+              {WEEK_DAYS.map((d, i) => {
+                const done = stats.diasSemana[i];
+                return (
+                  <View key={i} style={dashStyle.dayItem}>
+                    <View
+                      style={done ? dashStyle.dayDotActive : dashStyle.dayDot}
+                    >
+                      {done && (
+                        <MaterialIcons
+                          name="check"
+                          size={18}
+                          color={colors.textLight}
+                        />
+                      )}
+                    </View>
+                    <Text style={dashStyle.dayLabel}>{d}</Text>
+                  </View>
+                );
+              })}
             </View>
           </View>
         </Animated.View>
@@ -284,43 +306,71 @@ const Dashboard = () => {
               </Text>
             </View>
           ) : (
-            stats.recordesRecentes.map((recorde) => (
-              <AnimatedPressable
-                key={`${recorde.exercicioId}-${recorde.variacaoId ?? 'sem'}`}
-                style={dashStyle.recordeCard}
-                testID={`recorde-card-${recorde.exercicioId}`}
-                onPress={() =>
-                  navigation.navigate('RegistroAtividadesCompleto', {
-                    exercicio: {
-                      id: recorde.exercicioId,
-                      nome: recorde.exercicioNome,
-                      tipoExercicio: recorde.tipoExercicio,
-                      possuiVariacao: recorde.possuiVariacao,
-                    },
-                    variacaoInicial: recorde.variacaoId
-                      ? { id: recorde.variacaoId, nome: recorde.variacaoNome }
-                      : null,
-                  })
-                }
-              >
-                <MaterialIcons
-                  name="emoji-events"
-                  size={16}
-                  color={colors.secondary}
-                />
-                <View style={dashStyle.recordeCardContent}>
-                  <Text style={dashStyle.recordeCardNome} numberOfLines={1}>
-                    {recorde.exercicioNome}
-                  </Text>
-                  <Text style={dashStyle.recordeCardValor}>
+            stats.recordesRecentes.map((recorde, idx) => {
+              const isTopPr = idx === 0;
+              return (
+                <AnimatedPressable
+                  key={`${recorde.exercicioId}-${recorde.variacaoId ?? 'sem'}`}
+                  style={
+                    isTopPr
+                      ? dashStyle.recordeCardAccent
+                      : dashStyle.recordeCard
+                  }
+                  testID={`recorde-card-${recorde.exercicioId}`}
+                  onPress={() =>
+                    navigation.navigate('RegistroAtividadesCompleto', {
+                      exercicio: {
+                        id: recorde.exercicioId,
+                        nome: recorde.exercicioNome,
+                        tipoExercicio: recorde.tipoExercicio,
+                        possuiVariacao: recorde.possuiVariacao,
+                      },
+                      variacaoInicial: recorde.variacaoId
+                        ? {
+                            id: recorde.variacaoId,
+                            nome: recorde.variacaoNome,
+                          }
+                        : null,
+                    })
+                  }
+                >
+                  <View
+                    style={
+                      isTopPr
+                        ? dashStyle.recordeIconWrapAccent
+                        : dashStyle.recordeIconWrap
+                    }
+                  >
+                    <MaterialIcons
+                      name={isTopPr ? 'emoji-events' : 'trending-up'}
+                      size={isTopPr ? 26 : 24}
+                      color={isTopPr ? colors.secondary : colors.terciary}
+                    />
+                  </View>
+                  <View style={dashStyle.recordeCardContent}>
+                    <Text style={dashStyle.recordeCardNome} numberOfLines={1}>
+                      {recorde.exercicioNome}
+                    </Text>
+                    <Text
+                      style={dashStyle.recordeCardSubtitle}
+                      numberOfLines={1}
+                    >
+                      {relativeDate(recorde.dataPr)}
+                      {recorde.variacaoNome ? ` · ${recorde.variacaoNome}` : ''}
+                    </Text>
+                  </View>
+                  <Text
+                    style={
+                      isTopPr
+                        ? dashStyle.recordeCardValorTop
+                        : dashStyle.recordeCardValor
+                    }
+                  >
                     {recorde.valorPr}
                   </Text>
-                </View>
-                <Text style={dashStyle.recordeCardData}>
-                  {formatarDataPr(recorde.dataPr)}
-                </Text>
-              </AnimatedPressable>
-            ))
+                </AnimatedPressable>
+              );
+            })
           )}
         </Animated.View>
       </ScrollView>
