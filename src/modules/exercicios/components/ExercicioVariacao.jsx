@@ -1,7 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { colors, ComumStyles } from '../../../components/Styles/ComumStyles';
+import { AuthContext } from '../../../context/AuthProvider';
+import {
+  renderIconeGrupoMuscular,
+  renderIconeTipoExercicio,
+} from '../../utils/iconesUtils';
 import style from '../style/style';
 
 const ExercicioVariacao = (props) => {
@@ -15,7 +20,6 @@ const ExercicioVariacao = (props) => {
     padrao,
   } = exercicioVariacaoData;
   const {
-    exercicioHeader,
     exercicioNome,
     grupoMuscularText,
     destaquesRow,
@@ -25,8 +29,24 @@ const ExercicioVariacao = (props) => {
     nomeBadgeRow,
     padraoBadge,
     padraoBadgeText,
+    cardRow,
+    iconBox,
+    exercicioInfo,
+    semRegistrosLabel,
   } = style;
   const { elementContainer } = ComumStyles;
+
+  const { user } = useContext(AuthContext);
+  const isSexoFeminino = user?.sexo === 'FEMININO';
+
+  const hasData = ultimaCarga || ultimaDistancia || ultimaSerie;
+  const iconBg = hasData ? `${colors.secondary}1a` : colors.inputBackground;
+
+  const renderIcone = () => {
+    if (grupoMuscular)
+      return renderIconeGrupoMuscular(grupoMuscular, isSexoFeminino, 28);
+    return renderIconeTipoExercicio(tipoExercicio, isSexoFeminino, 28);
+  };
 
   const renderDestaque = () => {
     if (tipoExercicio === 'AEROBICO' && ultimaDistancia) {
@@ -62,23 +82,28 @@ const ExercicioVariacao = (props) => {
       );
     }
 
-    return null;
+    return <Text style={semRegistrosLabel}>Sem registros ainda</Text>;
   };
 
   return (
     <View style={elementContainer}>
-      <View style={exercicioHeader}>
-        <View style={nomeBadgeRow}>
-          <Text style={exercicioNome}>{nome}</Text>
-          {padrao && (
-            <View style={padraoBadge}>
-              <Text style={padraoBadgeText}>PADRÃO</Text>
-            </View>
+      <View style={cardRow}>
+        <View style={[iconBox, { backgroundColor: iconBg }]}>
+          {renderIcone()}
+        </View>
+        <View style={exercicioInfo}>
+          <View style={nomeBadgeRow}>
+            <Text style={exercicioNome}>{nome}</Text>
+            {padrao && (
+              <View style={padraoBadge}>
+                <Text style={padraoBadgeText}>PADRÃO</Text>
+              </View>
+            )}
+          </View>
+          {grupoMuscular && (
+            <Text style={grupoMuscularText}>{grupoMuscular}</Text>
           )}
         </View>
-        {grupoMuscular && (
-          <Text style={grupoMuscularText}>{grupoMuscular}</Text>
-        )}
       </View>
       {renderDestaque()}
     </View>

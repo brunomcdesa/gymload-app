@@ -47,7 +47,7 @@ export default StyleSheet.create({
   },
   destaqueLabel: {
     fontSize: 10,
-    color: '#777',
+    color: colors.placeholderText,
     textAlign: 'center',
     marginBottom: 4,
     letterSpacing: 1.2,

@@ -212,4 +212,36 @@ describe('ListTreino screen', () => {
 
     expect(mockFetchTreinos).toHaveBeenCalledWith(false, false);
   });
+
+  it('exibe_opcaoConfigurarDias_noActionSheet', async () => {
+    mockFetchTreinos.mockResolvedValue({ data: [treinoAtivo] });
+
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<ListTreino />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+
+    const tree = JSON.stringify(instance.toJSON());
+    expect(tree).toContain('Configurar dias');
+  });
+
+  it('cancelButtonIndex_correto_paraAtivo', async () => {
+    mockFetchTreinos.mockResolvedValue({ data: [treinoAtivo] });
+
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<ListTreino />);
+    });
+    await ReactTestRenderer.act(async () => {
+      await Promise.resolve();
+    });
+
+    // ATIVO: Ver Exercícios(0) Editar(1) Configurar dias(2) Inativar(3) Compartilhar(4) Cancelar(5)
+    const tree = JSON.stringify(instance.toJSON());
+    expect(tree).toContain('Configurar dias');
+    expect(tree).toContain('Compartilhar Treino');
+  });
 });

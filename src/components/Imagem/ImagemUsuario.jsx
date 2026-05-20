@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Image } from 'react-native';
-import userDefaultImage from './assets/user-default.png';
+import userDefaultImage from './assets/user-default.webp';
 import style from './styles/style';
 
 const ImagemUsuario = (props) => {

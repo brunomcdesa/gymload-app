@@ -116,6 +116,7 @@ const ListTreino = () => {
     const opcoes = [
       'Ver Exercícios',
       'Editar Treino',
+      'Configurar dias',
       treino.situacao === 'ATIVO' ? 'Inativar Treino' : 'Ativar Treino',
     ];
     if (treino.situacao === 'ATIVO') {
@@ -126,7 +127,7 @@ const ListTreino = () => {
   };
 
   const getCancelButtonIndex = (treino) =>
-    treino.situacao === 'ATIVO' ? 4 : 3;
+    treino.situacao === 'ATIVO' ? 5 : 4;
 
   const selectOptionsAction = (selectedIndex, item) => {
     switch (selectedIndex) {
@@ -137,9 +138,12 @@ const ListTreino = () => {
         redirectToTreinoFormEdit(item);
         break;
       case 2:
-        toggleTreinoSituacao(item);
+        navigation.navigate('GradeSemanal', { treino: { id: item.id, nome: item.nome } });
         break;
       case 3:
+        toggleTreinoSituacao(item);
+        break;
+      case 4:
         if (item.situacao === 'ATIVO') {
           navigation.navigate('CompartilharTreino', {
             treino: { id: item.id, nome: item.nome },
@@ -281,13 +285,6 @@ const ListTreino = () => {
       )}
 
       <View style={[fabRow, !isAdmin && { bottom: BANNER_HEIGHT + 14 }]}>
-        <AnimatedPressable
-          testID="fab-grade-semanal"
-          style={importarFabButton}
-          onPress={() => navigation.navigate('GradeSemanal')}
-        >
-          <MaterialIcons name="calendar-today" size={22} color="#aaa" />
-        </AnimatedPressable>
         <AnimatedPressable
           style={importarFabButton}
           onPress={() => navigation.navigate('ImportarTreino')}

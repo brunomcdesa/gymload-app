@@ -11,6 +11,7 @@ import { FlatList, ScrollView, Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import ScreenFooter from '../../../components/Button/ScreenFooter';
+import ConfirmDialog from '../../../components/Dialog/ConfirmDialog';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import TextoInput from '../../../components/Inputs/TextoInput';
 import EmptyList from '../../../components/List/EmptyList';
@@ -19,6 +20,7 @@ import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import { ComumStyles, colors } from '../../../components/Styles/ComumStyles';
 import { AuthContext } from '../../../context/AuthProvider';
 import * as ExercicioApi from '../../exercicios/Api';
+import * as GradeSemanalApi from '../../gradeSemanal/Api';
 import * as GrupoMuscularApi from '../../gruposMusculares/Api';
 import {
   renderIconeGrupoMuscular,
@@ -29,6 +31,16 @@ import * as Api from '../Api';
 import style from '../style/style';
 
 const CHIP_TODOS = { id: 'todos', label: 'Todos', tipo: 'todos', value: null };
+
+const DIAS_SEMANA = [
+  { key: 'SEGUNDA', label: 'SEG' },
+  { key: 'TERCA', label: 'TER' },
+  { key: 'QUARTA', label: 'QUA' },
+  { key: 'QUINTA', label: 'QUI' },
+  { key: 'SEXTA', label: 'SEX' },
+  { key: 'SABADO', label: 'SAB' },
+  { key: 'DOMINGO', label: 'DOM' },
+];
 
 const TreinoForm = ({ navigation, route }) => {
   const { asteriscoObrigatorio } = ComumStyles;
@@ -51,6 +63,16 @@ const TreinoForm = ({ navigation, route }) => {
   const [chipSelecionado, setChipSelecionado] = useState(CHIP_TODOS);
   const [chipsLoading, setChipsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [selectedDias, setSelectedDias] = useState([]);
+  const [originalDias, setOriginalDias] = useState([]);
+  const [gradeCompleta, setGradeCompleta] = useState([]);
+  const [dialog, setDialog] = useState({
+    visible: false,
+    message: '',
+    onConfirm: null,
+  });
+
+  const closeDialog = () => setDialog((d) => ({ ...d, visible: false }));
 
   const filteredExercicios = useMemo(() => {
     let items = exerciciosSelect;
@@ -80,6 +102,12 @@ const TreinoForm = ({ navigation, route }) => {
       setFormData((prevForm) => ({ ...prevForm, exerciciosIds: next }));
       return next;
     });
+  }, []);
+
+  const toggleDia = useCallback((diaKey) => {
+    setSelectedDias((prev) =>
+      prev.includes(diaKey) ? prev.filter((d) => d !== diaKey) : [...prev, diaKey],
+    );
   }, []);
 
   const fetchChips = useCallback(async () => {
@@ -130,39 +158,86 @@ const TreinoForm = ({ navigation, route }) => {
       const ids = data.map((exercicio) => exercicio.id);
       setSelectedExercicios(ids);
       setFormData((prev) => ({ ...prev, exerciciosIds: ids }));
-    } catch (error) {
+    } catch {
       throwToastError('Erro ao buscar exercícios do treino.');
-      console.error(`Erro ao buscar exercícios do treino ${id}`, error);
     } finally {
       setLoading(false);
     }
   }, [id]);
 
-  const handleSave = async () => {
+  const fetchGradeParaForm = useCallback(async () => {
     try {
-      setLoading(true);
-      await Api.saveTreinos(formData);
-      throwToastSuccess('Treino salvo com sucesso!');
-      handleGoBack();
-    } catch (error) {
-      throwToastError('Erro ao salvar treino.');
-      console.log('Erro ao salvar treino.', error);
-    } finally {
-      setLoading(false);
+      const { data } = await GradeSemanalApi.fetchGradeSemanal();
+      setGradeCompleta(data);
+      if (isEdicao) {
+        const diasDoTreino = data
+          .filter((d) => d.treinoId === id)
+          .map((d) => d.diaSemana);
+        setSelectedDias(diasDoTreino);
+        setOriginalDias(diasDoTreino);
+      }
+    } catch {
+      throwToastError('Erro ao carregar grade semanal.');
     }
+  }, [id, isEdicao]);
+
+  const saveDias = async (treinoId) => {
+    const diasParaRemover = originalDias.filter((d) => !selectedDias.includes(d));
+    await Promise.all([
+      ...selectedDias.map((dia) => GradeSemanalApi.salvarDia(dia, treinoId)),
+      ...diasParaRemover.map((dia) => GradeSemanalApi.removerDia(dia)),
+    ]);
   };
 
-  const handleEditar = async () => {
-    try {
-      setLoading(true);
-      await Api.editarTreinos({ id: treinoData.id, request: formData });
-      throwToastSuccess('Treino salvo com sucesso!');
-      handleGoBack();
-    } catch (error) {
-      throwToastError('Erro ao salvar treino.');
-      console.log('Erro ao salvar treino.', error);
-    } finally {
-      setLoading(false);
+  const getConflicts = (treinoId) =>
+    selectedDias.filter((dia) => {
+      const entry = gradeCompleta.find((g) => g.diaSemana === dia);
+      return entry && entry.treinoId !== null && entry.treinoId !== treinoId;
+    });
+
+  const handleSubmit = async () => {
+    if (!formData.nome?.trim()) return throwToastError('Nome é obrigatório.');
+    if (!formData.exerciciosIds?.length)
+      return throwToastError('Selecione ao menos um exercício.');
+
+    const doSave = async () => {
+      try {
+        setLoading(true);
+        let treinoId;
+        if (isEdicao) {
+          await Api.editarTreinos({ id, request: formData });
+          treinoId = id;
+        } else {
+          const { data } = await Api.saveTreinos(formData);
+          treinoId = data.id;
+        }
+        await saveDias(treinoId);
+        throwToastSuccess('Treino salvo com sucesso!');
+        handleGoBack();
+      } catch {
+        throwToastError('Erro ao salvar treino.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const pendingTreinoId = isEdicao ? id : null;
+    const conflicts = getConflicts(pendingTreinoId);
+    if (conflicts.length > 0) {
+      const labels = conflicts
+        .map((dia) => {
+          const entry = gradeCompleta.find((g) => g.diaSemana === dia);
+          const diaLabel = DIAS_SEMANA.find((d) => d.key === dia)?.label;
+          return `${diaLabel} (${entry.treinoNome})`;
+        })
+        .join(', ');
+      setDialog({
+        visible: true,
+        message: `${labels} já têm treinos. Substituir?`,
+        onConfirm: doSave,
+      });
+    } else {
+      await doSave();
     }
   };
 
@@ -170,10 +245,11 @@ const TreinoForm = ({ navigation, route }) => {
     useCallback(() => {
       fetchChips();
       fetchExerciciosSelect();
+      fetchGradeParaForm();
       if (isEdicao) {
         fetchExerciciosDoTreino();
       }
-    }, [fetchChips, fetchExerciciosSelect, fetchExerciciosDoTreino, isEdicao]),
+    }, [fetchChips, fetchExerciciosSelect, fetchExerciciosDoTreino, fetchGradeParaForm, isEdicao]),
   );
 
   const renderHeaderTitle = useCallback(
@@ -253,6 +329,49 @@ const TreinoForm = ({ navigation, route }) => {
         </View>
 
         <View style={style.fieldContainer}>
+          <Text style={style.fieldLabel}>Dias da semana</Text>
+          <View style={style.diasRow}>
+            {DIAS_SEMANA.map(({ key, label }) => {
+              const isSelected = selectedDias.includes(key);
+              const occupyEntry = gradeCompleta.find((g) => g.diaSemana === key);
+              const isOccupied =
+                occupyEntry &&
+                occupyEntry.treinoId !== null &&
+                occupyEntry.treinoId !== (isEdicao ? id : null);
+              return (
+                <AnimatedPressable
+                  key={key}
+                  testID={`dia-chip-${key}`}
+                  style={[
+                    style.diaChip,
+                    isSelected && style.diaChipSelected,
+                    isOccupied && !isSelected && style.diaChipOccupied,
+                  ]}
+                  onPress={() => toggleDia(key)}
+                >
+                  <Text
+                    style={[
+                      style.diaChipText,
+                      isSelected && style.diaChipTextSelected,
+                    ]}
+                  >
+                    {label}
+                  </Text>
+                </AnimatedPressable>
+              );
+            })}
+          </View>
+          {gradeCompleta.some(
+            (g) =>
+              g.treinoId !== null && g.treinoId !== (isEdicao ? id : null),
+          ) && (
+            <Text style={style.diasLegenda} testID="dias-legenda">
+              Borda dourada = dia atribuído a outro treino
+            </Text>
+          )}
+        </View>
+
+        <View style={style.fieldContainer}>
           <View style={style.fieldLabelRow}>
             <Text style={style.fieldLabel}>
               Exercícios <Text style={asteriscoObrigatorio}>*</Text>
@@ -316,9 +435,21 @@ const TreinoForm = ({ navigation, route }) => {
         </View>
       </ScrollView>
 
+      <ConfirmDialog
+        visible={dialog.visible}
+        title="Dias já atribuídos"
+        message={dialog.message}
+        confirmLabel="Substituir"
+        onConfirm={() => {
+          closeDialog();
+          dialog.onConfirm?.();
+        }}
+        onCancel={closeDialog}
+      />
+
       <ScreenFooter
         onBack={handleGoBack}
-        onSave={isEdicao ? handleEditar : handleSave}
+        onSave={handleSubmit}
         loading={loading}
       />
     </View>

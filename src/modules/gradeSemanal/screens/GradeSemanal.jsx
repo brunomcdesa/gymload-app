@@ -1,44 +1,48 @@
-import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AnimatedPressable from '../../../components/Button/AnimatedPressable';
 import ScreenFooter from '../../../components/Button/ScreenFooter';
+import ConfirmDialog from '../../../components/Dialog/ConfirmDialog';
 import HeaderTitle from '../../../components/Header/HeaderTitle';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
-import { colors } from '../../../components/Styles/ComumStyles';
-import * as TreinosApi from '../../treinos/Api';
 import { throwToastError, throwToastSuccess } from '../../utils/toastUtils';
 import * as Api from '../Api';
 import style from '../style/style';
 
 const DIAS = [
-  { key: 'SEGUNDA', label: 'SEGUNDA', short: 'SEG', dow: 1 },
-  { key: 'TERCA', label: 'TERÇA', short: 'TER', dow: 2 },
-  { key: 'QUARTA', label: 'QUARTA', short: 'QUA', dow: 3 },
-  { key: 'QUINTA', label: 'QUINTA', short: 'QUI', dow: 4 },
-  { key: 'SEXTA', label: 'SEXTA', short: 'SEX', dow: 5 },
-  { key: 'SABADO', label: 'SÁBADO', short: 'SAB', dow: 6 },
-  { key: 'DOMINGO', label: 'DOMINGO', short: 'DOM', dow: 0 },
+  { key: 'SEGUNDA', short: 'SEG' },
+  { key: 'TERCA', short: 'TER' },
+  { key: 'QUARTA', short: 'QUA' },
+  { key: 'QUINTA', short: 'QUI' },
+  { key: 'SEXTA', short: 'SEX' },
+  { key: 'SABADO', short: 'SAB' },
+  { key: 'DOMINGO', short: 'DOM' },
 ];
 
-const GradeSemanal = ({ navigation }) => {
-  const [treinos, setTreinos] = useState([]);
-  const [gradePorDia, setGradePorDia] = useState({});
+const GradeSemanal = ({ navigation, route = { params: {} } }) => {
+  const treino = route?.params?.treino ?? null;
+
+  const [selectedDias, setSelectedDias] = useState([]);
+  const [ocupadosPorOutros, setOcupadosPorOutros] = useState({});
   const [loading, setLoading] = useState(false);
-  const { showActionSheetWithOptions } = useActionSheet();
-  const diaSemanaHoje = new Date().getDay();
+  const [dialog, setDialog] = useState({
+    visible: false,
+    message: '',
+    onConfirm: null,
+  });
+
+  const closeDialog = () => setDialog((d) => ({ ...d, visible: false }));
 
   const renderHeaderTitle = useCallback(
     () => (
       <HeaderTitle
-        title="Grade Semanal"
-        subtitle="Defina um treino para cada dia"
+        title="Dias do Treino"
+        subtitle={treino?.nome ?? ''}
       />
     ),
-    [],
+    [treino],
   );
 
   useLayoutEffect(() => {
@@ -54,26 +58,24 @@ const GradeSemanal = ({ navigation }) => {
   const carregarDados = useCallback(async () => {
     try {
       setLoading(true);
-      const [respGrade, respTreinos] = await Promise.all([
-        Api.fetchGradeSemanal(),
-        TreinosApi.fetchTreinos(false, false),
-      ]);
-      setTreinos(respTreinos.data || []);
-
-      const mapa = {};
-      (respGrade.data || []).forEach((item) => {
-        mapa[item.diaSemana] = {
-          treinoId: item.treinoId,
-          treinoNome: item.treinoNome,
-        };
-      });
-      setGradePorDia(mapa);
+      const { data } = await Api.fetchGradeSemanal();
+      const dias = (data || [])
+        .filter((d) => d.treinoId === treino?.id)
+        .map((d) => d.diaSemana);
+      setSelectedDias(dias);
+      const ocupados = {};
+      (data || [])
+        .filter((d) => d.treinoId !== null && d.treinoId !== treino?.id)
+        .forEach((d) => {
+          ocupados[d.diaSemana] = d.treinoNome;
+        });
+      setOcupadosPorOutros(ocupados);
     } catch {
       throwToastError('Erro ao carregar a grade semanal.');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [treino]);
 
   useFocusEffect(
     useCallback(() => {
@@ -81,67 +83,51 @@ const GradeSemanal = ({ navigation }) => {
     }, [carregarDados]),
   );
 
-  const salvarDia = async (diaKey, treino) => {
-    const anterior = gradePorDia[diaKey];
-    setGradePorDia((prev) => ({
-      ...prev,
-      [diaKey]: { treinoId: treino.id, treinoNome: treino.nome },
-    }));
-    try {
-      await Api.salvarDia(diaKey, treino.id);
-      throwToastSuccess(`${treino.nome} atribuído a ${diaKey.toLowerCase()}.`);
-    } catch {
-      setGradePorDia((prev) => ({ ...prev, [diaKey]: anterior }));
-      throwToastError('Erro ao salvar.');
+  const toggleDiaTreino = (diaKey) => {
+    const isSelected = selectedDias.includes(diaKey);
+
+    const doSalvar = async () => {
+      setSelectedDias((prev) => [...prev, diaKey]);
+      setOcupadosPorOutros((prev) => {
+        const next = { ...prev };
+        delete next[diaKey];
+        return next;
+      });
+      try {
+        await Api.salvarDia(diaKey, treino.id);
+        throwToastSuccess('Dia adicionado ao treino.');
+      } catch {
+        setSelectedDias((prev) => prev.filter((d) => d !== diaKey));
+        throwToastError('Erro ao salvar.');
+      }
+    };
+
+    const doRemover = async () => {
+      setSelectedDias((prev) => prev.filter((d) => d !== diaKey));
+      try {
+        await Api.removerDia(diaKey);
+        throwToastSuccess('Dia removido do treino.');
+      } catch {
+        setSelectedDias((prev) => [...prev, diaKey]);
+        throwToastError('Erro ao salvar.');
+      }
+    };
+
+    if (isSelected) {
+      doRemover();
+      return;
     }
-  };
 
-  const removerDia = async (diaKey) => {
-    const anterior = gradePorDia[diaKey];
-    setGradePorDia((prev) => {
-      const next = { ...prev };
-      delete next[diaKey];
-      return next;
-    });
-    try {
-      await Api.removerDia(diaKey);
-      throwToastSuccess('Dia de descanso definido.');
-    } catch {
-      setGradePorDia((prev) => ({ ...prev, [diaKey]: anterior }));
-      throwToastError('Erro ao remover.');
+    const nomeOcupante = ocupadosPorOutros[diaKey];
+    if (nomeOcupante) {
+      setDialog({
+        visible: true,
+        message: `Este dia já pertence ao treino "${nomeOcupante}". Deseja substituir?`,
+        onConfirm: doSalvar,
+      });
+    } else {
+      doSalvar();
     }
-  };
-
-  const abrirSeletor = (diaKey, diaLabel) => {
-    const options = [
-      ...treinos.map((t) => t.nome),
-      'Descanso',
-      'Cancelar',
-    ];
-    const cancelButtonIndex = options.length - 1;
-    const descansoIndex = options.length - 2;
-
-    showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex,
-        title: `Treino para ${diaLabel}`,
-        tintColor: colors.textLight,
-        containerStyle: { backgroundColor: colors.primary },
-        textStyle: { color: colors.textLight },
-        titleTextStyle: { color: colors.placeholderText },
-      },
-      (selectedIndex) => {
-        if (selectedIndex === undefined || selectedIndex === cancelButtonIndex) {
-          return;
-        }
-        if (selectedIndex === descansoIndex) {
-          removerDia(diaKey);
-          return;
-        }
-        salvarDia(diaKey, treinos[selectedIndex]);
-      },
-    );
   };
 
   return (
@@ -151,50 +137,54 @@ const GradeSemanal = ({ navigation }) => {
       ) : (
         <ScrollView contentContainerStyle={style.scrollContent}>
           <Text style={style.intro}>
-            Atribua um treino ativo para cada dia da semana. Dias sem treino são
-            marcados como descanso.
+            Selecione os dias em que este treino será realizado.
           </Text>
-
-          {DIAS.map((dia) => {
-            const atribuido = gradePorDia[dia.key];
-            const isHoje = dia.dow === diaSemanaHoje;
-            return (
-              <View
-                key={dia.key}
-                style={[style.diaCard, isHoje && style.diaCardHoje]}
-                testID={`dia-row-${dia.key}`}
-              >
-                <View style={style.diaLabelWrap}>
-                  <Text style={style.diaLabel}>{dia.short}</Text>
-                  {isHoje && <Text style={style.diaSubLabel}>HOJE</Text>}
-                </View>
-
+          <View style={style.diasChipRow}>
+            {DIAS.map((dia) => {
+              const isSelected = selectedDias.includes(dia.key);
+              const isOccupied = Boolean(ocupadosPorOutros[dia.key]);
+              return (
                 <AnimatedPressable
-                  testID={`dia-picker-${dia.key}`}
-                  wrapperStyle={{ flex: 1 }}
-                  style={style.treinoPicker}
-                  onPress={() => abrirSeletor(dia.key, dia.label)}
+                  key={dia.key}
+                  testID={`dia-toggle-${dia.key}`}
+                  style={[
+                    style.diaToggleChip,
+                    isSelected && style.diaToggleChipSelected,
+                    isOccupied && !isSelected && style.diaToggleChipOccupied,
+                  ]}
+                  onPress={() => toggleDiaTreino(dia.key)}
                 >
                   <Text
                     style={[
-                      style.treinoPickerTexto,
-                      !atribuido && style.treinoPickerTextoVazio,
+                      style.diaToggleChipText,
+                      isSelected && style.diaToggleChipTextSelected,
                     ]}
-                    numberOfLines={1}
                   >
-                    {atribuido ? atribuido.treinoNome : 'Descanso'}
+                    {dia.short}
                   </Text>
-                  <MaterialIcons
-                    name="unfold-more"
-                    size={20}
-                    color={colors.placeholderText}
-                  />
                 </AnimatedPressable>
-              </View>
-            );
-          })}
+              );
+            })}
+          </View>
+          {Object.keys(ocupadosPorOutros).length > 0 && (
+            <Text style={style.ocupadoLegenda}>
+              Borda dourada = dia atribuído a outro treino
+            </Text>
+          )}
         </ScrollView>
       )}
+
+      <ConfirmDialog
+        visible={dialog.visible}
+        title="Dia já atribuído"
+        message={dialog.message}
+        confirmLabel="Substituir"
+        onConfirm={() => {
+          closeDialog();
+          dialog.onConfirm?.();
+        }}
+        onCancel={closeDialog}
+      />
 
       <ScreenFooter onBack={() => navigation.goBack()} loading={loading} />
     </View>
@@ -206,6 +196,14 @@ GradeSemanal.propTypes = {
     setOptions: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
   }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      treino: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        nome: PropTypes.string.isRequired,
+      }),
+    }),
+  }),
 };
 
 export default GradeSemanal;

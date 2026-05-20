@@ -20,8 +20,9 @@ const Exercicio = ({
     exercicioData;
   const {
     destaque,
-    ultimaCarga,
+    ultimoPeso,
     ultimaDistancia,
+    ultimaQtdMaxRepeticoes,
     nomeVariacaoDestaque,
     nomeVariacaoUltima,
     qtdVariacoes,
@@ -33,7 +34,18 @@ const Exercicio = ({
   const temRegistros = destaque && destaque !== '-';
   const hasRecord = temRegistros;
   const hasDestaque = temRegistros && dadosRegistrosAtividades != null;
-  const showDistancia = ultimaDistancia && !ultimaCarga;
+  const isCalistenia = tipoExercicio === 'CALISTENIA';
+  const isAerobico = tipoExercicio === 'AEROBICO';
+  const ultimaLabel = isCalistenia
+    ? 'ÚLTIMA SÉRIE'
+    : isAerobico
+      ? 'ÚLTIMA DISTÂNCIA'
+      : 'ÚLTIMA CARGA';
+  const ultimaValue = isCalistenia
+    ? (ultimaQtdMaxRepeticoes != null ? `${ultimaQtdMaxRepeticoes} reps` : '-')
+    : isAerobico
+      ? (ultimaDistancia || '-')
+      : (ultimoPeso || '-');
   const semRegistrosComVariacao = possuiVariacao && !temRegistros;
   const iconBg = hasRecord ? `${colors.secondary}1a` : colors.inputBackground;
 
@@ -89,12 +101,8 @@ const Exercicio = ({
             </View>
             <View style={style.statDivider} />
             <View style={style.destaqueBox}>
-              <Text style={style.destaqueLabel}>
-                {showDistancia ? 'ÚLTIMA DISTÂNCIA' : 'ÚLTIMA CARGA'}
-              </Text>
-              <Text style={style.ultimoDadoValue}>
-                {showDistancia ? ultimaDistancia : ultimaCarga || '-'}
-              </Text>
+              <Text style={style.destaqueLabel}>{ultimaLabel}</Text>
+              <Text style={style.ultimoDadoValue}>{ultimaValue}</Text>
               {nomeVariacaoUltima && (
                 <Text style={style.variacaoAtribuicaoText} numberOfLines={1}>
                   {nomeVariacaoUltima}

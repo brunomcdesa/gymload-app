@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
 
-const mockSaveTreinos = jest.fn().mockResolvedValue({ data: {} });
+const mockSaveTreinos = jest.fn().mockResolvedValue({ data: { id: 99 } });
 const mockEditarTreinos = jest.fn().mockResolvedValue({ data: {} });
 const mockFetchExercicios = jest.fn().mockResolvedValue({ data: [] });
 const mockFetchExerciciosDoTreino = jest.fn().mockResolvedValue({ data: [] });
 const mockFetchGruposSelect = jest.fn().mockResolvedValue({ data: [] });
+const mockFetchGradeSemanal = jest.fn().mockResolvedValue({ data: [] });
+const mockSalvarDia = jest.fn().mockResolvedValue({});
+const mockRemoverDia = jest.fn().mockResolvedValue({});
 const mockThrowToastError = jest.fn();
 const mockThrowToastSuccess = jest.fn();
 
@@ -21,6 +24,12 @@ jest.mock('../../src/modules/exercicios/Api', () => ({
 
 jest.mock('../../src/modules/gruposMusculares/Api', () => ({
   fetchGruposMuscularesSelect: (...args) => mockFetchGruposSelect(...args),
+}));
+
+jest.mock('../../src/modules/gradeSemanal/Api', () => ({
+  fetchGradeSemanal: (...args) => mockFetchGradeSemanal(...args),
+  salvarDia: (...args) => mockSalvarDia(...args),
+  removerDia: (...args) => mockRemoverDia(...args),
 }));
 
 jest.mock('../../src/modules/utils/toastUtils', () => ({
@@ -84,6 +93,17 @@ jest.mock('react-native-vector-icons/MaterialIcons', () => {
   return ({ name }) => <Text testID={`icon-${name}`}>{name}</Text>;
 });
 
+jest.mock('../../src/components/Dialog/ConfirmDialog', () => {
+  const { View, TouchableOpacity } = require('react-native');
+  return ({ visible, onConfirm, onCancel }) =>
+    visible ? (
+      <View testID="confirm-dialog">
+        <TouchableOpacity testID="dialog-btn-confirmar" onPress={onConfirm} />
+        <TouchableOpacity testID="dialog-btn-cancelar" onPress={onCancel} />
+      </View>
+    ) : null;
+});
+
 import TreinoForm from '../../src/modules/treinos/screens/TreinoForm';
 
 const buildProps = ({
@@ -109,6 +129,9 @@ describe('TreinoForm screen', () => {
     mockFetchExercicios.mockClear();
     mockFetchExerciciosDoTreino.mockClear();
     mockFetchGruposSelect.mockClear();
+    mockFetchGradeSemanal.mockClear();
+    mockSalvarDia.mockClear();
+    mockRemoverDia.mockClear();
     mockThrowToastError.mockClear();
     mockThrowToastSuccess.mockClear();
   });
@@ -165,7 +188,7 @@ describe('TreinoForm screen', () => {
     expect(props.navigation.goBack).toHaveBeenCalled();
   });
 
-  it('chama saveTreinos mesmo com nome vazio (sem validação local)', async () => {
+  it('valida nome obrigatório: toast de erro, saveTreinos não chamado', async () => {
     let instance;
     const props = buildProps();
     await ReactTestRenderer.act(async () => {
@@ -178,10 +201,11 @@ describe('TreinoForm screen', () => {
       await btnSalvar.props.onPress();
     });
 
-    expect(mockSaveTreinos).toHaveBeenCalled();
+    expect(mockThrowToastError).toHaveBeenCalledWith('Nome é obrigatório.');
+    expect(mockSaveTreinos).not.toHaveBeenCalled();
   });
 
-  it('salva novo treino com sucesso', async () => {
+  it('valida exercícios obrigatórios: toast de erro quando nome preenchido mas sem exercícios', async () => {
     let instance;
     const props = buildProps();
     await ReactTestRenderer.act(async () => {
@@ -189,9 +213,31 @@ describe('TreinoForm screen', () => {
       await flushPromises();
     });
 
-    const inputNome = instance.root.findByProps({
-      testID: 'Digite o nome do treino',
+    const inputNome = instance.root.findByProps({ testID: 'Digite o nome do treino' });
+    await ReactTestRenderer.act(async () => {
+      inputNome.props.onChangeText('Peito e Tríceps');
     });
+
+    const btnSalvar = instance.root.findByProps({ testID: 'btn-salvar' });
+    await ReactTestRenderer.act(async () => {
+      await btnSalvar.props.onPress();
+    });
+
+    expect(mockThrowToastError).toHaveBeenCalledWith('Selecione ao menos um exercício.');
+    expect(mockSaveTreinos).not.toHaveBeenCalled();
+  });
+
+  it('salva novo treino com sucesso', async () => {
+    let instance;
+    const props = buildProps({
+      treinoData: { id: null, nome: null, exerciciosIds: [1, 2] },
+    });
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<TreinoForm {...props} />);
+      await flushPromises();
+    });
+
+    const inputNome = instance.root.findByProps({ testID: 'Digite o nome do treino' });
     await ReactTestRenderer.act(async () => {
       inputNome.props.onChangeText('Peito e Tríceps');
     });
@@ -202,16 +248,16 @@ describe('TreinoForm screen', () => {
     });
 
     expect(mockSaveTreinos).toHaveBeenCalled();
-    expect(mockThrowToastSuccess).toHaveBeenCalledWith(
-      'Treino salvo com sucesso!',
-    );
+    expect(mockThrowToastSuccess).toHaveBeenCalledWith('Treino salvo com sucesso!');
     expect(props.navigation.goBack).toHaveBeenCalled();
   });
 
   it('edita treino com sucesso chamando editarTreinos', async () => {
+    mockFetchExerciciosDoTreino.mockResolvedValue({ data: [{ id: 1 }] });
+
     let instance;
     const props = buildProps({
-      treinoData: { id: 10, nome: 'Treino Antigo', exerciciosIds: [] },
+      treinoData: { id: 10, nome: 'Treino Antigo', exerciciosIds: [1] },
       isEdicao: true,
     });
     await ReactTestRenderer.act(async () => {
@@ -225,6 +271,68 @@ describe('TreinoForm screen', () => {
     });
 
     expect(mockEditarTreinos).toHaveBeenCalled();
+    expect(mockSaveTreinos).not.toHaveBeenCalled();
+  });
+
+  it('exibe chips de dias da semana', async () => {
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<TreinoForm {...buildProps()} />);
+      await flushPromises();
+    });
+
+    const segChip = instance.root.findByProps({ testID: 'dia-chip-SEGUNDA' });
+    const domChip = instance.root.findByProps({ testID: 'dia-chip-DOMINGO' });
+    expect(segChip).toBeTruthy();
+    expect(domChip).toBeTruthy();
+  });
+
+  it('pré-carrega dias do treino em modo edição', async () => {
+    mockFetchGradeSemanal.mockResolvedValue({
+      data: [
+        { diaSemana: 'SEGUNDA', treinoId: 10, treinoNome: 'Treino Antigo' },
+        { diaSemana: 'QUARTA', treinoId: 10, treinoNome: 'Treino Antigo' },
+      ],
+    });
+
+    let instance;
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(
+        <TreinoForm
+          {...buildProps({
+            treinoData: { id: 10, nome: 'Treino Antigo', exerciciosIds: [1] },
+            isEdicao: true,
+          })}
+        />,
+      );
+      await flushPromises();
+    });
+
+    expect(mockFetchGradeSemanal).toHaveBeenCalled();
+  });
+
+  it('exibe ConfirmDialog ao salvar com dia em conflito', async () => {
+    mockFetchGradeSemanal.mockResolvedValue({
+      data: [{ diaSemana: 'SEGUNDA', treinoId: 55, treinoNome: 'Outro Treino' }],
+    });
+
+    let instance;
+    const props = buildProps({
+      treinoData: { id: null, nome: 'Novo', exerciciosIds: [1] },
+    });
+    await ReactTestRenderer.act(async () => {
+      instance = ReactTestRenderer.create(<TreinoForm {...props} />);
+      await flushPromises();
+    });
+
+    const diaChip = instance.root.findByProps({ testID: 'dia-chip-SEGUNDA' });
+    await ReactTestRenderer.act(async () => { diaChip.props.onPress(); });
+
+    const btnSalvar = instance.root.findByProps({ testID: 'btn-salvar' });
+    await ReactTestRenderer.act(async () => { await btnSalvar.props.onPress(); });
+
+    const dialog = instance.root.findByProps({ testID: 'confirm-dialog' });
+    expect(dialog).toBeTruthy();
     expect(mockSaveTreinos).not.toHaveBeenCalled();
   });
 });

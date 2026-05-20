@@ -2,22 +2,21 @@ import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
-import AddButton from '../../../components/Button/AddButton';
+import ScreenFooter from '../../../components/Button/ScreenFooter';
+import HeaderTitle from '../../../components/Header/HeaderTitle';
 import SearchInput from '../../../components/Inputs/SearchInput';
 import EmptyList from '../../../components/List/EmptyList';
+import SeparatorItem from '../../../components/List/SeparatorItem';
 import LoadingIndicator from '../../../components/Loading/LoadingIndicator';
 import SelectableItem from '../../../components/Selectable/SelectableItem/SelectableItem';
-import { ComumStyles } from '../../../components/Styles/ComumStyles';
+import { throwToastError } from '../../utils/toastUtils';
 import { useIsAdmin } from '../../utils/userUtils';
 import * as Api from '../Api';
 
-import HeaderTitle from '../../../components/Header/HeaderTitle';
 import ExercicioVariacao from '../components/ExercicioVariacao';
 import style from '../style/style';
 
 const ListExercicioVariacoes = (props) => {
-  const { container, fabContainer, flexGrowOne } = ComumStyles;
-  const { listHeader } = style;
   const { navigation, route } = props;
   const { exercicioBase } = route.params;
   const { id, nome, tipoExercicio } = exercicioBase;
@@ -36,9 +35,8 @@ const ListExercicioVariacoes = (props) => {
       const { data } = await Api.fetchExercicioVariacoes(id);
       setExerciciosVariacoes(data);
       setFilteredExerciciosVariacoes(data);
-    } catch (error) {
-      console.error('Erro ao buscar exercicios:', error);
-      return [];
+    } catch {
+      throwToastError('Erro ao buscar exercícios.');
     } finally {
       setLoading(false);
     }
@@ -57,6 +55,10 @@ const ListExercicioVariacoes = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
+      headerTitleAlign: 'center',
+      headerLeft: () => null,
+      headerBackVisible: false,
+      gestureEnabled: false,
     });
   }, [navigation, renderHeaderTitle]);
 
@@ -64,10 +66,6 @@ const ListExercicioVariacoes = (props) => {
     navigation.navigate('ExercicioVariacaoForm', {
       exercicioData: { ...exercicioBase },
     });
-  };
-
-  const handleSearchResults = (filteredData) => {
-    setFilteredExerciciosVariacoes(filteredData);
   };
 
   const redirectRegistroAtividadesCompleto = () => {
@@ -99,7 +97,6 @@ const ListExercicioVariacoes = (props) => {
         redirectRegistroAtividadesCompleto();
         break;
       case 'Editar Variação':
-        console.log('TODO: Edição de Variação');
         break;
       case 'Cancelar':
         break;
@@ -121,12 +118,12 @@ const ListExercicioVariacoes = (props) => {
     </SelectableItem>
   );
 
-  const renderExerciseList = () => (
-    <>
-      <View style={listHeader}>
+  return (
+    <View style={style.screenContainer}>
+      <View style={style.listHeader}>
         <SearchInput
           placeholder="Pesquisar neste grupo..."
-          onSearch={handleSearchResults}
+          onSearch={setFilteredExerciciosVariacoes}
           initialData={exerciciosVariacoes}
           searchKeys={['nome']}
         />
@@ -140,21 +137,18 @@ const ListExercicioVariacoes = (props) => {
           keyExtractor={(exercicio) => exercicio.id.toString()}
           renderItem={renderExercicioItem}
           ListEmptyComponent={renderEmptyList}
-          contentContainerStyle={flexGrowOne}
+          contentContainerStyle={style.listContent}
+          ItemSeparatorComponent={SeparatorItem}
         />
       )}
-    </>
-  );
 
-  return (
-    <View style={container}>
-      {renderExerciseList()}
-
-      {isAdmin && (
-        <View style={fabContainer}>
-          <AddButton onPress={redirectToExercicioVariacaoForm} />
-        </View>
-      )}
+      <ScreenFooter
+        onBack={() => navigation.goBack()}
+        loading={loading}
+        onSave={isAdmin ? redirectToExercicioVariacaoForm : undefined}
+        saveLabel="ADICIONAR"
+        saveIcon="add"
+      />
     </View>
   );
 };
@@ -163,6 +157,7 @@ ListExercicioVariacoes.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     setOptions: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({

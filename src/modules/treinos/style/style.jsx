@@ -399,4 +399,40 @@ export default StyleSheet.create({
     fontSize: 12,
     marginTop: 8,
   },
+  diasRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 4,
+  },
+  diaChip: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: colors.inputBorder,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  diaChipSelected: {
+    backgroundColor: colors.secondary,
+    borderColor: colors.secondary,
+  },
+  diaChipOccupied: {
+    borderColor: '#f0ad4e',
+  },
+  diaChipText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: colors.placeholderText,
+  },
+  diaChipTextSelected: {
+    color: colors.textLight,
+  },
+  diasLegenda: {
+    fontSize: 11,
+    color: '#f0ad4e',
+    marginTop: 8,
+  },
 });

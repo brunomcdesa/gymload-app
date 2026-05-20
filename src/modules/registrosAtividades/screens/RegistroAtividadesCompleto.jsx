@@ -17,6 +17,8 @@ import {
 import Animated, {
   Easing,
   FadeInDown,
+  ZoomIn,
+  interpolateColor,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
@@ -125,6 +127,8 @@ const RegistroAtividadesCompleto = (props) => {
   const isAdmin = useIsAdmin();
 
   const bordaPulse = useSharedValue(1);
+  const iconeTranslate = useSharedValue(0);
+  const bordaGlow = useSharedValue(0);
   useEffect(() => {
     bordaPulse.value = withRepeat(
       withSequence(
@@ -134,9 +138,31 @@ const RegistroAtividadesCompleto = (props) => {
       -1,
       false,
     );
+    iconeTranslate.value = withRepeat(
+      withSequence(
+        withTiming(-4, { duration: 500, easing: Easing.inOut(Easing.ease) }),
+        withTiming(0, { duration: 500, easing: Easing.inOut(Easing.ease) }),
+      ),
+      -1,
+      false,
+    );
+    bordaGlow.value = withRepeat(
+      withSequence(
+        withTiming(1, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
+        withTiming(0, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
+      ),
+      -1,
+      false,
+    );
   }, []);
   const animatedBordaStyle = useAnimatedStyle(() => ({
     opacity: bordaPulse.value,
+  }));
+  const animatedIconeStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: iconeTranslate.value }],
+  }));
+  const animatedCardStyle = useAnimatedStyle(() => ({
+    borderColor: interpolateColor(bordaGlow.value, [0, 1], ['#383838', '#ff555566']),
   }));
 
   const registroPr = useMemo(() => {
@@ -512,16 +538,22 @@ const RegistroAtividadesCompleto = (props) => {
     <View style={container}>
       {renderVariacoesPicker()}
       {registroPr && !modoSelecao && (
-        <View testID="pr-card-destaque" style={style.prCardDestaque}>
+        <Animated.View
+          testID="pr-card-destaque"
+          entering={ZoomIn.springify().damping(14)}
+          style={[style.prCardDestaque, animatedCardStyle]}
+        >
           <Animated.View
             style={[style.prCardBordaAccent, animatedBordaStyle]}
           />
           <View style={style.prCardDestaqueHeader}>
-            <MaterialIcons
-              name="emoji-events"
-              size={14}
-              color={colors.secondary}
-            />
+            <Animated.View style={animatedIconeStyle}>
+              <MaterialIcons
+                name="emoji-events"
+                size={14}
+                color={colors.secondary}
+              />
+            </Animated.View>
             <Text style={style.prCardDestaqueTitulo}>RECORDE PESSOAL</Text>
             <Text style={style.prCardDestaqueData}>
               {formatarDataSecao(registroPr.dataCadastro.split(' ')[0])}
@@ -547,7 +579,7 @@ const RegistroAtividadesCompleto = (props) => {
               />
             )}
           </View>
-        </View>
+        </Animated.View>
       )}
       {loading || movendo ? (
         <LoadingIndicator />
