@@ -19,10 +19,10 @@ export const apiUrl = __DEV__
 
 export const BANNER_ID = __DEV__
   ? TestIds.BANNER
-  : 'ca-app-pub-3977686093704418/1046387115';
+  : 'ca-app-pub-4802571197377155/8633542792';
 
 export const INTERSTITIAL_ID = __DEV__
   ? TestIds.INTERSTITIAL
-  : 'ca-app-pub-3977686093704418/5167509886';
+  : 'ca-app-pub-4802571197377155/7094293474';
 
 export const BANNER_HEIGHT = 60;
