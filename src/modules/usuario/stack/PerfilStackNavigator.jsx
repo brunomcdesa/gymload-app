@@ -26,9 +26,9 @@ const screenOptions = {
   headerShown: true,
   headerStyle: {
     backgroundColor: colors.background,
-    height: 40,
   },
   headerShadowVisible: false,
+  headerTitleAlign: 'center',
   headerLeft: HeaderLeftToPerfil,
 };
 

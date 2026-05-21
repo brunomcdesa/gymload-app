@@ -5,6 +5,10 @@ export default StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    minHeight: 44,
+    flexShrink: 1,
   },
   titleStyle: {
     color: colors.textLight,

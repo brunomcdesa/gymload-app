@@ -12,7 +12,7 @@ const HeaderTitle = (props) => {
   const renderSubtitle = () => {
     if (isForm) {
       return (
-        <Text style={subtitleStyle}>
+        <Text style={subtitleStyle} numberOfLines={2}>
           Campos marcados com <Text style={asteriscoObrigatorio}>*</Text> são
           obrigatórios
         </Text>
@@ -20,7 +20,11 @@ const HeaderTitle = (props) => {
     }
 
     if (subtitle) {
-      return <Text style={subtitleStyle}>{subtitle}</Text>;
+      return (
+        <Text style={subtitleStyle} numberOfLines={1}>
+          {subtitle}
+        </Text>
+      );
     }
 
     return null;
@@ -28,7 +32,14 @@ const HeaderTitle = (props) => {
 
   return (
     <View style={container}>
-      <Text style={titleStyle}>{title}</Text>
+      <Text
+        style={titleStyle}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.85}
+      >
+        {title}
+      </Text>
       {renderSubtitle()}
     </View>
   );

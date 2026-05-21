@@ -1,4 +1,3 @@
-import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -55,16 +54,6 @@ const TipoVariacaoForm = (props) => {
     return <HeaderTitle title={title} isForm />;
   }, [isEdicao]);
 
-  useFocusEffect(
-    useCallback(() => {
-      const parentNav = navigation.getParent();
-      parentNav?.setOptions({ headerShown: false });
-      return () => {
-        parentNav?.setOptions({ headerShown: true });
-      };
-    }, [navigation]),
-  );
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: renderHeaderTitle,
@@ -118,7 +107,6 @@ TipoVariacaoForm.propTypes = {
   navigation: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
     setOptions: PropTypes.func.isRequired,
-    getParent: PropTypes.func,
   }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({
